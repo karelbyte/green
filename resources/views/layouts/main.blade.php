@@ -61,7 +61,7 @@
 
                 <!-- Right(Notification) -->
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
+                  <!--<li>
                         <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
                             <i class="mdi mdi-bell"></i>
                             <span class="badge up bg-primary">4</span>
@@ -108,14 +108,13 @@
                                 <p class="m-0"><a href="#">See all Notification</a></p>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
 
-                    <li>
+                   <!-- <li>
                         <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
                             <i class="mdi mdi-email"></i>
                             <span class="badge up bg-danger">8</span>
                         </a>
-
                         <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
                             <li>
                                 <h5>Messages</h5>
@@ -160,7 +159,7 @@
                                 <p class="m-0"><a href="#">See all Messages</a></p>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
 
                     <li class="dropdown user-box">
                         <a href="" class="dropdown-toggle waves-effect waves-light user-link" data-toggle="dropdown" aria-expanded="true">
@@ -188,7 +187,7 @@
                         </ul>
                     </li>
 
-                </ul> <!-- end navbar-right -->
+                </ul>
 
             </div><!-- end container -->
         </div>
@@ -228,18 +227,22 @@
                             <li><a href="ui-typography.html">Nueva</a></li>
                         </ul>
                     </li>
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class=" mdi mdi-store"></i><span>Almacen</span> <span class="menu-arrow"></span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="email-inbox.html">Productos</a></li>
-                            <li><a href="email-read.html"> Inventario</a></li>
-                        </ul>
-                    </li>
+
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-briefcase"></i><span>Catalogos</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
                             <li><a href="email-inbox.html">Productos</a></li>
                             <li><a href="email-read.html">Servicios</a></li>
+                        </ul>
+                    </li>
+                    <li class="has_sub">
+                        <a href="javascript:void(0);" class="waves-effect"><i class=" mdi mdi-store"></i><span>Almacen</span> <span class="menu-arrow"></span></a>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('measures')}}">Unidades de Medida</a></li>
+                            <li><a href="{{route('materials')}}">Materiales</a></li>
+                            <li><a href="{{route('tools')}}">Herramientas</a></li>
+                            <li><a href="{{route('receptions')}}">Recepciones</a></li>
+                            <li><a href="email-read.html">Inventarios</a></li>
                         </ul>
                     </li>
                     <li class="has_sub">
@@ -308,7 +311,7 @@
 <script src="{{asset('/appjs/vue.min.js')}}"></script>
 <script src="{{asset('/plugins/toastr/toastr.min.js')}}"></script>
 <script src="{{asset('/appjs/tools.js')}}"></script>
-<script src="{{asset('appjs/core.js')}}"></script>
+<script src="{{asset('/appjs/core.js')}}"></script>
 
 @yield('script')
 </body>

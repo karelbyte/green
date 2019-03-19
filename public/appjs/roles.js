@@ -16,7 +16,7 @@ new Vue({
                 permissions: []
             },
             filters_list: {
-                name: '',
+                field: 'roles.name',
                 value: ''
             },
             orders_list: {

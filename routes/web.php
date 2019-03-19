@@ -63,39 +63,22 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/roles', 'RolsController@index')->name('roles');
 
-
     // USUARIOS
     Route::get('/usuarios/listado', 'UsersController@index')->name('users');
     Route::get('/usuarios/nuevo', 'UsersController@newview')->name('users.new');
 
-    // MARCAS
-    Route::get('/brands', 'BrandsController@index')->name('brands');
-    Route::get('/brands/new', 'BrandsController@newview')->name('brands.new');
+    // MEDIDAS
+    Route::get('/measures', 'MeasuresController@index')->name('measures');
 
-    // MODELOS
-    Route::get('/models', 'ModelsController@index')->name('models');
-    Route::get('/models/new', 'ModelsController@newview')->name('models.new');
-
-    // SUCURSALES
-    Route::get('/divisions', 'DivisionsController@index')->name('divisions');
-    Route::get('/models/new', 'DivisionsController@newview')->name('divisions.new');
+    // MATERIALES
+    Route::get('/materiales', 'MaterialsController@index')->name('materials');
 
 
-    //Familias
-    Route::get('/familys', 'FamilysController@index')->name('familys');
-    Route::get('/familys/new', 'FamilysController@newview')->name('familys.new');
+    // MATERIALES
+    Route::get('/herramientas', 'ToolsController@index')->name('tools');
 
-    //Diseños
-    Route::get('/desings', 'DesingsController@index')->name('desings');
-    Route::get('/desings/new', 'DesingsController@newview')->name('desings.new');
+    // RECEPCIONES
+    Route::get('/recepciones', 'ReceptionsController@index')->name('receptions');
 
-
-    //Pedidos
-    Route::get('/orders', 'OrdersController@index')->name('orders');
-    Route::get('/orders/new', 'OrdersController@newview')->name('orders.new');
-
-    //Tablas
-    Route::get('/tables', 'TablesController@index')->name('tables');
-    Route::get('/tables/new', 'TablesController@newview')->name('tables.new');
 
 });

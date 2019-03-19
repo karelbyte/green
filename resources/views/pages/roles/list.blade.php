@@ -127,7 +127,7 @@
            <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nuevo</button>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <find :filters="filters_list" filter="name" v-on:getfilter="getlist" holder="buscar roles"></find>
+            <find :filters="filters_list" filter="value" v-on:getfilter="getlist" holder="buscar roles"></find>
         </div>
     </div>
     <div class="panel panel-border panel-inverse m-t-5">

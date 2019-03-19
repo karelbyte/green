@@ -32,19 +32,6 @@
                 <h3 class="panel-title">Añadir usuario</h3>
             </div>
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-lg-12 m-t-10">
-                        <span class="txtblack">Asignar rol de acceso al sistema. <span class="require">*</span></span>
-                    </div>
-                    <div class="col-lg-5 m-t-10">
-                        <multiselect    v-model="value"
-                                        :options="roles"
-                                        label="name"
-                                        track-by="name"
-                                        placeholder=""
-                        ></multiselect> <!--:multiple="true" -->
-                    </div>
-                </div>
                 <div class="row m-t-20">
                     <div class="col-lg-4">
                        <span class="txtblack">Nombre <span class="require">*</span></span>
@@ -62,6 +49,17 @@
                     <div class="col-lg-4 m-t-10">
                         <span class="txtblack">Re Password <span class="require">*</span></span>
                         <input class="form-control" type="password" v-model="repassword">
+                    </div>
+                    <div class="col-lg-12 m-t-20">
+                        <span class="txtblack">Asignar rol de acceso al sistema. <span class="require">*</span></span>
+                    </div>
+                    <div class="col-lg-5 m-t-10">
+                        <multiselect    v-model="value"
+                                        :options="roles"
+                                        label="name"
+                                        track-by="name"
+                                        placeholder=""
+                        ></multiselect> <!--:multiple="true" -->
                     </div>
                     <div class="col-lg-12 m-t-10">
                         <div class="checkbox checkbox-primary">

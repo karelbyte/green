@@ -39,3 +39,39 @@ Route::prefix('users')->group(function () {
     Route::post('list', 'UsersController@getList');
 });
 Route::resource('/users', 'UsersController');
+
+
+// RUTAS DE UNIDADES DE MEDIDA
+Route::prefix('measures')->group(function () {
+
+    Route::post('list', 'MeasuresController@getList');
+});
+Route::resource('/measures', 'MeasuresController');
+
+
+// RUTAS DE MATERIALES
+Route::prefix('materials')->group(function () {
+
+    Route::post('list', 'MaterialsController@getList');
+
+    Route::get('get', 'MaterialsController@getMaterials');
+});
+Route::resource('/materials', 'MaterialsController');
+
+
+// RUTAS DE HERRAMIENTAS
+Route::prefix('tools')->group(function () {
+
+    Route::post('list', 'ToolsController@getList');
+
+    Route::get('get', 'ToolsController@getTools');
+});
+Route::resource('/tools', 'ToolsController');
+
+
+// RUTAS DE RECEPCIONES
+Route::prefix('receptions')->group(function () {
+
+    Route::post('list', 'ReceptionsController@getList');
+});
+Route::resource('/receptions', 'ToolsController');

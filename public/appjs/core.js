@@ -36,8 +36,7 @@ let core = {
         }
     },
     watch: {
-        'filters.value': function () {
-
+        'filters_list.value': function () {
             this.getlist()
         }
     },

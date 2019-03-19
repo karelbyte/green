@@ -9,7 +9,7 @@ use Spatie\Permission\Models\Role;
 class RolsController extends Controller
 {
 
-      public function index()
+    public function index()
     {
         return view('pages.roles.list');
     }
@@ -39,7 +39,7 @@ class RolsController extends Controller
                 $q->select('name')->get();
             }]);
 
-            if ( $filters['name'] !== '') { $datos->where('name', 'LIKE', '%'.$filters['name'].'%');}
+            if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
             $datos = $datos->orderby($orders['field'], $orders['type']);
 

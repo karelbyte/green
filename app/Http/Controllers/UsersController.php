@@ -20,7 +20,7 @@ class UsersController extends Controller
         return view('pages.users.new');
     }
 
-
+    // OBTINE LA LISTA DE USUARIOS Y LOS ENVIA AL FRONT PAGINADO
     public function getList(Request $request) {
 
         $skip = $request->input('start') * $request->input('take');
@@ -29,18 +29,17 @@ class UsersController extends Controller
 
         $orders =$request->input('orders');
 
-      /*  $datos = User::leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
-
-            ->leftJoin('roles', 'model_has_roles.role_id', 'roles.id'); */
         $datos = User::with(['status', 'roles' => function ($q) {
+
             $q->select('id', 'name');
+
         }]);
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
 
-        $total = $datos->select('users.*')->count(); //, 'roles.name as rol', 'roles.id as rol_id')->count();
+        $total = $datos->select('users.*')->count();
 
         $list =  $datos->skip($skip)->take($request['take'])->get();
 
@@ -58,6 +57,7 @@ class UsersController extends Controller
         return response()->json($result, 200);
     }
 
+    // CREA USUARIO CON SU ROL EN EL SISTEMA
     public function store(Request $request)
     {
         $data = $request->input('user');
@@ -83,7 +83,7 @@ class UsersController extends Controller
         return response()->json('Usuario añadido con exito!', 200);
     }
 
-
+    // MODFICA USUARIO CON SU ROL EN EL SISTEMA
     public function update(Request $request, $id)
     {
 
@@ -110,7 +110,7 @@ class UsersController extends Controller
         return response()->json('Datos actualizados con exito!', 200);
     }
 
-
+    // ELIMINA USUARIO CON SU ROL EN EL SISTEMA
     public function destroy($id)
     {
         $user = User::findUid($id);
