@@ -77,10 +77,19 @@ class MeasuresController extends Controller
 
     public function destroy($id)  {
 
+        $measure = Measure::find($id);
 
-        Measure::destroy($id);
+        if ($measure->used()) {
 
-        return response()->json('Rol eliminado con exito!', 200);
+            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
+
+        } else {
+
+            Measure::destroy($id);
+
+            return response()->json('Medida eliminada con exito!', 200);
+        }
+
     }
 
 }

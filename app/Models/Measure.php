@@ -11,4 +11,11 @@ class Measure extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function used () {
+
+        $found = Element::where('measure_id', $this->id)->first();
+
+        return !empty($found);
+    }
 }

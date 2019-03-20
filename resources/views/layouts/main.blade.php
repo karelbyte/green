@@ -23,6 +23,7 @@
 </head>
 
 <body class="fixed-left">
+<input type="text" id="user_id_auth" value="{{auth()->user()->id}}" hidden="">
 <div id="preloader">
     <div id="status">
         <div class="spinner">

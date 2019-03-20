@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateReceptionsTable extends Migration
+class CreateElementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateReceptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('receptions', function (Blueprint $table) {
+        Schema::create('elements', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code');
+            $table->string('code', 10);
             $table->smallInteger('type');
-            $table->integer('user_id');
-            $table->date('moment');
-            $table->string('note')->nullable();
-            $table->smallInteger('status_id')->default(1);
+            $table->string('name');
+            $table->smallInteger('measure_id')->default(0);
+          //  $table->decimal('quantity', 8, 2);
+            $table->decimal('price', 8, 2)->default(0);
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateReceptionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('receptions');
+        Schema::dropIfExists('elements');
     }
 }

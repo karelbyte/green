@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Material;
+use App\Models\Element;
 use App\Models\Measure;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class MaterialsController extends Controller
 
     public function getMaterials() {
 
-        return Material::select('id', 'code', 'name')->get();
+        return Element::select('id', 'code', 'name')->material()->get();
 
     }
 
@@ -28,21 +28,19 @@ class MaterialsController extends Controller
 
             $orders =  $request->orders;
 
-          //  $datos = Material::with('Measure');
-
-            $datos = Material::leftjoin('measures', 'measures.id', 'materials.measure_id');
+            $datos = Element::with('measure')->Material();
 
             if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
             $datos = $datos->orderby($orders['field'], $orders['type']);
 
-            $total = $datos->select( 'materials.*', 'measures.name as measure')->count();
+            $total = $datos->select('*')->count();
 
             $list =  $datos->skip($skip)->take($request['take'])->get();
 
             $result = [
 
-                'total' => $total,
+               'total' => $total,
 
                 'list' =>  $list,
 
@@ -57,31 +55,40 @@ class MaterialsController extends Controller
 
     public function store(Request $request) {
 
-        $mat = Material::where('code', $request->code)->first();
+        $mat = Element::where('code', $request->code)->material()->first();
 
         if (!empty($mat)) { return response()->json('Ya existe un material con ese código', 500);}
 
-        Material::create($request->all());
+        Element::create($request->all());
 
         return response()->json('Datos creado con exito!', 200);
     }
 
     public function update(Request $request, $id) {
 
-        $mat = Material::where('code', $request->code)->where('id', '<>', $id)->first();
+        $mat = Element::where('code', $request->code)->where('id', '<>', $id)->first();
 
         if (!empty($mat)) { return response()->json('Ya existe un material con ese codigo', 500);}
 
-        Material::where('id', $id)->update($request->except(['id', 'measure']));
+        Element::where('id', $id)->update($request->except(['id', 'measure']));
 
         return response()->json('Datos actualizados con exito!', 200);
     }
 
     public function destroy($id)  {
 
+        $element = Element::find($id);
 
-        Material::destroy($id);
+        if ($element->used()) {
 
-        return response()->json('Material eliminado con exito!', 200);
+            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
+
+        } else {
+
+            Element::destroy($id);
+
+            return response()->json('Material eliminado con exito!', 200);
+        }
     }
+
 }

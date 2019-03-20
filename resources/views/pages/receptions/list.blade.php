@@ -87,12 +87,12 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer footer_fix">
-                    <button v-if="pass()" class="btn btn-success waves-effect btn-sm" @click="save()">Guardar</button>
-                    <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
-                </div>
             </div>
         </div>
+    </div>
+    <div class="m-t-10">
+        <button v-if="pass()" class="btn btn-success waves-effect btn-sm" @click="save()">Guardar</button>
+        <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
     </div>
 
 </div>
@@ -121,14 +121,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="mouse" v-for="entity in lists" :key="entity.id">
+            <tr v-for="entity in lists" :key="entity.id" :class="[entity.status_id === 1 ? 'noaplic' : 'aplic']">
+                <td class="cel_fix">@{{entity.type.name}}</td>
+                <td class="cel_fix">@{{dateEs(entity.moment)}}</td>
                 <td class="cel_fix">@{{entity.code}}</td>
-                <td class="cel_fix">@{{entity.moment}}</td>
                 <td class="cel_fix">@{{entity.user.name}}</td>
-                <td class="cel_fix">@{{entity.price}}</td>
+                <td class="cel_fix">@{{entity.status.name}}</td>
                 <td>
-                 <button class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                 <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 <button v-if="entity.status_id === 1" class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
+                 <button v-if="entity.status_id === 1" class="btn btn-info  waves-effect btn-sm" @click="showaplic(entity)">Aplicar</button>
+                 <button v-if="entity.status_id === 1" class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 <button v-if="entity.status_id === 2" class="btn btn-info  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-pdf-o"></i></button>
                 </td>
             </tr>
             </tbody>
@@ -176,6 +179,27 @@
                     <div class="panel-footer text-right">
                         <button :disabled="spin" v-if="passItemForAdd()" class="btn btn-success btn-sm" @click="addItem()">Aplicar</button>
                         <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="aplicar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Aplicar cantidades</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Se aplicara la recepción al inventario. Desea proceder?</p>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button :disabled="spin" @click="aplic()" class="btn btn-danger waves-effect btn-sm">SI</button>
+                        <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">No</a>
                     </div>
                 </div>
             </div>

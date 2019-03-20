@@ -65,11 +65,18 @@ function onviews (pro) {
 
 function fixdate (dt) {
 
+    dt = new Date(dt);
+
     let m =  dt.getMonth() < 9 ? '0' +  (dt.getMonth() + 1) : dt.getMonth() + 1;
 
     let d = dt.getDate() < 10 ? '0' +  dt.getDate() : dt.getDate();
 
-    return dt.getFullYear() + '-' + m  + '-' + d;
+    return  d + '/' + m + '/' + dt.getFullYear();
+}
+
+function dateEs(dt) {
+
+    return new Date(dt.replace(/-/g, '/')).toLocaleDateString()
 }
 
 Vue.directive('focus', {

@@ -12,12 +12,20 @@ class AppSeeder extends Seeder
     public function run()
     {
 
-        $statusList = [
+        $statusUserList = [
             ['id' => 0, 'name' => 'Inactivo'],
             ['id' => 1, 'name' => 'Activo'],
         ];
 
-        \App\Models\UserStatus::insert($statusList);
+        \App\Models\UserStatus::insert($statusUserList);
+
+
+        $statusReceptionList = [
+            ['id' => 0, 'name' => 'NO APLICADA'],
+            ['id' => 1, 'name' => 'APLICADA'],
+        ];
+
+        \App\Models\ReceptionStatus::insert($statusReceptionList);
 
         /*
         \App\Models\User::create([

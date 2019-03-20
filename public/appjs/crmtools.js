@@ -13,21 +13,23 @@ new Vue({
                 id: 0,
                 code: '',
                 name: '',
+                type: 2
             },
             itemDefault: {
                 id: 0,
                 code: '',
                 name: '',
+                type: 2
             },
             repassword: '',
-            listfield: [{name: 'Codigo', type: 'text', field: 'tools.code'}, {name: 'Nombre', type: 'text', field: 'tools.name'}],
+            listfield: [{name: 'Codigo', type: 'text', field: 'elements.code'}, {name: 'Nombre', type: 'text', field: 'elements.name'}],
             filters_list: {
                 descrip: 'Codigo',
-                field: 'tools.code',
+                field: 'elements.code',
                 value: ''
             },
             orders_list: {
-                field: 'tools.code',
+                field: 'elements.code',
                 type: 'asc'
             },
         }

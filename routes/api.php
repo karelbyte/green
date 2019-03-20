@@ -73,5 +73,7 @@ Route::resource('/tools', 'ToolsController');
 Route::prefix('receptions')->group(function () {
 
     Route::post('list', 'ReceptionsController@getList');
+
+    Route::post('aplic', 'ReceptionsController@aplic');
 });
-Route::resource('/receptions', 'ToolsController');
+Route::resource('/receptions', 'ReceptionsController');

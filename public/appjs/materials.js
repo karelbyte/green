@@ -14,6 +14,7 @@ new Vue({
                 code: '',
                 name: '',
                 price: 0,
+                type: 1,
                 measure_id: '',
             },
             itemDefault: {
@@ -21,17 +22,18 @@ new Vue({
                 code: '',
                 price: 0,
                 name: '',
+                type: 1,
                 measure_id: '',
             },
             repassword: '',
-            listfield: [{name: 'Codigo', type: 'text', field: 'materials.code'}, {name: 'Nombre', type: 'text', field: 'materials.name'}],
+            listfield: [{name: 'Codigo', type: 'text', field: 'elements.code'}, {name: 'Nombre', type: 'text', field: 'elements.name'}],
             filters_list: {
                 descrip: 'Codigo',
-                field: 'materials.code',
+                field: 'elements.code',
                 value: ''
             },
             orders_list: {
-                field: 'materials.code',
+                field: 'elements.code',
                 type: 'asc'
             },
             roles: [],

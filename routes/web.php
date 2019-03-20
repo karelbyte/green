@@ -82,3 +82,11 @@ Route::middleware('auth')->group(function () {
 
 
 });
+
+
+route::get('/prueba', function () {
+
+   $d =  \App\Models\ReceptionDetail::find(12);
+
+   return response()->json($d->element, 200);
+});

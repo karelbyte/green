@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Material;
-use App\Models\Measure;
-use App\Models\Tool;
+use App\Models\Element;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ToolsController extends Controller
 {
@@ -17,7 +14,7 @@ class ToolsController extends Controller
 
     public function getTools() {
 
-        return Tool::select('id', 'name', 'code')->get();
+        return Element::select('id', 'name', 'code')->tool()->get();
 
     }
 
@@ -29,13 +26,13 @@ class ToolsController extends Controller
 
             $orders =  $request->orders;
 
-            $datos = DB::table('tools');
+            $datos = Element::tool();
 
             if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
             $datos = $datos->orderby($orders['field'], $orders['type']);
 
-            $total = $datos->select( 'tools.*')->count();
+            $total = $datos->select( '*')->count();
 
             $list =  $datos->skip($skip)->take($request['take'])->get();
 
@@ -54,26 +51,35 @@ class ToolsController extends Controller
 
     public function store(Request $request) {
 
-        $mat = Tool::where('code', $request->code)->first();
+        $mat = Element::tool()->where('code', $request->code)->first();
 
         if (!empty($mat)) { return response()->json('Ya existe un herramienta con es código', 500);}
 
-        Tool::create($request->all());
+        Element::create($request->all());
 
         return response()->json('Datos creado con exito!', 200);
     }
 
     public function update(Request $request, $id) {
 
-        Tool::where('id', $id)->update(['code' => $request->code, 'name' => $request->name]);
+        Element::where('id', $id)->update(['code' => $request->code, 'name' => $request->name]);
 
         return response()->json('Datos actualizados con exito!', 200);
     }
 
     public function destroy($id)  {
 
-        Tool::destroy($id);
+        $element = Element::find($id);
 
-        return response()->json('Herramienta eliminada con exito!', 200);
+        if ($element->used()) {
+
+            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
+
+        } else {
+
+            Element::destroy($id);
+
+            return response()->json('Herramienta eliminada con exito!', 200);
+        }
     }
 }

@@ -35,4 +35,28 @@ class Reception extends Model
         return $this->hasMany(ReceptionDetail::class);
     }
 
+
+    public function User() {
+
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function Status() {
+
+        return $this->belongsTo(ReceptionStatus::class);
+    }
+
+
+    public function Type() {
+
+        return $this->belongsTo(ReceptionType::class, 'type', 'id');
+    }
+
+
+    protected $hidden = [
+
+        'created_at',
+
+        'updated_at'
+    ];
 }

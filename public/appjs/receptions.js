@@ -19,6 +19,7 @@ new Vue({
                 moment: '',
                 note: '',
                 status: '',
+                user_id: parseInt($('#user_id_auth').val())
             },
             itemDefault: {
                 id: 0,
@@ -26,7 +27,7 @@ new Vue({
                 type: '',
                 moment: '',
                 note: '',
-                status: '',
+                user_id: parseInt($('#user_id_auth').val())
             },
             details: [],
             ItemForAdd: {
@@ -60,7 +61,7 @@ new Vue({
     },
     mounted () {
 
-        this.propertyShowDelObj = 'name';
+        this.propertyShowDelObj = 'code';
 
         this.labeledit = 'Actualizar recepción';
 
@@ -72,6 +73,31 @@ new Vue({
 
     },
     methods: {
+        aplic () {
+
+            this.spin = true;
+
+            axios.post( urldomine + 'api/receptions/aplic', {id: this.item.id}).then( r => {
+
+                $('#aplicar').modal('hide');
+
+                this.spin = false;
+
+                toastr["success"](r.data);
+
+                this.getlist()
+            })
+        },
+        showaplic (it) {
+
+            this.item = it;
+
+            $('#aplicar').modal('show');
+        },
+        backclass(i) {
+
+            return i === 1 ? 'noaplic' : 'aplic'
+        },
         addItem() {
 
           this.details.push({...this.ItemForAdd});
@@ -152,7 +178,28 @@ new Vue({
 
            this.spin = true;
 
-           this.item.measure_id = this.value.id;
+           this.item.type = this.type.id;
+
+           delete this.item.user;
+
+            delete this.item.details;
+
+            delete this.item.status;
+
+           let data = {
+
+               'reception' : this.item,
+
+               'details':  this.details.map(it => {
+                   return {
+                       'item_id': it.element.id,
+
+                       'cant': it.cant,
+
+                       'type': this.item.type
+                   }
+               })
+           };
 
             axios({
 
@@ -160,7 +207,7 @@ new Vue({
 
                 url: urldomine + 'api/receptions' + (this.act === 'post' ? '' : '/' + this.item.id),
 
-                data: this.item
+                data: data
 
             }).then(response => {
 
@@ -189,6 +236,8 @@ new Vue({
 
             this.type = '';
 
+            this.details = [];
+
             this.onview('new')
 
         },
@@ -198,7 +247,20 @@ new Vue({
 
             this.act = 'put';
 
+            this.type = this.item.type;
+
             this.title = this.labeledit;
+
+            this.details = this.item.details.map(it => {
+                return {
+                    cant: it.cant,
+                    element: {
+                        id: it.item_id,
+                       code: it.element.code,
+                       name: it.element.name
+                    }
+                }
+            });
 
             this.onview('new')
 

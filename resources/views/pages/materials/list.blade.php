@@ -80,7 +80,7 @@
             <thead>
             <tr>
                 <th class="cel_fix"><order labels="Codigo" :options="orders_list" field="materials.code"  v-on:getfilter="getlist"></order></th>
-                <th class="cel_fix"><order labels="Decripción" :options="orders_list" field="materials.name"  v-on:getfilter="getlist"></order></th>
+                <th class="cel_fix"><order labels="Descripción" :options="orders_list" field="materials.name"  v-on:getfilter="getlist"></order></th>
                 <th class="cel_fix">Unidad de Medida</th>
                 <th class="cel_fix">Precio al publico</th>
                 <th></th>
@@ -90,7 +90,7 @@
             <tr class="mouse" v-for="entity in lists" :key="entity.id">
                 <td class="cel_fix">@{{entity.code}}</td>
                 <td class="cel_fix">@{{entity.name}}</td>
-                <td class="cel_fix">@{{entity.measure}}</td>
+                <td class="cel_fix">@{{entity.measure.name}}</td>
                 <td class="cel_fix">@{{entity.price}}</td>
                 <td>
                  <button class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>

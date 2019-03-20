@@ -33,4 +33,20 @@ class ReceptionDetail extends Model
      */
     protected $fillable = ['reception_id', 'item_id', 'cant', 'created_at', 'updated_at'];
 
+
+
+    public function element() {
+
+      return $this->hasOne(Element::class, 'id', 'item_id');
+
+    }
+
+
+    protected $hidden = [
+
+        'created_at',
+
+        'updated_at'
+    ];
+
 }
