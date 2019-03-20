@@ -90,7 +90,7 @@ new Vue({
 
                 this.measures = res.data.measures;
 
-                this.pager_list.totalpage = Math.ceil(res.data.total / this.pager.recordpage)
+                this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
 
             }).catch(e => {
 

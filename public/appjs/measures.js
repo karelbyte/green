@@ -77,7 +77,7 @@ new Vue({
 
                 this.lists = res.data.list;
 
-                this.pager_list.totalpage = Math.ceil(res.data.total / this.pager.recordpage)
+                this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
 
             }).catch(e => {
 
