@@ -31,9 +31,10 @@ class ReceptionsController extends Controller
 
             $orders =  $request->orders;
 
-            $datos = Reception::with(['user', 'status', 'type', 'details' => function ($q) {
+            $datos = Reception::with(['status', 'type', 'user', 'details' => function ($q) {
 
                 $q->with('element');
+
             }]);
 
             if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
