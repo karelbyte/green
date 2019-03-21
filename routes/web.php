@@ -63,14 +63,17 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/roles', 'RolsController@index')->name('roles');
 
+    // PROVEEDORES
+    Route::get('/clientes/listado', 'ClientsController@index')->name('clients');
+    Route::get('/clientes/nuevo', 'ClientsController@newview')->name('clients.new');
 
     // PROVEEDORES
-    Route::get('/proveedores/listado', 'UsersController@index')->name('users');
-    Route::get('/proveedores/nuevo', 'UsersController@newview')->name('users.new');
+    Route::get('/proveedores/listado', 'ProvidersController@index')->name('providers');
+    Route::get('/proveedores/nuevo', 'ProvidersController@newview')->name('providers.new');
 
     // USUARIOS
-    Route::get('/usuarios/listado', 'UsersController@index')->name('providers');
-    Route::get('/usuarios/nuevo', 'UsersController@newview')->name('providers.new');
+    Route::get('/usuarios/listado', 'UsersController@index')->name('users');
+    Route::get('/usuarios/nuevo', 'UsersController@newview')->name('users.new');
 
     // MEDIDAS
     Route::get('/measures', 'MeasuresController@index')->name('measures');

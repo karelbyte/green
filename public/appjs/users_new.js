@@ -31,7 +31,6 @@ new Vue({
         Multiselect: window.VueMultiselect.default
     },
     mounted () {
-
         axios.get( urldomine + 'api/roles/get').then(r => {
             this.roles = r.data
         })

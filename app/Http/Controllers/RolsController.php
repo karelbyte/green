@@ -98,6 +98,16 @@ class RolsController extends Controller
 
     public function destroy($id)  {
 
+
+        $R = Role::findById($id);
+
+        $us = $R->users;
+
+        if (count($us) > 0) {
+
+            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
+        }
+
         $permission = Permission::all();
 
         $role = Role::findById($id);

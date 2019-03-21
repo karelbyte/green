@@ -225,8 +225,8 @@
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-card-details"></i> <span>Clientes</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
-                            <li><a href="ui-typography.html">Nuevo cliente</a></li>
-                            <li><a href="ui-buttons.html">Listados</a></li>
+                            <li><a href="{{route('clients.new')}}">Nuevo cliente</a></li>
+                            <li><a href="{{route('clients')}}">Listados</a></li>
                         </ul>
                     </li>
                     <li class="has_sub">

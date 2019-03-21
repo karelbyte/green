@@ -37,27 +37,19 @@ class AppSeeder extends Seeder
 
         for ($i=1; $i<=300; $i++) {
 
-            \App\Models\Element::create([
+            \App\Models\Provider::create([
 
                 'code' => rand(),
 
-                'type' => $i % 2 == 0 ? 1 : 2,
-
-                'name' => str_shuffle('adsafdsgdsgsdertrtfgzfbzsdgsnlkhjigh'),
-
-                'measure_id' => 1,
-
-                'price' => 10 + $i
-            ]);
-        }
-
-        for ($i=1; $i<=300; $i++) {
-
-            \App\Models\Measure::create([
+                'contact' => $i % 2 == 0 ? 1 : 2,
 
                 'name' => str_shuffle('ABIBDODPWJFUSFAYUB.UBWDI'),
 
+                'email' => str_shuffle('ABIBDODPWJFU').'@d.'. str_shuffle('POIJHOUHGY') . '.com'
+
             ]);
         }
+
+
     }
 }

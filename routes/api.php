@@ -105,4 +105,21 @@ Route::prefix('inventoris')->group(function () {
 Route::resource('/inventoris', 'InventorisController');
 
 
+// RUTAS DE PROVEEDORES
+Route::prefix('providers')->group(function () {
+
+    Route::post('list', 'ProvidersController@getList');
+
+});
+Route::resource('/providers', 'ProvidersController');
+
+
+
+// RUTAS DE CLIENTES
+Route::prefix('clients')->group(function () {
+
+    Route::post('list', 'ClientsController@getList');
+
+});
+Route::resource('/clients', 'ClientsController');
 

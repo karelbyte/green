@@ -48,7 +48,6 @@ class User extends Authenticatable
         return empty(self::where('email', $email)->first());
     }
 
-
     public function status () {
 
         return $this->hasOne('App\Models\UserStatus', 'id', 'active_id');

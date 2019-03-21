@@ -107,8 +107,6 @@ new Vue({
 
             let um = this.value !== '';
 
-            let price = this.item.price > 0;
-
             return name && code && um
         }
     }
