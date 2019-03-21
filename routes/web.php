@@ -63,9 +63,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/roles', 'RolsController@index')->name('roles');
 
+
+    // PROVEEDORES
+    Route::get('/proveedores/listado', 'UsersController@index')->name('users');
+    Route::get('/proveedores/nuevo', 'UsersController@newview')->name('users.new');
+
     // USUARIOS
-    Route::get('/usuarios/listado', 'UsersController@index')->name('users');
-    Route::get('/usuarios/nuevo', 'UsersController@newview')->name('users.new');
+    Route::get('/usuarios/listado', 'UsersController@index')->name('providers');
+    Route::get('/usuarios/nuevo', 'UsersController@newview')->name('providers.new');
 
     // MEDIDAS
     Route::get('/measures', 'MeasuresController@index')->name('measures');
@@ -73,20 +78,22 @@ Route::middleware('auth')->group(function () {
     // MATERIALES
     Route::get('/materiales', 'MaterialsController@index')->name('materials');
 
-
     // MATERIALES
     Route::get('/herramientas', 'ToolsController@index')->name('tools');
 
     // RECEPCIONES
     Route::get('/recepciones', 'ReceptionsController@index')->name('receptions');
 
+    // INVENTARIOS
+    Route::get('/inventarios', 'InventorisController@index')->name('inventoris');
+
+    // PRODUCTOS
+    Route::get('/productos', 'ProductsController@index')->name('products');
+
+    // SERVICIOS
+    Route::get('/servicios', 'ServicesController@index')->name('services');
+
 
 });
 
 
-route::get('/prueba', function () {
-
-   $d =  \App\Models\ReceptionDetail::find(12);
-
-   return response()->json($d->element, 200);
-});

@@ -207,13 +207,7 @@
                     <li>
                         <a href="calendar.html" class="waves-effect"><i class="mdi mdi-calendar"></i><span>Calendario </span></a>
                     </li>
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-card-details"></i> <span>Clientes</span> <span class="menu-arrow"></span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="ui-buttons.html">Lista</a></li>
-                            <li><a href="ui-typography.html">Nuevo</a></li>
-                        </ul>
-                    </li>
+
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-coin"></i> <span>Cotizaciones</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
@@ -228,12 +222,25 @@
                             <li><a href="ui-typography.html">Nueva</a></li>
                         </ul>
                     </li>
-
+                    <li class="has_sub">
+                        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-card-details"></i> <span>Clientes</span> <span class="menu-arrow"></span></a>
+                        <ul class="list-unstyled">
+                            <li><a href="ui-typography.html">Nuevo cliente</a></li>
+                            <li><a href="ui-buttons.html">Listados</a></li>
+                        </ul>
+                    </li>
+                    <li class="has_sub">
+                        <a href="javascript:void(0);" class="waves-effect"><i class="typcn typcn-th-list-outline"></i> <span>Proveedores</span> <span class="menu-arrow"></span></a>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('providers.new')}}">Nuevo proveedor</a></li>
+                            <li><a href="{{route('providers')}}">Listado</a></li>
+                        </ul>
+                    </li>
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-briefcase"></i><span>Catalogos</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
-                            <li><a href="email-inbox.html">Productos</a></li>
-                            <li><a href="email-read.html">Servicios</a></li>
+                            <li><a href="{{route('products')}}">Productos</a></li>
+                            <li><a href="{{route('services')}}">Servicios</a></li>
                         </ul>
                     </li>
                     <li class="has_sub">
@@ -243,7 +250,7 @@
                             <li><a href="{{route('materials')}}">Materiales</a></li>
                             <li><a href="{{route('tools')}}">Herramientas</a></li>
                             <li><a href="{{route('receptions')}}">Recepciones</a></li>
-                            <li><a href="email-read.html">Inventarios</a></li>
+                            <li><a href="{{route('inventoris')}}">Inventarios</a></li>
                         </ul>
                     </li>
                     <li class="has_sub">

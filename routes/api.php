@@ -19,6 +19,24 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
+// RUTAS DE SERVICIOS
+Route::prefix('services')->group(function () {
+
+    Route::post('list', 'ServicesController@getList');
+
+});
+
+Route::resource('/services', 'ServicesController');
+
+// RUTAS DE PRODUCTOS
+Route::prefix('products')->group(function () {
+
+    Route::post('list', 'ProductsController@getList');
+
+});
+Route::resource('/products', 'ProductsController');
+
+
 // RUTAS DE ROLES SISTEMA
 Route::prefix('roles')->group(function () {
 
@@ -30,7 +48,6 @@ Route::prefix('roles')->group(function () {
 
 });
 Route::resource('/roles', 'RolsController');
-
 
 
 // RUTAS DE USUER SISTEMA
@@ -77,3 +94,15 @@ Route::prefix('receptions')->group(function () {
     Route::post('aplic', 'ReceptionsController@aplic');
 });
 Route::resource('/receptions', 'ReceptionsController');
+
+
+// RUTAS DE INVENTARIOS
+Route::prefix('inventoris')->group(function () {
+
+    Route::post('list', 'InventorisController@getList');
+
+});
+Route::resource('/inventoris', 'InventorisController');
+
+
+
