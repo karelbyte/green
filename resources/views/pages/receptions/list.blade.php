@@ -45,12 +45,12 @@
                             <input v-focus class="form-control" type="text" v-model="item.code">
                         </div>
                         <div class="col-lg-2">
-                            <span class="txtblack">Fecha<span class="require">*</span></span>
+                            <span class="txtblack">Fecha <span class="require">*</span></span>
                             <input class="form-control" type="date" v-model="item.moment">
                         </div>
 
                         <div class="col-lg-12 m-t-20">
-                            <span class="txtblack">Nota</span>
+                            <span class="txtblack">Nota </span>
                             <input class="form-control" type="text" v-model.number="item.note">
                         </div>
                     </div>

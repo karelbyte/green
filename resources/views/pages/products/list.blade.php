@@ -35,11 +35,11 @@
                         <input v-focus class="form-control" type="text" v-model="item.name">
                     </div>
                     <div class="col-lg-1">
-                        <span class="txtblack">Desde<span class="require">*</span></span>
+                        <span class="txtblack">Desde <span class="require">*</span></span>
                         <input v-numeric-only class="form-control" type="text" v-model.number="item.init">
                     </div>
                     <div class="col-lg-1">
-                        <span class="txtblack">Hasta<span class="require">*</span></span>
+                        <span class="txtblack">Hasta <span class="require">*</span></span>
                         <input v-numeric-only class="form-control" type="text" v-model.number="item.end">
                     </div>
 

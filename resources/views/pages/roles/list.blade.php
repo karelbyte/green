@@ -58,7 +58,272 @@
                         </div>
                     </div>
                 </div>
+                <div class="row txtblack" style="padding-left: 10px">
+                    Modulo Clientes
+                </div>
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="clients" @change="chekset('clients')">
+                            <label for="checkbox2">
+                                Clientes
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('clients')"  type="checkbox" v-model="grants" value="clients.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
 
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('clients')" type="checkbox" v-model="grants" value="clients.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
+                    Modulo Proveedores
+                </div>
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="providers" @change="chekset('providers')">
+                            <label for="checkbox2">
+                                Proveedores
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('providers')"  type="checkbox" v-model="grants" value="providers.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('providers')" type="checkbox" v-model="grants" value="providers.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
+                    Modulo Catalogos
+                </div>
+                <!-- PRODUCTOS DEL CALTALOGO-->
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="products" @change="chekset('products')">
+                            <label for="checkbox2">
+                                Productos
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('products')"  type="checkbox" v-model="grants" value="products.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('products')" type="checkbox" v-model="grants" value="products.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- SERVICIOS DEL CATALOGO -->
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="services" @change="chekset('services')">
+                            <label for="checkbox2">
+                                Servicios
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('services')"  type="checkbox" v-model="grants" value="services.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('services')"  type="checkbox" v-model="grants" value="services.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- ALMACEN-->
+                <div class="row txtblack" style="padding-left: 10px">
+                   Modulo Almacen
+                </div>
+                 <!-- Unidad de Medida -->
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="measures" @change="chekset('measures')">
+                            <label for="checkbox2">
+                                Unidades de Medida
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('measures')"  type="checkbox" v-model="grants" value="measures.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('measures')" type="checkbox" v-model="grants" value="measures.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Materiales -->
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="elements" @change="chekset('elements')">
+                            <label for="checkbox2">
+                                Materiales
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('elements')"  type="checkbox" v-model="grants" value="elements.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('elements')" type="checkbox" v-model="grants" value="elements.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Herramientas -->
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="tools" @change="chekset('tools')">
+                            <label for="checkbox2">
+                                Herramientas
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('tools')"  type="checkbox" v-model="grants" value="tools.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('tools')" type="checkbox" v-model="grants" value="tools.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Recepciones-->
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="receptions" @change="chekset('receptions')">
+                            <label for="checkbox2">
+                                Recepciones
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('receptions')"  type="checkbox" v-model="grants" value="receptions.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('receptions')" type="checkbox" v-model="grants" value="receptions.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('receptions')" type="checkbox" v-model="grants" value="receptions.aplic">
+                            <label for="checkbox2">
+                                Aplicar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Inventario-->
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="inventoris" @change="chekset('inventoris')">
+                            <label for="checkbox2">
+                                Inventarios
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('inventoris')"  type="checkbox" v-model="grants" value="inventoris.print">
+                            <label for="checkbox2">
+                                Imprimir
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
+                    Modulo Usuarios
+                </div>
+                <!-- ROLES-->
                 <div class="row roles">
                     <div class="col-lg-2">
                         <div class="checkbox checkbox-success">
@@ -86,6 +351,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- USUARIOS -->
                 <div class="row roles">
                     <div class="col-lg-2">
                         <div class="checkbox checkbox-success">

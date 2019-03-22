@@ -29,15 +29,15 @@
             <div class="panel-body">
                 <div class="row m-t-20">
                     <div class="col-lg-5">
-                        <span class="txtblack">Codigo<span class="require">*</span></span>
+                        <span class="txtblack">Codigo <span class="require">*</span></span>
                         <input v-focus class="form-control" type="text" v-model="item.code">
                     </div>
                     <div class="col-lg-5">
-                        <span class="txtblack">Nombre Proveedor<span class="require">*</span></span>
+                        <span class="txtblack">Nombre Proveedor <span class="require">*</span></span>
                         <input  class="form-control" type="text" v-model="item.name">
                     </div>
                     <div class="col-lg-5 m-t-10">
-                        <span class="txtblack">Contacto<span class="require">*</span></span>
+                        <span class="txtblack">Contacto <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.contact">
                     </div>
                     <div class="col-lg-5 m-t-10">

@@ -61,6 +61,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/panel', 'HomeController@index')->name('panel');
 
+    Route::get('/ajustes/empresa', 'CompanyController@index')->name('company');
+
     Route::get('/roles', 'RolsController@index')->name('roles');
 
     // PROVEEDORES

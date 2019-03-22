@@ -19,13 +19,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
+// RUTAS DE AJUSTE DE DATOS DE LA EMPRESA
+Route::get('/ajustes/company/data', 'CompanyController@getdata');
+Route::resource('/ajustes/company', 'CompanyController');
+
+
 // RUTAS DE SERVICIOS
 Route::prefix('services')->group(function () {
 
     Route::post('list', 'ServicesController@getList');
 
 });
-
 Route::resource('/services', 'ServicesController');
 
 // RUTAS DE PRODUCTOS

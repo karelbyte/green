@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -259,6 +259,12 @@
                             <li><a href="{{route('roles')}}">Roles</a></li>
                             <li><a href="{{route('users.new')}}">Nuevo usuario</a></li>
                             <li><a href="{{route('users')}}">Listado</a></li>
+                        </ul>
+                    </li>
+                    <li class="has_sub">
+                        <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-cog"></i><span>Ajustes</span> <span class="menu-arrow"></span></a>
+                        <ul class="list-unstyled">
+                            <li><a href="{{route('company')}}">Generales de la empresa</a></li>
                         </ul>
                     </li>
 

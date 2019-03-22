@@ -35,7 +35,7 @@
                         <input v-focus class="form-control" type="text" v-model="item.code">
                     </div>
                     <div class="col-lg-8">
-                        <span class="txtblack">Descripción<span class="require">*</span></span>
+                        <span class="txtblack">Descripción <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.name">
                     </div>
 

@@ -37,7 +37,7 @@ class AppSeeder extends Seeder
 
         for ($i=1; $i<=300; $i++) {
 
-            \App\Models\Provider::create([
+            \App\Models\Client::create([
 
                 'code' => rand(),
 
