@@ -45,7 +45,7 @@
                         <input class="form-control" type="text" v-model="item.rfc">
                     </div>
                     <div class="col-lg-4 m-t-10">
-                        <span class="txtblack">WWW</span>
+                        <span class="txtblack">www</span>
                         <input class="form-control" type="text" v-model="item.www">
                     </div>
                     <div class="col-lg-2 m-t-10">
@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="col-lg-2 m-t-10">
-                        <span class="txtblack">Telefono 2</span>
+                        <span class="txtblack">WhastApp</span>
                         <input v-numeric-only class="form-control" type="text" v-model="item.phone2">
                     </div>
                 </div>
@@ -69,6 +69,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/multiselect.min.js')}}"></script>
     <script src="{{asset('appjs/company.js')}}"></script>
 @endsection

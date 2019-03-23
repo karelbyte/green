@@ -128,10 +128,10 @@
                 <td class="cel_fix">@{{entity.user.name}}</td>
                 <td class="cel_fix">@{{entity.status.name}}</td>
                 <td>
-                 <button v-if="entity.status_id === '1'" class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                 <button v-if="entity.status_id === '1'" class="btn btn-info  waves-effect btn-sm" @click="showaplic(entity)">Aplicar</button>
-                 <button v-if="entity.status_id === '1'" class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
-                 <button v-if="entity.status_id === '2'" class="btn btn-info  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-pdf-o"></i></button>
+                 <button v-if="parseInt(entity.status_id) === 1" class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
+                 <button v-if="parseInt(entity.status_id) === 1" class="btn btn-info  waves-effect btn-sm" @click="showaplic(entity)">Aplicar</button>
+                 <button v-if="parseInt(entity.status_id) === 1" class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 <button v-if="parseInt(entity.status_id) === 2" class="btn btn-info  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-pdf-o"></i></button>
                 </td>
             </tr>
             </tbody>

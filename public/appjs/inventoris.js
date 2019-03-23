@@ -5,6 +5,7 @@ new Vue({
     el: '#app',
     data () {
         return {
+            scrpdf: '',
             types: [{id: 1,  name: 'MATERIALES'}, {id: 2,  name: 'HERRAMIENTAS'}],
             views: {
                 list: true,
@@ -108,6 +109,22 @@ new Vue({
             let um = this.value !== '';
 
             return name && code && um
-        }
+        },
+        viewpdf () {
+
+            this.spin = true;
+
+            axios.get(urldomine + 'api/inventoris/pdf/' + this.filters_list.type.id).then(response => {
+
+                this.spin = false;
+
+               // window.$('#iframe').attr('src', response.data);
+
+                this.scrpdf = response.data;
+
+                window.$('#pdf').modal('show')
+
+            })
+        },
     }
 });

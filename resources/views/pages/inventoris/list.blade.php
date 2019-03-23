@@ -34,7 +34,7 @@
 
         </div>
         <div class="col-lg-5 col-md-4 col-sm-6 col-xs-12">
-            <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-pdf-o"></i> IMPRIMIR</button>
+            <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="viewpdf()"><i class="fa fa-file-pdf-o"></i> IMPRIMIR</button>
             <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-excel "></i> XLS</button>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-right">
@@ -49,8 +49,8 @@
             <tr>
                 <th class="cel_fix"><order labels="Codigo" :options="orders_list" field="elements.code"  v-on:getfilter="getlist"></order></th>
                 <th class="cel_fix"><order labels="Descripción" :options="orders_list" field="elements.name"  v-on:getfilter="getlist"></order></th>
-                <th class="cel_fix">Unidad de Medida</th>
-                <th class="cel_fix">Precio al publico</th>
+                <th v-if="filters_list.type.id === 1" class="cel_fix">Unidad de Medida</th>
+                <th v-if="filters_list.type.id === 1" class="cel_fix">Precio al publico</th>
                 <th class="cel_fix">Existencias</th>
             </tr>
             </thead>
@@ -58,14 +58,34 @@
             <tr class="mouse" v-for="entity in lists" :key="entity.id">
                 <td class="cel_fix">@{{entity.code}}</td>
                 <td class="cel_fix">@{{entity.name}}</td>
-                <td class="cel_fix">@{{entity.um}}</td>
-                <td class="cel_fix">@{{entity.price}}</td>
+                <td v-if="filters_list.type.id === 1" class="cel_fix">@{{entity.um}}</td>
+                <td v-if="filters_list.type.id === 1" class="cel_fix">@{{entity.price}}</td>
                 <td class="cel_fix">@{{entity.cant}}</td>
             </tr>
             </tbody>
         </table>
         <div class="panel-footer" style="padding: 2px 0 0 10px">
             <paginator :tpage="pager_list.totalpage" :pager="pager_list" v-on:getresult="getlist"></paginator>
+        </div>
+    </div>
+</div>
+
+<div id="pdf" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center modal-lg">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Visor</h3>
+                    </div>
+                    <div class="panel-body">
+                        <iframe  id="iframe" :src="scrpdf" frameborder="0" width="100%" height="450px" allowfullscreen></iframe>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

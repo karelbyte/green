@@ -19,12 +19,22 @@ new Vue({
                 phone1: '',
                 phone2: '',
             },
+            itemaux: {
+            id: 0,
+                name: '',
+                address: '',
+                email: '',
+                www: '',
+                rfc: '',
+                phone1: '',
+                phone2: '',
+        },
             act: 'post'
         }
     },
     mounted () {
       axios.get(urldomine + 'api/ajustes/company/data').then(r => {
-          this.item = r.data
+          this.item = r.data ? r.data : this.itemaux
       })
     },
     methods: {

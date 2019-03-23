@@ -105,6 +105,8 @@ Route::prefix('inventoris')->group(function () {
 
     Route::post('list', 'InventorisController@getList');
 
+    Route::get('pdf/{type}', 'InventorisController@pdf');
+
 });
 Route::resource('/inventoris', 'InventorisController');
 

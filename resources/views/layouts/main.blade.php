@@ -39,7 +39,7 @@
 <div id="wrapper">
     <div class="topbar">
         <div class="topbar-left">
-            <a href="index.html" class="logo"><span>Green<span> Center</span></span><i class="fa fa-envira"></i></a>
+            <a href="{{route('inicio')}}" class="logo"><span>Green<span> Center</span></span><i class="fa fa-envira"></i></a>
             <!-- Image logo -->
             <!--<a href="index.html" class="logo">-->
             <!--<span>-->
