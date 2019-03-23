@@ -1,5 +1,6 @@
 Vue.config.devtools = true;
 
+
 new Vue({
     el: '#app',
     data () {
@@ -12,6 +13,7 @@ new Vue({
                 email: '',
                 rol: '',
                 active_id: false,
+                position: ''
             },
             itemDefault: {
                 id: 0,
@@ -20,9 +22,11 @@ new Vue({
                 email: '',
                 rol: '',
                 active_id: false,
+                position: ''
             },
             repassword: '',
             roles: [],
+            rol: 0,
             value: '',
             act: 'post'
         }
@@ -32,7 +36,7 @@ new Vue({
     },
     mounted () {
         axios.get( urldomine + 'api/roles/get').then(r => {
-            this.roles = r.data
+            this.roles = r.data;
         })
     },
     methods: {
@@ -88,3 +92,5 @@ new Vue({
         }
     }
 });
+
+

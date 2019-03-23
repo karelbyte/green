@@ -88,6 +88,20 @@ new Vue({
 
             })
         },
+        add () {
+            this.item = {...this.itemDefault};
+
+            this.act = 'post';
+
+            this.title = this.labelnew;
+
+            this.grants = [];
+
+            this.all = false;
+
+            this.onview('new')
+
+        },
         edit (it) {
 
             this.item = {...it};

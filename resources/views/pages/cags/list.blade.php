@@ -9,13 +9,13 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="page-title-box">
-            <h4 class="page-title">Listado de Servicios .</h4>
+            <h4 class="page-title">Ciclo de atención global</h4>
             <ol class="breadcrumb p-0 m-0">
                 <li>
                     <a href="#">Gc</a>
                 </li>
                 <li>
-                    <a href="#">Productos</a>
+                    <a href="#">Ciclos</a>
                 </li>
             </ol>
             <div class="clearfix"></div>
@@ -30,35 +30,31 @@
             </div>
             <div class="panel-body">
                 <div class="row m-t-20">
-                    <div class="col-lg-6">
+                    <div class="col-lg-2">
+                        <span class="txtblack">Codigo <span class="require">*</span></span>
+                        <input v-focus class="form-control" type="text" v-model="item.code">
+                    </div>
+                    <div class="col-lg-8">
                         <span class="txtblack">Descripción <span class="require">*</span></span>
-                        <input v-focus class="form-control" type="text" v-model="item.name">
-                    </div>
-                    <div class="col-lg-1">
-                        <span class="txtblack">Desde <span class="require">*</span></span>
-                        <input v-numeric-only class="form-control" type="text" v-model.number="item.init">
-                    </div>
-                    <div class="col-lg-1">
-                        <span class="txtblack">Hasta <span class="require">*</span></span>
-                        <input v-numeric-only class="form-control" type="text" v-model.number="item.end">
-                    </div>
-                </div>
-                <div class="row m-t-20">
-                    <div class="col-lg-3 m-t-20">
-                        <span class="txtblack">Unidad de medida <span class="require">*</span></span>
-                        <multiselect style="z-index:9999"  v-model="value"
-                                     :options="measures"
-                                     label="name"
-                                     track-by="id"
-                                     placeholder=""
-                        ></multiselect> <!--:multiple="true" -->
+                        <input class="form-control" type="text" v-model="item.name">
                     </div>
 
-                   <div class="col-lg-2 m-t-20">
-                        <span class="txtblack">Precio <span class="require">*</span></span>
+                        <div class="col-lg-5 m-t-20">
+                            <span class="txtblack">Unidad de medida <span class="require">*</span></span>
+                            <multiselect style="z-index:999"  v-model="value"
+                                            :options="measures"
+                                            label="name"
+                                            track-by="id"
+                                            placeholder=""
+                            ></multiselect> <!--:multiple="true" -->
+                        </div>
+
+                    <div class="col-lg-8 m-t-20">
+                        <span class="txtblack">Precio al publico<span class="require">*</span></span>
                         <input v-numeric-only class="form-control" type="text" v-model.number="item.price">
                     </div>
                 </div>
+
             </div>
             <div class="panel-footer footer_fix">
                 <button v-if="pass()" class="btn btn-success waves-effect btn-sm" @click="save()">Guardar</button>
@@ -71,11 +67,10 @@
     <div class="row m-b-10">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
            <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nuevo</button>
-            <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-pdf-o"></i> IMPRIMIR</button>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-          <find :filters="filters_list" filter="value" v-on:getfilter="getlist" holder="buscar servicio"></find>
-           <!-- @component('com.find')@endcomponent -->
+          <!--  <find :filters="filters_list" filter="value" v-on:getfilter="getlist" holder="buscar material"></find> -->
+            @component('com.find')@endcomponent
         </div>
     </div>
     <div class="panel panel-border panel-inverse m-t-5">
@@ -84,17 +79,19 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th class="cel_fix"><order labels="Descripción" :options="orders_list" field="products.name"  v-on:getfilter="getlist"></order></th>
-                <th class="cel_fix">Termino</th>
-                <th class="cel_fix">Precio</th>
+                <th class="cel_fix"><order labels="Codigo" :options="orders_list" field="materials.code"  v-on:getfilter="getlist"></order></th>
+                <th class="cel_fix"><order labels="Descripción" :options="orders_list" field="materials.name"  v-on:getfilter="getlist"></order></th>
+                <th class="cel_fix">Unidad de Medida</th>
+                <th class="cel_fix">Precio al publico</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <tr class="mouse" v-for="entity in lists" :key="entity.id">
+                <td class="cel_fix">@{{entity.code}}</td>
                 <td class="cel_fix">@{{entity.name}}</td>
-                <td class="cel_fix">@{{entity.init}} a @{{ entity.end }} dias</td>
-                <th class="cel_fix">@{{entity.price}}</th>
+                <td class="cel_fix">@{{entity.measure.name}}</td>
+                <td class="cel_fix">@{{entity.price}}</td>
                 <td>
                  <button class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
                  <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
@@ -113,8 +110,7 @@
 @section('script')
     @parent
     <script src="{{asset('appjs/multiselect.min.js')}}"></script>
-    <script src="{{asset('appjs/components/find.js')}}"></script>
     <script src="{{asset('appjs/components/paginator.js')}}"></script>
     <script src="{{asset('appjs/components/order.js')}}"></script>
-    <script src="{{asset('appjs/services.js')}}"></script>
+    <script src="{{asset('appjs/materials.js')}}"></script>
 @endsection

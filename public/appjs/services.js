@@ -14,14 +14,16 @@ new Vue({
                 name: '',
                 init: 1,
                 end: '',
-                price: ''
+                price: '',
+                measure_id: 0
             },
             itemDefault: {
                 id: 0,
                 name: '',
                 init: 1,
                 end: '',
-                price: ''
+                price: '',
+                measure_id: 0
             },
             repassword: '',
             listfield: [{name: 'Codigo', type: 'text', field: 'services.name'},],
@@ -34,7 +36,12 @@ new Vue({
                 field: 'services.name',
                 type: 'asc'
             },
+            value: '',
+            measures: []
         }
+    },
+    components: {
+        Multiselect: window.VueMultiselect.default
     },
     mounted () {
 
@@ -80,6 +87,8 @@ new Vue({
                 this.spin = false;
 
                 this.lists = res.data.list;
+
+                this.measures = res.data.measures;
 
                 this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
 

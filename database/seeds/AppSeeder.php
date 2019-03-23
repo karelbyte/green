@@ -37,15 +37,11 @@ class AppSeeder extends Seeder
 
         for ($i=1; $i<=300; $i++) {
 
-            \App\Models\Client::create([
+            \App\Models\Measure::create([
 
-                'code' => rand(),
-
-                'contact' => $i % 2 == 0 ? 1 : 2,
 
                 'name' => str_shuffle('ABIBDODPWJFUSFAYUB.UBWDI'),
 
-                'email' => str_shuffle('ABIBDODPWJFU').'@d.'. str_shuffle('POIJHOUHGY') . '.com'
 
             ]);
         }

@@ -25,12 +25,15 @@ class Service extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'init', 'end', 'price', 'created_at', 'updated_at'];
+    protected $fillable = ['name', 'init', 'end', 'price', 'measure_id', 'created_at', 'updated_at'];
 
 
     protected $hidden = [
         'created_at', 'updated_at'
     ];
 
+    public function Measure () {
 
+        return $this->hasOne(Measure::class, 'id', 'measure_id');
+    }
 }

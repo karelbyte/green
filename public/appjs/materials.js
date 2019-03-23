@@ -36,8 +36,8 @@ new Vue({
                 field: 'elements.code',
                 type: 'asc'
             },
-            roles: [],
-            value: ''
+            value: '',
+            measures: []
         }
     },
     components: {
@@ -103,7 +103,7 @@ new Vue({
 
             this.spin = true;
 
-           this.item.measure_id = this.value.id;
+            this.item.measure_id = this.value.id;
 
             axios({
 

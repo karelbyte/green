@@ -164,7 +164,7 @@
 
                     <li class="dropdown user-box">
                         <a href="" class="dropdown-toggle waves-effect waves-light user-link" data-toggle="dropdown" aria-expanded="true">
-                            <img src="/images/users/avatar-1.jpg" alt="user-img" class="img-circle user-img">
+                            <img src="{{asset('images/users/profile.png')}}" alt="user-img" class="img-circle user-img">
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
@@ -203,6 +203,9 @@
                             <li><a href="index.html">Notificaciones</a></li>
                             <li><a href="index.html">Graficas</a></li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="{{route('cags')}}" class="waves-effect"><i class="mdi mdi-image-filter-tilt-shift "></i><span>CAG</span></a>
                     </li>
                     <li>
                         <a href="calendar.html" class="waves-effect"><i class="mdi mdi-calendar"></i><span>Calendario </span></a>
@@ -286,16 +289,12 @@
     <!-- VISOR DE PAGINAS -->
     <!-- ============================================================== -->
     <div class="content-page">
-        <!-- Start content -->
         <div class="content">
             <div class="container" id="app">
                 @yield('content')
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 <script>

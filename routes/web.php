@@ -55,6 +55,13 @@ Route::get('/limpiar_cache', function () {
 
 });
 
+Route::get('/pruebas', function () {
+
+     return view('pruebas');
+});
+
+
+
 Route::middleware('auth')->group(function () {
 
     Route::get('/', 'HomeController@index')->name('inicio');
@@ -97,6 +104,10 @@ Route::middleware('auth')->group(function () {
 
     // SERVICIOS
     Route::get('/servicios', 'ServicesController@index')->name('services');
+
+
+    // CICLO DE ATENCION GLOBAL
+    Route::get('/cags', 'CGlobalsController@index')->name('cags');
 
 
 });

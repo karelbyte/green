@@ -25,7 +25,7 @@
         </div>
     </div>
 </div>
-<div class="row" v-cloak>
+<div class="row" v-cloak >
     <div class="col-lg-10">
         <div class="panel panel-border panel-inverse">
             <div class="panel-heading" style="border-bottom: 2px solid rgba(123,137,139,0.16) !important;">
@@ -37,10 +37,10 @@
                        <span class="txtblack">Nombre <span class="require">*</span></span>
                        <input v-focus class="form-control" type="text" v-model="item.name">
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-4">
                         <span class="txtblack">Email <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.email" placeholder="El email sera tu usuario">
-                    </div>
+                    </div><div class="col-lg-12 m-t-20"></div>
                     <div class="col-lg-4 m-t-10">
                         <span class="txtblack">Password <span class="require">*</span></span>
                         <input class="form-control" type="password" v-model="item.password">
@@ -50,18 +50,26 @@
                         <span class="txtblack">Re Password <span class="require">*</span></span>
                         <input class="form-control" type="password" v-model="repassword">
                     </div>
-                    <div class="col-lg-12 m-t-20">
-                        <span class="txtblack">Asignar rol de acceso al sistema. <span class="require">*</span></span>
+                    <div class="col-lg-12 m-t-20"></div>
+                    <div class="col-lg-4 m-t-10">
+                        <span class="txtblack">Cargo <span class="require">*</span></span>
+                        <input class="form-control" type="text" v-model="item.position">
                     </div>
-                    <div class="col-lg-5 m-t-10">
-                        <multiselect    v-model="value"
+                   <div class="col-lg-4 m-t-10">
+                       <span class="txtblack">Asignar rol de acceso al sistema. <span class="require">*</span></span>
+                      <multiselect style="z-index: 999" v-model="value"
                                         :options="roles"
                                         label="name"
                                         track-by="name"
                                         placeholder=""
-                        ></multiselect> <!--:multiple="true" -->
-                    </div>
-                    <div class="col-lg-12 m-t-10">
+                        ></multiselect>
+                      <!-- <select class="form-control" v-model="value">
+                           <option  value="0"></option>
+                           <option v-for="rol in roles" :value="rol.id">@{{ rol.name }}</option>
+                       </select> -->
+
+                   </div>
+                    <div class="col-lg-12 m-t-20">
                         <div class="checkbox checkbox-primary">
                             <input  type="checkbox" v-model="item.active_id">
                             <label for="checkbox2" class="txtblack">

@@ -15,6 +15,7 @@ new Vue({
                 password: '',
                 email: '',
                 rol: '',
+                position: '',
                 active_id: false,
             },
             itemDefault: {
@@ -23,6 +24,7 @@ new Vue({
                 password: '',
                 email: '',
                 rol: '',
+                position: '',
                 active_id: false,
             },
             repassword: '',

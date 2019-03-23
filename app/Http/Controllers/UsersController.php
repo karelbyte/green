@@ -74,7 +74,9 @@ class UsersController extends Controller
 
             'password' => Hash::make($data['password']),
 
-            'active_id' => $data['active_id']
+            'active_id' => $data['active_id'],
+
+            'position' => $data['position']
         ]);
 
         $user->assignRole($data['rol']['name']);
@@ -94,6 +96,8 @@ class UsersController extends Controller
         $user->name = $data['name'];
 
         $user->email = $data['email'];
+
+        $user->position = $data['position'];
 
         if (isset($data['password'])) { $user->password = Hash::make($data['password']); }
 

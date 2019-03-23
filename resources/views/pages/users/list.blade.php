@@ -33,44 +33,52 @@
             </div>
             <div class="panel-body">
                 <div class="row m-t-20">
-                    <div class="col-lg-4">
-                       <span class="txtblack">Nombre <span class="require">*</span></span>
-                       <input class="form-control" type="text" v-model="item.name">
-                    </div>
-                    <div class="col-lg-5">
-                        <span class="txtblack">Email <span class="require">*</span></span>
-                        <input class="form-control" type="text" v-model="item.email" placeholder="El email sera tu usuario">
-                    </div>
-                    <div class="col-lg-4 m-t-10">
-                        <span class="txtblack">Password <span class="require">*</span></span>
-                        <input class="form-control" type="password" v-model="item.password">
 
-                    </div>
-                    <div class="col-lg-4 m-t-10">
-                        <span class="txtblack">Re Password <span class="require">*</span></span>
-                        <input class="form-control" type="password" v-model="repassword">
-                    </div>
-
-                        <div class="col-lg-12 m-t-20">
-                            <span class="txtblack">Asignar rol de acceso al sistema. <span class="require">*</span></span>
+                        <div class="col-lg-4">
+                            <span class="txtblack">Nombre <span class="require">*</span></span>
+                            <input v-focus class="form-control" type="text" v-model="item.name">
                         </div>
-                        <div class="col-lg-5 m-t-10">
-                            <multiselect style="z-index:999"   v-model="value"
+                        <div class="col-lg-4">
+                            <span class="txtblack">Email <span class="require">*</span></span>
+                            <input class="form-control" type="text" v-model="item.email" placeholder="El email sera tu usuario">
+                        </div><div class="col-lg-12 m-t-20"></div>
+                        <div class="col-lg-4 m-t-10">
+                            <span class="txtblack">Password <span class="require">*</span></span>
+                            <input class="form-control" type="password" v-model="item.password">
+
+                        </div>
+                        <div class="col-lg-4 m-t-10">
+                            <span class="txtblack">Re Password <span class="require">*</span></span>
+                            <input class="form-control" type="password" v-model="repassword">
+                        </div>
+                        <div class="col-lg-12 m-t-20"></div>
+                        <div class="col-lg-4 m-t-10">
+                            <span class="txtblack">Cargo <span class="require">*</span></span>
+                            <input class="form-control" type="text" v-model="item.position">
+                        </div>
+                        <div class="col-lg-4 m-t-10">
+                            <span class="txtblack">Asignar rol de acceso al sistema. <span class="require">*</span></span>
+                            <multiselect style="z-index: 999" v-model="value"
                                          :options="roles"
                                          label="name"
                                          track-by="name"
                                          placeholder=""
-                            ></multiselect> <!--:multiple="true" -->
+                            ></multiselect>
+                            <!-- <select class="form-control" v-model="value">
+                                 <option  value="0"></option>
+                                 <option v-for="rol in roles" :value="rol.id">@{{ rol.name }}</option>
+                             </select> -->
+
+                        </div>
+                        <div class="col-lg-12 m-t-20">
+                            <div class="checkbox checkbox-primary">
+                                <input  type="checkbox" v-model="item.active_id">
+                                <label for="checkbox2" class="txtblack">
+                                    Activo
+                                </label>
+                            </div>
                         </div>
 
-                    <div class="col-lg-12 m-t-10">
-                        <div class="checkbox checkbox-primary">
-                            <input  type="checkbox" v-model="item.active_id">
-                            <label for="checkbox2" class="txtblack">
-                                Activo
-                            </label>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="panel-footer footer_fix">
@@ -96,6 +104,8 @@
             <thead>
             <tr>
                 <th class="cel_fix">Usuarios</th>
+                <th class="cel_fix">Rol</th>
+                <th class="cel_fix">Puesto</th>
                 <th class="cel_fix">Estado</th>
                 <th></th>
             </tr>
@@ -103,6 +113,8 @@
             <tbody>
             <tr class="mouse" v-for="entity in lists" :key="entity.id">
                 <td class="cel_fix">@{{entity.name}}</td>
+                <td class="cel_fix">@{{entity.roles[0].name}}</td>
+                <td class="cel_fix">@{{entity.position}}</td>
                 <td class="cel_fix">@{{entity.status.name}}</td>
                 <td>
                  <button class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>

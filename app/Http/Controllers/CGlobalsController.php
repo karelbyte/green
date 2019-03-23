@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Measure;
-use App\Models\Service;
+use App\Models\CGlobal;
 use Illuminate\Http\Request;
 
-class ServicesController extends Controller
+class CGlobalsController extends Controller
 {
     public function index()
     {
-        return view('pages.services.list');
+        return view('pages.cags.list');
     }
 
 
-    public function getProduct() {
+    public function getCglobals() {
 
-        return Service::select('id', 'name', 'init', 'end', 'price')->get();
+        return CGlobal::all();
 
     }
 
@@ -28,13 +27,13 @@ class ServicesController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = Service::select('*');
+        $datos = CGlobal::with('measure')->Material();
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
 
-        $total = $datos->count();
+        $total = $datos->select('*')->count();
 
         $list =  $datos->skip($skip)->take($request['take'])->get();
 
@@ -55,43 +54,39 @@ class ServicesController extends Controller
 
     public function store(Request $request) {
 
-        $mat = Service::where('name', $request->name)->first();
+        $mat = Element::where('code', $request->code)->material()->first();
 
-        if (!empty($mat)) { return response()->json('Ya existe un servicio con ese nombre', 500);}
+        if (!empty($mat)) { return response()->json('Ya existe un material con ese código', 500);}
 
-        Service::create($request->all());
+        Element::create($request->all());
 
         return response()->json('Datos creado con exito!', 200);
     }
 
     public function update(Request $request, $id) {
 
-        $mat = Service::where('name', $request->name)->where('id', '<>', $id)->first();
+        $mat = Element::where('code', $request->code)->where('id', '<>', $id)->first();
 
-        if (!empty($mat)) { return response()->json('Ya existe un servicio con ese nombre', 500);}
+        if (!empty($mat)) { return response()->json('Ya existe un material con ese codigo', 500);}
 
-        Service::where('id', $id)->update($request->all());
+        Element::where('id', $id)->update($request->except(['id', 'measure']));
 
         return response()->json('Datos actualizados con exito!', 200);
     }
 
     public function destroy($id)  {
 
-        Service::destroy($id);
+        $element = Element::find($id);
 
-        return response()->json('Servicio eliminado con exito!', 200);
-
-        /*$pro = Product::find($id);
-
-        if ($pro->used()) {
+        if ($element->used()) {
 
             return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
 
         } else {
 
-            Product::destroy($id);
+            Element::destroy($id);
 
-            return response()->json('Producto eliminado con exito!', 200);
-        } */
+            return response()->json('Material eliminado con exito!', 200);
+        }
     }
 }
