@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\User;
+use App\Models\UserPosition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -20,6 +21,11 @@ class UsersController extends Controller
         return view('pages.users.new');
     }
 
+    public function getUserPositions()
+    {
+        return UserPosition::all();
+    }
+
     // OBTINE LA LISTA DE USUARIOS Y LOS ENVIA AL FRONT PAGINADO
     public function getList(Request $request) {
 
@@ -29,7 +35,7 @@ class UsersController extends Controller
 
         $orders =$request->input('orders');
 
-        $datos = User::with(['status', 'roles' => function ($q) {
+        $datos = User::with(['position', 'status', 'roles' => function ($q) {
 
             $q->select('id', 'name');
 
@@ -51,7 +57,9 @@ class UsersController extends Controller
 
             'list' =>  $list,
 
-            'roles' => $roles
+            'roles' => $roles,
+
+            'positions' => UserPosition::all()
         ];
 
         return response()->json($result, 200);
@@ -76,7 +84,7 @@ class UsersController extends Controller
 
             'active_id' => $data['active_id'],
 
-            'position' => $data['position']
+            'position_id' => $data['position_id']
         ]);
 
         $user->assignRole($data['rol']['name']);
@@ -97,7 +105,7 @@ class UsersController extends Controller
 
         $user->email = $data['email'];
 
-        $user->position = $data['position'];
+        $user->position_id = $data['position_id'];
 
         if (isset($data['password'])) { $user->password = Hash::make($data['password']); }
 

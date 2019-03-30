@@ -2,11 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Calendar;
 use App\Models\CGlobal;
+use App\Models\CGlobalInfo;
+use App\Models\Client;
+use App\Models\LandScaper;
+use App\Models\TypeContact;
+use App\Models\TypeInfo;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Traits\GenerateID;
+
 
 class CGlobalsController extends Controller
 {
+    use GenerateID;
+
     public function index()
     {
         return view('pages.cags.list');
@@ -19,6 +30,11 @@ class CGlobalsController extends Controller
 
     }
 
+    public function sendID () {
+
+        return $this->getID('cglobals');
+    }
+
     public function getList(Request $request) {
 
         $skip = $request->input('start') * $request->input('take');
@@ -27,7 +43,9 @@ class CGlobalsController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = CGlobal::with('measure')->Material();
+        $datos = CGlobal::with(['documents', 'landscaper', 'compromise','contact','attended', 'client', 'status', 'info' => function($q) {
+            $q->with('info', 'info_det');
+        }]);
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
@@ -43,7 +61,13 @@ class CGlobalsController extends Controller
 
             'list' =>  $list,
 
-            'measures' => Measure::all()
+            'clients' => Client::select('id', 'name')->get(),
+
+            'type_contacts' => TypeContact::select('id', 'name')->get(),
+
+            'type_infos' => TypeInfo::with('detail')->get(),
+
+            'landscapers' => User::where('position_id', 3)->select('uid', 'name')->get()
 
         ];
 
@@ -54,39 +78,121 @@ class CGlobalsController extends Controller
 
     public function store(Request $request) {
 
-        $mat = Element::where('code', $request->code)->material()->first();
+       $data = $request->all();
 
-        if (!empty($mat)) { return response()->json('Ya existe un material con ese código', 500);}
 
-        Element::create($request->all());
+       $cg = CGlobal::create([
 
-        return response()->json('Datos creado con exito!', 200);
+           'moment' => $data['moment'],
+
+           'client_id' => $data['client']['id'],
+
+           'user_id' => $data['user_id'],
+
+           'type_contact_id' => $data['type_contact_id'],
+
+           'repeater' => $data['repeater'],
+
+           'type_compromise_id' => $data['type_compromise_id'],
+
+           'note' => $data['note'],
+
+           'status_id' => 1
+       ]);
+
+       $this->setID('cglobals', $cg->id );
+
+       foreach ($data['info'] as $inf) {
+
+           CGlobalInfo::create([
+
+               'cglobal_id' => $cg->id,
+
+               'type_info_id' => $inf['info']['id'],
+
+               'type_info_detail_id' => $inf['info_det']['id'],
+
+               'type_descrip' => $inf['info_descrip']
+           ]);
+       }
+
+       if ($data['type_compromise_id'] == 3) {
+
+           $cg->LandScaper()->create($data['landscaper']);
+
+           Calendar::create([
+
+               'cglobal_id' => $cg->id,
+
+               'moment' => $data['landscaper']['moment'],
+
+               'timer' => $data['landscaper']['timer'],
+
+               'title' => 'Visita a cliente'
+           ]);
+
+           return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!', 200);
+        }
+
+        if ($data['type_compromise_id'] == 4) {
+
+            $cg->Documents()->create($data['documents']);
+
+            Calendar::create([
+
+                'cglobal_id' => $cg->id,
+
+                'moment' => $data['documents']['moment'],
+
+                'timer' => '10:00',
+
+                'title' => 'Envio de información'
+            ]);
+
+            return response()->json('Se generó un evento de envio de informacion a cliente!', 200);
+        }
+
+        if ($data['type_compromise_id'] == 1) {
+
+            return response()->json('Se envia el flujo a notas de venta', 200);
+        }
+
+        if ($data['type_compromise_id'] == 2) {
+
+            return response()->json('Se envia el flujo a cotización', 200);
+        }
+
+
     }
 
     public function update(Request $request, $id) {
 
-        $mat = Element::where('code', $request->code)->where('id', '<>', $id)->first();
 
-        if (!empty($mat)) { return response()->json('Ya existe un material con ese codigo', 500);}
-
-        Element::where('id', $id)->update($request->except(['id', 'measure']));
-
-        return response()->json('Datos actualizados con exito!', 200);
     }
 
     public function destroy($id)  {
 
-        $element = Element::find($id);
+        CGlobal::destroy($id);
 
-        if ($element->used()) {
+        CGlobalInfo::where('cglobal_id', $id)->delete();
+
+        LandScaper::where('cglobal_id', $id)->delete();
+
+        Calendar::where('cglobal_id', $id)->delete();
+
+        return response()->json('Datos eliminados con exito!', 200);
+
+        /*$pro = Product::find($id);
+
+        if ($pro->used()) {
 
             return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
 
         } else {
 
-            Element::destroy($id);
+            Product::destroy($id);
 
-            return response()->json('Material eliminado con exito!', 200);
-        }
+            return response()->json('Producto eliminado con exito!', 200);
+        } */
     }
 }

@@ -23,7 +23,7 @@
     </div>
 </div>
 <div v-if="views.new" class="row" v-cloak>
-    <div class="col-lg-12">
+    <div class="col-lg-12" style="height: 80vh">
         <div class="panel panel-border panel-inverse">
             <div class="panel-heading">
                 <h3 class="panel-title">@{{title}}</h3>
@@ -46,7 +46,7 @@
                 <div class="row m-t-20">
                     <div class="col-lg-3 m-t-20">
                         <span class="txtblack">Unidad de medida <span class="require">*</span></span>
-                        <multiselect style="z-index:9999"  v-model="value"
+                        <multiselect style="z-index:9999"  v-model="item.measure"
                                      :options="measures"
                                      label="name"
                                      track-by="id"
@@ -87,6 +87,7 @@
                 <th class="cel_fix"><order labels="Descripción" :options="orders_list" field="products.name"  v-on:getfilter="getlist"></order></th>
                 <th class="cel_fix">Termino</th>
                 <th class="cel_fix">Precio</th>
+                <th class="cel_fix">Unidad de Medida</th>
                 <th></th>
             </tr>
             </thead>
@@ -94,6 +95,7 @@
             <tr class="mouse" v-for="entity in lists" :key="entity.id">
                 <td class="cel_fix">@{{entity.name}}</td>
                 <td class="cel_fix">@{{entity.init}} a @{{ entity.end }} dias</td>
+                <td class="cel_fix">@{{entity.measure.name}}</td>
                 <th class="cel_fix">@{{entity.price}}</th>
                 <td>
                  <button class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>

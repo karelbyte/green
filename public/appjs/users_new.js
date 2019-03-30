@@ -13,7 +13,7 @@ new Vue({
                 email: '',
                 rol: '',
                 active_id: false,
-                position: ''
+                position_id: ''
             },
             itemDefault: {
                 id: 0,
@@ -22,12 +22,13 @@ new Vue({
                 email: '',
                 rol: '',
                 active_id: false,
-                position: ''
+                position_id: ''
             },
             repassword: '',
             roles: [],
             rol: 0,
             value: '',
+            positions: [],
             act: 'post'
         }
     },
@@ -37,6 +38,9 @@ new Vue({
     mounted () {
         axios.get( urldomine + 'api/roles/get').then(r => {
             this.roles = r.data;
+        });
+        axios.get( urldomine + 'api/users/positions').then(r => {
+            this.positions = r.data;
         })
     },
     methods: {
@@ -82,13 +86,15 @@ new Vue({
 
             let name = this.item.name !== '';
 
+            let position = this.item.position_id !== '';
+
             let password = (this.item.password === this.repassword) && (this.item.password !== '');
 
             let email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.item.email);
 
             let rols = this.value !== '';
 
-            return name && password && email && rols
+            return name && password && email && rols && position
         }
     }
 });

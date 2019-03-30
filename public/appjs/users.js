@@ -15,7 +15,7 @@ new Vue({
                 password: '',
                 email: '',
                 rol: '',
-                position: '',
+                position_id: '',
                 active_id: false,
             },
             itemDefault: {
@@ -24,7 +24,7 @@ new Vue({
                 password: '',
                 email: '',
                 rol: '',
-                position: '',
+                position_id: '',
                 active_id: false,
             },
             repassword: '',
@@ -39,6 +39,7 @@ new Vue({
                 type: 'asc'
             },
             roles: [],
+            positions: '',
             value: ''
         }
     },
@@ -92,7 +93,9 @@ new Vue({
 
                 this.roles = res.data.roles;
 
-                this.pager_list.totalpage = Math.ceil(res.data.total / this.pager.recordpage)
+                this.positions = res.data.positions;
+
+                this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
 
             }).catch(e => {
 
@@ -157,13 +160,15 @@ new Vue({
 
             let name = this.item.name !== '';
 
+            let position = this.item.position_id !== '';
+
             let password = this.act === 'put' ? true : (this.item.password === this.repassword) && (this.item.password !== '');
 
             let email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.item.email);
 
             let rols = this.value !== '';
 
-            return name && password && email && rols
+            return name && password && email && rols && position
         }
     }
 });

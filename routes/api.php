@@ -19,6 +19,30 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
+// RUTAS DEL CICLO DE ATENCION GLOBAL
+Route::prefix('cags')->group(function () {
+
+    Route::post('list', 'CGlobalsController@getList');
+
+    Route::get('/get/id', 'CGlobalsController@sendID');
+
+});
+Route::resource('/cags', 'CGlobalsController');
+
+
+// RUTAS DEL CALENDARIO
+Route::prefix('calendars')->group(function () {
+
+    Route::post('list', 'CalendarsController@getList');
+
+    Route::get('/get/id', 'CalendarsController@sendID');
+
+});
+Route::resource('/calendars', 'CalendarsController');
+
+
+
+
 // RUTAS DE AJUSTE DE DATOS DE LA EMPRESA
 Route::get('/ajustes/company/data', 'CompanyController@getdata');
 Route::resource('/ajustes/company', 'CompanyController');
@@ -58,6 +82,8 @@ Route::resource('/roles', 'RolsController');
 Route::prefix('users')->group(function () {
 
     Route::post('list', 'UsersController@getList');
+
+    Route::get('positions', 'UsersController@getUserPositions');
 });
 Route::resource('/users', 'UsersController');
 

@@ -28,7 +28,7 @@ class ServicesController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = Service::select('*');
+        $datos = Service::with('measure')-> select('*');
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
@@ -59,7 +59,7 @@ class ServicesController extends Controller
 
         if (!empty($mat)) { return response()->json('Ya existe un servicio con ese nombre', 500);}
 
-        Service::create($request->all());
+        Service::create($request->except('measure'));
 
         return response()->json('Datos creado con exito!', 200);
     }
@@ -70,7 +70,7 @@ class ServicesController extends Controller
 
         if (!empty($mat)) { return response()->json('Ya existe un servicio con ese nombre', 500);}
 
-        Service::where('id', $id)->update($request->all());
+        Service::where('id', $id)->update($request->except('measure'));
 
         return response()->json('Datos actualizados con exito!', 200);
     }

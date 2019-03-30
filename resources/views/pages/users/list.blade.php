@@ -54,7 +54,9 @@
                         <div class="col-lg-12 m-t-20"></div>
                         <div class="col-lg-4 m-t-10">
                             <span class="txtblack">Cargo <span class="require">*</span></span>
-                            <input class="form-control" type="text" v-model="item.position">
+                            <select class="form-control" v-model="item.position_id">
+                                <option v-for="position in positions" :value="position.id">@{{ position.name }}</option>
+                            </select>
                         </div>
                         <div class="col-lg-4 m-t-10">
                             <span class="txtblack">Asignar rol de acceso al sistema. <span class="require">*</span></span>
@@ -114,7 +116,7 @@
             <tr class="mouse" v-for="entity in lists" :key="entity.id">
                 <td class="cel_fix">@{{entity.name}}</td>
                 <td class="cel_fix">@{{entity.roles[0].name}}</td>
-                <td class="cel_fix">@{{entity.position}}</td>
+                <td class="cel_fix">@{{entity.position.name}}</td>
                 <td class="cel_fix">@{{entity.status.name}}</td>
                 <td>
                  <button class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>

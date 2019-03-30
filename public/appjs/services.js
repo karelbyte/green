@@ -15,7 +15,7 @@ new Vue({
                 init: 1,
                 end: '',
                 price: '',
-                measure_id: 0
+                measure: ''
             },
             itemDefault: {
                 id: 0,
@@ -23,7 +23,7 @@ new Vue({
                 init: 1,
                 end: '',
                 price: '',
-                measure_id: 0
+                measure: ''
             },
             repassword: '',
             listfield: [{name: 'Codigo', type: 'text', field: 'services.name'},],
@@ -36,7 +36,6 @@ new Vue({
                 field: 'services.name',
                 type: 'asc'
             },
-            value: '',
             measures: []
         }
     },
@@ -101,6 +100,8 @@ new Vue({
         },
         save () {
 
+            this.item.measure_id = this.item.measure.id;
+
             this.spin = true;
 
             axios({
@@ -127,6 +128,18 @@ new Vue({
 
                 toastr["error"](e.response.data);
             })
+
+        },
+        add () {
+            this.item = {...this.itemDefault};
+
+            this.act = 'post';
+
+            this.title = this.labelnew;
+
+            this.onview('new');
+
+            this.value = this.item.measure;
 
         },
         pass () {

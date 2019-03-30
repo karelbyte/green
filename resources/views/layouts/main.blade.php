@@ -24,31 +24,10 @@
 
 <body class="fixed-left">
 <input type="text" id="user_id_auth" value="{{auth()->user()->id}}" hidden="">
-<div id="preloader">
-    <div id="status">
-        <div class="spinner">
-            <div class="spinner-wrapper">
-                <div class="rotator">
-                    <div class="inner-spin"></div>
-                    <div class="inner-spin"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <div id="wrapper">
     <div class="topbar">
         <div class="topbar-left">
             <a href="{{route('inicio')}}" class="logo"><span>Green<span> Center</span></span><i class="fa fa-envira"></i></a>
-            <!-- Image logo -->
-            <!--<a href="index.html" class="logo">-->
-            <!--<span>-->
-            <!--<img src="/images/logo.png" alt="" height="30">-->
-            <!--</span>-->
-            <!--<i>-->
-            <!--<img src="/images/logo_sm.png" alt="" height="28">-->
-            <!--</i>-->
-            <!--</a>-->
         </div>
         <div class="navbar navbar-default" role="navigation">
             <div class="container">
@@ -208,7 +187,7 @@
                         <a href="{{route('cags')}}" class="waves-effect"><i class="mdi mdi-image-filter-tilt-shift "></i><span>CAG</span></a>
                     </li>
                     <li>
-                        <a href="calendar.html" class="waves-effect"><i class="mdi mdi-calendar"></i><span>Calendario </span></a>
+                        <a href="{{route('calendars')}}" class="waves-effect"><i class="mdi mdi-calendar"></i><span>Calendario </span></a>
                     </li>
 
                     <li class="has_sub">
@@ -320,6 +299,7 @@
 <script src="{{asset('/js/jquery.app.js')}}"></script>
 
 <!-- SISTEMA -->
+<script src="{{asset('/plugins/moment/moment.js')}}"></script>
 <script src="{{asset('/appjs/axios.min.js')}}"></script>
 <script src="{{asset('/appjs/vue.min.js')}}"></script>
 <script src="{{asset('/plugins/toastr/toastr.min.js')}}"></script>

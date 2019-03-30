@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'active_id', 'position'
+        'name', 'email', 'password', 'active_id', 'position_id'
     ];
 
     /**
@@ -51,5 +51,10 @@ class User extends Authenticatable
     public function status () {
 
         return $this->hasOne('App\Models\UserStatus', 'id', 'active_id');
+    }
+
+    public function position () {
+
+        return $this->hasOne('App\Models\UserPosition', 'id', 'position_id');
     }
 }

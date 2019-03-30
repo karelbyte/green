@@ -107,7 +107,11 @@ Route::middleware('auth')->group(function () {
 
 
     // CICLO DE ATENCION GLOBAL
-    Route::get('/cags', 'CGlobalsController@index')->name('cags');
+    Route::get('/atencion', 'CGlobalsController@index')->name('cags');
+
+
+    // CALENDARIO
+    Route::get('/calendario', 'CalendarsController@index')->name('calendars');
 
 
 });

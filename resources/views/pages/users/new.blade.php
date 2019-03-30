@@ -53,7 +53,9 @@
                     <div class="col-lg-12 m-t-20"></div>
                     <div class="col-lg-4 m-t-10">
                         <span class="txtblack">Cargo <span class="require">*</span></span>
-                        <input class="form-control" type="text" v-model="item.position">
+                        <select class="form-control" v-model="item.position_id">
+                            <option v-for="position in positions" :value="position.id">@{{ position.name }}</option>
+                        </select>
                     </div>
                    <div class="col-lg-4 m-t-10">
                        <span class="txtblack">Asignar rol de acceso al sistema. <span class="require">*</span></span>
