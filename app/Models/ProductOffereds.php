@@ -9,31 +9,31 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property integer $init
  * @property integer $end
- * @property float $price
  * @property string $created_at
  * @property string $updated_at
  */
-class Service extends Model
+class ProductOffereds extends Model
 {
     /**
      * The "type" of the auto-incrementing ID.
      * 
      * @var string
      */
+    protected $table = 'products_offereds';
+
     protected $keyType = 'integer';
 
     /**
      * @var array
      */
-    protected $fillable = ['name', 'init', 'end', 'price', 'measure_id', 'created_at', 'updated_at'];
+    protected $fillable = ['name'];
 
 
-    protected $hidden = [
-        'created_at', 'updated_at'
-    ];
+    public $timestamps = false;
 
-    public function Measure () {
+    public function details() {
 
-        return $this->hasOne(Measure::class, 'id', 'measure_id');
+        return $this->hasMany(ProductOfferedsDetails::class, 'products_offereds_id', 'id');
     }
+
 }

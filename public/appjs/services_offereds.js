@@ -12,12 +12,22 @@ new Vue({
             item: {
                 id: 0,
                 name: '',
+                details: []
+            },
+            itemDefault: {
+                id: 0,
+                name: '',
+                details: []
+            },
+            det: {
+                id: 0,
+                name: '',
                 init: 1,
                 end: '',
                 price: '',
                 measure: ''
             },
-            itemDefault: {
+            detDedault: {
                 id: 0,
                 name: '',
                 init: 1,
@@ -26,14 +36,14 @@ new Vue({
                 measure: ''
             },
             repassword: '',
-            listfield: [{name: 'Codigo', type: 'text', field: 'services.name'},],
+            listfield: [{name: 'Codigo', type: 'text', field: 'services_offereds.name'},],
             filters_list: {
                 descrip: 'Descripción',
-                field: 'services.name',
+                field: 'services_offereds.name',
                 value: ''
             },
             orders_list: {
-                field: 'services.name',
+                field: 'services_offereds.name',
                 type: 'asc'
             },
             measures: []
@@ -50,7 +60,7 @@ new Vue({
 
         this.labelnew = 'Añadir servicio';
 
-        this.patchDelete = 'api/services/';
+        this.patchDelete = 'api/servicesoffereds/';
 
         this.keyObjDelete = 'id'
 
@@ -68,7 +78,7 @@ new Vue({
             axios({
                 method: 'post',
 
-                url: urldomine + 'api/services/list',
+                url: urldomine + 'api/servicesoffereds/list',
 
                 data: {
 
@@ -100,15 +110,13 @@ new Vue({
         },
         save () {
 
-            this.item.measure_id = this.item.measure.id;
-
             this.spin = true;
 
             axios({
 
                 method: this.act,
 
-                url: urldomine + 'api/services' + (this.act === 'post' ? '' : '/' + this.item.id),
+                url: urldomine + 'api/servicesoffereds' + (this.act === 'post' ? '' : '/' + this.item.id),
 
                 data: this.item
 
@@ -144,15 +152,40 @@ new Vue({
         },
         pass () {
 
-            let name = this.item.code !== '';
+            let name = this.item.name !== '';
 
-            let init = this.item.init !== '' && this.item.init > 0;
+            let init = this.item.details.length > 0;
 
-            let end = this.item.end !== '' && this.item.end > 0;
+            return name && init
+        },
+        delDetail (id) {
 
-            let price = this.item.price !== '' && this.item.price > 0;
+            this.item.details = this.item.details.filter(it => it.id !== id);
+        },
+        addNew() {
 
-            return name && init && end && price
+            this.det.id = generateId(9);
+
+            this.item.details.push({...this.det});
+
+            $('#add_det').modal('hide');
+
+        },
+        showAddDet() {
+
+            this.det = {...this.detDedault};
+
+            $('#add_det').modal('show');
+        },
+        passNew () {
+
+            let name = this.det.name !== '';
+
+            let init = this.det.init !== '' && this.det.init > 0;
+
+            let end = this.det.end !== '' && this.det.end > 0;
+
+            return name && init && end
         }
     }
 });

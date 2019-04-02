@@ -36,4 +36,10 @@ class LandScaper extends Model
      */
     protected $fillable = ['cglobal_id', 'moment', 'timer', 'note', 'user_uid', 'status_id'];
 
+
+    public function user () {
+
+        return $this->hasOne(User::class, 'uid', 'user_uid');
+    }
+
 }

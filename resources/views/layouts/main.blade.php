@@ -193,8 +193,8 @@
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-coin"></i> <span>Cotizaciones</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
-                            <li><a href="ui-buttons.html">Lista</a></li>
-                            <li><a href="ui-typography.html">Nueva</a></li>
+                            <li><a href="{{route('quotes')}}">Lista</a></li>
+                          <!--  <li><a href="ui-typography.html">Nueva</a></li> -->
                         </ul>
                     </li>
                     <li class="has_sub">
@@ -221,8 +221,8 @@
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-briefcase"></i><span>Catalogos</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
-                            <li><a href="{{route('products')}}">Productos</a></li>
-                            <li><a href="{{route('services')}}">Servicios</a></li>
+                            <li><a href="{{route('productsoffereds')}}">Productos</a></li>
+                            <li><a href="{{route('servicesoffereds')}}">Servicios</a></li>
                         </ul>
                     </li>
                     <li class="has_sub">

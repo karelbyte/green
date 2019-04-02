@@ -1,3 +1,9 @@
+truncate table cglobals;
+
+truncate table cglobal_info_clients;
+
+truncate table cglobal_infos;
+
 truncate table elements;
 
 truncate table clients;

@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\ProductOffereds;
 use Illuminate\Http\Request;
 
-class ProductsController extends Controller
+class ProductsOfferedsController extends Controller
 {
     public function index()
     {
-        return view('pages.products.list');
+        return view('pages.productsoffereds.list');
     }
 
 
     public function getProduct() {
 
-        return Product::select('id', 'name', 'init', 'end')->get();
+        return ProductOffereds::select('id', 'name')->get();
 
     }
 
@@ -27,13 +27,13 @@ class ProductsController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = Product::select('*');
+        $datos = ProductOffereds::with('details');
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
 
-        $total = $datos->count();
+        $total = $datos->select('*')->count();
 
         $list =  $datos->skip($skip)->take($request['take'])->get();
 
@@ -52,29 +52,41 @@ class ProductsController extends Controller
 
     public function store(Request $request) {
 
-        $mat = Product::where('name', $request->name)->first();
+        $mat = ProductOffereds::where('name', $request->name)->first();
 
         if (!empty($mat)) { return response()->json('Ya existe un producto con ese nombre', 500);}
 
-        Product::create($request->all());
+        $product = ProductOffereds::create($request->except('details'));
+
+        $product->details()->createMany($request->details);
 
         return response()->json('Datos creado con exito!', 200);
     }
 
     public function update(Request $request, $id) {
 
-        $mat = Product::where('name', $request->name)->where('id', '<>', $id)->first();
+        $mat = ProductOffereds::where('name', $request->name)->where('id', '<>', $id)->first();
 
         if (!empty($mat)) { return response()->json('Ya existe un producto con ese nombre', 500);}
 
-        Product::where('id', $id)->update($request->all());
+        $product = ProductOffereds::find($id);
+
+        $product->update($request->except('details'));
+
+        $product->details()->delete();
+
+        $product->details()->createMany($request->details);
 
         return response()->json('Datos actualizados con exito!', 200);
     }
 
     public function destroy($id)  {
 
-        Product::destroy($id);
+        $product = ProductOffereds::find($id);
+
+        $product->details()->delete();
+
+        ProductOffereds::destroy($id);
 
         return response()->json('Producto eliminado con exito!', 200);
 

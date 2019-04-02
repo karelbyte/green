@@ -15,7 +15,8 @@ new Vue({
                 user_id: $('#user_id_auth').val(),
                 type_contact_id: 0,
                 repeater: 0,
-               /* type_motive: 0,*/
+                type_motive: 0,
+                type_motive_id: 0,
                 landscaper: {
                     moment: '',
                     timer: '',
@@ -38,7 +39,8 @@ new Vue({
                 user_id: $('#user_id_auth').val(),
                 type_contact_id: '',
                 repeater: 0,
-              /*  type_motive: '',*/
+                type_motive: '',
+                type_motive_id: 0,
                 landscaper: {
                     moment: '',
                     timer: '',
@@ -91,11 +93,22 @@ new Vue({
             info: '',
             info_det: '',
             info_descrip: '',
-            landscapers: ''
+            landscapers: '',
+            servicesOffereds: [],
+            productsOffereds: [],
+            ArrayTypeMotives: []
         }
     },
     components: {
         Multiselect: window.VueMultiselect.default
+    },
+    watch: {
+
+        'item.type_motive' : function () {
+
+          this.ArrayTypeMotives = this.item.type_motive === 2 ? this.servicesOffereds : this.productsOffereds
+
+        }
     },
     mounted () {
 
@@ -111,6 +124,9 @@ new Vue({
 
     },
     methods: {
+        getMotive(item) {
+            return item.type_motive === 1 ? item.motive_services.name : item.motive_products.name
+        },
         showSendInfo () {
             $('#sendinfo').modal('show')
         },
@@ -183,6 +199,10 @@ new Vue({
                 this.type_infos = res.data.type_infos;
 
                 this.landscapers = res.data.landscapers;
+
+                this.productsOffereds = res.data.productsOffereds;
+
+                this.servicesOffereds = res.data.servicesOffereds;
 
                 this.pager_list.totalpage = Math.ceil(res.data.total / 9)
 
@@ -259,6 +279,8 @@ new Vue({
                 user_uid: ''
             };
 
+            it.documents = it.documents === null ? {} : it.documents;
+
             return it
         },
         edit (it) {
@@ -307,15 +329,23 @@ new Vue({
 
             let info = this.item.info.length > 0;
 
+            let type_motive = this.item.type_motive_id > 0;
+
             let compromise  = this.item.type_compromise_id > 0;
 
-            return moment && client && type && info && compromise
+            return moment && client && type && info && compromise && type_motive
         },
         showNewClient() {
 
             this.client = {...this.clientDefault};
 
-            $('#client_new').modal('show')
+            axios.get(urldomine + 'api/clients/get/id').then(r => {
+
+                this.client.code = r.data;
+
+                $('#client_new').modal('show')
+            });
+
         },
         passInfoSend () {
 

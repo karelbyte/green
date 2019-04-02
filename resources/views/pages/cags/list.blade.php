@@ -74,6 +74,27 @@
                 </div>
                 <hr>
                 <div class="row">
+                    <div class="col-lg-4 m-t-20">
+                        <span class="txtblack">Tipo de motivo <span class="require">*</span></span>
+                        <select v-model.number="item.type_motive" class="form-control">
+                            <option value="1">Producto</option>
+                            <option value="2">Servicio</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 m-t-20">
+                        <span class="txtblack">Motivo <span class="require">*</span></span>
+                        <select v-model.number="item.type_motive_id" class="form-control">
+                            <option v-for="typemotive in ArrayTypeMotives" :value="typemotive.id">@{{ typemotive.name }}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 m-t-20">
+                        <span class="txtblack">Tiempo estimado (Dias)<span class="require">*</span></span>
+                        <input class="form-control" type="text" v-model="item.required_time">
+                    </div>
+
+                </div>
+                <hr>
+                <div class="row">
                     <div class="col-lg-3">
                         <button class="btn btn-default" @click="showInfo()" >Información <i class="fa fa-plus"></i></button>
                     </div>
@@ -101,7 +122,6 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
                 <hr v-if="item.info.length <= 0" >
                 <div class="row">
@@ -189,6 +209,16 @@
                     </div>
                     <div class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">
+                            Motivo: <span class="txtblack">@{{getMotive(entity)}}</span>
+                        </div>
+                    </div>
+                    <div class="row m-t-10">
+                        <div class="col-lg-12 col-xs-12">
+                           Tiempo estimado (dias): <span class="txtblack">@{{entity.required_time}}</span>
+                        </div>
+                    </div>
+                    <div class="row m-t-10">
+                        <div class="col-lg-12 col-xs-12">
                             Contacto por: <span class="txtblack">@{{entity.contact.name}}</span>
                         </div>
                     </div>
@@ -219,7 +249,6 @@
                             <span class="txtblack">@{{entity.status.name  }}</span>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -230,7 +259,7 @@
     </div>
 </div>
 
-<!-- MODLA DE VISTA A DOMICILIO -->
+<!-- MODAL DE VISTA A DOMICILIO -->
 <div id="visita" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="vertical-alignment-helper">
         <div class="modal-dialog vertical-align-center">
@@ -371,11 +400,11 @@
                     <div class="panel-body">
                         <div class="col-lg-6">
                             <span class="txtblack">Codigo <span class="require">*</span></span>
-                            <input v-focus class="form-control" type="text" v-model="client.code">
+                            <input disabled  class="form-control" type="text" v-model="client.code">
                         </div>
                         <div class="col-lg-6">
                             <span class="txtblack">Nombre cliente <span class="require">*</span></span>
-                            <input  class="form-control" type="text" v-model="client.name">
+                            <input v-focus class="form-control" type="text" v-model="client.name">
                         </div>
                         <div class="col-lg-6 m-t-10">
                             <span class="txtblack">Contacto <span class="require">*</span></span>

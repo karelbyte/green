@@ -12,24 +12,34 @@ new Vue({
             item: {
                 id: 0,
                 name: '',
-                init: 1,
-                end: '',
+                details: []
             },
             itemDefault: {
+                id: 0,
+                name: '',
+                details:[]
+            },
+            det: {
+                id: 0,
+                name: '',
+                init: 1,
+                end: ''
+            },
+            detDedault: {
                 id: 0,
                 name: '',
                 init: 1,
                 end: ''
             },
             repassword: '',
-            listfield: [{name: 'Codigo', type: 'text', field: 'products.name'},],
+            listfield: [{name: 'Codigo', type: 'text', field: 'products_offereds.name'},],
             filters_list: {
                 descrip: 'Descripción',
-                field: 'products.name',
+                field: 'products_offereds.name',
                 value: ''
             },
             orders_list: {
-                field: 'products.name',
+                field: 'products_offereds.name',
                 type: 'asc'
             },
         }
@@ -42,7 +52,7 @@ new Vue({
 
         this.labelnew = 'Añadir producto';
 
-        this.patchDelete = 'api/products/';
+        this.patchDelete = 'api/productsoffereds/';
 
         this.keyObjDelete = 'id'
 
@@ -60,7 +70,7 @@ new Vue({
             axios({
                 method: 'post',
 
-                url: urldomine + 'api/products/list',
+                url: urldomine + 'api/productsoffereds/list',
 
                 data: {
 
@@ -97,7 +107,7 @@ new Vue({
 
                 method: this.act,
 
-                url: urldomine + 'api/products' + (this.act === 'post' ? '' : '/' + this.item.id),
+                url: urldomine + 'api/productsoffereds' + (this.act === 'post' ? '' : '/' + this.item.id),
 
                 data: this.item
 
@@ -130,13 +140,40 @@ new Vue({
             this.onview('new')
 
         },
+        delDetail (id) {
+            this.item.details = this.item.details.filter(it => it.id !== id);
+        },
+        addNew() {
+
+          this.det.id = generateId(9);
+
+          this.item.details.push({...this.det});
+
+            $('#add_det').modal('hide');
+
+        },
         pass () {
 
             let name = this.item.code !== '';
 
-            let init = this.item.init !== '' && this.item.init > 0;
+            let list = this.item.details.length > 0;
 
-            let end = this.item.end !== '' && this.item.end > 0;
+            return name && list
+        },
+
+        showAddDet() {
+
+            this.det = {...this.detDedault};
+
+            $('#add_det').modal('show');
+        },
+        passNew () {
+
+            let name = this.det.name !== '';
+
+            let init = this.det.init !== '' && this.det.init > 0;
+
+            let end = this.det.end !== '' && this.det.end > 0;
 
             return name && init && end
         }

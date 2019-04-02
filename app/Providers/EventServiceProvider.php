@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Quotes\Quote;
 use App\Models\User;
 use App\Observers\UuiDObserver;
 use Illuminate\Support\Facades\Event;
@@ -37,5 +38,7 @@ class EventServiceProvider extends ServiceProvider
     public function registerUuidObservers()
     {
         User::observe(app(UuiDObserver::class));
+
+        Quote::observe(app(UuiDObserver::class));
     }
 }

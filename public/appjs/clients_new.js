@@ -32,6 +32,9 @@ new Vue({
             act: 'post'
         }
     },
+    mounted () {
+        this.add()
+    },
     methods: {
         save () {
 
@@ -51,7 +54,7 @@ new Vue({
 
                 toastr["success"](response.data);
 
-                this.item = {...this.itemDefault};
+                this.add()
 
             }).catch(e => {
 
@@ -60,6 +63,19 @@ new Vue({
                 toastr["error"](e.response.data);
             })
 
+        },
+        add () {
+           axios.get(urldomine + 'api/clients/get/id').then(r => {
+
+                this.item = {...this.itemDefault};
+
+                this.act = 'post';
+
+                this.item.code = r.data;
+
+                this.title = this.labelnew;
+
+            })
         },
         pass () {
 

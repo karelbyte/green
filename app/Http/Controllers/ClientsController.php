@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Traits\GenerateID;
 use Illuminate\Http\Request;
 
 class ClientsController extends Controller
 {
+    use GenerateID;
+
     public function index()
     {
         return view('pages.clients.list');
@@ -22,6 +25,11 @@ class ClientsController extends Controller
 
         return Client::select('id', 'name', 'code', 'contact')->get();
 
+    }
+
+    public function sendID () {
+
+        return $this->getID('clients');
     }
 
     // OBTINE LA LISTA DE CLIENTES Y LOS ENVIA AL FRONT PAGINADO
@@ -62,6 +70,8 @@ class ClientsController extends Controller
         $provider = Client::where('code', $request->code)->first();
 
         if (!empty($provider)) return response()->json('Ya existe un cliente con ese codigo!', 500);
+
+        $this->setID('clients', $request->code);
 
         Client::create($request->all());
 

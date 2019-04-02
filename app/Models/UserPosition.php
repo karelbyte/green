@@ -10,4 +10,6 @@ class UserPosition extends Model
 
     protected $table = 'user_positions';
 
+    protected $fillable = ['name'];
+
 }

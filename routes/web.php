@@ -19,7 +19,7 @@ Route::get('/publicar', function () {
 
     Artisan::call('storage:link');
 
-    return 'PUBLICACION DE DB EXITOSA';
+    return 'PUBLICACION DE ARCHIVOS EXITOSA';
 
 });
 
@@ -100,14 +100,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventarios', 'InventorisController@index')->name('inventoris');
 
     // PRODUCTOS
-    Route::get('/productos', 'ProductsController@index')->name('products');
+    Route::get('/catalo-productos', 'ProductsOfferedsController@index')->name('productsoffereds');
 
     // SERVICIOS
-    Route::get('/servicios', 'ServicesController@index')->name('services');
+    Route::get('/catalogo-servicios', 'ServicesOfferedsController@index')->name('servicesoffereds');
 
 
     // CICLO DE ATENCION GLOBAL
     Route::get('/atencion', 'CGlobalsController@index')->name('cags');
+
+
+    // COTIZACIONES
+    Route::get('/cotizaciones', 'QuotesController@index')->name('quotes');
 
 
     // CALENDARIO

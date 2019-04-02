@@ -3,20 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Measure;
-use App\Models\Service;
+use App\Models\ServiceOffereds;
 use Illuminate\Http\Request;
 
-class ServicesController extends Controller
+class ServicesOfferedsController extends Controller
 {
     public function index()
     {
-        return view('pages.services.list');
+        return view('pages.servicesoffereds.list');
     }
 
 
-    public function getProduct() {
+    public function getServices() {
 
-        return Service::select('id', 'name', 'init', 'end', 'price')->get();
+        return ServiceOffereds::select('id', 'name')->get();
 
     }
 
@@ -28,7 +28,11 @@ class ServicesController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = Service::with('measure')-> select('*');
+        $datos = ServiceOffereds::with( ['details' => function ($q) {
+
+            $q->with('measure');
+
+        }])-> select('*');
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
@@ -55,29 +59,60 @@ class ServicesController extends Controller
 
     public function store(Request $request) {
 
-        $mat = Service::where('name', $request->name)->first();
+        $mat = ServiceOffereds::where('name', $request->name)->first();
 
         if (!empty($mat)) { return response()->json('Ya existe un servicio con ese nombre', 500);}
 
-        Service::create($request->except('measure'));
+        $service = ServiceOffereds::create($request->except('details'));
+
+        foreach ($request->details as $det) {
+
+            $service->details()->create([
+                'name' => $det['name'],
+                'init' => $det['init'],
+                'end' => $det['end'],
+                'price' => $det['price'],
+                'measure_id' => $det['measure']['id']
+            ]);
+        }
 
         return response()->json('Datos creado con exito!', 200);
     }
 
     public function update(Request $request, $id) {
 
-        $mat = Service::where('name', $request->name)->where('id', '<>', $id)->first();
+        $mat = ServiceOffereds::where('name', $request->name)->where('id', '<>', $id)->first();
 
         if (!empty($mat)) { return response()->json('Ya existe un servicio con ese nombre', 500);}
 
-        Service::where('id', $id)->update($request->except('measure'));
+        $ser = ServiceOffereds::find($id);
+
+        $ser->update($request->except('details'));
+
+        $ser->details()->delete();
+
+        foreach ($request->details as $det) {
+
+            $ser->details()->create([
+                'name' => $det['name'],
+                'init' => $det['init'],
+                'end' => $det['end'],
+                'price' => $det['price'],
+                'measure_id' => $det['measure']['id']
+            ]);
+        }
 
         return response()->json('Datos actualizados con exito!', 200);
     }
 
     public function destroy($id)  {
 
-        Service::destroy($id);
+
+        $ser = ServiceOffereds::find($id);
+
+        $ser->details()->delete();
+
+        ServiceOffereds::destroy($id);
 
         return response()->json('Servicio eliminado con exito!', 200);
 

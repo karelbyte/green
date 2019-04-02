@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTypeInfoClientsTable extends Migration
+class CreateProductsOfferedsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTypeInfoClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('type_info_clients', function (Blueprint $table) {
+        Schema::create('products_offereds', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
         });
@@ -26,6 +26,6 @@ class CreateTypeInfoClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('type_info_clients');
+        Schema::dropIfExists('products_offereds');
     }
 }

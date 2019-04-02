@@ -7,9 +7,13 @@ use App\Models\CGlobal;
 use App\Models\CGlobalInfo;
 use App\Models\Client;
 use App\Models\LandScaper;
+use App\Models\ProductOffereds;
+use App\Models\Quotes\Quote;
+use App\Models\ServiceOffereds;
 use App\Models\TypeContact;
 use App\Models\TypeInfo;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\GenerateID;
 
@@ -43,7 +47,7 @@ class CGlobalsController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = CGlobal::with(['documents', 'landscaper', 'compromise','contact','attended', 'client', 'status', 'info' => function($q) {
+        $datos = CGlobal::with(['MotiveServices', 'MotiveProducts', 'documents', 'landscaper', 'compromise','contact','attended', 'client', 'status', 'info' => function($q) {
             $q->with('info', 'info_det');
         }]);
 
@@ -67,19 +71,21 @@ class CGlobalsController extends Controller
 
             'type_infos' => TypeInfo::with('detail')->get(),
 
-            'landscapers' => User::where('position_id', 3)->select('uid', 'name')->get()
+            'landscapers' => User::where('position_id', 3)->select('uid', 'name')->get(),
+
+            'servicesOffereds' => ServiceOffereds::all(),
+
+            'productsOffereds' => ProductOffereds::all()
 
         ];
 
         return response()->json($result, 200);
-
 
     }
 
     public function store(Request $request) {
 
        $data = $request->all();
-
 
        $cg = CGlobal::create([
 
@@ -94,6 +100,12 @@ class CGlobalsController extends Controller
            'repeater' => $data['repeater'],
 
            'type_compromise_id' => $data['type_compromise_id'],
+
+           'type_motive' => $data['type_motive'],
+
+           'type_motive_id' => $data['type_motive_id'],
+
+           'required_time' => $data['required_time'],
 
            'note' => $data['note'],
 
@@ -112,9 +124,11 @@ class CGlobalsController extends Controller
 
                'type_info_detail_id' => $inf['info_det']['id'],
 
-               'type_descrip' => $inf['info_descrip']
+               'info_descrip' => $inf['info_descrip']
            ]);
        }
+
+       // CREANDO COTIZACION A DISTANCIA
 
        if ($data['type_compromise_id'] == 3) {
 
@@ -129,6 +143,19 @@ class CGlobalsController extends Controller
                'timer' => $data['landscaper']['timer'],
 
                'title' => 'Visita a cliente'
+           ]);
+
+           Quote::create([
+
+               'cglobal_id' => $cg->id,
+
+               'type_quote_id' => 1,
+
+               'moment' => Carbon::now(),
+
+               'status_id' => 2,
+
+
            ]);
 
            return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!', 200);
@@ -158,6 +185,18 @@ class CGlobalsController extends Controller
         }
 
         if ($data['type_compromise_id'] == 2) {
+
+            Quote::create([
+
+                'cglobal_id' => $cg->id,
+
+                'type_quote_id' => 2,
+
+                'moment' => Carbon::now(),
+
+                'status_id' => 1,
+
+            ]);
 
             return response()->json('Se envia el flujo a cotización', 200);
         }

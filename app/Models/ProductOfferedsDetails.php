@@ -12,23 +12,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $created_at
  * @property string $updated_at
  */
-class Product extends Model
+class ProductOfferedsDetails extends Model
 {
     /**
      * The "type" of the auto-incrementing ID.
      * 
      * @var string
      */
+    protected $table = 'products_offereds_details';
+
     protected $keyType = 'integer';
 
     /**
      * @var array
      */
-    protected $fillable = ['name', 'init', 'end', 'created_at', 'updated_at'];
+    protected $fillable = [ 'products_offereds_id', 'name', 'init', 'end'];
 
 
-    protected $hidden = [
-         'created_at', 'updated_at'
-    ];
+    public $timestamps = false;
 
 }

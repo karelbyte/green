@@ -36,7 +36,7 @@ class CGlobal extends Model
     /**
      * @var array
      */
-    protected $fillable = [ 'moment', 'client_id', 'user_id', 'type_contact_id', 'repeater', 'type_motive_id',
+    protected $fillable = [ 'moment', 'client_id', 'user_id', 'type_contact_id', 'repeater', 'type_motive',  'type_motive_id',
 
                           'required_time', 'type_compromise_id', 'note', 'status_id'];
 
@@ -49,9 +49,15 @@ class CGlobal extends Model
 
     }
 
-    public function Motive() {
+    public function MotiveServices() {
 
-        return $this->hasOne('App\Models\TypeMotive', 'id', 'type_motive_id');
+        return $this->hasOne(ProductOffereds::class, 'id', 'type_motive_id');
+
+    }
+
+    public function MotiveProducts() {
+
+        return $this->hasOne(ServiceOffereds::class, 'id', 'type_motive_id');
 
     }
 

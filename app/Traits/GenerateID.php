@@ -16,7 +16,7 @@ trait GenerateID
     public function getID($model)
     {
 
-        $su = Surrogate::select('model', $model)->select('next')->first();
+        $su = Surrogate::where('model', $model)->select('next')->first();
 
         if (!is_null($su)) {
 

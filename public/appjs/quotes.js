@@ -7,39 +7,32 @@ new Vue({
         return {
             views: {
                 list: true,
-                new: false,
+                newfiles: false,
             },
             item: {
                 id: 0,
-                name: '',
-                code: '',
-                contact: '',
-                email: '',
-                movil: '',
-                phone: '',
-                address: ''
+                moment: '',
+                type_quote_id: '',
+                status_id: ''
             },
             itemDefault: {
                 id: 0,
-                name: '',
-                code: '',
-                contact: '',
-                email: '',
-                movil: '',
-                phone: '',
-                address: ''
+                moment: '',
+                type_quote_id: '',
+                status_id: ''
             },
             repassword: '',
-            listfield: [{name: 'Nombre', type: 'text', field: 'clients.name'}, {name: 'Codigo', type: 'text', field: 'clients.code'}],
+            listfield: [{name: 'Codigo', type: 'text', field: 'quotes.id'}],
             filters_list: {
-                descrip: 'Nombre',
-                field: 'clients.name',
+                descrip: 'Codigo',
+                field: 'quotes.id',
                 value: ''
             },
             orders_list: {
-                field: 'clients.name',
+                field: 'quotes.id',
                 type: 'asc'
             },
+            doc: {}
         }
     },
     mounted () {
@@ -69,7 +62,7 @@ new Vue({
             axios({
                 method: 'post',
 
-                url: urldomine + 'api/clients/list',
+                url: urldomine + 'api/quotes/list',
 
                 data: {
 
@@ -97,6 +90,9 @@ new Vue({
                 toastr["error"](e.response.data);
             })
         },
+        getType (o) {
+           return parseInt(o) === 2 ? 'A DISTANCIA' : 'VISITA A DOMICILIO'
+        },
         save () {
 
             this.spin = true;
@@ -105,7 +101,7 @@ new Vue({
 
                 method: this.act,
 
-                url: urldomine + 'api/clients' + (this.act === 'post' ? '' : '/' + this.item.id),
+                url: urldomine + 'api/quotes' + (this.act === 'post' ? '' : '/' + this.item.id),
 
                 data: this.item
 
@@ -127,8 +123,42 @@ new Vue({
             })
 
         },
+        showFiles(itm) {
+
+            this.item = {...itm};
+
+            this.onview('newfiles')
+        },
+        deleteFile(id) {
+
+            axios.get(urldomine + 'api/quotes/file/delete/' + id).then(r => {
+
+                this.item.docs = this.item.docs.filter(it => it.id !== id)
+            })
+        },
+        showVisor (doc) {
+            this.doc = doc;
+            $('#repro').modal('show');
+        },
+        saveFile(e) {
+            let data = new FormData();
+            this.picture = e.target.files || e.dataTransfer.files;
+            if (this.picture.length) {
+                data.append('id', this.item.id);
+                data.append('file',this.picture[0]);
+                axios.post(urldomine + 'api/quotes/file/save', data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(res => {
+                  axios.get(urldomine + 'api/quotes/files/' + this.item.id).then(r => {
+                      this.item.docs = r.data.docs
+                  })
+                })
+            }
+        },
         add () {
-          axios.get(urldomine + 'api/clients/get/id').then(r => {
+          axios.get(urldomine + 'api/quotes/get/id').then(r => {
 
             this.item = {...this.itemDefault};
 
@@ -141,6 +171,9 @@ new Vue({
             this.onview('new')
 
             })
+        },
+        showCamera() {
+          $('#file').click()
         },
         pass () {
 
