@@ -6,6 +6,7 @@ use App\Models\Quotes\Quote;
 use App\Models\Quotes\QuoteDoc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class QuotesController extends Controller
 {
@@ -25,7 +26,11 @@ class QuotesController extends Controller
 
     public function deleteQuoteFile($id) {
 
+       $doc = QuoteDoc::find($id);
+
        QuoteDoc::destroy($id);
+
+       Storage::delete( $doc->url);
 
        return response(null, 200);
 

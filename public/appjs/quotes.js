@@ -77,8 +77,6 @@ new Vue({
 
             }).then(res => {
 
-                this.spin = false;
-
                 this.lists = res.data.list;
 
                 this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
@@ -130,10 +128,13 @@ new Vue({
             this.onview('newfiles')
         },
         deleteFile(id) {
+            this.spin = true;
 
             axios.get(urldomine + 'api/quotes/file/delete/' + id).then(r => {
 
-                this.item.docs = this.item.docs.filter(it => it.id !== id)
+                this.item.docs = this.item.docs.filter(it => it.id !== id);
+
+                this.spin = false;
             })
         },
         showVisor (doc) {
@@ -141,6 +142,7 @@ new Vue({
             $('#repro').modal('show');
         },
         saveFile(e) {
+            this.spin = true;
             let data = new FormData();
             this.picture = e.target.files || e.dataTransfer.files;
             if (this.picture.length) {
@@ -152,6 +154,7 @@ new Vue({
                     }
                 }).then(res => {
                   axios.get(urldomine + 'api/quotes/files/' + this.item.id).then(r => {
+                      this.spin = false;
                       this.item.docs = r.data.docs
                   })
                 })
