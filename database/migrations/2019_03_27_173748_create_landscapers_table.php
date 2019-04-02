@@ -18,7 +18,7 @@ class CreateLandscapersTable extends Migration
             $table->integer('cglobal_id');
             $table->date('moment');
             $table->time('timer');
-            $table->string('note', 500);
+            $table->string('note', 500)->nullable();
             $table->uuid('user_uid');
             $table->integer('status_id')->default(1);
         });
