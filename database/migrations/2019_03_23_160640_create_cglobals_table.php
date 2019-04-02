@@ -20,6 +20,7 @@ class CreateCGlobalsTable extends Migration
             $table->integer('user_id');
             $table->integer('type_contact_id');
             $table->smallInteger('repeater');
+            $table->smallInteger('type_motive');
             $table->smallInteger('type_motive_id');
             $table->smallInteger('required_time');
             $table->smallInteger('type_compromise_id');
