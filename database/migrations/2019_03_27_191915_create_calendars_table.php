@@ -18,6 +18,7 @@ class CreateCalendarsTable extends Migration
             $table->integer('cglobal_id');
             $table->date('moment');
             $table->time('timer');
+            $table->string('title', 50);
             $table->integer('status_id')->default(1);
         });
     }
