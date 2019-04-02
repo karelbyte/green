@@ -17,6 +17,7 @@ class CreateQuotesDocsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('quote_id');
             $table->string('name');
+            $table->string('ext', 5);
             $table->string('url', 500);
             $table->timestamps();
         });
