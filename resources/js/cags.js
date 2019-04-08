@@ -517,15 +517,7 @@ const cags = new Vue({
 
             this.spin = true;
 
-            axios({
-
-                method: 'post',
-
-                url: urldomine + 'api/clients/',
-
-                data: this.client
-
-            }).then(response => {
+            axios.post(urldomine + 'api/clients', this.client).then(res => {
 
                 this.spin = false;
 
@@ -533,7 +525,9 @@ const cags = new Vue({
 
                 this.getlist();
 
-                this.$toasted.success(response.data)
+                this.client = {...this.clientDefault};
+
+                this.$toasted.success(res.data)
 
             }).catch(e => {
 
@@ -541,7 +535,6 @@ const cags = new Vue({
 
                 this.$toasted.error(e.response.data)
             })
-
         }
     }
 });

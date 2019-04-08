@@ -205,11 +205,11 @@
                             <div class="btn-group">
                                 <button type="button" class="btn btn-custom dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="false">Acciones <span class="caret"></span> </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#" @click="edit(entity)"><i class="fa fa-edit m-r-5"></i>Crear</a></li>
+                                    <li><a href="#" @click="edit(entity)"><i class="fa fa-edit m-r-5"></i>Cotizar</a></li>
                                     <li v-if="entity.type_quote_id == 1"><a href="#" @click="showFiles(entity)"> <i class="fa fa-file m-r-5"></i>Archivos</a></li>
-                                    <li><a href="#" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o m-r-5"></i>Imprimir</a></li>
-                                    <li><a href="#" @click="ShowSendInfo(entity.id)"><i class="fa fa-send m-r-5"></i>Enviar a cliente</a></li>
-                                    <li><a href="#"><i class="fa fa-search"></i> Verificacion</a></li>
+                                    <li v-if="entity.details.length > 0"><a href="#" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o m-r-5"></i>Imprimir</a></li>
+                                    <li v-if="entity.details.length > 0"><a href="#" @click="ShowSendInfo(entity.id)"><i class="fa fa-send m-r-5"></i>Enviar a cliente</a></li>
+                                    <li v-if="entity.details.length > 0"><a href="#"><i class="fa fa-search"></i> Verificacion</a></li>
                                 </ul>
                             </div>
                           <!--  <button class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
@@ -403,7 +403,7 @@
         </div>
     </div>
 </div>
-
+<vue-progress-bar></vue-progress-bar>
 @component('com.eliminar')@endcomponent
 @component('com.spiner')@endcomponent
 @endsection

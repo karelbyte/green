@@ -12,6 +12,18 @@ class AppSeeder extends Seeder
     public function run()
     {
 
+        // OJO FALTA LOS PERMISOS Y CREAR EL ROL ADMINISTRADOR
+
+
+        \App\Models\User::create([
+            'name' => 'Administrador',
+            'email' => 'admin@gc.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('gc12345*-'),
+            'active_id' => 1,
+            'position_id' => 1
+        ]);
+
+
        // ESTADO DE USUARIOS
        $statusUserList = [
             ['id' => 0, 'name' => 'Inactivo'],
@@ -29,14 +41,6 @@ class AppSeeder extends Seeder
         \App\Models\UserPosition::insert($UserPositionList);
 
 
-        \App\Models\User::create([
-            'name' => 'Administrador',
-            'email' => 'admin@gc.com',
-            'password' => \Illuminate\Support\Facades\Hash::make('gc12345*-'),
-            'active_id' => 1,
-            'position_id' => 1
-        ]);
-
 
         // TYPO DE INFORMACION
         $TypeInfoList = [
@@ -44,7 +48,7 @@ class AppSeeder extends Seeder
             ['id' => 2, 'name' => 'Catalogo'],
             ['id' => 3, 'name' => 'Imagenes'],
             ['id' => 4, 'name' => 'Publicidad'],
-            ['id' => 5, 'Poductos' => 'Imagenes'],
+            ['id' => 5, 'name' => 'Productos'],
         ];
         \App\Models\TypeInfo::insert($TypeInfoList);
 

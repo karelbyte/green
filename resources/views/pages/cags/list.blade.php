@@ -430,34 +430,34 @@
             <div class="modal-content p-0 b-0">
                 <div class="panel panel-border panel-brown">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Aplicar cantidades</h3>
+                        <h3 class="panel-title">Añadir cliente</h3>
                     </div>
                     <div class="panel-body">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 m-t-20">
                             <span class="txtblack">Codigo <span class="require">*</span></span>
                             <input disabled  class="form-control" type="text" v-model="client.code">
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 m-t-20">
                             <span class="txtblack">Nombre cliente <span class="require">*</span></span>
                             <input v-focus class="form-control" type="text" v-model="client.name">
                         </div>
-                        <div class="col-lg-6 m-t-10">
+                        <div class="col-lg-6 m-t-20">
                             <span class="txtblack">Contacto <span class="require">*</span></span>
                             <input class="form-control" type="text" v-model="client.contact">
                         </div>
-                        <div class="col-lg-6 m-t-10">
+                        <div class="col-lg-6 m-t-20">
                             <span class="txtblack">Email <span class="require">*</span></span>
                             <input class="form-control" type="text" v-model="client.email" >
                         </div>
-                        <div class="col-lg-6 m-t-10">
+                        <div class="col-lg-6 m-t-20">
                             <span  class="txtblack">Telefono local <span class="require">*</span></span>
                             <input v-numeric-only class="form-control" type="text" v-model="client.phone" >
                         </div>
-                        <div class="col-lg-6 m-t-10">
+                        <div class="col-lg-6 m-t-20">
                             <span  class="txtblack">Celular <span class="require">*</span></span>
                             <input v-numeric-only class="form-control" type="text" v-model="client.movil">
                         </div>
-                        <div class="col-lg-12 m-t-10">
+                        <div class="col-lg-12 m-t-20">
                             <span class="txtblack">Dirección <span class="require">*</span></span>
                             <input class="form-control" type="text" v-model="client.address">
                         </div>

@@ -73,7 +73,7 @@ class ClientsController extends Controller
 
         $this->setID('clients', $request->code);
 
-        Client::create($request->all());
+        Client::create($request->except('id'));
 
         return response()->json('Cliente añadido con exito!', 200);
     }

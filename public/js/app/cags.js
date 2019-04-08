@@ -18082,17 +18082,15 @@ var cags = new Vue({
       var _this5 = this;
 
       this.spin = true;
-      axios({
-        method: 'post',
-        url: urldomine + 'api/clients/',
-        data: this.client
-      }).then(function (response) {
+      axios.post(urldomine + 'api/clients', this.client).then(function (res) {
         _this5.spin = false;
         $('#client_new').modal('hide');
 
         _this5.getlist();
 
-        _this5.$toasted.success(response.data);
+        _this5.client = _objectSpread({}, _this5.clientDefault);
+
+        _this5.$toasted.success(res.data);
       })["catch"](function (e) {
         _this5.spin = false;
 

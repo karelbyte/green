@@ -10,6 +10,14 @@ import { quillEditor } from 'vue-quill-editor'
 
 import Multiselect from "vue-multiselect";
 
+import VueProgressBar from 'vue-progressbar'
+
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+    height: '2px'
+});
+
 new Vue({
     mixins: [core],
     el: '#app',
@@ -453,6 +461,8 @@ new Vue({
 
             this.picture = e.target.files || e.dataTransfer.files;
 
+            this.$Progress.start();
+
             if (this.picture.length) {
 
                 data.append('id', this.item.id);
@@ -469,10 +479,26 @@ new Vue({
 
                       this.spin = false;
 
-                      this.item.docs = r.data.docs
+                      this.item.docs = r.data.docs;
 
+                      this.$Progress.finish()
+
+                  }).catch(e => {
+
+                      this.spin = false;
+
+                      this.$Progress.finish();
+
+                      this.$toasted.error(e.response.data)
                   })
 
+                }).catch(e => {
+
+                    this.spin = false;
+
+                    this.$Progress.finish();
+
+                    this.$toasted.error(e.response.data)
                 })
             }
         },
