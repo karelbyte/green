@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Measure;
 use App\Models\ServiceOffereds;
+use App\Models\ServiceOfferedsDetails;
 use Illuminate\Http\Request;
 
 class ServicesOfferedsController extends Controller
@@ -16,7 +17,7 @@ class ServicesOfferedsController extends Controller
 
     public function getServices() {
 
-        return ServiceOffereds::select('id', 'name')->get();
+        return ServiceOfferedsDetails::all();
 
     }
 

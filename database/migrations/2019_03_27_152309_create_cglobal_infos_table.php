@@ -19,7 +19,6 @@ class CreateCglobalInfosTable extends Migration
             $table->integer('type_info_id');
             $table->integer('type_info_detail_id');
             $table->string( 'info_descrip', 250);
-            $table->timestamps();
         });
     }
 

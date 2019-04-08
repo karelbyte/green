@@ -27,33 +27,33 @@
                 <h3 class="panel-title">Datos de la empresa</h3>
             </div>
             <div class="panel-body">
-                <div class="row m-t-20">
-                    <div class="col-lg-4">
+                <div class="row ">
+                    <div class="col-lg-4 m-t-20">
                        <span class="txtblack">Nombre <span class="require">*</span></span>
                        <input v-focus class="form-control" type="text" v-model="item.name">
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-5 m-t-20">
                         <span class="txtblack">Dirección <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.address">
                     </div>
-                    <div class="col-lg-5 m-t-10">
+                    <div class="col-lg-5 m-t-20">
                         <span class="txtblack">Email <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.email">
                     </div>
-                    <div class="col-lg-4 m-t-10">
+                    <div class="col-lg-4 m-t-20">
                         <span class="txtblack">RFC <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.rfc">
                     </div>
-                    <div class="col-lg-4 m-t-10">
+                    <div class="col-lg-4 m-t-20">
                         <span class="txtblack">www</span>
                         <input class="form-control" type="text" v-model="item.www">
                     </div>
-                    <div class="col-lg-2 m-t-10">
-                        <span class="txtblack">Telefono 1</span>
+                    <div class="col-lg-2 m-t-20">
+                        <span class="txtblack">Telefono</span>
                         <input v-numeric-only class="form-control" type="text" v-model="item.phone1">
                     </div>
 
-                    <div class="col-lg-2 m-t-10">
+                    <div class="col-lg-2 m-t-20">
                         <span class="txtblack">WhastApp</span>
                         <input v-numeric-only class="form-control" type="text" v-model="item.phone2">
                     </div>
@@ -69,5 +69,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/company.js')}}"></script>
+    <script src="{{asset('js/app/company.js')}}"></script>
 @endsection

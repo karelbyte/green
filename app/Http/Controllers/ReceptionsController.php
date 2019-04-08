@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Inventori;
-use App\Models\Material;
-use App\Models\Reception;
-use App\Models\ReceptionDetail;
+use App\Models\Receptions\Reception;
+use App\Models\Receptions\ReceptionDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +31,7 @@ class ReceptionsController extends Controller
 
             $orders =  $request->orders;
 
-            $datos = Reception::with(['status', 'type', 'user', 'details' => function ($q) {
+            $datos = Reception::with(['status', 'types', 'user', 'details' => function ($q) {
 
                 $q->with('element');
 
@@ -121,6 +121,36 @@ class ReceptionsController extends Controller
 
       return response()->json('Recepcion aplicada con exito al inventario!', 200);
 
+    }
+
+
+    public function pdf($id) {
+
+        $pdf = \App::make('snappy.pdf.wrapper');
+
+        $datos = Reception::with(['status', 'types', 'user', 'details' => function ($q) {
+
+            $q->with('element');
+
+        }])->where('id', $id)->first();
+
+        $data = [
+
+            'company' => Company::find(1),
+
+            'data' =>  $datos,
+
+        ];
+
+        // $footer = View::make('components.footer')->render();
+
+        $html = \View::make('pages.receptions.pdf', $data)->render();
+
+        $pdf->loadHTML($html); //->setOption('footer-html', $footer);
+
+        $pdfBase64 = base64_encode($pdf->inline());
+
+        return 'data:application/pdf;base64,' . $pdfBase64;
     }
 
 }

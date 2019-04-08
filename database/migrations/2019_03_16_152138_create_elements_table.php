@@ -19,9 +19,7 @@ class CreateElementsTable extends Migration
             $table->smallInteger('type');
             $table->string('name');
             $table->smallInteger('measure_id')->default(0);
-          //  $table->decimal('quantity', 8, 2);
             $table->decimal('price', 8, 2)->default(0);
-            $table->timestamps();
         });
     }
 

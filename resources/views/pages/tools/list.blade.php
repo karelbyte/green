@@ -1,8 +1,5 @@
 @extends('layouts.main')
 
-@section('style')
-    <link href="{{asset('css/vue-multiselect.min.css')}}" rel="stylesheet" type="text/css" />
-@endsection
 
 @section('content')
 @parent
@@ -89,7 +86,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/components/paginator.js')}}"></script>
-    <script src="{{asset('appjs/components/order.js')}}"></script>
-    <script src="{{asset('appjs/crmtools.js')}}"></script>
+    <script src="{{asset('js/app/crmtools.js')}}"></script>
 @endsection

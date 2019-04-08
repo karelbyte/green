@@ -2,7 +2,8 @@
 
 namespace App\Models\Quotes;
 
-use App\Models\CGlobal;
+use App\Models\CGlobal\CGlobal;
+use App\Models\TypeWaySendInfo;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -16,19 +17,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Quote extends Model
 {
-    /**
-     * The "type" of the auto-incrementing ID.
-     * 
-     * @var string
-     */
     protected $keyType = 'integer';
 
-    /**
-     * @var array
-     */
-    protected $fillable = ['uid', 'cglobal_id', 'type_quote_id', 'moment', 'ext', 'status_id'];
+    public $timestamps = false;
 
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $fillable = ['uid', 'cglobal_id', 'descrip', 'token', 'type_send_id',
+
+        'specifications', 'type_quote_id', 'sends', 'moment', 'ext', 'status_id'];
 
 
     public function details() {
@@ -41,9 +36,19 @@ class Quote extends Model
         return $this->hasMany(QuoteDoc::class, 'quote_id', 'id');
     }
 
+    public function TypeSend() {
+
+        return $this->hasOne(TypeWaySendInfo::class, 'id', 'type_send_id');
+    }
+
     public function globals() {
 
         return $this->belongsTo(CGlobal::class, 'cglobal_id', 'id');
+    }
+
+    public function Notes() {
+
+        return $this->hasMany(QuotesNote::class, 'quote_id', 'id');
     }
 
     public function status() {

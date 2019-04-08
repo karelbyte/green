@@ -19,6 +19,6 @@ class Inventori extends Model
 
     public function element() {
 
-        return $this->hasOne(Element::class);
+        return $this->hasOne(Element::class, 'id', 'element_id');
     }
 }

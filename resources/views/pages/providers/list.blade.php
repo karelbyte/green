@@ -28,32 +28,32 @@
                 <h3 class="panel-title">@{{title}}</h3>
             </div>
             <div class="panel-body">
-                <div class="row m-t-20">
-                    <div class="col-lg-5">
+                <div class="row ">
+                    <div class="col-lg-5 m-t-20">
                         <span class="txtblack">Codigo <span class="require">*</span></span>
                         <input v-focus class="form-control" type="text" v-model="item.code">
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-5 m-t-20">
                        <span class="txtblack">Nombre Proveedor <span class="require">*</span></span>
                        <input  class="form-control" type="text" v-model="item.name">
                     </div>
-                    <div class="col-lg-5 m-t-10">
+                    <div class="col-lg-5 m-t-20">
                         <span class="txtblack">Contacto <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.contact">
                     </div>
-                    <div class="col-lg-5 m-t-10">
+                    <div class="col-lg-5 m-t-20">
                         <span class="txtblack">Email <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.email" >
                     </div>
-                    <div class="col-lg-5 m-t-10">
+                    <div class="col-lg-5 m-t-20">
                         <span  class="txtblack">Telefono local <span class="require">*</span></span>
                         <input v-numeric-only class="form-control" type="text" v-model="item.phone" >
                     </div>
-                    <div class="col-lg-5 m-t-10">
+                    <div class="col-lg-5 m-t-20">
                         <span  class="txtblack">Celular <span class="require">*</span></span>
                         <input v-numeric-only class="form-control" type="text" v-model="item.movil">
                     </div>
-                    <div class="col-lg-8 m-t-10">
+                    <div class="col-lg-8 m-t-20">
                         <span class="txtblack">Dirección <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.address">
                     </div>
@@ -115,7 +115,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/components/paginator.js')}}"></script>
-    <script src="{{asset('appjs/components/order.js')}}"></script>
-    <script src="{{asset('appjs/providers.js')}}"></script>
+    <script src="{{asset('js/app/providers.js')}}"></script>
 @endsection

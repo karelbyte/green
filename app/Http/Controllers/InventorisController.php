@@ -14,6 +14,18 @@ class InventorisController extends Controller
     }
 
 
+    public function getProducts()
+    {
+        $data = Inventori::leftjoin('elements', 'elements.id', 'inventoris.element_id')
+
+            ->where('elements.type', 1)
+
+            ->get();
+
+        return $data;
+    }
+
+
     public function getList(Request $request) {
 
         $skip = $request->input('start') * $request->input('take');

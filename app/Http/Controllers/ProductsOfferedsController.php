@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductOffereds;
+use App\Models\ProductOfferedsDetails;
 use Illuminate\Http\Request;
 
 class ProductsOfferedsController extends Controller
@@ -15,7 +16,7 @@ class ProductsOfferedsController extends Controller
 
     public function getProduct() {
 
-        return ProductOffereds::select('id', 'name')->get();
+        return ProductOfferedsDetails::all();
 
     }
 

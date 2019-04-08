@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\CGlobal;
 
+use App\Models\TypeInfo;
+use App\Models\TypeInfoDetail;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -15,28 +17,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CGlobalInfo extends Model
 {
-    /**
-     * The table associated with the model.
-     * 
-     * @var string
-     */
     protected $table = 'cglobal_infos';
 
-    /**
-     * The "type" of the auto-incrementing ID.
-     * 
-     * @var string
-     */
     protected $keyType = 'integer';
 
-    /**
-     * @var array
-     */
     protected $fillable = ['cglobal_id', 'type_info_id', 'type_info_detail_id', 'info_descrip'];
 
-
-    protected $hidden =  ['created_at', 'updated_at'];
-
+    public $timestamps = false;
 
     public function info () {
 

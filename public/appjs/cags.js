@@ -1,4 +1,5 @@
 Vue.config.devtools = true;
+
 new Vue({
     mixins: [core],
     el: '#app',
@@ -8,6 +9,7 @@ new Vue({
                 list: true,
                 new: false,
             },
+            semitone: 10,
             item: {
                 id: 0,
                 client: '',
@@ -125,7 +127,7 @@ new Vue({
     },
     methods: {
         getMotive(item) {
-            return item.type_motive === 1 ? item.motive_services.name : item.motive_products.name
+            return item.type_motive === 2 ? item.motive_services.name : item.motive_products.name
         },
         showSendInfo () {
             $('#sendinfo').modal('show')
@@ -331,9 +333,11 @@ new Vue({
 
             let type_motive = this.item.type_motive_id > 0;
 
+            let type_contact = this.item.type_contact_id > 0;
+
             let compromise  = this.item.type_compromise_id > 0;
 
-            return moment && client && type && info && compromise && type_motive
+            return moment && client && type && info && compromise && type_motive && type_contact
         },
         showNewClient() {
 

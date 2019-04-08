@@ -1,9 +1,5 @@
 @extends('layouts.main')
 
-@section('style')
-    <link href="{{asset('css/vue-multiselect.min.css')}}" rel="stylesheet" type="text/css" />
-@endsection
-
 @section('content')
 @parent
 <div class="row">
@@ -32,44 +28,37 @@
                 <h3 class="panel-title">Añadir usuario</h3>
             </div>
             <div class="panel-body">
-                <div class="row m-t-20">
-                    <div class="col-lg-4">
+                <div class="row">
+                    <div class="col-lg-4 m-t-20">
                        <span class="txtblack">Nombre <span class="require">*</span></span>
                        <input v-focus class="form-control" type="text" v-model="item.name">
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 m-t-20">
                         <span class="txtblack">Email <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.email" placeholder="El email sera tu usuario">
-                    </div><div class="col-lg-12 m-t-20"></div>
-                    <div class="col-lg-4 m-t-10">
+                    </div>
+                    <div class="col-lg-12 m-t-5"></div>
+                    <div class="col-lg-4 m-t-20">
                         <span class="txtblack">Password <span class="require">*</span></span>
                         <input class="form-control" type="password" v-model="item.password">
 
                     </div>
-                    <div class="col-lg-4 m-t-10">
+                    <div class="col-lg-4 m-t-20">
                         <span class="txtblack">Re Password <span class="require">*</span></span>
                         <input class="form-control" type="password" v-model="repassword">
                     </div>
-                    <div class="col-lg-12 m-t-20"></div>
-                    <div class="col-lg-4 m-t-10">
+                    <div class="col-lg-12 m-t-5"></div>
+                    <div class="col-lg-4 m-t-20">
                         <span class="txtblack">Cargo <span class="require">*</span></span>
                         <select class="form-control" v-model="item.position_id">
                             <option v-for="position in positions" :value="position.id">@{{ position.name }}</option>
                         </select>
                     </div>
-                   <div class="col-lg-4 m-t-10">
+                   <div class="col-lg-4 m-t-20">
                        <span class="txtblack">Asignar rol de acceso al sistema. <span class="require">*</span></span>
-                      <multiselect style="z-index: 999" v-model="value"
-                                        :options="roles"
-                                        label="name"
-                                        track-by="name"
-                                        placeholder=""
-                        ></multiselect>
-                      <!-- <select class="form-control" v-model="value">
-                           <option  value="0"></option>
-                           <option v-for="rol in roles" :value="rol.id">@{{ rol.name }}</option>
-                       </select> -->
-
+                       <select v-model="value" class="form-control">
+                           <option v-for="rol in roles" :value="rol">@{{ rol.name }}</option>
+                       </select>
                    </div>
                     <div class="col-lg-12 m-t-20">
                         <div class="checkbox checkbox-primary">
@@ -91,6 +80,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/multiselect.min.js')}}"></script>
-    <script src="{{asset('appjs/users_new.js')}}"></script>
+    <script src="{{asset('js/app/users_new.js')}}"></script>
 @endsection

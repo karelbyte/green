@@ -24,7 +24,7 @@
 </div>
 <div v-if="views.list" v-cloak>
     <div class="row m-b-10">
-        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 m-b-5">
+        <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12 m-b-5">
             <multiselect style="z-index:999"  v-model="filters_list.type"
                          :options="types"
                          label="name"
@@ -33,11 +33,11 @@
             ></multiselect>
 
         </div>
-        <div class="col-lg-5 col-md-4 col-sm-6 col-xs-12">
+        <div class="col-lg-5 col-md-4 col-sm-2 col-xs-12 m-t-5">
             <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="viewpdf()"><i class="fa fa-file-pdf-o"></i> IMPRIMIR</button>
-            <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-excel "></i> XLS</button>
+         <!--   <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-excel "></i> XLS</button> -->
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-right">
+        <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 text-right">
             @component('com.find')@endcomponent
         </div>
     </div>
@@ -79,7 +79,7 @@
                         <h3 class="panel-title">Visor</h3>
                     </div>
                     <div class="panel-body">
-                        <iframe  id="iframe" :src="scrpdf" frameborder="0" width="100%" height="450px" allowfullscreen></iframe>
+                        <iframe  id="iframe" :src="scrpdf" frameborder="0" width="100%" height="450px"></iframe>
                     </div>
                     <div class="panel-footer text-right">
                         <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
@@ -94,8 +94,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/multiselect.min.js')}}"></script>
-    <script src="{{asset('appjs/components/paginator.js')}}"></script>
-    <script src="{{asset('appjs/components/order.js')}}"></script>
-    <script src="{{asset('appjs/inventoris.js')}}"></script>
+    <script src="{{asset('js/app/inventoris.js')}}"></script>
 @endsection

@@ -5,21 +5,31 @@ new Vue({
     el: '#app',
     data () {
         return {
+            editorOption: {
+                theme: 'snow'
+            },
             views: {
                 list: true,
                 newfiles: false,
+                newdetails: false,
             },
             item: {
                 id: 0,
                 moment: '',
                 type_quote_id: '',
-                status_id: ''
+                status_id: '',
+                descrip: '',
+                specifications: '',
+                notes: []
             },
             itemDefault: {
                 id: 0,
                 moment: '',
+                descrip: '',
+                specifications: '',
                 type_quote_id: '',
-                status_id: ''
+                status_id: '',
+                notes: []
             },
             repassword: '',
             listfield: [{name: 'Codigo', type: 'text', field: 'quotes.id'}],
@@ -30,9 +40,29 @@ new Vue({
             },
             orders_list: {
                 field: 'quotes.id',
-                type: 'asc'
+                type: 'desc'
             },
-            doc: {}
+            doc: {},
+            note: '',
+            detail: {
+                id: 0,
+                cant: 0,
+                descrip: '',
+                price: 0,
+                total: () => {
+                    return  this.cant * this.price
+                }
+            },
+            detailDefault: {
+                id: 0,
+                cant: 0,
+                descrip: '',
+                price: 0,
+                total: () => {
+                  return  this.cant * this.price
+                }
+            },
+            scrpdf: 0
         }
     },
     mounted () {
@@ -49,6 +79,7 @@ new Vue({
 
     },
     methods: {
+
         getlist (pFil, pOrder, pPager) {
 
             if (pFil !== undefined) { this.filters = pFil }
@@ -77,6 +108,8 @@ new Vue({
 
             }).then(res => {
 
+                this.spin = false;
+
                 this.lists = res.data.list;
 
                 this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
@@ -90,6 +123,99 @@ new Vue({
         },
         getType (o) {
            return parseInt(o) === 2 ? 'A DISTANCIA' : 'VISITA A DOMICILIO'
+        },
+
+        // DEATALLES DE LA COTIZACION
+        getTotalItem (it) {
+
+            return  it.reduce( (a, b) => {
+                return parseFloat(b.price) * parseFloat(b.cant)
+            }, 0).toFixed(2)
+        },
+        getTotal () {
+
+          return  this.item.details.reduce( (a, b) => {
+               return parseFloat(b.price) * parseFloat(b.cant)
+          }, 0).toFixed(2)
+        },
+        edit (it) {
+
+            this.item = {...it};
+
+            this.onview('newdetails')
+
+        },
+        showFormDet() {
+
+          this.detail = {...this.detailDefault};
+
+          $('#new_det').modal('show')
+
+        },
+        deleteDet (id) {
+
+          this.item.details = this.item.details.filter(it => it.id !== id)
+
+        },
+        saveNewDet() {
+
+          this.detail.id = generateId(9);
+
+          this.item.details.push({...this.detail});
+
+          $('#new_det').modal('hide')
+
+        },
+        passNewDet () {
+
+            let des = this.detail.descrip !== '';
+
+            let price = this.detail.price > 0;
+
+            let cant = this.detail.cant > 0;
+
+            return des && price && cant
+        },
+        saveDetails () {
+
+            let data = {
+
+              id : this.item.id,
+
+              details : this.item.details,
+
+              descrip: this.item.descrip,
+
+              specifications: this.item.specifications,
+            };
+
+            axios.post(urldomine + 'api/quotes/details', data ).then(r => {
+
+                this.onview('list');
+
+                this.getlist();
+
+                toastr["success"](r.data);
+
+            })
+        },
+        viewpdf (id) {
+
+            this.spin = true;
+
+            axios.get(urldomine + 'api/quotes/pdf/' + id).then(response => {
+
+                this.spin = false;
+
+                // window.$('#iframe').attr('src', response.data);
+
+                this.scrpdf = response.data;
+
+                $('#pdf').modal('show')
+            })
+        },
+        pass () {
+            return this.item.details.length > 0 && this.item.descrip !== null && this.item.descrip !== '';
         },
         save () {
 
@@ -121,6 +247,9 @@ new Vue({
             })
 
         },
+
+
+        // CODIGO DE TRABAJO CON FICHEROS DE LA VISITA
         showFiles(itm) {
 
             this.item = {...itm};
@@ -137,9 +266,38 @@ new Vue({
                 this.spin = false;
             })
         },
+        deleteNote(id) {
+
+            this.spin = true;
+
+            axios.get(urldomine + 'api/quotes/note/delete/' + id).then(r => {
+
+                this.item.notes = this.item.notes.filter(it => it.id !== id);
+
+                this.spin = false;
+            })
+        },
         showVisor (doc) {
             this.doc = doc;
             $('#repro').modal('show');
+        },
+        showNote () {
+            $('#note').modal('show');
+        },
+        saveNote () {
+           this.spin = true;
+           let data = {
+               id:  this.item.id,
+               note: this.note
+           };
+           this.item.notes.push({id: generateId(9), note: this.note});
+            axios.post(urldomine + 'api/quotes/note/save', data
+            ).then(res => {
+                axios.get(urldomine + 'api/quotes/notes/' + this.item.id).then(r => {
+                    this.spin = false;
+                    this.item.notes = r.data.notes
+                })
+            })
         },
         saveFile(e) {
             this.spin = true;
@@ -160,35 +318,8 @@ new Vue({
                 })
             }
         },
-        add () {
-          axios.get(urldomine + 'api/quotes/get/id').then(r => {
-
-            this.item = {...this.itemDefault};
-
-            this.act = 'post';
-
-            this.item.code = r.data;
-
-            this.title = this.labelnew;
-
-            this.onview('new')
-
-            })
-        },
         showCamera() {
           $('#file').click()
-        },
-        pass () {
-
-            let name = this.item.name !== '';
-
-            let contact = this.item.contact !== '';
-
-            let code = this.item.code !== '' ;
-
-            let email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.item.email);
-
-            return name && contact && code && email
         }
     }
 });

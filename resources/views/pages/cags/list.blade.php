@@ -60,8 +60,8 @@
                                      :options="clients"
                                      label="name"
                                      track-by="id"
-                                     placeholder=""
-                        ></multiselect>
+                                     placeholder="">
+                        </multiselect>
                     </div>
                     <div class="col-lg-2 m-t-20">
                         <div class="checkbox checkbox-primary">
@@ -89,7 +89,7 @@
                     </div>
                     <div class="col-lg-4 m-t-20">
                         <span class="txtblack">Tiempo estimado (Dias)<span class="require">*</span></span>
-                        <input class="form-control" type="text" v-model="item.required_time">
+                        <input v-numeric-only class="form-control" type="text" v-model="item.required_time">
                     </div>
 
                 </div>
@@ -126,7 +126,7 @@
                 <hr v-if="item.info.length <= 0" >
                 <div class="row">
                     <div class="col-lg-12">
-                        <span class="txtblack">Obeservaciones <span class="require">*</span></span>
+                        <span class="txtblack">Observaciones <span class="require">*</span></span>
                         <textarea class="form-control" v-model="item.note"></textarea>
                     </div>
                </div>
@@ -183,8 +183,9 @@
         </div>
     </div>
     <hr>
+    <div v-if="lists.length === 0 && filters_list.value !== ''" class="row text-center">NO EXISTEN DATOS PARA: <span class="txtblack">@{{ filters_list.value.toUpperCase() }}</span> </div>
     <div class="row">
-        <div v-for="entity in lists" :key="entity.id" class="col-lg-4">
+        <div v-for="entity in lists" :key="entity.id" class="col-lg-4 col-md-6 col-sm-6 ">
             <div  class="panel panel-border panel-inverse m-t-5">
                 <div class="panel-heading">
                     <div class="row">
@@ -198,51 +199,64 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-12 col-xs-12">
-                            Fecha emisión: <span class="txtblack">@{{dateEs(entity.moment)}}</span>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-xs-12">
+                                    Fecha emisión: <span class="txtblack">@{{dateToEs(entity.moment)}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Cliente: <span class="txtblack">@{{entity.client.name}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Motivo: <span class="txtblack">@{{getMotive(entity)}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Tiempo estimado (dias): <span class="txtblack">@{{entity.required_time}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Contacto por: <span class="txtblack">@{{entity.contact.name}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Compromiso: <span class="txtblack">@{{entity.compromise.name}}</span>
+                                </div>
+                            </div>
+                            <div v-if="entity.type_compromise_id !== 3" class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Fecha de ejecucion: <span class="txtblack">@{{dateToEs(entity.moment)}}</span>
+                                </div>
+                            </div>
+                            <div v-if="entity.landscaper && entity.landscaper.moment" class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Fecha de ejecucion: <span class="txtblack">@{{dateToEs(entity.landscaper.moment)}}</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row m-t-10">
-                        <div class="col-lg-12 col-xs-12">
-                             Cliente: <span class="txtblack">@{{entity.client.name}}</span>
-                        </div>
-                    </div>
-                    <div class="row m-t-10">
-                        <div class="col-lg-12 col-xs-12">
-                            Motivo: <span class="txtblack">@{{getMotive(entity)}}</span>
-                        </div>
-                    </div>
-                    <div class="row m-t-10">
-                        <div class="col-lg-12 col-xs-12">
-                           Tiempo estimado (dias): <span class="txtblack">@{{entity.required_time}}</span>
-                        </div>
-                    </div>
-                    <div class="row m-t-10">
-                        <div class="col-lg-12 col-xs-12">
-                            Contacto por: <span class="txtblack">@{{entity.contact.name}}</span>
-                        </div>
-                    </div>
-                    <div class="row m-t-10">
-                        <div class="col-lg-12 col-xs-12">
-                            Compromiso: <span class="txtblack">@{{entity.compromise.name}}</span>
-                        </div>
-                    </div>
-                    <div v-if="entity.type_compromise_id !== 3" class="row m-t-10">
-                        <div class="col-lg-12 col-xs-12">
-                            Fecha de ejecucion: <span class="txtblack">@{{dateEs(entity.moment)}}</span>
-                        </div>
-                    </div>
-                    <div v-if="entity.landscaper" class="row m-t-10">
-                        <div class="col-lg-12 col-xs-12">
-                            Fecha de ejecucion: <span class="txtblack">@{{dateEs(entity.landscaper.moment)}}</span>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-center m-t-10">
+                            <knob-control
+                                :min="0"
+                                :max="16"
+                                :value-display-function="toWord"
+                                v-model="entity.traser"
+                                :primary-color="colors(entity.traser)"
+                            ></knob-control>
                         </div>
                     </div>
                 </div>
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-lg-6">
-                            <button class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                            <button class="btn btn-danger waves-effect btn-sm" @click="showdelete(trait(entity))"><i class="fa fa-eraser"></i></button>
+                            <button v-if="entity.status_id === 1" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
+                            <button v-if="entity.status_id === 1" class="btn btn-danger waves-effect btn-sm" @click="showdelete(trait(entity))"><i class="fa fa-eraser"></i></button>
                             <button class="btn btn-info waves-effect btn-sm" @click="showdView(entity)"><i class="fa fa-file-pdf-o"></i></button>
                         </div>
                         <div class="col-lg-6 text-right" style="font-style: italic">
@@ -355,6 +369,27 @@
     </div>
 </div>
 
+<div id="redirect" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Atención</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>@{{redirect.message}}</p>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a :href="redirect.patch" class="btn btn-danger waves-effect btn-sm">IR A DOCUMENTO</a>
+                        <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- RECOGIDA DE PRODUCTOS O SERVICIOS MOSTRADOS -->
 <div id="info" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="vertical-alignment-helper">
@@ -442,8 +477,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/multiselect.min.js')}}"></script>
-    <script src="{{asset('appjs/components/paginator.js')}}"></script>
-    <script src="{{asset('appjs/components/order.js')}}"></script>
-    <script src="{{asset('appjs/cags.js')}}"></script>
+    <script src="{{asset('js/app/cags.js')}}"></script>
 @endsection

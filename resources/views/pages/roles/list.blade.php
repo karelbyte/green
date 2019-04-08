@@ -426,7 +426,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/components/paginator.js')}}"></script>
-    <script src="{{asset('appjs/components/find.js')}}"></script>
-    <script src="{{asset('appjs/roles.js')}}"></script>
+    <script src="{{asset('js/app/roles.js')}}"></script>
 @endsection

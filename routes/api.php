@@ -30,12 +30,47 @@ Route::prefix('cags')->group(function () {
 Route::resource('/cags', 'CGlobalsController');
 
 
+// RUTAS NOTAS DE VENTA
+Route::prefix('sales')->group(function () {
+
+    Route::post('list', 'SalesNoteController@getList');
+
+    Route::get('/get/id', 'SalesNotesController@sendID');
+
+    // DETALLES
+
+    Route::post('/details', 'SalesNoteController@SaveDetails');
+
+    Route::get('pdf/{id}', 'SalesNoteController@pdf');
+
+});
+Route::resource('/sales', 'SalesNoteController');
+
+
 // RUTAS COTIZACIONES
 Route::prefix('quotes')->group(function () {
 
     Route::post('list', 'QuotesController@getList');
 
     Route::get('/get/id', 'QuotesController@sendID');
+
+    Route::post('/sendinfo', 'QuotesController@sendInfo');
+
+    // DETALLES
+
+    Route::post('/details', 'QuotesController@SaveDetails');
+
+    Route::get('pdf/{id}', 'QuotesController@pdf');
+
+    // NOTAS
+
+    Route::post('/note/save', 'QuotesController@SaveNote');
+
+    Route::get('/note/delete/{id}', 'QuotesController@deleteQuoteNote');
+
+    Route::get('/notes/{id}', 'QuotesController@getQuoteNotes');
+
+    // FICHEROS
 
     Route::post('/file/save', 'QuotesController@SaveFile');
 
@@ -44,7 +79,7 @@ Route::prefix('quotes')->group(function () {
     Route::get('/files/{id}', 'QuotesController@getQuoteFiles');
 
 });
-Route::resource('/Quotes', 'QuotesController');
+Route::resource('/quotes', 'QuotesController');
 
 
 // RUTAS DEL CALENDARIO
@@ -58,8 +93,6 @@ Route::prefix('calendars')->group(function () {
 Route::resource('/calendars', 'CalendarsController');
 
 
-
-
 // RUTAS DE AJUSTE DE DATOS DE LA EMPRESA
 Route::get('/ajustes/company/data', 'CompanyController@getdata');
 Route::resource('/ajustes/company', 'CompanyController');
@@ -70,15 +103,18 @@ Route::prefix('servicesoffereds')->group(function () {
 
     Route::post('list', 'ServicesOfferedsController@getList');
 
+    Route::get('services', 'ServicesOfferedsController@getServices');
+
 });
 Route::resource('/servicesoffereds', 'ServicesOfferedsController');
-
 
 
 // RUTAS DE PRODUCTOS
 Route::prefix('productsoffereds')->group(function () {
 
     Route::post('list', 'ProductsOfferedsController@getList');
+
+    Route::get('products', 'ProductsOfferedsController@getProduct');
 
 });
 Route::resource('/productsoffereds', 'ProductsOfferedsController');
@@ -141,6 +177,8 @@ Route::prefix('receptions')->group(function () {
     Route::post('list', 'ReceptionsController@getList');
 
     Route::post('aplic', 'ReceptionsController@aplic');
+
+    Route::get('pdf/{id}', 'ReceptionsController@pdf');
 });
 Route::resource('/receptions', 'ReceptionsController');
 
@@ -149,6 +187,8 @@ Route::resource('/receptions', 'ReceptionsController');
 Route::prefix('inventoris')->group(function () {
 
     Route::post('list', 'InventorisController@getList');
+
+    Route::get('products', 'InventorisController@getProducts');
 
     Route::get('pdf/{type}', 'InventorisController@pdf');
 

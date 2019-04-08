@@ -172,9 +172,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/multiselect.min.js')}}"></script>
-    <script src="{{asset('appjs/components/find.js')}}"></script>
-    <script src="{{asset('appjs/components/paginator.js')}}"></script>
-    <script src="{{asset('appjs/components/order.js')}}"></script>
-    <script src="{{asset('appjs/services_offereds.js')}}"></script>
+    <script src="{{asset('js/app/services_offereds.js')}}"></script>
 @endsection

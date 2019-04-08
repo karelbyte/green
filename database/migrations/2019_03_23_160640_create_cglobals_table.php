@@ -26,7 +26,6 @@ class CreateCGlobalsTable extends Migration
             $table->smallInteger('type_compromise_id');
             $table->string('note',500)->nullable();
             $table->integer('status_id')->default(1);
-            $table->timestamps();
         });
     }
 

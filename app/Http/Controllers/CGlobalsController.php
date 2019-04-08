@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calendar;
-use App\Models\CGlobal;
-use App\Models\CGlobalInfo;
+use App\Models\CGlobal\CGlobal;
+use App\Models\CGlobal\CGlobalInfo;
 use App\Models\Client;
 use App\Models\LandScaper;
 use App\Models\ProductOffereds;
 use App\Models\Quotes\Quote;
+use App\Models\SalesNotes\SalesNote;
 use App\Models\ServiceOffereds;
 use App\Models\TypeContact;
 use App\Models\TypeInfo;
@@ -47,7 +48,8 @@ class CGlobalsController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = CGlobal::with(['MotiveServices', 'MotiveProducts', 'documents', 'landscaper', 'compromise','contact','attended', 'client', 'status', 'info' => function($q) {
+        $datos = CGlobal::with(['MotiveServices', 'MotiveProducts', 'documents', 'landscaper', 'compromise','contact',
+           'attended', 'client', 'status', 'info' => function($q) {
             $q->with('info', 'info_det');
         }]);
 
@@ -107,6 +109,8 @@ class CGlobalsController extends Controller
 
            'required_time' => $data['required_time'],
 
+           'traser' => 1,
+
            'note' => $data['note'],
 
            'status_id' => 1
@@ -128,7 +132,7 @@ class CGlobalsController extends Controller
            ]);
        }
 
-       // CREANDO COTIZACION A DISTANCIA
+       // CREANDO COTIZACION A  DOMICIOLIO
 
        if ($data['type_compromise_id'] == 3) {
 
@@ -151,15 +155,18 @@ class CGlobalsController extends Controller
 
                'type_quote_id' => 1,
 
+               'token' => mt_rand(0,99999),
+
                'moment' => Carbon::now(),
 
-               'status_id' => 2,
+               'status_id' => 1,
 
 
            ]);
 
            return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!', 200);
         }
+
 
         if ($data['type_compromise_id'] == 4) {
 
@@ -181,24 +188,38 @@ class CGlobalsController extends Controller
 
         if ($data['type_compromise_id'] == 1) {
 
-            return response()->json('Se envia el flujo a notas de venta', 200);
-        }
+          $sale = SalesNote::create([
 
-        if ($data['type_compromise_id'] == 2) {
-
-            Quote::create([
-
-                'cglobal_id' => $cg->id,
-
-                'type_quote_id' => 2,
+                'global_id' => $cg->id,
 
                 'moment' => Carbon::now(),
+
+                'advance' => 0,
 
                 'status_id' => 1,
 
             ]);
 
-            return response()->json('Se envia el flujo a cotización', 200);
+           return response()->json(['id'=>$sale->id], 200);
+        }
+
+        if ($data['type_compromise_id'] == 2) {
+
+            $quote =   Quote::create([
+
+               'cglobal_id' => $cg->id,
+
+                'type_quote_id' => 2,
+
+                'token' => mt_rand(0,99999),
+
+                'moment' => Carbon::now(),
+
+                'status_id' => 2,
+
+            ]);
+
+            return response()->json(['id'=>$quote->id], 200);
         }
 
 
@@ -218,6 +239,10 @@ class CGlobalsController extends Controller
         LandScaper::where('cglobal_id', $id)->delete();
 
         Calendar::where('cglobal_id', $id)->delete();
+
+        Quote::where('cglobal_id', $id)->delete();
+
+        SalesNote::where('global_id', $id)->delete();
 
         return response()->json('Datos eliminados con exito!', 200);
 

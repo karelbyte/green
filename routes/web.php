@@ -111,7 +111,11 @@ Route::middleware('auth')->group(function () {
 
 
     // COTIZACIONES
-    Route::get('/cotizaciones', 'QuotesController@index')->name('quotes');
+    Route::get('/cotizaciones/{id?}', 'QuotesController@index')->name('quotes');
+
+
+    // NOTA DE VENTA
+    Route::get('/notas-de-ventas/{id?}', 'SalesNoteController@index')->name('sales');
 
 
     // CALENDARIO

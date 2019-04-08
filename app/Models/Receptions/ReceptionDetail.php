@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Receptions;;
 
+use App\Models\Element;
 use Illuminate\Database\Eloquent\Model;
 
 /**

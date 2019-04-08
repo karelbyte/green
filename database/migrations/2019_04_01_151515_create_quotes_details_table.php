@@ -16,11 +16,11 @@ class CreateQuotesDetailsTable extends Migration
         Schema::create('quotes_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('quote_id');
+            $table->integer('type_item');
+            $table->integer('item_id');
             $table->integer('cant');
-            $table->integer('descrip');
+            $table->string('descrip',500);
             $table->decimal('price', 8,2);
-            $table->decimal('total', 8,2);
-            $table->timestamps();
         });
     }
 

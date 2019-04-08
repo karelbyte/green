@@ -6,6 +6,7 @@
     <meta name="description" content="GreenCenter CRM">
     <meta name="author" content="desarrollos@elpuertodigital.com">
     <link rel="shortcut icon" href="{{asset('icon.ico')}}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>GreenCenter CRM</title>
     <link rel="stylesheet" href="{{asset('/plugins/morris/morris.css')}}">
     <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
@@ -25,7 +26,10 @@
 <body class="fixed-left">
 <input type="text" id="user_id_auth" value="{{auth()->user()->id}}" hidden="">
 <div id="wrapper">
-    <div class="topbar">
+    <div id="topbar">
+
+    </div>
+    <div class="topbar" >
         <div class="topbar-left">
             <a href="{{route('inicio')}}" class="logo"><span>Green<span> Center</span></span><i class="fa fa-envira"></i></a>
         </div>
@@ -200,8 +204,8 @@
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class=" typcn typcn-shopping-bag "></i> <span>Notas de venta</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
-                            <li><a href="ui-buttons.html">Lista</a></li>
-                            <li><a href="ui-typography.html">Nueva</a></li>
+                            <li><a href="{{route('sales')}}">Lista</a></li>
+                          <!--  <li><a href="ui-typography.html">Nueva</a></li> -->
                         </ul>
                     </li>
                     <li class="has_sub">
@@ -229,7 +233,7 @@
                         <a href="javascript:void(0);" class="waves-effect"><i class=" mdi mdi-store"></i><span>Almacen</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
                             <li><a href="{{route('measures')}}">Unidades de Medida</a></li>
-                            <li><a href="{{route('materials')}}">Materiales</a></li>
+                            <li><a href="{{route('materials')}}">Productos</a></li>
                             <li><a href="{{route('tools')}}">Herramientas</a></li>
                             <li><a href="{{route('receptions')}}">Recepciones</a></li>
                             <li><a href="{{route('inventoris')}}">Inventarios</a></li>
@@ -299,12 +303,10 @@
 <script src="{{asset('/js/jquery.app.js')}}"></script>
 
 <!-- SISTEMA -->
-<script src="{{asset('/plugins/moment/moment.js')}}"></script>
-<script src="{{asset('/appjs/axios.min.js')}}"></script>
-<script src="{{asset('/appjs/vue.min.js')}}"></script>
-<script src="{{asset('/plugins/toastr/toastr.min.js')}}"></script>
-<script src="{{asset('/appjs/tools.js')}}"></script>
-<script src="{{asset('/appjs/core.js')}}"></script>
+
+<script src="{{asset('/js/app/manifest.js')}}"></script>
+<script src="{{asset('/js/app/vendor.js')}}"></script>
+<script src="{{asset('/js/app/app.js')}}"></script>
 
 @yield('script')
 </body>

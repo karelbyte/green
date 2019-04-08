@@ -9,47 +9,49 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="page-title-box">
-            <h4 class="page-title">Listado de materiales.</h4>
+            <h4 class="page-title">Listado de productos.</h4>
             <ol class="breadcrumb p-0 m-0">
                 <li>
                     <a href="#">Gc</a>
                 </li>
                 <li>
-                    <a href="#">Materiales</a>
+                    <a href="#">Productos</a>
                 </li>
             </ol>
             <div class="clearfix"></div>
         </div>
     </div>
 </div>
-<div v-if="views.new" class="row" v-cloak>
+<div v-if="views.new" class="row" style="height: 85vh" v-cloak>
     <div class="col-lg-12">
         <div class="panel panel-border panel-inverse">
             <div class="panel-heading">
                 <h3 class="panel-title">@{{title}}</h3>
             </div>
             <div class="panel-body">
-                <div class="row m-t-20">
-                    <div class="col-lg-2">
+                <div class="row">
+                    <div class="col-lg-2  m-t-20">
                         <span class="txtblack">Codigo <span class="require">*</span></span>
                         <input v-focus class="form-control" type="text" v-model="item.code">
                     </div>
-                    <div class="col-lg-8">
+                    <div class="col-lg-8  m-t-20">
                         <span class="txtblack">Descripción <span class="require">*</span></span>
                         <input class="form-control" type="text" v-model="item.name">
                     </div>
-
-                        <div class="col-lg-5 m-t-20">
+                </div>
+                <div class="row m-t-3">
+                        <div class="col-lg-4 m-t-20">
                             <span class="txtblack">Unidad de medida <span class="require">*</span></span>
-                            <multiselect style="z-index:999"  v-model="value"
+                            <multiselect style="z-index: 9"  v-model="value"
                                             :options="measures"
                                             label="name"
                                             track-by="id"
                                             placeholder=""
-                            ></multiselect> <!--:multiple="true" -->
+                            ></multiselect>
                         </div>
-
-                    <div class="col-lg-8 m-t-20">
+                </div>
+                <div class="row m-t-5">
+                    <div class="col-lg-3 m-t-20">
                         <span class="txtblack">Precio al publico<span class="require">*</span></span>
                         <input v-numeric-only class="form-control" type="text" v-model.number="item.price">
                     </div>
@@ -109,8 +111,6 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/multiselect.min.js')}}"></script>
-    <script src="{{asset('appjs/components/paginator.js')}}"></script>
-    <script src="{{asset('appjs/components/order.js')}}"></script>
-    <script src="{{asset('appjs/materials.js')}}"></script>
+    <script src="{{asset('js/app/materials.js')}}"></script>
 @endsection
+

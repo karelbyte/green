@@ -84,8 +84,10 @@ class AppSeeder extends Seeder
             ['id' => 2, 'name' => 'Vía telefónica'],
             ['id' => 3, 'name' => 'Mensaje de WhatsApp'],
             ['id' => 4, 'name' => 'Messenger'],
-            ['id' => 5, 'name' => 'Correo electronico'],
-            ['id' => 6, 'name' => 'Redes sociales'],
+            ['id' => 5, 'name' => 'Correo electrónico'],
+            ['id' => 6, 'name' => 'Mercado Libre'],
+            ['id' => 7, 'name' => 'Pagina Web'],
+            ['id' => 8, 'name' => 'Facebook'],
         ];
         \App\Models\TypeContact::insert($TypeContact);
 
@@ -102,11 +104,12 @@ class AppSeeder extends Seeder
 
         // ESTADO DE COTIZACION
         $QuoteStatus = [
-            ['id' => 1, 'name' => 'EN PROCESO'],
-            ['id' => 2, 'name' => 'EN ESPERA'],
-            ['id' => 3, 'name' => 'CONFIMADA'],
-            ['id' => 4, 'name' => 'RECHAZADA'],
-            ['id' => 5, 'name' => 'FINALIZADA'],
+            ['id' => 1, 'name' => 'EN ESPERA'],
+            ['id' => 2, 'name' => 'EN PROCESO'],
+            ['id' => 3, 'name' => 'EN ESPERA DE VERIFICACION'],
+            ['id' => 4, 'name' => 'CONFIMADA'],
+            ['id' => 5, 'name' => 'RECHAZADA'],
+            ['id' => 6, 'name' => 'FINALIZADA'],
         ];
         \App\Models\Quotes\QuoteStatus::insert($QuoteStatus);
 
@@ -117,30 +120,42 @@ class AppSeeder extends Seeder
             ['id' => 2, 'name' => 'EN CURSO'],
             ['id' => 3, 'name' => 'FINALIZADA'],
         ];
-        \App\Models\CGlobalStatus::insert($CAGSt);
+        \App\Models\CGlobal\CGlobalStatus::insert($CAGSt);
 
 
         // TYPO DE RECEPCION
         $TypeRecep = [
-            ['id' => 1, 'name' => 'MATERIALES'],
+            ['id' => 1, 'name' => 'PRODUCTOS'],
             ['id' => 2, 'name' => 'HERRAMIENTAS'],
         ];
-        \App\Models\ReceptionType::insert($TypeRecep);
+        \App\Models\Receptions\ReceptionType::insert($TypeRecep);
 
 
         // ESTADO DE LA RECEPCION
         $statusReceptionList = [
-            ['id' => 0, 'name' => 'NO APLICADA'],
-            ['id' => 1, 'name' => 'APLICADA'],
+            ['id' => 1, 'name' => 'NO APLICADA'],
+            ['id' => 2, 'name' => 'APLICADA'],
         ];
-        \App\Models\ReceptionStatus::insert($statusReceptionList);
+        \App\Models\Receptions\ReceptionStatus::insert($statusReceptionList);
 
 
 
+        // ESTADO DE LA NOTAS DE VENTA
+        $statusSalesList = [
+            ['id' => 1, 'name' => 'RECIBIDO'],
+            ['id' => 2, 'name' => 'PAGADA'],
+        ];
+        \App\Models\Quotes\QuoteStatus::insert($statusSalesList);
 
 
-
-
+        // TIPOS DE VIA DE ENVIO DE INFORMACION
+        $statusSendInfosList = [
+            ['id' => 1, 'name' => 'Vía WhatsApp'],
+            ['id' => 2, 'name' => 'Vía correo electrónico'],
+            ['id' => 3, 'name' => 'Vía telefóno'],
+            ['id' => 4, 'name' => 'Vía presencial'],
+        ];
+         \App\Models\TypeWaySendInfo::create($statusSendInfosList);
 
 
 

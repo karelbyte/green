@@ -16,7 +16,7 @@
    <h5>{{$company->name}}</h5>
 </div>
 <div>
-    <h4>INVENTARIO DE @if($type == 1) MATERIALES @else HERRAMIENTAS @endif</h4>
+    <h4>INVENTARIO DE @if($type == 1) PRODUCTOS @else HERRAMIENTAS @endif</h4>
 </div>
 <table class="table table-hover">
     <thead>

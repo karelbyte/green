@@ -31,7 +31,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-3 col-md-3 col-sm-4 m-t-20">
                             <span class="txtblack">Tipo de recepción <span class="require">*</span></span>
                             <multiselect style="z-index:2"  v-model="type"
                                          :options="types"
@@ -40,16 +40,16 @@
                                          placeholder=""
                             ></multiselect> <!--:multiple="true" -->
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3 col-md-3 col-sm-4 m-t-20">
                             <span class="txtblack">Codigo <span class="require">*</span></span>
                             <input v-focus class="form-control" type="text" v-model="item.code">
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-3 col-md-3 col-sm-4 m-t-20">
                             <span class="txtblack">Fecha <span class="require">*</span></span>
                             <input class="form-control" type="date" v-model="item.moment">
                         </div>
 
-                        <div class="col-lg-12 m-t-20">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-t-20">
                             <span class="txtblack">Nota </span>
                             <input class="form-control" type="text" v-model.number="item.note">
                         </div>
@@ -76,7 +76,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="mouse" v-for="det in details" :key="det.element.id">
+                        <tr class="mouse" v-for="det in details" :key="det.id">
                             <td class="cel_fix">@{{det.element.code}}</td>
                             <td class="cel_fix">@{{det.element.name}}</td>
                             <td class="cel_fix">@{{det.cant}}</td>
@@ -87,13 +87,15 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="panel-footer">
+                        <button v-if="pass()" class="btn btn-success waves-effect btn-sm" @click="save()">Guardar</button>
+                        <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
+
+                </div>
             </div>
         </div>
     </div>
-    <div class="m-t-10">
-        <button v-if="pass()" class="btn btn-success waves-effect btn-sm" @click="save()">Guardar</button>
-        <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
-    </div>
+
 
 </div>
 <div v-if="views.list" v-cloak>
@@ -122,8 +124,8 @@
             </thead>
             <tbody>
             <tr v-for="entity in lists" :key="entity.id" :class="[entity.status_id === '1' ? 'noaplic' : 'aplic']">
-                <td class="cel_fix">@{{entity.type.name}}</td>
-                <td class="cel_fix">@{{dateEs(entity.moment)}}</td>
+                <td class="cel_fix">@{{entity.types.name}}</td>
+                <td class="cel_fix">@{{dateToEs(entity.moment)}}</td>
                 <td class="cel_fix">@{{entity.code}}</td>
                 <td class="cel_fix">@{{entity.user.name}}</td>
                 <td class="cel_fix">@{{entity.status.name}}</td>
@@ -131,7 +133,7 @@
                  <button v-if="parseInt(entity.status_id) === 1" class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
                  <button v-if="parseInt(entity.status_id) === 1" class="btn btn-info  waves-effect btn-sm" @click="showaplic(entity)">Aplicar</button>
                  <button v-if="parseInt(entity.status_id) === 1" class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
-                 <button v-if="parseInt(entity.status_id) === 2" class="btn btn-info  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-pdf-o"></i></button>
+                 <button v-if="parseInt(entity.status_id) === 2" class="btn btn-info  waves-effect btn-sm" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o"></i></button>
                 </td>
             </tr>
             </tbody>
@@ -206,13 +208,30 @@
         </div>
     </div>
 </div>
+
+<div id="pdf" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center modal-lg">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Visor</h3>
+                    </div>
+                    <div class="panel-body">
+                        <iframe  id="iframe" :src="scrpdf" frameborder="0" width="100%" height="450px"></iframe>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @component('com.eliminar')@endcomponent
 @component('com.spiner')@endcomponent
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/multiselect.min.js')}}"></script>
-    <script src="{{asset('appjs/components/paginator.js')}}"></script>
-    <script src="{{asset('appjs/components/order.js')}}"></script>
-    <script src="{{asset('appjs/receptions.js')}}"></script>
+    <script src="{{asset('js/app/receptions.js')}}"></script>
 @endsection

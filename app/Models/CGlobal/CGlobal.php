@@ -1,7 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\CGlobal;
 
+
+use App\Models\LandScaper;
+use App\Models\ProductOffereds;
+use App\Models\ServiceOffereds;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,28 +23,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CGlobal extends Model
 {
-    /**
-     * The table associated with the model.
-     * 
-     * @var string
-     */
     protected $table = 'cglobals';
 
-    /**
-     * The "type" of the auto-incrementing ID.
-     * 
-     * @var string
-     */
+    public $timestamps = false;
+
     protected $keyType = 'integer';
 
-    /**
-     * @var array
-     */
     protected $fillable = [ 'moment', 'client_id', 'user_id', 'type_contact_id', 'repeater', 'type_motive',  'type_motive_id',
 
-                          'required_time', 'type_compromise_id', 'note', 'status_id'];
-
-    protected $hidden = ['created_at', 'updated_at'];
+                          'required_time', 'type_compromise_id', 'note', 'status_id', 'traser'];
 
 
     public function Contact() {
@@ -51,13 +42,13 @@ class CGlobal extends Model
 
     public function MotiveServices() {
 
-        return $this->hasOne(ProductOffereds::class, 'id', 'type_motive_id');
+        return $this->hasOne(ServiceOffereds::class, 'id', 'type_motive_id');
 
     }
 
     public function MotiveProducts() {
 
-        return $this->hasOne(ServiceOffereds::class, 'id', 'type_motive_id');
+        return $this->hasOne(ProductOffereds::class, 'id', 'type_motive_id');
 
     }
 
@@ -81,7 +72,7 @@ class CGlobal extends Model
 
     public function Status() {
 
-        return $this->hasOne('App\Models\CGlobalStatus', 'id', 'status_id');
+        return $this->hasOne(CGlobalStatus::class, 'id', 'status_id');
 
     }
 

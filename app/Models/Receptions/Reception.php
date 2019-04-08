@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Receptions;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -47,7 +48,7 @@ class Reception extends Model
     }
 
 
-    public function Type() {
+    public function Types() {
 
         return $this->belongsTo(ReceptionType::class, 'type', 'id');
     }

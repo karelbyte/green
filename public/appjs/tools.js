@@ -75,7 +75,6 @@ function fixdate (dt) {
 }
 
 function dateEs(dt) {
-
    return new Date(dt.replace(/-/g, '/')).toLocaleDateString()
 }
 

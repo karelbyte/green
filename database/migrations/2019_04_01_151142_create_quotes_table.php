@@ -16,11 +16,15 @@ class CreateQuotesTable extends Migration
         Schema::create('quotes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uid');
+            $table->string('token', 5)->nullable();
+            $table->string('descrip', 500)->nullable();
+            $table->longText('specifications')->nullable();
             $table->integer('cglobal_id');
             $table->integer('type_quote_id');
+            $table->smallInteger('sends');
             $table->date('moment');
             $table->smallInteger('status_id');
-            $table->timestamps();
+            $table->smallInteger('type_send_id');
         });
     }
 

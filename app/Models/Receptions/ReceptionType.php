@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Receptions;;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ReceptionStatus extends Model
+class ReceptionType extends Model
 {
-    protected $table = 'receptions_status';
+    protected $table = 'receptions_type';
 
     protected $fillable = [
         'id', 'name'
@@ -16,7 +16,6 @@ class ReceptionStatus extends Model
 
 
     protected $hidden = [
-        'id',  'created_at', 'updated_at'
+        'created_at', 'updated_at'
     ];
-
 }

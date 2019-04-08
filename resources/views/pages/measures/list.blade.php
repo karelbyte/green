@@ -79,7 +79,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/components/paginator.js')}}"></script>
-    <script src="{{asset('appjs/components/find.js')}}"></script>
-    <script src="{{asset('appjs/measures.js')}}"></script>
+    <script src="{{asset('js/app/measures.js')}}"></script>
 @endsection

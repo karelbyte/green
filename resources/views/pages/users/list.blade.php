@@ -60,16 +60,9 @@
                         </div>
                         <div class="col-lg-4 m-t-10">
                             <span class="txtblack">Asignar rol de acceso al sistema. <span class="require">*</span></span>
-                            <multiselect style="z-index: 999" v-model="value"
-                                         :options="roles"
-                                         label="name"
-                                         track-by="name"
-                                         placeholder=""
-                            ></multiselect>
-                            <!-- <select class="form-control" v-model="value">
-                                 <option  value="0"></option>
-                                 <option v-for="rol in roles" :value="rol.id">@{{ rol.name }}</option>
-                             </select> -->
+                           <select class="form-control" v-model="value">
+                                 <option v-for="rol in roles" :value="rol">@{{ rol.name }}</option>
+                             </select>
 
                         </div>
                         <div class="col-lg-12 m-t-20">
@@ -135,8 +128,5 @@
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('appjs/multiselect.min.js')}}"></script>
-    <script src="{{asset('appjs/components/paginator.js')}}"></script>
-    <script src="{{asset('appjs/components/find.js')}}"></script>
-    <script src="{{asset('appjs/users.js')}}"></script>
+    <script src="{{asset('js/app/users.js')}}"></script>
 @endsection
