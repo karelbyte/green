@@ -175,6 +175,7 @@ class AppSeeder extends Seeder
             ['id' => 2, 'name' => 'Vía correo electrónico'],
             ['id' => 3, 'name' => 'Vía telefóno'],
             ['id' => 4, 'name' => 'Vía presencial'],
+            ['id' => 5, 'name' => 'Visita a cliente']
         ];
          \App\Models\TypeWaySendInfo::create($statusSendInfosList);
 

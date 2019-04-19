@@ -17,7 +17,6 @@ class CreateTypeInfoDetailsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('info_id');
             $table->string('name');
-            $table->timestamps();
             $table->engine = 'InnoDB';
         });
     }

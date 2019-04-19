@@ -15,8 +15,9 @@ class CreateProductsOfferedsNeedsTable extends Migration
     {
         Schema::create('products_offereds_needs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('products_offereds_detail_id');
-            $table->foreign('products_offereds_detail_id')->references('id')->on('products_offereds_details')->onDelete('cascade');
+            $table->bigInteger('products_offereds_detail_id')->unsigned();
+            $table->foreign('products_offereds_detail_id')->references('id')
+                ->on('products_offereds_details')->onDelete('cascade');
             $table->integer('element_id');
             $table->integer('cant');
             $table->engine = 'InnoDB';

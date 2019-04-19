@@ -8,5 +8,6 @@ class TypeInfoDetail extends Model
 {
    protected $table = 'type_info_details';
 
-   protected $hidden = ['created_at', 'updated_at', 'info_id'];
+   public $timestamps = false;
+
 }
