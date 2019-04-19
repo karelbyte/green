@@ -17,6 +17,7 @@ class CreateQuotesNotesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('quote_id');
             $table->string('note', 500);
+            $table->engine = 'InnoDB';
         });
     }
 

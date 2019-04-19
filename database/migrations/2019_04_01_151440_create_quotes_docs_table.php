@@ -20,6 +20,7 @@ class CreateQuotesDocsTable extends Migration
             $table->string('ext', 5);
             $table->string('url', 500);
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->smallInteger('active_id');
             $table->smallInteger('position_id');
+            $table->engine = 'InnoDB';
         });
     }
 

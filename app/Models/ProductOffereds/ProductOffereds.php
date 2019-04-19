@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ProductOffereds;
 
+use App\Models\Quotes\Quote;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,26 +15,24 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProductOffereds extends Model
 {
-    /**
-     * The "type" of the auto-incrementing ID.
-     * 
-     * @var string
-     */
     protected $table = 'products_offereds';
 
     protected $keyType = 'integer';
 
-    /**
-     * @var array
-     */
     protected $fillable = ['name'];
-
 
     public $timestamps = false;
 
     public function details() {
 
         return $this->hasMany(ProductOfferedsDetails::class, 'products_offereds_id', 'id');
+    }
+
+    public function used () {
+
+        $found = Quote::where('measure_id', $this->id)->first();
+
+        return !empty($found);
     }
 
 }

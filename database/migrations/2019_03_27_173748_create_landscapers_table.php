@@ -20,7 +20,8 @@ class CreateLandscapersTable extends Migration
             $table->time('timer');
             $table->string('note', 500)->nullable();
             $table->uuid('user_uid');
-            $table->integer('status_id')->default(1);
+            $table->integer('status_id')->default(0);
+            $table->engine = 'InnoDB';
         });
     }
 

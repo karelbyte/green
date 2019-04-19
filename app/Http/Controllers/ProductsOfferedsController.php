@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProductOffereds;
-use App\Models\ProductOfferedsDetails;
+use App\Models\Element;
+use App\Models\Inventori;
+use App\Models\Measure;
+use App\Models\ProductOffereds\ProductOffereds;
+use App\Models\ProductOffereds\ProductOfferedsDetails;
 use Illuminate\Http\Request;
 
 class ProductsOfferedsController extends Controller
@@ -28,7 +31,11 @@ class ProductsOfferedsController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = ProductOffereds::with('details');
+        $datos = ProductOffereds::with( ['details' => function($q) {
+            $q->with(['measure', 'needs' => function ($n) {
+                $n->with('element');
+            }]);
+        }]);
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
@@ -38,11 +45,17 @@ class ProductsOfferedsController extends Controller
 
         $list =  $datos->skip($skip)->take($request['take'])->get();
 
+        $elements = Element::select('id', 'name')->get();
+
         $result = [
 
             'total' => $total,
 
             'list' =>  $list,
+
+            'measures' => Measure::all(),
+
+            'elements' => $elements
 
         ];
 
@@ -59,7 +72,18 @@ class ProductsOfferedsController extends Controller
 
         $product = ProductOffereds::create($request->except('details'));
 
-        $product->details()->createMany($request->details);
+        foreach ($request->details as $det) {
+
+           $pdetails =  ProductOfferedsDetails::create([
+               'products_offereds_id' => $product->id,
+               'name' => $det['name'],
+               'measure_id' => $det['measure_id'],
+               'init'=> $det['init'],
+               'end' => $det['end']
+           ]);
+
+           $pdetails->needs()->createMany($det['needs']);
+        }
 
         return response()->json('Datos creado con exito!', 200);
     }
@@ -76,16 +100,23 @@ class ProductsOfferedsController extends Controller
 
         $product->details()->delete();
 
-        $product->details()->createMany($request->details);
+        foreach ($request->details as $det) {
+
+            $pdetails =  ProductOfferedsDetails::create([
+                'products_offereds_id' => $product->id,
+                'name' => $det['name'],
+                'measure_id' => $det['measure_id'],
+                'init'=> $det['init'],
+                'end' => $det['end']
+            ]);
+
+            $pdetails->needs()->createMany($det['needs']);
+        }
 
         return response()->json('Datos actualizados con exito!', 200);
     }
 
     public function destroy($id)  {
-
-        $product = ProductOffereds::find($id);
-
-        $product->details()->delete();
 
         ProductOffereds::destroy($id);
 

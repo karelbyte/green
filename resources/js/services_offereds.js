@@ -168,9 +168,25 @@ new Vue({
         },
         addNew() {
 
-            this.det.id = generateId(9);
+            let foun = this.item.details.find(it => {
 
-            this.item.details.push({...this.det});
+               return  it.id === this.det.id
+
+            });
+
+            if (foun === undefined) {
+
+                this.det.id = generateId(9);
+
+                this.item.details.push({...this.det});
+
+            } else {
+
+                this.item.details = this.item.details.filter(it => it !== foun);
+
+                this.item.details.push({...this.det});
+
+            }
 
             $('#add_det').modal('hide');
 
@@ -178,6 +194,12 @@ new Vue({
         showAddDet() {
 
             this.det = {...this.detDedault};
+
+            $('#add_det').modal('show');
+        },
+        showEditDet(dt) {
+
+            this.det = {...dt};
 
             $('#add_det').modal('show');
         },

@@ -21,6 +21,7 @@ class CreateQuotesDetailsTable extends Migration
             $table->integer('cant');
             $table->string('descrip',500);
             $table->decimal('price', 8,2);
+            $table->engine = 'InnoDB';
         });
     }
 

@@ -17,6 +17,7 @@ class CreateSurrogatesTable extends Migration
             $table->bigIncrements('id');
             $table->string('model');
             $table->integer('next');
+            $table->engine = 'InnoDB';
         });
     }
 

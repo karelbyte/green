@@ -134,9 +134,11 @@ new Vue({
 
         },
         passItemForAdd () {
+
             return this.ItemForAdd.cant > 0 && this.ItemForAdd.element !== ''
         },
         showAddLine() {
+
             $('#newline').modal('show')
         },
         getlist (pFil, pOrder, pPager) {
@@ -196,6 +198,7 @@ new Vue({
                'reception' : this.item,
 
                'details':  this.details.map(it => {
+
                    return {
                        'item_id': it.element.id,
 

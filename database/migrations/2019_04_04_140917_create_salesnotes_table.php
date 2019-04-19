@@ -18,7 +18,9 @@ class CreateSalesnotesTable extends Migration
             $table->integer('global_id');
             $table->date('moment');
             $table->decimal('advance', 8,2)->nullable();
+            $table->string('strategy', 500)->nullable();
             $table->smallInteger('status');
+            $table->engine = 'InnoDB';
         });
     }
 

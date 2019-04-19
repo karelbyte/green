@@ -34,7 +34,9 @@
 
         </div>
         <div class="col-lg-5 col-md-4 col-sm-2 col-xs-12 m-t-5">
+            @can('inventoris.print')
             <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="viewpdf()"><i class="fa fa-file-pdf-o"></i> IMPRIMIR</button>
+            @endcan
          <!--   <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-excel "></i> XLS</button> -->
         </div>
         <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 text-right">

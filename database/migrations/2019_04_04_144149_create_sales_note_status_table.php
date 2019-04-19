@@ -16,6 +16,7 @@ class CreateSalesNoteStatusTable extends Migration
         Schema::create('sales_note_status', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->engine = 'InnoDB';
         });
     }
 

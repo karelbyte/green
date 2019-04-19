@@ -18,6 +18,7 @@ class CreateCglobalInfoClientsTable extends Migration
             $table->integer('cglobal_id');
             $table->date('moment');
             $table->smallInteger('type_info_id');
+            $table->engine = 'InnoDB';
         });
     }
 

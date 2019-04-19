@@ -22,6 +22,7 @@ class CreateReceptionsTable extends Migration
             $table->string('note')->nullable();
             $table->smallInteger('status_id')->default(1);
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

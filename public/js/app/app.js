@@ -2716,11 +2716,20 @@ files.keys().map(function (key) {
   return Vue.component(key.split('/').pop().split('.')[0], files(key)["default"]);
 });
 var app = new Vue({
-  el: '#topbar',
+  el: '#notify',
   data: function data() {
     return {
-      semitone: 10
+      landscapers: 0,
+      quoteconfirm: 0
     };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get(urldomine + 'api/notifications/today').then(function (r) {
+      _this.landscapers = r.data.landscapers.length;
+      _this.quoteconfirm = r.data.quoteconfirm.length;
+    });
   }
 });
 

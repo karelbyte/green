@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Quotes\Quote;
-use App\Models\User;
+use App\Models\Users\User;
 use App\Observers\UuiDObserver;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;

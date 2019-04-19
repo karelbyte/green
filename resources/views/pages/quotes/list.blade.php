@@ -27,21 +27,42 @@
 </div>
 <input type="text" id="find" value="{{$find}}" hidden>
 <a href="https://web.whatsapp.com/" target="_blank" id="wass" hidden></a>
- <!-- AÑADIENDO FICHEROS DE COTIZACION A DOMICIOLIO -->
+ <!-- AÑADIENDO FICHEROS DE COTIZACION A DOMICILIO -->
 <div v-if="views.newfiles" class="row" v-cloak>
-    <div class="col-lg-10">
+    <div class="col-lg-9">
         <div class="panel panel-border panel-inverse">
             <div class="panel-heading" style="border-bottom: 2px solid rgba(123,137,139,0.16) !important;">
-                <h3 class="panel-title">Cotizacion: @{{item.id}}</h3>
+                <h3 class="panel-title">Cotización a domicilio: @{{item.id}}</h3>
             </div>
             <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-2  m-t-20">
+                        <span class="txtblack">Fecha<span class="require">*</span></span>
+                        <input type="date" class="form-control" v-model="item.globals.landscaper.moment">
+                    </div>
+                    <div class="col-lg-2  m-t-20">
+                        <span class="txtblack">Hora<span class="require">*</span></span>
+                        <input type="time" class="form-control" v-model="item.globals.landscaper.timer">
+                    </div>
+                    <div class="col-lg-10  m-t-20">
+                        <span class="txtblack">Paisajista<span class="require">*</span></span>
+                        <select class="form-control" v-model="item.globals.landscaper.user_uid">
+                            <option v-for="scapers in landscapers" :value="scapers.uid">@{{ scapers.name }}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-12  m-t-20">
+                        <span class="txtblack">Nota<span class="require">*</span></span>
+                        <textarea type="text" class="form-control" v-model="item.globals.landscaper.note"></textarea>
+                    </div>
+
+                </div>
+                <hr>
                 <div class="row m-t-20">
                     <div class="col-lg-12">
                         <button class="btn btn-default btn-default" @click="showCamera()" >Imagen o video +</button>
                         <button class="btn btn-default btn-default" @click="showNote()">Nota + </button>
                         <input type="file" id="file" capture=camera style="display: none" @change="saveFile($event)">
                     </div>
-
                 </div>
                 <hr>
                 <div v-for="doc in item.docs" class="row m-t-10">
@@ -57,10 +78,30 @@
                         <button class="btn btn-danger btn-sm m-t-5" @click="deleteNote(not.id)"><i class="fa fa-eraser"></i></button>
                     </div>
                 </div>
+                <div class="row m-t-20">
+                    <div class="col-lg-12">
+                        <div class="checkbox checkbox-primary">
+                            <input  type="checkbox" v-model="item.globals.landscaper.status_id">
+                            <label for="checkbox2" class="txtblack">
+                                VISITA CONCLUIDA
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
             </div>
             <div class="panel-footer footer_fix">
-                <button v-if="pass()" class="btn btn-success waves-effect btn-sm" @click="save()">Guardar</button>
-                <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12">
+                        <button v-if="passVisit()" class="btn btn-success waves-effect btn-sm" @click="saveInfoVisint()">Guardar</button>
+                        <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
+                    </div>
+                    <div class="col-lg-6 col-xs-12 text-right">
+                        <span>Los datos tomados en la visita guardan automántico!</span>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -123,7 +164,6 @@
                 <div class="row">
                     <div class="col-lg-12">
                      <!--  <textarea class="form-control" v-model="item.specifications" placeholder="Especificaciones"></textarea> -->
-
                         <quill-editor v-model="item.specifications" :options="editorOption"></quill-editor>
                     </div>
 
@@ -147,8 +187,8 @@
         </div>
     </div>
     <hr>
-    <div class="row" style="height: 90vh">
-        <div v-for="entity in lists" :key="entity.id" class="col-lg-4">
+    <div class="row">
+        <div v-for="entity in lists" :key="entity.id" class="col-lg-4" style="height: 380px">
             <div  class="panel panel-border panel-inverse m-t-5">
                 <div class="panel-heading">
                     <div class="row">
@@ -180,10 +220,10 @@
                     <hr>
                     <div v-if="entity.details.length > 0" class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">
-                            Moto cotizado: <span class="txtblack">@{{getTotalItem(entity.details)}}</span>
+                            Monto cotizado: <span class="txtblack">@{{getTotalItem(entity.details)}}</span>
                         </div>
                     </div>
-                    <div v-if="entity.type_send_id > 0" class="row m-t-10">
+                    <div v-if="entity.type_send_id > 0 && entity.type_send !== null " class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">
                             Enviada vía: <span class="txtblack">@{{entity.type_send.name}} <span style="color:#f59586"> (@{{entity.sends}})</span> </span>
                         </div>
@@ -202,24 +242,20 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-lg-4">
-                            <div class="btn-group">
+                            <div class="btn-group" v-if="entity.status_id !== 4 && entity.status_id !== 5">
                                 <button type="button" class="btn btn-custom dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="false">Acciones <span class="caret"></span> </button>
                                 <ul class="dropdown-menu">
                                     <li><a href="#" @click="edit(entity)"><i class="fa fa-edit m-r-5"></i>Cotizar</a></li>
-                                    <li v-if="entity.type_quote_id == 1"><a href="#" @click="showFiles(entity)"> <i class="fa fa-file m-r-5"></i>Archivos</a></li>
+                                    <li v-if="entity.type_quote_id == 1"><a href="#" @click="showFiles(entity)"> <i class="fa fa-home m-r-5"></i>Visita</a></li>
                                     <li v-if="entity.details.length > 0"><a href="#" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o m-r-5"></i>Imprimir</a></li>
-                                    <li v-if="entity.details.length > 0"><a href="#" @click="ShowSendInfo(entity.id)"><i class="fa fa-send m-r-5"></i>Enviar a cliente</a></li>
-                                    <li v-if="entity.details.length > 0"><a href="#"><i class="fa fa-search"></i> Verificacion</a></li>
+                                    <li v-if="entity.details.length > 0"><a href="#" @click="ShowSendInfo(entity)"><i class="fa fa-send m-r-5"></i>Enviar a cliente</a></li>
+                                    <li v-if="entity.status_id === 3 || entity.status_id === 7 ||  entity.status_id === 9"><a href="#" @click="ShowCheckInfo(entity)"><i class="fa fa-search"></i> Verificacion</a></li>
                                 </ul>
                             </div>
-                          <!--  <button class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                            <button v-if="entity.type_quote_id == 1" class="btn btn-default waves-effect btn-sm" @click="showFiles(entity)">Archivos</button>
-                            <button v-if="entity.details.length > 0" class="btn btn-info waves-effect btn-sm" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o"></i></button>
-                            <button v-if="entity.details.length > 0" class="btn btn-default waves-effect btn-sm" @click="ShowSendInfo(entity.id)"><i class="fa fa-send"></i></button>
-                            <button v-if="entity.details.length > 0" class="btn btn-default waves-effect btn-sm" @click="ShowSendInfo(entity.id)"><i class="fa fa-send"></i></button> -->
+                            <a v-if="entity.status_id == 4 || entity.status_id == 5" href="#" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o m-r-5"></i>Imprimir</a>
                         </div>
                         <div class="col-lg-8 text-right" style="font-style: italic">
-                            <span class="txtblack">@{{entity.status.name  }}</span>
+                            <span :class="{'acept': entity.status_id == 4, 'noacept': entity.status_id == 5}">@{{entity.status.name  }}</span>
                         </div>
                     </div>
                 </div>
@@ -242,9 +278,9 @@
                     <div class="panel-body">
                       <div class="row">
                           <div class="col-lg-12">
-                              <div v-if="doc.ext == 'jpg' || doc.ext == 'jpeg'"><img :src="doc.url" alt="" width="100%" height="300px" /></div>
+                              <div v-if="doc.ext == 'jpg' || doc.ext == 'jpeg' || doc.ext == 'png'"><img :src="doc.url" alt="" width="100%" height="300px" /></div>
                               <div v-if="doc.ext == 'mp3' || doc.ext == '3gpp'" > <audio :src="doc.url" controls ></audio></div>
-                              <div v-if="doc.ext == 'mp4'"> <video :src="doc.url" controls width="100%" height="300px"></video></div>
+                              <div v-if="doc.ext == 'mp4' || doc.ext == 'mov' "> <video :src="doc.url" controls width="100%" height="300px"></video></div>
                           </div>
                       </div>
                     </div>
@@ -350,6 +386,79 @@
     </div>
 </div>
 
+
+<!-- VERIFICACION DE INFORMACION AL CLIENTE -->
+<div id="check" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Verificación de recepción</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                Via de verificación
+                                <select class="form-control" v-model="item.type_check_id">
+                                    <option value="1">Vía WhatsApp</option>
+                                    <option value="2">Vía correo electrónico</option>
+                                    <option value="3">Vía telefóno</option>
+                                    <option value="4">Visita a cliente</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 m-t-20">
+                                <span class="txtblack">Codigo confirmación <span class="require">*</span></span>
+                                <input v-numeric-only class="form-control" type="text" v-model.number="confircode">
+                            </div>
+                            <div class="col-lg-12  m-t-20">
+                                <div class="radio radio-primary checkbox-inline">
+                                    <input type="radio" id="radio30" value="1" v-model.number="item.clientemit">
+                                    <label for="radio30">
+                                        Aceptada
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-12  m-t-20">
+                                <div class="radio radio-primary checkbox-inline">
+                                    <input type="radio" id="radio31" value="2" v-model.number="item.clientemit">
+                                    <label for="radio31">
+                                        No Aceptada
+                                    </label>
+                                </div>
+                            </div>
+                            <div v-if="item.clientemit === 2">
+                               <div class="col-lg-12 m-t-20">
+                                <span class="txtblack">Retroalimentación</span>
+                                <textarea  v-focus class="form-control" type="text" v-model="item.feedback"> </textarea>
+                                <div class="radio radio-primary checkbox-inline">
+                                    <input type="radio" id="radio41" value="2" v-model.number="item.emit">
+                                    <label for="radio41">
+                                        No continuara
+                                    </label>
+                                </div>
+                                <div v-if="item.status_id !== 9" class="radio radio-primary checkbox-inline m-t-10">
+                                    <input type="radio" id="radio42" value="1" v-model.number="item.emit">
+                                    <label for="radio42">
+                                        Modificar
+                                    </label>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button v-if="passCheckSend()" :disabled="spin" class="btn btn-danger waves-effect btn-sm" @click="sendCheckClient()">Aplicar</button>
+                        <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ENVIO DE INFORMACION AL CLIENTE -->
 <div id="sendinfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="vertical-alignment-helper">
         <div class="modal-dialog vertical-align-center">
@@ -392,10 +501,16 @@
                                     </label>
                                 </div>
                             </div>
+                            <div v-if="item.status_id === 8" class="col-lg-12 m-t-20">
+                                <span class="txtblack">Estrategia de venta</span>
+                                <textarea  v-focus class="form-control" type="text" v-model="item.strategy"> </textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="panel-footer text-right">
-                        <button v-if="passInfoSend()" :disabled="spin" class="btn btn-danger waves-effect btn-sm" @click="sendInfoClient()">Aplicar</button>
+                        <button v-if="passInfoSend()" :disabled="sendM" class="btn btn-danger waves-effect btn-sm" @click="sendInfoClient()">Aplicar
+                            <div v-if="sendM" class="lds-dual-ring"></div>
+                        </button>
                         <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
                     </div>
                 </div>

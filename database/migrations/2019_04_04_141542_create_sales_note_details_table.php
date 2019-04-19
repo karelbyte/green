@@ -21,6 +21,7 @@ class CreateSalesNoteDetailsTable extends Migration
             $table->string('descrip', 400);
             $table->decimal('cant', 8,2);
             $table->decimal('price', 8,2);
+            $table->engine = 'InnoDB';
 
         });
     }

@@ -62,8 +62,9 @@
                                     <td class="cel_fix">@{{det.name}}</td>
                                     <td class="cel_fix">@{{det.init}} a @{{ det.end }} dias</td>
                                     <td class="cel_fix">@{{det.measure.name}}</td>
-                                    <td class="cel_fix">@{{det.price}}</td>
+                                    <td class="cel_fix">@{{parseFloat(det.price).toFixed(2)}}</td>
                                     <td>
+                                        <button class="btn btn-teal waves-effect btn-sm" @click="showEditDet(det)"><i class="fa fa-edit"></i></button>
                                         <button class="btn btn-danger waves-effect btn-sm" @click="delDetail(det.id)"><i class="fa fa-eraser"></i></button>
                                     </td>
                                 </tr>
@@ -83,8 +84,10 @@
 <div v-if="views.list" v-cloak>
     <div class="row m-b-10">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
-           <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nuevo</button>
-            <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-pdf-o"></i> IMPRIMIR</button>
+           @can('services.create')
+            <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nuevo</button>
+           @endcan
+           <!-- <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-pdf-o"></i> IMPRIMIR</button> -->
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
           <find :filters="filters_list" filter="value" v-on:getfilter="getlist" holder="buscar servicio"></find>
@@ -106,7 +109,9 @@
                 <td class="cel_fix">@{{entity.name}}</td>
                 <td>
                  <button class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                 <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 @can('services.delete')
+                  <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 @endcan
                 </td>
             </tr>
             </tbody>

@@ -89,7 +89,7 @@ var core = {
       this.fieldtype = f.type;
     },
     add: function add() {
-      this.item = _objectSpread({}, this.itemDefault);
+      this.item = JSON.parse(JSON.stringify(this.itemDefault));
       this.act = 'post';
       this.title = this.labelnew;
       this.onviews('new');
@@ -299,12 +299,30 @@ new Vue({
       });
     },
     addNew: function addNew() {
-      this.det.id = Object(_tools__WEBPACK_IMPORTED_MODULE_2__["generateId"])(9);
-      this.item.details.push(_objectSpread({}, this.det));
+      var _this3 = this;
+
+      var foun = this.item.details.find(function (it) {
+        return it.id === _this3.det.id;
+      });
+
+      if (foun === undefined) {
+        this.det.id = Object(_tools__WEBPACK_IMPORTED_MODULE_2__["generateId"])(9);
+        this.item.details.push(_objectSpread({}, this.det));
+      } else {
+        this.item.details = this.item.details.filter(function (it) {
+          return it !== foun;
+        });
+        this.item.details.push(_objectSpread({}, this.det));
+      }
+
       $('#add_det').modal('hide');
     },
     showAddDet: function showAddDet() {
       this.det = _objectSpread({}, this.detDedault);
+      $('#add_det').modal('show');
+    },
+    showEditDet: function showEditDet(dt) {
+      this.det = _objectSpread({}, dt);
       $('#add_det').modal('show');
     },
     passNew: function passNew() {

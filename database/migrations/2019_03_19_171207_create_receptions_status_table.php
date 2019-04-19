@@ -16,6 +16,7 @@ class CreateReceptionsStatusTable extends Migration
         Schema::create('receptions_status', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 15);
+            $table->engine = 'InnoDB';
         });
     }
 

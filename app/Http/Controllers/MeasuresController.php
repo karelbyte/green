@@ -59,35 +59,46 @@ class MeasuresController extends Controller
 
     public function store(Request $request) {
 
-        $me = Measure::where('name', $request->measure)->first();
+        try {
 
-        if (!empty($me)) { return response()->json('Ya existe una medida con esa descripción!', 500);}
+            Measure::create(['name' => $request->measures]);
 
-        Measure::create(['name' => $request->measures]);
+            return response()->json('Datos creado con exito!', 200);
 
-        return response()->json('Datos creado con exito!', 200);
+        } catch ( \Exception $e) {
+
+            return response()->json('Ya existe una medida con esa descripción!' , 500);
+
+        }
     }
 
     public function update(Request $request, $id) {
 
-        Measure::where('id', $id)->update(['name' => $request->measures]);
+        try {
 
-        return response()->json('Datos actualizados con exito!', 200);
+            Measure::where('id', $id)->update(['name' => $request->measures]);
+
+            return response()->json('Datos actualizados con exito!', 200);
+
+        } catch ( \Exception $e) {
+
+            return response()->json('Ya existe una medida con esa descripción!' , 500);
+
+        }
     }
 
     public function destroy($id)  {
 
-        $measure = Measure::find($id);
-
-        if ($measure->used()) {
-
-            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
-
-        } else {
+        try {
 
             Measure::destroy($id);
 
             return response()->json('Medida eliminada con exito!', 200);
+
+        } catch ( \Exception $e) {
+
+            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
+
         }
 
     }

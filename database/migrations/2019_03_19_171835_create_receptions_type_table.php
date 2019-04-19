@@ -16,6 +16,7 @@ class CreateReceptionsTypeTable extends Migration
         Schema::create('receptions_type', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 15);
+            $table->engine = 'InnoDB';
         });
     }
 

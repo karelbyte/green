@@ -101,10 +101,11 @@
 <div v-if="views.list" v-cloak>
     <div class="row m-b-10">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
-           <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nueva</button>
+           @can('receptions.create')
+             <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nueva</button>
+           @endcan
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-          <!--  <find :filters="filters_list" filter="value" v-on:getfilter="getlist" holder="buscar material"></find> -->
             @component('com.find')@endcomponent
         </div>
     </div>
@@ -131,8 +132,12 @@
                 <td class="cel_fix">@{{entity.status.name}}</td>
                 <td>
                  <button v-if="parseInt(entity.status_id) === 1" class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
+                 @can('receptions.aplic')
                  <button v-if="parseInt(entity.status_id) === 1" class="btn btn-info  waves-effect btn-sm" @click="showaplic(entity)">Aplicar</button>
-                 <button v-if="parseInt(entity.status_id) === 1" class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 @endcan
+                 @can('receptions.delete')
+                   <button v-if="parseInt(entity.status_id) === 1" class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 @endcan
                  <button v-if="parseInt(entity.status_id) === 2" class="btn btn-info  waves-effect btn-sm" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o"></i></button>
                 </td>
             </tr>
@@ -227,7 +232,7 @@
             </div>
         </div>
     </div>
-
+</div>
 @component('com.eliminar')@endcomponent
 @component('com.spiner')@endcomponent
 @endsection

@@ -7,10 +7,17 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 
 
 const app = new Vue({
-    el: '#topbar',
+    el: '#notify',
     data () {
         return {
-            semitone: 10
+           landscapers: 0,
+           quoteconfirm: 0
         }
+    },
+    mounted () {
+        axios.get(urldomine + 'api/notifications/today').then(r => {
+            this.landscapers = r.data.landscapers.length;
+            this.quoteconfirm = r.data.quoteconfirm.length;
+        })
     }
 });

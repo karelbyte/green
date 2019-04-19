@@ -180,6 +180,14 @@ new Vue({
         },
 
         // DEATALLES DE LA NOTA DE VENTA
+        showCalendar (det) {
+
+          console.log(det.descrip);
+
+          this.detail = det;
+
+          $('#calendar').modal('show')
+        },
         updateSelected () {
 
             if (this.detail.item !== '' && this.detail.item !== null) {
@@ -256,9 +264,9 @@ new Vue({
 
             let cant = this.detail.cant > 0;
 
-            let product  =  this.detail.cant <= this.detail.item.cant;
+            // let product  =  this.detail.cant <= this.detail.item.cant;
 
-            return des && price && cant && product
+            return des && price && cant //&& product
         },
         saveDetails () {
 

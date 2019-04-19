@@ -16,6 +16,7 @@ class CreateTypeInfoClientsTable extends Migration
         Schema::create('type_info_clients', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->engine = 'InnoDB';
         });
     }
 

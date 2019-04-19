@@ -20,6 +20,7 @@ class CreateCalendarsTable extends Migration
             $table->time('timer');
             $table->string('title', 50);
             $table->integer('status_id')->default(1);
+            $table->engine = 'InnoDB';
         });
     }
 

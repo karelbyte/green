@@ -31,6 +31,7 @@ mix.js('resources/js/app.js', 'public/js/app')
     .js('resources/js/sales.js', 'public/js/app')
     .js('resources/js/cags.js', 'public/js/app')
     .js('resources/js/company.js', 'public/js/app')
+    .js('resources/js/notifications.js', 'public/js/app')
      .extract(['vue']);
 
 mix.sass('resources/sass/app.scss', 'public/css');

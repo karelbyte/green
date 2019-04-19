@@ -17838,13 +17838,13 @@ var cags = new Vue({
     colors: function colors(val) {
       var map = {
         0: '0',
-        1: '#b8dd33',
-        2: '#b8dd96',
-        3: '#b1d100',
+        1: '#87dd61',
+        2: '#24ddb2',
+        3: '#6ed136',
         4: '#65a147',
         5: '#519362',
         6: '#64a191',
-        7: '#64a191',
+        7: '#26a172',
         8: '#a15c36',
         9: '#a15e62',
         10: '#a16652',
@@ -18038,12 +18038,30 @@ var cags = new Vue({
     pass: function pass() {
       var moment = this.item.moment !== '';
       var client = this.item.client !== '';
-      var type = this.item.type_contact !== '';
       var info = this.item.info.length > 0;
       var type_motive = this.item.type_motive_id > 0;
       var type_contact = this.item.type_contact_id > 0;
       var compromise = this.item.type_compromise_id > 0;
-      return moment && client && type && info && compromise && type_motive && type_contact;
+      var time = this.item.required_time > 0;
+      var visita = true;
+      var sendinfo = true;
+
+      if (this.item.type_compromise_id === 3) {
+        var date = this.item.landscaper.moment !== '';
+
+        var _time = this.item.landscaper.timer !== '';
+
+        var user = this.item.landscaper.user_uid !== '';
+        visita = date && _time && user;
+      }
+
+      if (this.item.type_compromise_id === 4) {
+        var d = this.item.documents.moment !== '';
+        var det = this.item.documents.type_info_id > 0;
+        sendinfo = d && det;
+      }
+
+      return moment && client && info && compromise && type_motive && type_contact && time && visita && sendinfo;
     },
     showNewClient: function showNewClient() {
       var _this4 = this;
@@ -18180,7 +18198,7 @@ var core = {
       this.fieldtype = f.type;
     },
     add: function add() {
-      this.item = _objectSpread({}, this.itemDefault);
+      this.item = JSON.parse(JSON.stringify(this.itemDefault));
       this.act = 'post';
       this.title = this.labelnew;
       this.onviews('new');

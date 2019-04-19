@@ -2,7 +2,7 @@
 
 namespace App\Models\Receptions;
 
-use App\Models\User;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**

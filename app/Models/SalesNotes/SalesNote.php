@@ -34,14 +34,13 @@ class SalesNote extends Model
     /**
      * @var array
      */
-    protected $fillable = ['global_id', 'moment', 'advance', 'status_id'];
+    protected $fillable = ['global_id', 'moment', 'advance', 'status_id', 'strategy'];
 
 
     public function globals() {
 
         return $this->belongsTo(CGlobal::class, 'global_id', 'id');
     }
-
 
     public function status() {
 

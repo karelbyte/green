@@ -15,11 +15,13 @@ class CreateElementsTable extends Migration
     {
         Schema::create('elements', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code', 10);
+            $table->string('code', 10)->unique();
             $table->smallInteger('type');
             $table->string('name');
-            $table->smallInteger('measure_id')->default(0);
+            $table->bigInteger('measure_id')->unsigned();
+            $table->foreign('measure_id')->references('id')->on('measures');
             $table->decimal('price', 8, 2)->default(0);
+            $table->engine = 'InnoDB';
         });
     }
 

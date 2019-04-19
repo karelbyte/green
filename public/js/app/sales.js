@@ -89,7 +89,7 @@ var core = {
       this.fieldtype = f.type;
     },
     add: function add() {
-      this.item = _objectSpread({}, this.itemDefault);
+      this.item = JSON.parse(JSON.stringify(this.itemDefault));
       this.act = 'post';
       this.title = this.labelnew;
       this.onviews('new');
@@ -309,6 +309,11 @@ new Vue({
       });
     },
     // DEATALLES DE LA NOTA DE VENTA
+    showCalendar: function showCalendar(det) {
+      console.log(det.descrip);
+      this.detail = det;
+      $('#calendar').modal('show');
+    },
     updateSelected: function updateSelected() {
       if (this.detail.item !== '' && this.detail.item !== null) {
         this.detail.descrip = this.detail.item.name;
@@ -352,9 +357,9 @@ new Vue({
     passNewDet: function passNewDet() {
       var des = this.detail.descrip !== '';
       var price = this.detail.price > 0;
-      var cant = this.detail.cant > 0;
-      var product = this.detail.cant <= this.detail.item.cant;
-      return des && price && cant && product;
+      var cant = this.detail.cant > 0; // let product  =  this.detail.cant <= this.detail.item.cant;
+
+      return des && price && cant; //&& product
     },
     saveDetails: function saveDetails() {
       var _this3 = this;

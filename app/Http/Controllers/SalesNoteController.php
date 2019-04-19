@@ -27,7 +27,6 @@ class SalesNoteController extends Controller
 
             $q->with('client');
 
-
         }]);
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
@@ -43,7 +42,6 @@ class SalesNoteController extends Controller
             'total' => $total,
 
             'list' =>  $list,
-
 
         ];
 

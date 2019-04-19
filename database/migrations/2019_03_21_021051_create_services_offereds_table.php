@@ -19,6 +19,7 @@ class CreateServicesOfferedsTable extends Migration
             $table->smallInteger('init');
             $table->smallInteger('end');
             $table->decimal('price', 8, 2);
+            $table->engine = 'InnoDB';
         });
     }
 

@@ -15,7 +15,8 @@ class CreateMeasuresTable extends Migration
     {
         Schema::create('measures', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('name')->unique();
+            $table->engine = 'InnoDB';
         });
     }
 

@@ -12,10 +12,4 @@ class Measure extends Model
         'name'
     ];
 
-    public function used () {
-
-        $found = Element::where('measure_id', $this->id)->first();
-
-        return !empty($found);
-    }
 }

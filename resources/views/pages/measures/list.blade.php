@@ -43,7 +43,9 @@
 <div v-if="views.list" v-cloak>
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
-           <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nueva</button>
+           @can('measures.create')
+             <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nueva</button>
+           @endcan
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <find :filters="filters_list" filter="value" v-on:getfilter="getlist" holder="buscar unidad"></find>
@@ -64,7 +66,9 @@
                 <td class="cel_fix">@{{entity.name}}</td>
                 <td>
                  <button class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                 <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 @can('measures.delete')
+                   <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 @endcan
                 </td>
             </tr>
             </tbody>

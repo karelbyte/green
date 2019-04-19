@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\User;
-use App\Models\UserPosition;
+use App\Models\Users\User;
+use App\Models\Users\UserPosition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;

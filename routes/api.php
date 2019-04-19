@@ -17,6 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });*/
 
+Route::get('/notifications/today', 'NotificationsController@today');
 
 
 // RUTAS DEL CICLO DE ATENCION GLOBAL
@@ -55,6 +56,10 @@ Route::prefix('quotes')->group(function () {
     Route::get('/get/id', 'QuotesController@sendID');
 
     Route::post('/sendinfo', 'QuotesController@sendInfo');
+
+    Route::post('/checkinfo', 'QuotesController@checkInfo');
+
+    Route::post('/saveinfo', 'QuotesController@saveInfo');
 
     // DETALLES
 

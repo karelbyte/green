@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Users;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -50,11 +50,11 @@ class User extends Authenticatable
 
     public function status () {
 
-        return $this->hasOne('App\Models\UserStatus', 'id', 'active_id');
+        return $this->hasOne('App\Models\Users\UserStatus', 'id', 'active_id');
     }
 
     public function position () {
 
-        return $this->hasOne('App\Models\UserPosition', 'id', 'position_id');
+        return $this->hasOne('App\Models\Users\UserPosition', 'id', 'position_id');
     }
 }

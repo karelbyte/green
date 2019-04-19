@@ -11,11 +11,21 @@ class AppSeeder extends Seeder
      */
     public function run()
     {
+        // ROL ADMINISTRADOR
 
-        // OJO FALTA LOS PERMISOS Y CREAR EL ROL ADMINISTRADOR
+        $role = \Spatie\Permission\Models\Role::create([
 
+            'name' => 'administrador',
 
-        \App\Models\User::create([
+            'guard_name' => 'web'
+        ]);
+
+        $permission = \Spatie\Permission\Models\Permission::select('name')->get();
+
+        $role->givePermissionTo($permission->pluck('name'));
+
+        // Creando usuario
+        $user = \App\Models\Users\User::create([
             'name' => 'Administrador',
             'email' => 'admin@gc.com',
             'password' => \Illuminate\Support\Facades\Hash::make('gc12345*-'),
@@ -23,13 +33,15 @@ class AppSeeder extends Seeder
             'position_id' => 1
         ]);
 
+        $user->assignRole('administrador');
+
 
        // ESTADO DE USUARIOS
        $statusUserList = [
             ['id' => 0, 'name' => 'Inactivo'],
             ['id' => 1, 'name' => 'Activo'],
         ];
-        \App\Models\UserStatus::insert($statusUserList);
+        \App\Models\Users\UserStatus::insert($statusUserList);
 
 
         // POSICION DEL PERSONAL
@@ -38,7 +50,7 @@ class AppSeeder extends Seeder
             ['id' => 2, 'name' => 'Acesor de Jardin'],
             ['id' => 3, 'name' => 'Paisajista'],
         ];
-        \App\Models\UserPosition::insert($UserPositionList);
+        \App\Models\Users\UserPosition::insert($UserPositionList);
 
 
 
@@ -111,9 +123,12 @@ class AppSeeder extends Seeder
             ['id' => 1, 'name' => 'EN ESPERA'],
             ['id' => 2, 'name' => 'EN PROCESO'],
             ['id' => 3, 'name' => 'EN ESPERA DE VERIFICACION'],
-            ['id' => 4, 'name' => 'CONFIMADA'],
-            ['id' => 5, 'name' => 'RECHAZADA'],
-            ['id' => 6, 'name' => 'FINALIZADA'],
+            ['id' => 4, 'name' => 'CONFIMADA - ACEPTADA'],
+            ['id' => 5, 'name' => 'CONFIRMADA - NO ACEPTADA'],
+            ['id' => 6, 'name' => 'CONFIRMADA - MODIFICAR'],
+            ['id' => 7, 'name' => 'SEGIMIENTO'],
+            ['id' => 8, 'name' => 'ESTRATEGIA DE VENTA'],
+            ['id' => 9, 'name' => 'CONFIRMAR E.VENTA'],
         ];
         \App\Models\Quotes\QuoteStatus::insert($QuoteStatus);
 
@@ -122,7 +137,9 @@ class AppSeeder extends Seeder
         $CAGSt = [
             ['id' => 1, 'name' => 'EN ESPERA'],
             ['id' => 2, 'name' => 'EN CURSO'],
-            ['id' => 3, 'name' => 'FINALIZADA'],
+            ['id' => 3, 'name' => 'EN PROCESO DE VENTA'],
+            ['id' => 4, 'name' => 'FINALIZADA - VENTA'],
+            ['id' => 5, 'name' => 'FINALIZADA - NO VENTA'],
         ];
         \App\Models\CGlobal\CGlobalStatus::insert($CAGSt);
 
@@ -149,7 +166,7 @@ class AppSeeder extends Seeder
             ['id' => 1, 'name' => 'RECIBIDO'],
             ['id' => 2, 'name' => 'PAGADA'],
         ];
-        \App\Models\Quotes\QuoteStatus::insert($statusSalesList);
+        \App\Models\SalesNotes\SalesNoteStatus::insert($statusSalesList);
 
 
         // TIPOS DE VIA DE ENVIO DE INFORMACION

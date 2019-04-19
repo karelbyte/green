@@ -16,6 +16,7 @@ class CreateUsersStatusTable extends Migration
         Schema::create('user_status', function (Blueprint $table) {
             $table->smallInteger('id');
             $table->string('name', 15);
+            $table->engine = 'InnoDB';
         });
     }
 

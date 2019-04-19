@@ -85,8 +85,6 @@ class ReceptionsController extends Controller
 
         Reception::destroy($id);
 
-        ReceptionDetail::where('reception_id', $id)->delete();
-
         return response()->json('Eliminada con exito!', 200);
     }
 

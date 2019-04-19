@@ -39,7 +39,7 @@
     </div>
     <hr>
     <div class="row">
-        <div v-for="entity in lists" :key="entity.id" class="col-lg-4">
+        <div v-for="entity in lists" :key="entity.id" class="col-lg-4" style="height: 320px">
             <div  class="panel panel-border panel-inverse m-t-5">
                 <div class="panel-heading">
                     <div class="row">
@@ -129,13 +129,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="det in item.details">
-                                <td>@{{ det.descrip }}</td>
-                                <td>@{{ det.cant }} </td>
-                                <td>@{{ parseFloat(det.price).toFixed(2) }} </td>
-                                <td>@{{ (parseFloat(det.price) * det.cant).toFixed(2) }} </td>
+                            <tr v-for="detail in item.details">
+                                <td>@{{ detail.descrip }}</td>
+                                <td>@{{ detail.cant }} </td>
+                                <td>@{{ parseFloat(detail.price).toFixed(2) }} </td>
+                                <td>@{{ (parseFloat(detail.price) * detail.cant).toFixed(2) }} </td>
                                 <td>
-                                    <button class="btn btn-danger btn-sm m-t-5" @click="deleteDet(det.id)">
+                                    <button v-if="detail.type_item === 3" class="btn btn-info btn-sm m-t-5" @click="showCalendar(detail)">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm m-t-5" @click="deleteDet(detail.id)">
                                         <i class="fa fa-eraser"></i>
                                     </button>
                                 </td>
@@ -165,6 +168,10 @@
                         </table>
                     </div>
                 </div>
+                <div v-if="item.strategy !== null" class="row">
+                    <span>Estrategia de venta de la cotización.</span>
+                    <p class="txtblack">@{{ item.strategy }}</p>
+                </div>
             </div>
             <div class="panel-footer footer_fix">
                 <button v-if="pass()" class="btn btn-success waves-effect btn-sm" @click="saveDetails()">Guardar</button>
@@ -183,7 +190,6 @@
                         <h3 class="panel-title">Añadir detalle</h3>
                     </div>
                     <div class="panel-body">
-
                         <div class="col-lg-12 ">
                             <span class="txtblack">Tipo <span class="require">*</span></span>
                             <select class="form-control" v-model.number="detail.type_item">
@@ -219,6 +225,34 @@
                     <div class="panel-footer text-right">
                         <button v-if="passNewDet()" :disabled="spin" @click="saveNewDet()" class="btn btn-danger waves-effect btn-sm">Guardar</button>
                         <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="calendar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Generador de Mantenimiento</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-6 m-t-20">
+                            <span class="txtblack">Inicio <span class="require">*</span></span>
+                            <input class="form-control" type="date" v-model="detail.start">
+                        </div>
+                        <div class="col-lg-6 m-t-20">
+                            <span class="txtblack">Frecuencia <span class="require">*</span></span>
+                            <input v-numeric-only class="form-control" type="text" v-model.number="detail.timer">
+                        </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button class="btn btn-success  btn-sm" @click="setMant()">Agendar</button>
+                        <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
                     </div>
                 </div>
             </div>

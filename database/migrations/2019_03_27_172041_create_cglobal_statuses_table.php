@@ -19,6 +19,8 @@ class CreateCglobalStatusesTable extends Migration
 
             $table->string('name', 50);
 
+            $table->engine = 'InnoDB';
+
         });
     }
 

@@ -18,6 +18,7 @@ class CreateTypeInfoDetailsTable extends Migration
             $table->integer('info_id');
             $table->string('name');
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

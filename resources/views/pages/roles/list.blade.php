@@ -57,6 +57,173 @@
                             </label>
                         </div>
                     </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('board')"  type="checkbox" v-model="grants" value="board.notification">
+                            <label for="checkbox2">
+                               Notificaciones
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('board')" type="checkbox" v-model="grants" value="board.graphic">
+                            <label for="checkbox2">
+                                Graficas
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
+                    Ciclo de Atención Global
+                </div>
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="cag" @change="chekset('cag')">
+                            <label for="checkbox2">
+                                CAG
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('cag')"  type="checkbox" v-model="grants" value="cag.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('cag')" type="checkbox" v-model="grants" value="cag.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
+                   Modulo Calendario
+                </div>
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="calendar" @change="chekset('calendar')">
+                            <label for="checkbox2">
+                                Calendario
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('calendar')"  type="checkbox" v-model="grants" value="calendar.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('calendar')" type="checkbox" v-model="grants" value="calendar.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
+                   Modulo Cotizaciones
+                </div>
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="quote" @change="chekset('quote')">
+                            <label for="checkbox2">
+                                Cotizaciones
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('quote')"  type="checkbox" v-model="grants" value="quote.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('quote')" type="checkbox" v-model="grants" value="quote.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
+                    Modulo Notas de venta
+                </div>
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="salenote" @change="chekset('salenote')">
+                            <label for="checkbox2">
+                                Nota de venta
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('salenote')"  type="checkbox" v-model="grants" value="salenote.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('salenote')" type="checkbox" v-model="grants" value="salenote.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
+                    Modulo de mantenimiento
+                </div>
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="maintenance" @change="chekset('maintenance')">
+                            <label for="checkbox2">
+                                Mantenimientos
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('maintenance')"  type="checkbox" v-model="grants" value="maintenance.create">
+                            <label for="checkbox2">
+                                Crear/Modificar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('maintenance')" type="checkbox" v-model="grants" value="maintenance.delete">
+                            <label for="checkbox2">
+                                Eliminar
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="row txtblack" style="padding-left: 10px">
                     Modulo Clientes
@@ -209,13 +376,13 @@
                         </div>
                     </div>
                 </div>
-                <!-- Materiales -->
+                <!-- PRODUCTOS -->
                 <div class="row roles">
                     <div class="col-lg-2">
                         <div class="checkbox checkbox-success">
                             <input  type="checkbox" v-model="grants" value="elements" @change="chekset('elements')">
                             <label for="checkbox2">
-                                Materiales
+                                Productos
                             </label>
                         </div>
                     </div>
@@ -390,7 +557,9 @@
 <div v-if="views.list" v-cloak>
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
-           <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nuevo</button>
+           @can('rols.create')
+            <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nuevo</button>
+           @endcan
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <find :filters="filters_list" filter="value" v-on:getfilter="getlist" holder="buscar roles"></find>
@@ -411,7 +580,9 @@
                 <td class="cel_fix">@{{entity.name}}</td>
                 <td>
                  <button class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                 <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 @can('rols.delete')
+                   <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 @endcan
                 </td>
             </tr>
             </tbody>

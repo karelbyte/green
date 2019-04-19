@@ -23,6 +23,7 @@ class CreateCompaniesTable extends Migration
             $table->string('phone1');
             $table->string('phone2');
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

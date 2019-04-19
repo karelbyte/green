@@ -100,23 +100,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventarios', 'InventorisController@index')->name('inventoris');
 
     // PRODUCTOS
-    Route::get('/catalo-productos', 'ProductsOfferedsController@index')->name('productsoffereds');
+    Route::get('/catalogo-productos', 'ProductsOfferedsController@index')->name('productsoffereds');
 
     // SERVICIOS
     Route::get('/catalogo-servicios', 'ServicesOfferedsController@index')->name('servicesoffereds');
 
-
     // CICLO DE ATENCION GLOBAL
     Route::get('/atencion', 'CGlobalsController@index')->name('cags');
 
+    // MANTENIMIENTOS
+    Route::get('/mantenimientos', 'MaintenancesController@index')->name('maintenance');
 
     // COTIZACIONES
     Route::get('/cotizaciones/{id?}', 'QuotesController@index')->name('quotes');
 
-
     // NOTA DE VENTA
     Route::get('/notas-de-ventas/{id?}', 'SalesNoteController@index')->name('sales');
 
+    // CALENDARIO
+    Route::get('/notificasiones', 'NotificationsController@index')->name('notifications');
 
     // CALENDARIO
     Route::get('/calendario', 'CalendarsController@index')->name('calendars');

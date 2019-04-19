@@ -24,8 +24,10 @@ class CreateCGlobalsTable extends Migration
             $table->smallInteger('type_motive_id');
             $table->smallInteger('required_time');
             $table->smallInteger('type_compromise_id');
+            $table->smallInteger('traser');
             $table->string('note',500)->nullable();
             $table->integer('status_id')->default(1);
+            $table->engine = 'InnoDB';
         });
     }
 

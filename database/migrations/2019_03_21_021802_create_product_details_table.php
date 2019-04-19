@@ -21,6 +21,7 @@ class CreateProductDetailsTable extends Migration
             $table->decimal('price', 8, 2);
             $table->smallInteger('alert');
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

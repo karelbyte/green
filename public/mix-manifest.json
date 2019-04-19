@@ -11,6 +11,7 @@
     "/js/app/manifest.js": "/js/app/manifest.js",
     "/js/app/materials.js": "/js/app/materials.js",
     "/js/app/measures.js": "/js/app/measures.js",
+    "/js/app/notifications.js": "/js/app/notifications.js",
     "/js/app/products_offereds.js": "/js/app/products_offereds.js",
     "/js/app/providers.js": "/js/app/providers.js",
     "/js/app/providers_new.js": "/js/app/providers_new.js",

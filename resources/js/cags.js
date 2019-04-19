@@ -165,13 +165,13 @@ const cags = new Vue({
         colors (val) {
             const map = {
                 0: '0',
-                1: '#b8dd33',
-                2: '#b8dd96',
-                3: '#b1d100',
+                1: '#87dd61',
+                2: '#24ddb2',
+                3: '#6ed136',
                 4: '#65a147',
                 5: '#519362',
                 6: '#64a191',
-                7: '#64a191',
+                7: '#26a172',
                 8: '#a15c36',
                 9: '#a15e62',
                 10: '#a16652',
@@ -449,17 +449,45 @@ const cags = new Vue({
 
             let client = this.item.client !== '';
 
-            let type = this.item.type_contact !== '';
-
             let info = this.item.info.length > 0;
 
             let type_motive = this.item.type_motive_id > 0;
 
             let type_contact = this.item.type_contact_id > 0;
 
-            let compromise  = this.item.type_compromise_id > 0;
+            let compromise = this.item.type_compromise_id > 0;
 
-            return moment && client && type && info && compromise && type_motive && type_contact
+            let time  = this.item.required_time > 0;
+
+            let visita = true;
+
+            let sendinfo = true;
+
+            if (this.item.type_compromise_id === 3) {
+
+                let date = this.item.landscaper.moment !== '';
+
+                let time = this.item.landscaper.timer !== '';
+
+                let user  = this.item.landscaper.user_uid !== '' ;
+
+                visita = date && time && user
+
+            }
+
+            if (this.item.type_compromise_id === 4) {
+
+                let d = this.item.documents.moment !== '';
+
+                let det = this.item.documents.type_info_id > 0;
+
+                sendinfo = d && det
+
+            }
+
+            return moment && client && info &&
+
+                compromise && type_motive && type_contact && time && visita && sendinfo
         },
         showNewClient() {
 

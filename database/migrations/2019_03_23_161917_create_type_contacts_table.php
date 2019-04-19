@@ -16,7 +16,7 @@ class CreateTypeContactsTable extends Migration
         Schema::create('type_contacts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

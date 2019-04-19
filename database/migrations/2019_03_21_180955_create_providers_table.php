@@ -23,6 +23,7 @@ class CreateProvidersTable extends Migration
             $table->string('phone', 20)->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

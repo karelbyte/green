@@ -89,7 +89,7 @@
                     </div>
                     <div class="col-lg-4 m-t-20">
                         <span class="txtblack">Tiempo estimado (Dias)<span class="require">*</span></span>
-                        <input v-numeric-only class="form-control" type="text" v-model="item.required_time">
+                        <input v-numeric-only class="form-control" type="text" v-model.number="item.required_time">
                     </div>
 
                 </div>
@@ -247,7 +247,7 @@
                                 :max="16"
                                 :value-display-function="toWord"
                                 v-model="entity.traser"
-                                :primary-color="colors(entity.traser)"
+                                :primary-color="colors(parseInt(entity.traser))"
                             ></knob-control>
                         </div>
                     </div>
@@ -255,8 +255,8 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-lg-6">
-                            <button v-if="entity.status_id === 1" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                            <button v-if="entity.status_id === 1" class="btn btn-danger waves-effect btn-sm" @click="showdelete(trait(entity))"><i class="fa fa-eraser"></i></button>
+                            <button v-if="parseInt(entity.status_id) === 1" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
+                            <button v-if="parseInt(entity.status_id) === 1" class="btn btn-danger waves-effect btn-sm" @click="showdelete(trait(entity))"><i class="fa fa-eraser"></i></button>
                             <button class="btn btn-info waves-effect btn-sm" @click="showdView(entity)"><i class="fa fa-file-pdf-o"></i></button>
                         </div>
                         <div class="col-lg-6 text-right" style="font-style: italic">

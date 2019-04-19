@@ -16,6 +16,7 @@ class CreateUserPositionsTable extends Migration
         Schema::create('user_positions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 50);
+            $table->engine = 'InnoDB';
         });
     }
 

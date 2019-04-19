@@ -38,7 +38,7 @@ export function rangoutil (totalpage, currentpage) {
     }
     let range = [];
     for (let i = star; i < end; i++) {
-        range .push(i)
+        range.push(i)
     }
     return range
 }

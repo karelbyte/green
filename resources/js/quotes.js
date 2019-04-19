@@ -23,6 +23,7 @@ new Vue({
     el: '#app',
     data () {
         return {
+            sendM: false,
             editorOption: {
                 theme: 'snow'
             },
@@ -39,7 +40,10 @@ new Vue({
                 descrip: '',
                 specifications: '',
                 type_send_id: 0,
-                notes: []
+                type_check_id: 0,
+                feedback: '',
+                notes: [],
+                clientemit: 0
             },
             itemDefault: {
                 id: 0,
@@ -49,7 +53,10 @@ new Vue({
                 type_quote_id: '',
                 status_id: '',
                 type_send_id: 0,
-                notes: []
+                type_check_id: 0,
+                feedback: '',
+                notes: [],
+                clientemit: 0
             },
             repassword: '',
             listfield: [{name: 'Codigo', type: 'text', field: 'quotes.id'}],
@@ -84,7 +91,9 @@ new Vue({
             },
             scrpdf: '',
             TypeShow: '',
-            elements: []
+            elements: [],
+            confircode: 0,
+            landscapers: []
         }
     },
     components: {
@@ -147,7 +156,7 @@ new Vue({
 
         this.patchDelete = 'api/clients/';
 
-        this.keyObjDelete = 'id'
+        this.keyObjDelete = 'id';
 
         this.find = parseInt($('#find').val());
 
@@ -191,6 +200,8 @@ new Vue({
                 this.spin = false;
 
                 this.lists = res.data.list;
+
+                this.landscapers = res.data.landscapers;
 
                 this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
 
@@ -354,16 +365,66 @@ new Vue({
             })
 
         },
+        // VERIFICACION DE INFO
+
+        ShowCheckInfo (it) {
+
+            this.item = {...it};
+
+            $('#check').modal('show');
+        },
+        passCheckSend () {
+
+            return this.item.type_check_id > 0 && this.confircode > 0;
+        },
+
+        sendCheckClient () {
+
+            let data = {
+
+                id :  this.item.id,
+
+                code: this.confircode,
+
+                type_check_id: this.item.type_check_id,
+
+                feedback: this.item.feedback,
+
+                clientemit: this.item.clientemit,
+
+                emit: this.item.emit
+            };
+
+            axios.post(urldomine + 'api/quotes/checkinfo', data).then(r => {
+
+                this.$toasted.success(r.data);
+
+                this.getlist();
+
+                this.spin = false;
+
+                $('#check').modal('hide');
+
+            }).catch(e => {
+
+                this.spin = false;
+
+                this.$toasted.error(e.response.data)
+            })
+        },
+
         // ENVIO DE INFO
         sendInfoClient () {
 
-            this.spin = true;
+            this.sendM = true;
 
             axios.post(urldomine + 'api/quotes/sendinfo', this.item).then(r => {
 
                 this.$toasted.success(r.data);
 
-                this.spin = false;
+                this.sendM = false;
+
+                this.getlist();
 
                 $('#sendinfo').modal('hide');
 
@@ -375,7 +436,7 @@ new Vue({
 
             }).catch(e => {
 
-                this.spin = false;
+                this.sendM = false;
 
                 this.$toasted.error(e.response.data)
             })
@@ -384,14 +445,55 @@ new Vue({
 
             return this.item.type_send_id > 0;
         },
-        ShowSendInfo (id) {
+        ShowSendInfo (itm) {
 
-            this.item.id = id;
+            this.item = itm;
 
             $('#sendinfo').modal('show')
         },
 
         // CODIGO DE TRABAJO CON FICHEROS DE LA VISITA
+
+        passVisit () {
+
+            let moment = this.item.globals.landscaper.moment !== '';
+
+            let timer = this.item.globals.landscaper.timer !== '';
+
+            return moment && timer;
+
+        },
+        saveInfoVisint () {
+
+            this.spin = true;
+
+            let data = {
+
+                id: this.item.id,
+
+                moment: this.item.globals.landscaper.moment,
+
+                timer: this.item.globals.landscaper.timer,
+
+                user:  this.item.globals.landscaper.user_uid,
+
+                note:  this.item.globals.landscaper.note,
+
+                status_id: this.item.globals.landscaper.status_id
+
+            };
+
+            axios.post(urldomine + 'api/quotes/saveinfo', data).then(r => {
+
+                this.spin = false;
+
+                this.onviews('list');
+
+                this.getlist();
+
+                this.$toasted.success(r.data)
+            })
+        },
         showFiles(itm) {
 
             this.item = {...itm};

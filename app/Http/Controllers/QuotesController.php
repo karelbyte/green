@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendQuoteClient;
 use App\Models\Company;
+use App\Models\LandScaper;
 use App\Models\Quotes\Quote;
 use App\Models\Quotes\QuoteDoc;
 use App\Models\Quotes\QuotesNote;
+use App\Models\SalesNotes\SalesNote;
+use App\Models\Users\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
@@ -69,6 +73,18 @@ class QuotesController extends Controller
         return response()->json('', 200);
     }
 
+    public function SetDate(Request $request) {
+
+        $quote = Quote::find($request->id);
+
+        $quote->moment = $request->moment;
+
+        $quote->save();
+
+        return response()->json('', 200);
+    }
+
+
     public function getList(Request $request) {
 
         $skip = $request->input('start') * $request->input('take');
@@ -101,6 +117,8 @@ class QuotesController extends Controller
 
             'list' =>  $list,
 
+            'landscapers' => User::where('position_id', 3)->select('uid', 'name')->get(),
+
 
         ];
 
@@ -131,8 +149,89 @@ class QuotesController extends Controller
     }
 
 
-    public function sendInfo(Request $request) {
+    public function checkInfo(Request $request) {
 
+        $quote = Quote::where('id',$request->id)->first();
+
+        if ($quote->token == $request->code) {
+
+            $quote->type_check_id = $request->type_check_id;
+
+            $quote->feedback = $request->feedback;
+
+            if ($request->clientemit == 1) {
+
+                $quote->status_id = 4; // SE ACEPTO EL PRESUPUESTO VA A NOTA DE VENTA
+
+            } else {
+
+                if ($request->emit == 2) { // NO SE ACEPTO FINALMENTE SE ARCHIVA
+
+                    $quote->status_id = 5;
+
+                    $quote->feedback = $request->feedback;
+
+                    $quote->globals()->update(['status_id' => 5, 'traser' => 16]); // NO VENTA
+
+                    $quote->save();
+
+                    return response()->json('Se archivaron los datos en el expediente!', 200);
+
+                } else {
+
+                    $quote->status_id = $quote->status_id == 3 ? 6 : 8;
+
+                    if ($quote->status_id == 8) { $quote->check_date = Carbon::now()->addDay(7); }
+
+                    $quote->feedback = $request->feedback;
+
+                    $quote->globals()->update(['status_id' => 3, 'traser' => 8]);
+                }
+
+
+            }
+
+            $quote->save();
+
+
+            if ($request->clientemit == 1) {  // GENERAR NOTA DE VENTA
+
+                $quote->globals()->update(['status_id' => 3, 'traser' => 10]);
+
+                $sale = SalesNote::create([
+
+                    'global_id' => $quote->cglobal_id,
+
+                    'moment' => Carbon::now(),
+
+                    'advance' => 0,
+
+                    'strategy' => $quote->strategy,
+
+                    'status_id' => 1,
+
+                ]);
+
+                $sale->details()->createMany($quote->details()->get()->toArray());
+
+                return response()->json('Se generó nota de venta con número '. $sale->id, 200);
+
+
+            } else {
+
+                return response()->json('Se verificó la recepción!', 200);
+            }
+
+
+
+        } else {
+
+            return response()->json('No coincide el código de confirmación!', 500);
+        }
+
+    }
+
+    public function sendInfo(Request $request) {
 
         $quote = Quote::with(['notes', 'details', 'docs', 'status', 'globals' => function($q){
 
@@ -144,20 +243,55 @@ class QuotesController extends Controller
 
         }])->where('id',$request->id)->first();
 
-        $quote->type_send_id = $request->type_send_id;
+        if ($quote->status_id == 2 ) {  // SE ENVIA PARA CONFIRMACION 1 VES
 
-        $quote->status_id = 3;
+            $quote->type_send_id = $request->type_send_id;
 
-        $quote->sends ++ ;
+            $quote->status_id = 3;
 
-        $quote->save();
+            $quote->check_date = Carbon::now()->addDay(1);
 
-        $quote->globals()->update(['status_id' => 2, 'traser' => 6]);
+            $quote->sends ++ ;
+
+            $quote->save();
+
+            $quote->globals()->update(['status_id' => 2, 'traser' => 6]);
+
+        }
+        if ($quote->status_id == 6 ){
+
+            $quote->type_send_id = $request->type_send_id;
+
+            $quote->status_id = 7;
+
+            $quote->check_date = Carbon::now()->addDay(5);
+
+            $quote->sends ++ ;
+
+            $quote->save();
+
+            $quote->globals()->update(['status_id' => 2, 'traser' => 8]);
+        }
+
+        if ($quote->status_id == 8 ){
+
+            $quote->type_send_id = $request->type_send_id;
+
+            $quote->status_id = 9;
+
+            $quote->strategy =  $request->strategy;
+
+            $quote->check_date = Carbon::now()->addDay(7);
+
+            $quote->sends ++ ;
+
+            $quote->save();
+
+            $quote->globals()->update(['status_id' => 2, 'traser' => 10]);
+        }
 
 
-        if ($request->type_send_id == 2) {
-
-            // Creando rutas para guardar cotizacion
+            // Creando rutas para guardar cotizacion --------------------
 
             $patch = storage_path('app/public/') . $quote->uid;
 
@@ -195,12 +329,32 @@ class QuotesController extends Controller
 
             Mail::to($quote['globals']['client']['email'])->send(new SendQuoteClient($data));
 
-            return response()->json('Cotización enviada al cliente via email!', 200);
-
-        }
+           // ---------------------
 
         return response()->json('Se actualizó el estado de envio de la información!', 200);
 
+    }
+
+    // GUARDAR COTIZACION
+
+    public function saveInfo(Request $request) {
+
+        $quote =  Quote::find($request->id);
+
+        if ($request->status_id == true) {
+
+            $quote->status_id = 2;
+
+            $quote->save();
+        }
+
+        $cg = $quote->globals; // ->LandScaper()->update($request->except('id'));
+
+        $lan = LandScaper::where('cglobal_id', $cg->id)->first();
+
+        $lan->update($request->except('id'));
+
+        return response()->json('Detalles guardados con exito!', 200);
     }
 
     // GUARDAR DETALLES

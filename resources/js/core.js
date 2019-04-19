@@ -89,7 +89,7 @@ export const core = {
 
         },
         add () {
-            this.item = {...this.itemDefault};
+            this.item = JSON.parse( JSON.stringify( this.itemDefault ));
 
             this.act = 'post';
 

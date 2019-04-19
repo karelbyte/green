@@ -21,7 +21,7 @@ class Quote extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['uid', 'cglobal_id', 'descrip', 'token', 'type_send_id',
+    protected $fillable = ['uid', 'cglobal_id', 'descrip', 'token', 'type_send_id', 'type_check_id', 'check_date',
 
         'specifications', 'type_quote_id', 'sends', 'moment', 'ext', 'status_id'];
 
@@ -37,6 +37,11 @@ class Quote extends Model
     }
 
     public function TypeSend() {
+
+        return $this->hasOne(TypeWaySendInfo::class, 'id', 'type_send_id');
+    }
+
+    public function TypeCheck() {
 
         return $this->hasOne(TypeWaySendInfo::class, 'id', 'type_send_id');
     }

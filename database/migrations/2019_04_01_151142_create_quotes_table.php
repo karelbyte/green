@@ -21,10 +21,15 @@ class CreateQuotesTable extends Migration
             $table->longText('specifications')->nullable();
             $table->integer('cglobal_id');
             $table->integer('type_quote_id');
-            $table->smallInteger('sends');
+            $table->smallInteger('sends')->nullable();
             $table->date('moment');
+            $table->date('check_date');
             $table->smallInteger('status_id');
-            $table->smallInteger('type_send_id');
+            $table->smallInteger('type_send_id')->nullable();
+            $table->smallInteger('type_check_id')->nullable();
+            $table->mediumText('feedback')->nullable();
+            $table->string('strategy', 500)->nullable();
+            $table->engine = 'InnoDB';
         });
     }
 

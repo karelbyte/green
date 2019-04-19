@@ -7,13 +7,13 @@ use App\Models\CGlobal\CGlobal;
 use App\Models\CGlobal\CGlobalInfo;
 use App\Models\Client;
 use App\Models\LandScaper;
-use App\Models\ProductOffereds;
+use App\Models\ProductOffereds\ProductOffereds;
 use App\Models\Quotes\Quote;
 use App\Models\SalesNotes\SalesNote;
 use App\Models\ServiceOffereds;
 use App\Models\TypeContact;
 use App\Models\TypeInfo;
-use App\Models\User;
+use App\Models\Users\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\GenerateID;
@@ -226,6 +226,130 @@ class CGlobalsController extends Controller
     }
 
     public function update(Request $request, $id) {
+
+        $data = $request->all();
+
+        $cg = CGlobal::find($id);
+
+        $cg->update([
+
+            'type_contact_id' => $data['type_contact_id'],
+
+            'repeater' => $data['repeater'],
+
+            'type_compromise_id' => $data['type_compromise_id'],
+
+            'type_motive' => $data['type_motive'],
+
+            'type_motive_id' => $data['type_motive_id'],
+
+            'required_time' => $data['required_time'],
+
+            'note' => $data['note']
+
+        ]);
+
+
+        // CREANDO COTIZACION A DOMICILIO
+
+        $cg->LandScaper()->delete();
+
+        $cg->Documents()->delete();
+
+        Calendar::where('cglobal_id', $cg->id)->delete();
+
+        Quote::where('cglobal_id', $cg->id)->delete();
+
+        SalesNote::where('global_id', $cg->id)->delete();
+
+
+        if ($data['type_compromise_id'] == 3) {
+
+            $cg->LandScaper()->create($data['landscaper']);
+
+            Calendar::create([
+
+                'cglobal_id' => $cg->id,
+
+                'moment' => $data['landscaper']['moment'],
+
+                'timer' => $data['landscaper']['timer'],
+
+                'title' => 'Visita a cliente'
+            ]);
+
+            Quote::create([
+
+                'cglobal_id' => $cg->id,
+
+                'type_quote_id' => 1,
+
+                'token' => mt_rand(0,99999),
+
+                'moment' => Carbon::now(),
+
+                'status_id' => 1,
+
+
+            ]);
+
+            return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!', 200);
+        }
+
+
+        if ($data['type_compromise_id'] == 4) {
+
+            $cg->Documents()->create($data['documents']);
+
+            Calendar::create([
+
+                'cglobal_id' => $cg->id,
+
+                'moment' => $data['documents']['moment'],
+
+                'timer' => '10:00',
+
+                'title' => 'Envio de información'
+            ]);
+
+            return response()->json('Se generó un evento de envio de informacion a cliente!', 200);
+        }
+
+        if ($data['type_compromise_id'] == 1) {
+
+            $sale = SalesNote::create([
+
+                'global_id' => $cg->id,
+
+                'moment' => Carbon::now(),
+
+                'advance' => 0,
+
+                'status_id' => 1,
+
+            ]);
+
+            return response()->json(['id'=>$sale->id], 200);
+        }
+
+        if ($data['type_compromise_id'] == 2) {
+
+            $quote =  Quote::create([
+
+                'cglobal_id' => $cg->id,
+
+                'type_quote_id' => 2,
+
+                'token' => mt_rand(0,99999),
+
+                'moment' => Carbon::now(),
+
+                'status_id' => 2,
+
+            ]);
+
+            return response()->json(['id'=>$quote->id], 200);
+        }
 
 
     }

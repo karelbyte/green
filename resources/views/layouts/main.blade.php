@@ -26,9 +26,6 @@
 <body class="fixed-left">
 <input type="text" id="user_id_auth" value="{{auth()->user()->id}}" hidden="">
 <div id="wrapper">
-    <div id="topbar">
-
-    </div>
     <div class="topbar" >
         <div class="topbar-left">
             <a href="{{route('inicio')}}" class="logo"><span>Green<span> Center</span></span><i class="fa fa-envira"></i></a>
@@ -44,14 +41,23 @@
                 </ul>
 
                 <!-- Right(Notification) -->
-                <ul class="nav navbar-nav navbar-right">
-                  <!--<li>
-                        <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
-                            <i class="mdi mdi-bell"></i>
-                            <span class="badge up bg-primary">4</span>
+                <ul class="nav navbar-nav navbar-right" id="notify">
+                 <li>
+                        <a href="{{route('notifications')}}" class="right-menu-item">
+                            <i class="fa fa-home"></i>
+                            <span v-if="landscapers > 0" class="badge up bg-danger">@{{ landscapers }}</span>
                         </a>
+                 </li>
+                    <li>
+                        <a href="{{route('notifications')}}" class="right-menu-item">
+                            <i class="ion-android-call "></i>
+                            <span v-if="quoteconfirm > 0" class="badge up bg-danger">@{{ quoteconfirm }}</span>
+                        </a>
+                    </li>
 
-                        <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
+
+
+                     <!--    <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
                             <li>
                                 <h5>Notificaciones</h5>
                             </li>
@@ -91,8 +97,8 @@
                             <li class="all-msgs text-center">
                                 <p class="m-0"><a href="#">See all Notification</a></p>
                             </li>
-                        </ul>
-                    </li> -->
+                        </ul>-->
+                    </li>
 
                    <!-- <li>
                         <a href="#" class="right-menu-item dropdown-toggle" data-toggle="dropdown">
@@ -180,79 +186,127 @@
         <div class="sidebar-inner slimscrollleft">
             <div id="sidebar-menu">
                 <ul>
+                    @can('board')
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-view-dashboard"></i><span> TABLERO</span><span class="menu-arrow"></span> </a>
                         <ul class="list-unstyled">
-                            <li><a href="index.html">Notificaciones</a></li>
-                            <li><a href="index.html">Graficas</a></li>
+                            @can('board.notification')
+                              <li><a href="{{route('notifications')}}">Notificaciones</a></li>
+                            @endcan
+                            @can('board.graphic')
+                              <li><a href="{{route('inicio')}}">Graficas</a></li>
+                            @endcan
                         </ul>
                     </li>
+                    @endcan
+                    @can('cag')
                     <li>
                         <a href="{{route('cags')}}" class="waves-effect"><i class="mdi mdi-image-filter-tilt-shift "></i><span>CAG</span></a>
                     </li>
+                    @endcan
+                    @can('calendar')
                     <li>
                         <a href="{{route('calendars')}}" class="waves-effect"><i class="mdi mdi-calendar"></i><span>Calendario </span></a>
                     </li>
-
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-coin"></i> <span>Cotizaciones</span> <span class="menu-arrow"></span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="{{route('quotes')}}">Lista</a></li>
-                          <!--  <li><a href="ui-typography.html">Nueva</a></li> -->
-                        </ul>
+                    @endcan
+                    @can('quote')
+                    <li>
+                        <a href="{{route('quotes')}}" class="waves-effect"><i class="mdi mdi-coin"></i><span>Cotizaciones </span></a>
                     </li>
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class=" typcn typcn-shopping-bag "></i> <span>Notas de venta</span> <span class="menu-arrow"></span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="{{route('sales')}}">Lista</a></li>
-                          <!--  <li><a href="ui-typography.html">Nueva</a></li> -->
-                        </ul>
+                    @endcan
+                    @can('salenote')
+                    <li>
+                        <a href="{{route('sales')}}" class="waves-effect"><i class="mdi mdi-note-plus-outline"></i><span>Notas de venta </span></a>
                     </li>
+                    @endcan
+                    @can('maintenance')
+                    <li>
+                        <a href="{{route('maintenance')}}" class="waves-effect"><i class="typcn typcn-weather-downpour "></i><span>Mantenimientos </span></a>
+                    </li>
+                    @endcan
+                    @can('clients')
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-card-details"></i> <span>Clientes</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
+                            @can('client.create')
                             <li><a href="{{route('clients.new')}}">Nuevo cliente</a></li>
+                            @endcan
                             <li><a href="{{route('clients')}}">Listados</a></li>
                         </ul>
                     </li>
+                    @endcan
+                    @can('providers')
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="typcn typcn-th-list-outline"></i> <span>Proveedores</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
+                            @can('providers.create')
                             <li><a href="{{route('providers.new')}}">Nuevo proveedor</a></li>
+                            @endcan
                             <li><a href="{{route('providers')}}">Listado</a></li>
                         </ul>
                     </li>
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-briefcase"></i><span>Catalogos</span> <span class="menu-arrow"></span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="{{route('productsoffereds')}}">Productos</a></li>
-                            <li><a href="{{route('servicesoffereds')}}">Servicios</a></li>
-                        </ul>
-                    </li>
+                    @endcan
+                    @if(auth()->user()->can('products') || auth()->user()->can('services') )
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-briefcase"></i><span>Catalogos</span> <span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled">
+                                    @can('products')
+                                    <li><a href="{{route('productsoffereds')}}">Productos</a></li>
+                                    @endcan
+                                    @can('services')
+                                    <li><a href="{{route('servicesoffereds')}}">Servicios</a></li>
+                                    @endcan
+                                </ul>
+                            </li>
+                    @endif
+                    @if(auth()->user()->can('measures') || auth()->user()->can('elements')
+                     || auth()->user()->can('tools') || auth()->user()->can('elements')
+                     || auth()->user()->can('receptions') || auth()->user()->can('inventoris'))
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class=" mdi mdi-store"></i><span>Almacen</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
-                            <li><a href="{{route('measures')}}">Unidades de Medida</a></li>
-                            <li><a href="{{route('materials')}}">Productos</a></li>
-                            <li><a href="{{route('tools')}}">Herramientas</a></li>
-                            <li><a href="{{route('receptions')}}">Recepciones</a></li>
-                            <li><a href="{{route('inventoris')}}">Inventarios</a></li>
+                            @can('measures')
+                               <li><a href="{{route('measures')}}">Unidades de Medida</a></li>
+                            @endcan
+                            @can('elements')
+                               <li><a href="{{route('materials')}}">Productos</a></li>
+                            @endcan
+                            @can('tools')
+                               <li><a href="{{route('tools')}}">Herramientas</a></li>
+                            @endcan
+                            @can('receptions')
+                               <li><a href="{{route('receptions')}}">Recepciones</a></li>
+                            @endcan
+                            @can('inventoris')
+                               <li><a href="{{route('inventoris')}}">Inventarios</a></li>
+                            @endcan
                         </ul>
                     </li>
+                    @endif
+                    @if(auth()->user()->can('user') || auth()->user()->can('rols') )
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-multiple"></i><span>Usuarios</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
-                            <li><a href="{{route('roles')}}">Roles</a></li>
+                            @can('rols')
+                             <li><a href="{{route('roles')}}">Roles</a></li>
+                            @endcan
+                            @can('user.create')
                             <li><a href="{{route('users.new')}}">Nuevo usuario</a></li>
+                            @endcan
+                            @can('user')
                             <li><a href="{{route('users')}}">Listado</a></li>
+                            @endcan
                         </ul>
                     </li>
+                    @endif
+                    @if (auth()->user()->position_id == 1 )
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-cog"></i><span>Ajustes</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
                             <li><a href="{{route('company')}}">Generales de la empresa</a></li>
                         </ul>
                     </li>
+                    @endif
 
                 </ul>
             </div>
@@ -271,7 +325,7 @@
     <!-- ============================================================== -->
     <!-- VISOR DE PAGINAS -->
     <!-- ============================================================== -->
-    <div class="content-page">
+    <div class="content-page" style="padding-bottom: 150px">
         <div class="content">
             <div class="container" id="app">
                 @yield('content')

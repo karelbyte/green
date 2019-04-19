@@ -89,7 +89,7 @@ var core = {
       this.fieldtype = f.type;
     },
     add: function add() {
-      this.item = _objectSpread({}, this.itemDefault);
+      this.item = JSON.parse(JSON.stringify(this.itemDefault));
       this.act = 'post';
       this.title = this.labelnew;
       this.onviews('new');

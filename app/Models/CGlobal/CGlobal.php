@@ -4,8 +4,9 @@ namespace App\Models\CGlobal;
 
 
 use App\Models\LandScaper;
-use App\Models\ProductOffereds;
+use App\Models\ProductOffereds\ProductOffereds;
 use App\Models\ServiceOffereds;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -66,7 +67,7 @@ class CGlobal extends Model
 
     public function Attended() {
 
-        return $this->hasOne('App\Models\User', 'id', 'user_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
 
     }
 

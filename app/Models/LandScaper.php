@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\CGlobal\CGlobal;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -40,6 +42,12 @@ class LandScaper extends Model
     public function user () {
 
         return $this->hasOne(User::class, 'uid', 'user_uid');
+    }
+
+
+    public function global () {
+
+        return $this->hasOne(CGlobal::class, 'id', 'cglobal_id');
     }
 
 }

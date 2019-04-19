@@ -18,6 +18,7 @@ class CreateInventorisTable extends Migration
             $table->integer('element_id');
             $table->integer('cant');
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

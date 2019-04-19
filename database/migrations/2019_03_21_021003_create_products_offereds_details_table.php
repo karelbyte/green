@@ -15,11 +15,14 @@ class CreateProductsOfferedsDetailsTable extends Migration
     {
         Schema::create('products_offereds_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('products_offereds_id');
+            $table->bigInteger('products_offereds_id')->unsigned();
+            $table->foreign('products_offereds_id')->references('id')->on('products_offereds')->onDelete('cascade');
             $table->string('name');
+            $table->integer('measure_id');
             $table->smallInteger('init');
             $table->smallInteger('end');
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

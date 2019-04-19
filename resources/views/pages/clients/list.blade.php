@@ -70,8 +70,10 @@
 <div v-if="views.list" v-cloak>
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
+           @can('clients.create')
            <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nuevo</button>
-            <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-pdf-o"></i> IMPRIMIR</button>
+           @endcan
+           <button v-if="lists.length > 0" class="btn btn-primary  waves-effect btn-sm" @click="view(entity)"><i class="fa fa-file-pdf-o"></i> IMPRIMIR</button>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
              @component('com.find')@endcomponent
@@ -100,7 +102,9 @@
                 <td class="cel_fix">@{{entity.phone}}</td>
                 <td>
                  <button class="btn btn-teal  waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                 <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 @can('clients.delete')
+                  <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
+                 @endcan
                 </td>
             </tr>
             </tbody>
