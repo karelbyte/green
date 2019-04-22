@@ -16,9 +16,15 @@ class CreateCGlobalsTable extends Migration
         Schema::create('cglobals', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('moment');
-            $table->integer('client_id');
-            $table->integer('user_id');
-            $table->integer('type_contact_id');
+            $table->bigInteger('client_id')->unsigned();
+            $table->foreign('client_id')->references('id')
+                ->on('clients');
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')
+                ->on('users');
+            $table->bigInteger('type_contact_id')->unsigned();
+            $table->foreign('type_contact_id')->references('id')
+                ->on('type_contacts');
             $table->smallInteger('repeater');
             $table->smallInteger('type_motive');
             $table->smallInteger('type_motive_id');

@@ -31,6 +31,18 @@ Route::prefix('cags')->group(function () {
 Route::resource('/cags', 'CGlobalsController');
 
 
+// RUTAS DEL CALENDARIO
+Route::prefix('calendars')->group(function () {
+
+    Route::post('list', 'CalendarsController@getList');
+
+    Route::get('/get/id', 'CalendarsController@sendID');
+
+});
+Route::resource('/calendars', 'CalendarsController');
+
+
+
 // RUTAS NOTAS DE VENTA
 Route::prefix('sales')->group(function () {
 
@@ -87,15 +99,17 @@ Route::prefix('quotes')->group(function () {
 Route::resource('/quotes', 'QuotesController');
 
 
-// RUTAS DEL CALENDARIO
-Route::prefix('calendars')->group(function () {
 
-    Route::post('list', 'CalendarsController@getList');
+// RUTAS DEL MANTENIMIENTOS
+Route::prefix('maintenances')->group(function () {
 
-    Route::get('/get/id', 'CalendarsController@sendID');
+    Route::post('list', 'MaintenancesController@getList');
+
+    Route::get('/get/id', 'MaintenancesController@sendID');
 
 });
-Route::resource('/calendars', 'CalendarsController');
+Route::resource('/maintenances', 'MaintenancesController');
+
 
 
 // RUTAS DE AJUSTE DE DATOS DE LA EMPRESA

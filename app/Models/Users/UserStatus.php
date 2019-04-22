@@ -15,8 +15,4 @@ class UserStatus extends Model
    public $timestamps = false;
 
 
-   protected $hidden = [
-      'id',  'created_at', 'updated_at'
-   ];
-
 }

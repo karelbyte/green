@@ -34,7 +34,7 @@ class SalesNote extends Model
     /**
      * @var array
      */
-    protected $fillable = ['global_id', 'moment', 'advance', 'status_id', 'strategy'];
+    protected $fillable = ['global_id', 'moment', 'advance', 'status_id', 'strategy', 'status_id'];
 
 
     public function globals() {

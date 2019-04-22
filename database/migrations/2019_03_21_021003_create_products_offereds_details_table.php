@@ -21,7 +21,6 @@ class CreateProductsOfferedsDetailsTable extends Migration
             $table->integer('measure_id');
             $table->smallInteger('init');
             $table->smallInteger('end');
-            $table->timestamps();
             $table->engine = 'InnoDB';
         });
     }

@@ -15,14 +15,13 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code');
+            $table->string('code')->unique();
             $table->string('name');
             $table->string('contact');
             $table->string('email')->nullable();
             $table->string('movil', 20)->nullable();
             $table->string('phone', 20)->nullable();
             $table->string('address')->nullable();
-            $table->timestamps();
             $table->engine = 'InnoDB';
         });
     }

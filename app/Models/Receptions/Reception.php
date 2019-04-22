@@ -28,7 +28,7 @@ class Reception extends Model
     /**
      * @var array
      */
-    protected $fillable = ['code', 'type', 'user_id', 'moment', 'note', 'status_id', 'created_at', 'updated_at'];
+    protected $fillable = ['code', 'type', 'user_id', 'moment', 'note', 'status_id'];
 
 
     public function Details() {
@@ -53,11 +53,5 @@ class Reception extends Model
         return $this->belongsTo(ReceptionType::class, 'type', 'id');
     }
 
-
-    protected $hidden = [
-
-        'created_at',
-
-        'updated_at'
-    ];
+     public $timestamps = false;
 }

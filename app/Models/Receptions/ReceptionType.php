@@ -15,7 +15,4 @@ class ReceptionType extends Model
     public $timestamps = false;
 
 
-    protected $hidden = [
-        'created_at', 'updated_at'
-    ];
 }

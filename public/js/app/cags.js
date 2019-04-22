@@ -17765,7 +17765,6 @@ var cags = new Vue({
         phone: '',
         address: ''
       },
-      repassword: '',
       listfield: [{
         name: 'Numero',
         type: 'text',
@@ -17947,7 +17946,10 @@ var cags = new Vue({
           case 1:
             _this2.redirect.patch = document.location.origin + '/notas-de-ventas/' + res.data.id;
             _this2.redirect.message = 'Se a generado una nota de venta con número: ' + res.data.id;
-            $('#redirect').modal('show');
+            $('#redirect').modal({
+              backdrop: 'static',
+              keyboard: false
+            });
             break;
 
           case 2:
@@ -17964,16 +17966,6 @@ var cags = new Vue({
             _this2.onviews('list');
 
         }
-
-        if (_this2.item.type_compromise_id === 1) {
-          _this2.getlist();
-
-          _this2.onviews('list');
-
-          _this2.redirect.patch = document.location.origin + '/notas-de-ventas/' + res.data.id;
-          _this2.redirect.message = 'Se a generado una nota de venta con número: ' + res.data.id;
-          $('#redirect').modal('show');
-        } else {}
       })["catch"](function (e) {
         _this2.spin = false;
 

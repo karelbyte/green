@@ -16,9 +16,10 @@ class CreateReceptionsDetailsTable extends Migration
         Schema::create('receptions_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('reception_id')->unsigned();
-            $table->integer('item_id');
-            $table->double('cant', 8, 2);
             $table->foreign('reception_id')->references('id')->on('receptions')->onDelete('cascade');
+            $table->bigInteger('item_id')->unsigned();
+            $table->foreign('item_id')->references('id')->on('elements');
+            $table->double('cant', 8, 2);
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSalesnotesTable extends Migration
+class CreateMaintenanceDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateSalesnotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('salesnotes', function (Blueprint $table) {
+        Schema::create('maintenance_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('global_id');
+            $table->bigInteger('maintenance_id')->unsigned();
+            $table->foreign('maintenance_id')->references('id')->on('maintenances')->onDelete('cascade');
             $table->date('moment');
-            $table->decimal('advance', 8,2)->nullable();
-            $table->string('strategy', 500)->nullable();
-            $table->smallInteger('status_id');
+            $table->string('note');
+            $table->bigInteger('status_id')->unsigned();
             $table->engine = 'InnoDB';
         });
     }
@@ -31,6 +31,6 @@ class CreateSalesnotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('salesnotes');
+        Schema::dropIfExists('maintenance_details');
     }
 }

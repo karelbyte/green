@@ -41,7 +41,6 @@ new Vue({
                 element: '',
                 cant: ''
             },
-            repassword: '',
             listfield: [{name: 'Codigo', type: 'text', field: 'receptions.code'}, {name: 'Fecha', type: 'date', field: 'receptions.moment'}],
             filters_list: {
                 descrip: 'Codigo',
@@ -52,7 +51,6 @@ new Vue({
                 field: 'receptions.moment',
                 type: 'desc'
             },
-            roles: [],
             value: '',
             scrpdf: ''
         }

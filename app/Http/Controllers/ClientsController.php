@@ -66,16 +66,19 @@ class ClientsController extends Controller
     // CREA CLIENTES
     public function store(Request $request)
     {
+        try {
 
-        $provider = Client::where('code', $request->code)->first();
+            $this->setID('clients', $request->code);
 
-        if (!empty($provider)) return response()->json('Ya existe un cliente con ese codigo!', 500);
+            Client::create($request->except('id'));
 
-        $this->setID('clients', $request->code);
+            return response()->json('Cliente añadido con exito!', 200);
 
-        Client::create($request->except('id'));
+        } catch ( \Exception $e) {
 
-        return response()->json('Cliente añadido con exito!', 200);
+            return response()->json('Ya existe un cliente con ese codigo!', 500);
+
+        }
     }
 
     // MODFICA CLIENTE
@@ -87,25 +90,21 @@ class ClientsController extends Controller
         return response()->json('Datos actualizados con exito!', 200);
     }
 
-    // ELIMINA CLIENTE CON SU ROL EN EL SISTEMA
+    // ELIMINA CLIENTE
     public function destroy($id)
     {
 
-        Client::destroy($id);
+        try {
 
-        return response()->json('Datos eliminados con exito!', 200);
+            Client::destroy($id);
 
-        /*$pro = Product::find($id);
+            return response()->json('Datos eliminados con exito!', 200);
 
-        if ($pro->used()) {
+        } catch ( \Exception $e) {
 
             return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
 
-        } else {
+        }
 
-            Product::destroy($id);
-
-            return response()->json('Producto eliminado con exito!', 200);
-        } */
     }
 }

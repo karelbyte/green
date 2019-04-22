@@ -203,7 +203,6 @@ new Vue({
         element: '',
         cant: ''
       },
-      repassword: '',
       listfield: [{
         name: 'Codigo',
         type: 'text',
@@ -222,7 +221,6 @@ new Vue({
         field: 'receptions.moment',
         type: 'desc'
       },
-      roles: [],
       value: '',
       scrpdf: ''
     };

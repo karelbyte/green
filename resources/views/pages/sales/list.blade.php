@@ -26,7 +26,6 @@
     </div>
 </div>
 <input type="text" id="find" value="{{$find}}" hidden>
-
 <div v-if="views.list" v-cloak>
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
@@ -175,7 +174,7 @@
             </div>
             <div class="panel-footer footer_fix">
                 <button v-if="pass()" class="btn btn-success waves-effect btn-sm" @click="saveDetails()">Guardar</button>
-                <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
+                <button v-if="find == 0 || item.details.length > 0" class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
             </div>
         </div>
     </div>

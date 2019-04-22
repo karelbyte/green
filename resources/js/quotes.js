@@ -1,5 +1,3 @@
-import {core} from './core';
-
 import {dateEs, generateId} from './tools';
 
 import 'quill/dist/quill.core.css'
@@ -18,8 +16,9 @@ Vue.use(VueProgressBar, {
     height: '2px'
 });
 
+const CLIENTE_ACEPT_QUOTE = 1;
+
 new Vue({
-    mixins: [core],
     el: '#app',
     data () {
         return {
@@ -58,7 +57,6 @@ new Vue({
                 notes: [],
                 clientemit: 0
             },
-            repassword: '',
             listfield: [{name: 'Codigo', type: 'text', field: 'quotes.id'}],
             filters_list: {
                 descrip: 'Codigo',
@@ -93,7 +91,71 @@ new Vue({
             TypeShow: '',
             elements: [],
             confircode: 0,
-            landscapers: []
+            landscapers: [],
+            delobj: '',
+
+            keyObjDelete: '',
+
+            propertyShowDelObj: '',
+
+            patchDelete: '',
+
+            title: '',
+
+            labeledit: '',
+
+            labelnew: '',
+
+            lists: [],
+
+            spin: false,
+
+            act: 'post',
+
+            fieldtype: 'text',
+
+            pager_list: {
+
+                page: 1,
+
+                recordpage: 10,
+
+                totalpage: 0
+
+            },
+            redirect: {
+                patch: '',
+                message: ''
+            }
+        }
+    },
+    directives: {
+        focus: {
+            inserted: function (el) {
+                el.focus()
+            }
+        },
+        numericonly: {
+            bind(el) {
+                el.addEventListener('keydown', (e) => {
+                    if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||
+                        // Allow: Ctrl+A
+                        (e.keyCode === 65 && e.ctrlKey === true) ||
+                        // Allow: Ctrl+C
+                        (e.keyCode === 67 && e.ctrlKey === true) ||
+                        // Allow: Ctrl+X
+                        (e.keyCode === 88 && e.ctrlKey === true) ||
+                        // Allow: home, end, left, right
+                        (e.keyCode >= 35 && e.keyCode <= 39)) {
+                        // let it happen, don't do anything
+                        return
+                    }
+                    // Ensure that it is a number and stop the keypress
+                    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                        e.preventDefault()
+                    }
+                })
+            }
         }
     },
     components: {
@@ -144,6 +206,9 @@ new Vue({
             this.detail.price = '';
 
             this.detail.cant = '';
+        },
+        'filters_list.value': function () {
+            this.getlist()
         }
     },
     mounted () {
@@ -162,7 +227,11 @@ new Vue({
 
         if (this.find > 0) {
 
-            this.filters_list.value = this.find
+            this.filters_list.value = this.find;
+
+        } else {
+
+            this.getlist()
         }
 
     },
@@ -202,6 +271,16 @@ new Vue({
                 this.lists = res.data.list;
 
                 this.landscapers = res.data.landscapers;
+
+                this.item = {...res.data.list[0]};
+
+                if (this.find > 0 && this.item.details.length === 0) {
+
+                    this.item = {...res.data.list[0]};
+
+                    this.onviews('newdetails')
+
+                }
 
                 this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
 
@@ -397,13 +476,31 @@ new Vue({
 
             axios.post(urldomine + 'api/quotes/checkinfo', data).then(r => {
 
-                this.$toasted.success(r.data);
-
-                this.getlist();
-
-                this.spin = false;
-
                 $('#check').modal('hide');
+
+                if (this.item.clientemit === CLIENTE_ACEPT_QUOTE) {
+
+                    this.redirect.patch = document.location.origin + '/notas-de-ventas/' + r.data;
+
+                    this.redirect.message = 'Se a generado una nota de venta con número: ' +  r.data;
+
+                    $('#redirect').modal({
+
+                        backdrop: 'static',
+
+                        keyboard: false
+                    });
+
+                } else {
+
+                    this.$toasted.success(r.data);
+
+                    this.getlist();
+
+                    this.spin = false;
+
+                }
+
 
             }).catch(e => {
 
@@ -607,6 +704,81 @@ new Vue({
         showCamera() {
 
           $('#file').click()
+        },
+
+        setfield (f){
+
+            this.filters_list.value = '';
+
+            this.filters_list.descrip = f.name;
+
+            this.filters_list.field = f.field;
+
+            if (f.type === 'select') this.filters_list.options = f.options;
+
+            this.fieldtype = f.type
+
+        },
+        add () {
+            this.item = JSON.parse( JSON.stringify( this.itemDefault ));
+
+            this.act = 'post';
+
+            this.title = this.labelnew;
+
+            this.onviews('new')
+
+        },
+        delitem () {
+
+            this.spin = true;
+
+            axios({
+
+                method: 'delete',
+
+                url: urldomine + this.patchDelete +  this.item[this.keyObjDelete]
+
+            }).then(r => {
+
+                this.spin = false;
+
+                $('#modaldelete').modal('hide');
+
+                this.$toasted.success(r.data);
+
+                this.getlist();
+
+            }).catch(e => {
+
+                this.spin = false;
+
+                this.$toasted.error(e.response.data)
+
+            })
+
+        },
+        showdelete(it) {
+
+            this.item = {...it};
+
+            this.delobj = it[this.propertyShowDelObj];
+
+            $('#modaldelete').modal('show')
+
+        },
+        close () {
+
+            this.getlist();
+
+            this.onviews('list');
+        },
+        onviews (pro){
+
+            for (let property in this.views) {
+
+                this.views[property] = property === pro
+            }
         }
     }
 });

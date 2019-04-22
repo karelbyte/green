@@ -119,7 +119,7 @@
                             <td class="cel_fix">@{{det.init}} a @{{ det.end }} dias</td>
                             <td>
                                 <button class="btn btn-teal waves-effect btn-sm" @click="detEdit(det)"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-info waves-effect btn-sm" @click="needsShow(det.needs)">Detalles</button>
+                                <button class="btn btn-info waves-effect btn-sm" @click="needsShow(det)">Detalles</button>
                                 <button class="btn btn-danger waves-effect btn-sm" @click="delDetail(det.id)"><i class="fa fa-eraser"></i></button>
                             </td>
                         </tr>

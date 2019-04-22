@@ -269,7 +269,7 @@
                                <li><a href="{{route('measures')}}">Unidades de Medida</a></li>
                             @endcan
                             @can('elements')
-                               <li><a href="{{route('materials')}}">Productos</a></li>
+                               <li><a href="{{route('products')}}">Productos</a></li>
                             @endcan
                             @can('tools')
                                <li><a href="{{route('tools')}}">Herramientas</a></li>

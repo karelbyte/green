@@ -194,7 +194,6 @@ new Vue({
         price: '',
         measure: ''
       },
-      repassword: '',
       listfield: [{
         name: 'Codigo',
         type: 'text',
@@ -278,7 +277,17 @@ new Vue({
       })["catch"](function (e) {
         _this2.spin = false;
 
-        _this2.$toasted.error(e.response.data);
+        if (e.response.status === 512) {
+          _this2.spin = false;
+
+          _this2.$toasted.error(e.response.data);
+
+          _this2.getlist();
+
+          _this2.onviews('list');
+        } else {
+          _this2.$toasted.error(e.response.data);
+        }
       });
     },
     add: function add() {

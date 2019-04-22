@@ -15,10 +15,14 @@ class CreateMaintenancesTable extends Migration
     {
         Schema::create('maintenances', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('client_id');
-            $table->integer('service_offereds_id');
+            $table->bigInteger('client_id')->unsigned();
+            $table->foreign('client_id')->references('id')->on('clients');
+            $table->bigInteger('service_offereds_id')->unsigned();
+            $table->foreign('service_offereds_id')->references('id')->on('services_offereds_details');
             $table->integer('timer');
             $table->date('start');
+            $table->bigInteger('status_id')->unsigned();
+            $table->foreign('status_id')->references('id')->on('maintenance_status');
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

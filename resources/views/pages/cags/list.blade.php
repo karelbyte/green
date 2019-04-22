@@ -369,7 +369,8 @@
     </div>
 </div>
 
-<div id="redirect" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<div id="redirect" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"
+     data-backdrop="static" data-keyboard="false">
     <div class="vertical-alignment-helper">
         <div class="modal-dialog vertical-align-center">
             <div class="modal-content p-0 b-0">
@@ -382,7 +383,7 @@
                     </div>
                     <div class="panel-footer text-right">
                         <a :href="redirect.patch" class="btn btn-danger waves-effect btn-sm">IR A DOCUMENTO</a>
-                        <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
+                       <!-- <a v-if="this.item.type_compromise_id == " href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a> -->
                     </div>
                 </div>
             </div>

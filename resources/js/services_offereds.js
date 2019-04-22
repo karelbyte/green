@@ -39,7 +39,6 @@ new Vue({
                 price: '',
                 measure: ''
             },
-            repassword: '',
             listfield: [{name: 'Codigo', type: 'text', field: 'services_offereds.name'},],
             filters_list: {
                 descrip: 'Descripción',
@@ -138,7 +137,21 @@ new Vue({
 
                 this.spin = false;
 
-                this.$toasted.error(e.response.data)
+                if (e.response.status === 512) {
+
+                    this.spin = false;
+
+                    this.$toasted.error(e.response.data);
+
+                    this.getlist();
+
+                    this.onviews('list');
+
+                } else {
+
+                    this.$toasted.error(e.response.data)
+                }
+
             })
 
         },
@@ -155,7 +168,6 @@ new Vue({
 
         },
         pass () {
-
             let name = this.item.name !== '';
 
             let init = this.item.details.length > 0;

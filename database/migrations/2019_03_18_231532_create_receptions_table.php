@@ -15,13 +15,15 @@ class CreateReceptionsTable extends Migration
     {
         Schema::create('receptions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code');
-            $table->smallInteger('type');
-            $table->integer('user_id');
+            $table->string('code')->unique();
+            $table->bigInteger('type')->unsigned();
+            $table->foreign('type')->references('id')->on('receptions_type');
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->date('moment');
             $table->string('note')->nullable();
-            $table->smallInteger('status_id')->default(1);
-            $table->timestamps();
+            $table->bigInteger('status_id')->unsigned()->default(1);
+            $table->foreign('status_id')->references('id')->on('receptions_status');
             $table->engine = 'InnoDB';
         });
     }

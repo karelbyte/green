@@ -16,19 +16,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Client extends Model
 {
-    /**
-     * The "type" of the auto-incrementing ID.
-     * 
-     * @var string
-     */
+
     protected $keyType = 'integer';
 
-    /**
-     * @var array
-     */
     protected $fillable = ['code', 'name', 'contact', 'email', 'movil', 'phone', 'address'];
 
-
-    protected $hidden = ['created_at', 'updated_at'];
+    public $timestamps = false;
 
 }

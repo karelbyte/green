@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/app/products_offereds"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/app/maintenances"],{
 
 /***/ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js":
 /*!******************************************************************!*\
@@ -139,19 +139,19 @@ var core = {
 
 /***/ }),
 
-/***/ "./resources/js/products_offereds.js":
-/*!*******************************************!*\
-  !*** ./resources/js/products_offereds.js ***!
-  \*******************************************/
+/***/ "./resources/js/maintenances.js":
+/*!**************************************!*\
+  !*** ./resources/js/maintenances.js ***!
+  \**************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core */ "./resources/js/core.js");
-/* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools */ "./resources/js/tools.js");
-/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
-/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./core */ "./resources/js/core.js");
+/* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tools */ "./resources/js/tools.js");
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -160,86 +160,83 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 new Vue({
-  mixins: [_core__WEBPACK_IMPORTED_MODULE_0__["core"]],
+  mixins: [_core__WEBPACK_IMPORTED_MODULE_1__["core"]],
   el: '#app',
   data: function data() {
     return {
+      clients: [],
+      services: [],
       views: {
         list: true,
-        "new": false,
-        needs: false
+        "new": false
       },
       item: {
         id: 0,
-        name: '',
+        client: '',
+        service: '',
+        start: '',
+        status: '',
         details: []
       },
       itemDefault: {
         id: 0,
-        name: '',
+        client: '',
+        service: '',
+        start: '',
+        status: '',
         details: []
       },
-      det: {
-        id: 0,
-        name: '',
-        measure: '',
-        init: 1,
-        end: '',
-        meeds: []
-      },
-      detDedault: {
-        id: 0,
-        name: '',
-        measure: '',
-        init: 1,
-        end: '',
-        needs: []
-      },
-      need: {
-        id: 0,
-        element: '',
-        element_id: 0,
-        cant: 0
-      },
-      needDefault: {
-        id: 0,
-        element: '',
-        element_id: 0,
-        cant: 0
-      },
-      needscant: 0,
-      needs: [],
-      measures: [],
-      elements: [],
       listfield: [{
-        name: 'Codigo',
+        name: 'Cliente',
         type: 'text',
-        field: 'products_offereds.name'
+        field: 'clients.name'
       }],
       filters_list: {
-        descrip: 'Descripción',
-        field: 'products_offereds.name',
+        descrip: 'Codigo',
+        field: 'clients.name',
         value: ''
       },
       orders_list: {
-        field: 'products_offereds.name',
-        type: 'asc'
-      }
+        field: 'clients.name',
+        type: 'desc'
+      },
+      value: '',
+      scrpdf: ''
     };
   },
   components: {
-    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default.a
+    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   mounted: function mounted() {
-    this.propertyShowDelObj = 'name';
-    this.labeledit = 'Actualizar producto';
-    this.labelnew = 'Añadir producto';
-    this.patchDelete = 'api/productsoffereds/';
+    this.propertyShowDelObj = 'client.name';
+    this.labeledit = 'Actualizar mantenimiento';
+    this.labelnew = 'Añadir mantenimiento';
+    this.patchDelete = 'api/maintenances/';
     this.keyObjDelete = 'id';
   },
   methods: {
-    getlist: function getlist(pFil, pOrder, pPager) {
+    dateToEs: _tools__WEBPACK_IMPORTED_MODULE_2__["dateEs"],
+    aplic: function aplic() {
       var _this = this;
+
+      this.spin = true;
+      axios.post(urldomine + 'api/maintenances/aplic', {
+        id: this.item.id
+      }).then(function (r) {
+        $('#aplicar').modal('hide');
+        _this.spin = false;
+
+        _this.$toasted.success(r.data);
+
+        _this.getlist();
+      });
+    },
+    showaplic: function showaplic(it) {
+      this.item = it;
+      $('#aplicar').modal('show');
+    },
+    getlist: function getlist(pFil, pOrder, pPager) {
+      var _this2 = this;
 
       if (pFil !== undefined) {
         this.filters = pFil;
@@ -256,7 +253,7 @@ new Vue({
       this.spin = true;
       axios({
         method: 'post',
-        url: urldomine + 'api/productsoffereds/list',
+        url: urldomine + 'api/maintenances/list',
         data: {
           start: this.pager_list.page - 1,
           take: this.pager_list.recordpage,
@@ -264,63 +261,45 @@ new Vue({
           orders: this.orders_list
         }
       }).then(function (res) {
-        _this.spin = false;
-        _this.lists = res.data.list;
-        _this.measures = res.data.measures;
-        _this.elements = res.data.elements;
-        _this.pager_list.totalpage = Math.ceil(res.data.total / _this.pager_list.recordpage);
-      })["catch"](function (e) {
-        _this.spin = false;
-
-        _this.$toasted.error(e.response.data);
-      });
-    },
-    save: function save() {
-      var _this2 = this;
-
-      this.spin = true;
-      var itemSendToback = JSON.parse(JSON.stringify(this.item));
-      itemSendToback.details = itemSendToback.details.map(function (it) {
-        return {
-          id: it.id,
-          name: it.name,
-          measure_id: it.measure.id,
-          init: it.init,
-          end: it.end,
-          needs: it.needs.map(function (ne) {
-            return {
-              id: ne.id,
-              cant: ne.cant,
-              element_id: ne.element.id
-            };
-          })
-        };
-      });
-      axios({
-        method: this.act,
-        url: urldomine + 'api/productsoffereds' + (this.act === 'post' ? '' : '/' + this.item.id),
-        data: itemSendToback
-      }).then(function (response) {
         _this2.spin = false;
-
-        _this2.$toasted.success(response.data);
-
-        _this2.getlist();
-
-        _this2.onviews('list');
+        _this2.lists = res.data.list;
+        _this2.clients = res.data.clients;
+        _this2.services = res.data.services;
+        _this2.pager_list.totalpage = Math.ceil(res.data.total / _this2.pager_list.recordpage);
       })["catch"](function (e) {
         _this2.spin = false;
 
         _this2.$toasted.error(e.response.data);
       });
     },
+    save: function save() {
+      var _this3 = this;
+
+      this.spin = true;
+      axios({
+        method: this.act,
+        url: urldomine + 'api/maintenances' + (this.act === 'post' ? '' : '/' + this.item.id),
+        data: this.item
+      }).then(function (response) {
+        _this3.spin = false;
+
+        _this3.$toasted.success(response.data);
+
+        _this3.getlist();
+
+        _this3.onviews('list');
+      })["catch"](function (e) {
+        _this3.spin = false;
+
+        _this3.$toasted.error(e.response.data);
+      });
+    },
     add: function add() {
       this.item = _objectSpread({}, this.itemDefault);
-      this.item.details = [];
       this.act = 'post';
       this.title = this.labelnew;
-      this.det = _objectSpread({}, this.detDedault);
-      this.det.needs = [];
+      this.type = '';
+      this.details = [];
       this.onviews('new');
     },
     edit: function edit(it) {
@@ -329,78 +308,22 @@ new Vue({
       this.title = this.labeledit;
       this.onviews('new');
     },
-    delDetail: function delDetail(id) {
-      this.item.details = this.item.details.filter(function (it) {
-        return it.id !== id;
-      });
-    },
-    addNew: function addNew() {
-      var _this3 = this;
-
-      var foun = this.item.details.find(function (it) {
-        return it.id === _this3.det.id;
-      });
-
-      if (foun === undefined) {
-        this.det.id = Object(_tools__WEBPACK_IMPORTED_MODULE_1__["generateId"])(9);
-        this.item.details.push(_objectSpread({}, this.det));
-      } else {
-        this.item.details = this.item.details.filter(function (it) {
-          return it.id !== _this3.det.id;
-        });
-        this.item.details.push(_objectSpread({}, this.det));
-      }
-
-      $('#add_det').modal('hide');
-    },
-    detEdit: function detEdit(it) {
-      this.det = _objectSpread({}, it);
-      $('#add_det').modal('show');
-    },
     pass: function pass() {
-      var name = this.item.code !== '';
-      var list = this.item.details.length > 0;
-      return name && list;
+      var client = this.item.client !== '';
+      var moment = this.item.start !== '';
+      var service = this.item.service !== '';
+      var timer = this.item.timer !== ' ' && this.item.timer > 0;
+      return client && moment && service && timer;
     },
-    showAddDet: function showAddDet() {
-      this.det = _objectSpread({}, this.detDedault);
-      $('#add_det').modal('show');
-    },
-    needsShow: function needsShow(det) {
-      this.det = det;
-      this.needs = this.det.needs;
-      this.needscant = this.needs.length;
-      this.onviews('needs');
-    },
-    delNeed: function delNeed(id) {
-      this.needs = this.needs.filter(function (it) {
-        return it.id !== id;
-      });
-    },
-    showAddNeed: function showAddNeed() {
+    viewpdf: function viewpdf(id) {
       var _this4 = this;
 
-      var foun = this.needs.find(function (it) {
-        return it.element.id === _this4.need.element.id;
+      this.spin = true;
+      axios.get(urldomine + 'api/maintenances/pdf/' + id).then(function (response) {
+        _this4.spin = false;
+        _this4.scrpdf = response.data;
+        window.$('#pdf').modal('show');
       });
-
-      if (foun === undefined) {
-        this.need.id = Object(_tools__WEBPACK_IMPORTED_MODULE_1__["generateId"])(9);
-        this.needs.push(_objectSpread({}, this.need));
-        this.need = _objectSpread({}, this.needDefault);
-      } else {
-        foun.cant += this.need.cant;
-      }
-    },
-    closeNeed: function closeNeed() {
-      this.det.needs = this.needs;
-      this.onviews('new');
-    },
-    passNew: function passNew() {
-      var name = this.det.name !== '';
-      var init = this.det.init !== '' && this.det.init > 0;
-      var end = this.det.end !== '' && this.det.end > 0;
-      return name && init && end;
     }
   }
 });
@@ -519,16 +442,16 @@ Vue.directive('numeric-only', {
 
 /***/ }),
 
-/***/ 10:
-/*!*************************************************!*\
-  !*** multi ./resources/js/products_offereds.js ***!
-  \*************************************************/
+/***/ 21:
+/*!********************************************!*\
+  !*** multi ./resources/js/maintenances.js ***!
+  \********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/green/resources/js/products_offereds.js */"./resources/js/products_offereds.js");
+module.exports = __webpack_require__(/*! /var/www/html/green/resources/js/maintenances.js */"./resources/js/maintenances.js");
 
 
 /***/ })
 
-},[[10,"/js/app/manifest"]]]);
+},[[21,"/js/app/manifest"]]]);

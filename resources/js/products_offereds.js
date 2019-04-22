@@ -54,7 +54,6 @@ new Vue({
             needs: [],
             measures: [],
             elements: [],
-            repassword: '',
             listfield: [{name: 'Codigo', type: 'text', field: 'products_offereds.name'},],
             filters_list: {
                 descrip: 'Descripción',
@@ -132,7 +131,9 @@ new Vue({
 
             this.spin = true;
 
-            this.item.details = this.item.details.map(it => {
+            let itemSendToback = JSON.parse( JSON.stringify( this.item ));
+
+            itemSendToback.details = itemSendToback.details.map(it => {
                return {
                    id: it.id,
                    name: it.name,
@@ -141,6 +142,7 @@ new Vue({
                    end: it.end,
                    needs: it.needs.map(ne => {
                        return {
+                           id: ne.id,
                            cant: ne.cant,
                            element_id : ne.element.id
                        }
@@ -154,7 +156,7 @@ new Vue({
 
                 url: urldomine + 'api/productsoffereds' + (this.act === 'post' ? '' : '/' + this.item.id),
 
-                data: this.item
+                data: itemSendToback
 
             }).then(response => {
 
@@ -205,29 +207,29 @@ new Vue({
 
             this.item.details = this.item.details.filter(it => it.id !== id);
         },
-        addNew() {
+        addNew () {
 
-            let foun = this.item.details.find(it => {
+                let foun = this.item.details.find(it => {
 
-                return  it.id === this.det.id
+                    return  it.id === this.det.id
 
-            });
+                });
 
-            if (foun === undefined) {
+                if (foun === undefined) {
 
-                this.det.id = generateId(9);
 
-                this.item.details.push({...this.det});
+                    this.det.id = generateId(9);
 
-            } else {
+                    this.item.details.push({...this.det});
 
-                this.item.details = this.item.details.filter(it => it !== foun);
+                } else {
 
-                this.item.details.push({...this.det});
+                    this.item.details = this.item.details.filter(it => it.id !== this.det.id);
 
-            }
+                    this.item.details.push({...this.det});
+                }
 
-            $('#add_det').modal('hide');
+                $('#add_det').modal('hide');
 
         },
         detEdit(it) {
@@ -251,9 +253,11 @@ new Vue({
 
             $('#add_det').modal('show');
         },
-        needsShow (ne) {
+        needsShow (det) {
 
-            this.needs = ne;
+            this.det = det;
+
+            this.needs = this.det.needs;
 
             this.needscant = this.needs.length;
 
@@ -265,13 +269,30 @@ new Vue({
         },
         showAddNeed() {
 
-            this.need.id = generateId(9);
+            let foun = this.needs.find(it => {
 
-            this.needs.push({...this.need});
+                return  it.element.id === this.need.element.id
 
-            this.need = {...this.needDefault}
+            });
+
+            if (foun === undefined) {
+
+                this.need.id = generateId(9);
+
+                this.needs.push({...this.need});
+
+                this.need = {...this.needDefault}
+
+            } else {
+
+               foun.cant += this.need.cant
+            }
+
         },
         closeNeed () {
+
+            this.det.needs  =  this.needs;
+
             this.onviews('new')
         },
         passNew () {

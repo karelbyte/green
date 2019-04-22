@@ -1,3 +1,6 @@
+
+truncate table surrogates;
+
 truncate table cglobals;
 
 truncate table cglobal_info_clients;
@@ -27,8 +30,6 @@ truncate table calendars;
 truncate table elements;
 
 truncate table clients;
-
-truncate table surrogates;
 
 truncate table inventoris;
 

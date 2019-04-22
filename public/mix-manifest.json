@@ -8,6 +8,7 @@
     "/js/app/core.js": "/js/app/core.js",
     "/js/app/crmtools.js": "/js/app/crmtools.js",
     "/js/app/inventoris.js": "/js/app/inventoris.js",
+    "/js/app/maintenances.js": "/js/app/maintenances.js",
     "/js/app/manifest.js": "/js/app/manifest.js",
     "/js/app/materials.js": "/js/app/materials.js",
     "/js/app/measures.js": "/js/app/measures.js",

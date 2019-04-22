@@ -18,7 +18,6 @@ new Vue({
                 id: 0,
                 name: '',
             },
-            repassword: '',
             listfield: [{name: 'Nombre', type: 'text', field: 'measures.name'}],
             filters_list: {
                 descrip: 'Nombre',
@@ -29,7 +28,6 @@ new Vue({
                 field: 'measures.name',
                 type: 'asc'
             },
-            roles: [],
             value: ''
         }
     },

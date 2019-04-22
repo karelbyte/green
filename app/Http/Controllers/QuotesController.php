@@ -214,7 +214,7 @@ class QuotesController extends Controller
 
                 $sale->details()->createMany($quote->details()->get()->toArray());
 
-                return response()->json('Se generó nota de venta con número '. $sale->id, 200);
+                return response()->json($sale->id, 200);
 
 
             } else {

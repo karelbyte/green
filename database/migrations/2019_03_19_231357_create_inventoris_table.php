@@ -15,7 +15,8 @@ class CreateInventorisTable extends Migration
     {
         Schema::create('inventoris', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('element_id');
+            $table->bigInteger('element_id')->unsigned();
+            $table->foreign('element_id')->references('id')->on('elements');
             $table->integer('cant');
             $table->timestamps();
             $table->engine = 'InnoDB';

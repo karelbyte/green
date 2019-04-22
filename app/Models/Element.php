@@ -38,10 +38,4 @@ class Element extends Model
         return $query->where('type', 2);
     }
 
-    public function used () {
-
-        $found = Inventori::where('element_id', $this->id)->first();
-
-        return !empty($found);
-    }
 }

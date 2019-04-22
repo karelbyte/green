@@ -87,10 +87,10 @@ Route::middleware('auth')->group(function () {
     // MEDIDAS
     Route::get('/measures', 'MeasuresController@index')->name('measures');
 
-    // MATERIALES
-    Route::get('/materiales', 'MaterialsController@index')->name('materials');
+    // PRODUCTOS ALMACEN
+    Route::get('/productos', 'MaterialsController@index')->name('products');
 
-    // MATERIALES
+    // MATERIALES ALMACEN
     Route::get('/herramientas', 'ToolsController@index')->name('tools');
 
     // RECEPCIONES

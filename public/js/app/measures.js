@@ -156,7 +156,6 @@ new Vue({
         id: 0,
         name: ''
       },
-      repassword: '',
       listfield: [{
         name: 'Nombre',
         type: 'text',
@@ -171,7 +170,6 @@ new Vue({
         field: 'measures.name',
         type: 'asc'
       },
-      roles: [],
       value: ''
     };
   },

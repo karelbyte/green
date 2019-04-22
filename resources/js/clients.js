@@ -29,7 +29,6 @@ new Vue({
                 phone: '',
                 address: ''
             },
-            repassword: '',
             listfield: [{name: 'Nombre', type: 'text', field: 'clients.name'}, {name: 'Codigo', type: 'text', field: 'clients.code'}],
             filters_list: {
                 descrip: 'Nombre',

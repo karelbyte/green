@@ -26,7 +26,6 @@ new Vue({
                 type: 1,
                 measure_id: '',
             },
-            repassword: '',
             listfield: [{name: 'Codigo', type: 'text', field: 'elements.code'}, {name: 'Nombre', type: 'text', field: 'elements.name'}],
             filters_list: {
                 descrip: 'Codigo',

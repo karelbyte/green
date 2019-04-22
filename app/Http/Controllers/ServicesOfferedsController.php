@@ -33,7 +33,7 @@ class ServicesOfferedsController extends Controller
 
             $q->with('measure');
 
-        }])-> select('*');
+        }])->select('*');
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
@@ -60,74 +60,115 @@ class ServicesOfferedsController extends Controller
 
     public function store(Request $request) {
 
-        $mat = ServiceOffereds::where('name', $request->name)->first();
+        try {
 
-        if (!empty($mat)) { return response()->json('Ya existe un servicio con ese nombre', 500);}
-
-        $service = ServiceOffereds::create($request->except('details'));
-
-        foreach ($request->details as $det) {
-
-            $service->details()->create([
-                'name' => $det['name'],
-                'init' => $det['init'],
-                'end' => $det['end'],
-                'price' => $det['price'],
-                'measure_id' => $det['measure']['id']
+            $service = ServiceOffereds::create([
+                'name' => $request->name
             ]);
+
+            foreach ($request->details as $det) {
+
+                try {
+
+                    $service->details()->create([
+
+                        'name' => $det['name'],
+
+                        'init' => $det['init'],
+
+                        'end' => $det['end'],
+
+                        'price' => $det['price'],
+
+                        'measure_id' => $det['measure']['id']
+                    ]);
+                }
+                 catch ( \Exception $e) {
+
+                    return response()->json('Ya existe un detalle con esa descripción', 500);
+
+                }
+
+            }
+
+            return response()->json('Datos creado con exito!', 200);
+
+        } catch ( \Exception $e) {
+
+            return response()->json('Ya existe un servicio con esa descripción', 500);
+
         }
 
-        return response()->json('Datos creado con exito!', 200);
     }
 
     public function update(Request $request, $id) {
 
-        $mat = ServiceOffereds::where('name', $request->name)->where('id', '<>', $id)->first();
+        try {
 
-        if (!empty($mat)) { return response()->json('Ya existe un servicio con ese nombre', 500);}
+            $service = ServiceOffereds::find($id);
 
-        $ser = ServiceOffereds::find($id);
+            $service->update(['name' => $request->name]);
 
-        $ser->update($request->except('details'));
+            $actuals = $service->details->pluck('id'); // IDENTIFICADORES ACTUALES
 
-        $ser->details()->delete();
+            foreach ($request->details as $det) {
 
-        foreach ($request->details as $det) {
+                ServiceOfferedsDetails::updateOrCreate([
+                    'id' => $det['id']
+                    ],
+                    [
+                    'services_offereds_id' => $id,
 
-            $ser->details()->create([
-                'name' => $det['name'],
-                'init' => $det['init'],
-                'end' => $det['end'],
-                'price' => $det['price'],
-                'measure_id' => $det['measure']['id']
-            ]);
+                    'name' => $det['name'],
+
+                    'init' => $det['init'],
+
+                    'end' => $det['end'],
+
+                    'price' => $det['price'],
+
+                    'measure_id' => $det['measure']['id']
+
+                ]);
+            }
+
+            $updates = collect($request->details)->pluck('id'); // IDENTIFICADORES ACTUALIZADOS
+
+            $ids = $actuals->diff($updates);
+
+            try {
+
+                ServiceOfferedsDetails::whereIn('id', $ids)->delete();
+
+            } catch (\Exception $e) {
+
+                return response()->json('Trato de eliminar elementos en uso, se rechazaron esas operaciones!', 512);
+
+            }
+
+            return response()->json('Datos actualizados con exito!', 200);
+
+        } catch ( \Exception $e) {
+
+            return response()->json('Ya existe un servicio con esa descripción', 500);
+
         }
-
-        return response()->json('Datos actualizados con exito!', 200);
     }
 
     public function destroy($id)  {
 
 
-        $ser = ServiceOffereds::find($id);
+        try {
 
-        $ser->details()->delete();
+            ServiceOffereds::destroy($id);
 
-        ServiceOffereds::destroy($id);
+            return response()->json('Servicio eliminado con exito!', 200);
 
-        return response()->json('Servicio eliminado con exito!', 200);
+        } catch ( \Exception $e) {
 
-        /*$pro = Product::find($id);
+            return response()->json('No se puede eliminar esta siendo usado este elemento !', 500);
 
-        if ($pro->used()) {
+        }
 
-            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
-
-        } else {
-
-            Product::destroy($id);
-
-            return response()->json('Producto eliminado con exito!', 200);
-        } */
     }
 }

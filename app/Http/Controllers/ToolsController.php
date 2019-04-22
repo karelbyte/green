@@ -51,35 +51,46 @@ class ToolsController extends Controller
 
     public function store(Request $request) {
 
-        $mat = Element::tool()->where('code', $request->code)->first();
+        try {
 
-        if (!empty($mat)) { return response()->json('Ya existe un herramienta con es código', 500);}
+            Element::create($request->all());
 
-        Element::create($request->all());
+            return response()->json('Datos creado con exito!', 200);
 
-        return response()->json('Datos creado con exito!', 200);
+        } catch ( \Exception $e) {
+
+            return response()->json('Ya existe una herramienta con ese código', 500);
+
+        }
     }
 
     public function update(Request $request, $id) {
 
-        Element::where('id', $id)->update(['code' => $request->code, 'name' => $request->name]);
+        try {
 
-        return response()->json('Datos actualizados con exito!', 200);
+            Element::where('id', $id)->update(['code' => $request->code, 'name' => $request->name]);
+
+            return response()->json('Datos actualizados con exito!', 200);
+
+        } catch ( \Exception $e) {
+
+            return response()->json('Ya existe una herramienta con ese codigo', 500);
+
+        }
     }
 
     public function destroy($id)  {
 
-        $element = Element::find($id);
-
-        if ($element->used()) {
-
-            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
-
-        } else {
+        try {
 
             Element::destroy($id);
 
             return response()->json('Herramienta eliminada con exito!', 200);
+
+        } catch ( \Exception $e) {
+
+            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
+
         }
     }
 }

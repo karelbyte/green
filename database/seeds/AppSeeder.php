@@ -177,9 +177,17 @@ class AppSeeder extends Seeder
             ['id' => 4, 'name' => 'Vía presencial'],
             ['id' => 5, 'name' => 'Visita a cliente']
         ];
-         \App\Models\TypeWaySendInfo::create($statusSendInfosList);
+         \App\Models\TypeWaySendInfo::insert($statusSendInfosList);
+
+        \App\Models\Measure::create(['id' => 1, 'name' => 'PIEZA.']);
 
 
+        // ESTADO DE MANTENIMIENTO
+       $statusManteList = [
+           ['id' => 2, 'name' => 'Inactivo'],
+           ['id' => 1, 'name' => 'Activo'],
+       ];
+        \App\Models\Maintenances\MaintenanceStatus::insert($statusManteList);
 
     }
 }

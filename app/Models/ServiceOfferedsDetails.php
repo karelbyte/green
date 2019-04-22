@@ -19,7 +19,7 @@ class ServiceOfferedsDetails extends Model
 
     protected $keyType = 'integer';
 
-    protected $fillable = ['name', 'init', 'end', 'price', 'measure_id'];
+    protected $fillable = ['services_offereds_id', 'name', 'init', 'end', 'price', 'measure_id'];
 
     public $timestamps = false;
 

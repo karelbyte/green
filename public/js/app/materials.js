@@ -182,7 +182,6 @@ new Vue({
         type: 1,
         measure_id: ''
       },
-      repassword: '',
       listfield: [{
         name: 'Codigo',
         type: 'text',

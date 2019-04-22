@@ -44,7 +44,6 @@ new Vue({
         phone: '',
         address: ''
       },
-      repassword: '',
       listfield: [{
         name: 'Nombre',
         type: 'text',

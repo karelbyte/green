@@ -15,7 +15,7 @@ class CreateProductsOfferedsTable extends Migration
     {
         Schema::create('products_offereds', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->engine = 'InnoDB';
         });
     }

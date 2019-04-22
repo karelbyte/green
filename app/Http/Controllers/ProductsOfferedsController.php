@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Element;
 use App\Models\Inventori;
 use App\Models\Measure;
+use App\Models\ProductOffereds\ProductOfferedNeed;
 use App\Models\ProductOffereds\ProductOffereds;
 use App\Models\ProductOffereds\ProductOfferedsDetails;
 use Illuminate\Http\Request;
@@ -61,59 +62,109 @@ class ProductsOfferedsController extends Controller
 
         return response()->json($result, 200);
 
-
     }
 
     public function store(Request $request) {
 
-        $mat = ProductOffereds::where('name', $request->name)->first();
+        try {
 
-        if (!empty($mat)) { return response()->json('Ya existe un producto con ese nombre', 500);}
+            $product = ProductOffereds::create([
 
-        $product = ProductOffereds::create($request->except('details'));
+                'name' => $request->name
+            ]);
 
-        foreach ($request->details as $det) {
+            foreach ($request->details as $det) {
 
-           $pdetails =  ProductOfferedsDetails::create([
-               'products_offereds_id' => $product->id,
-               'name' => $det['name'],
-               'measure_id' => $det['measure_id'],
-               'init'=> $det['init'],
-               'end' => $det['end']
-           ]);
+                $pdetails =  ProductOfferedsDetails::create([
 
-           $pdetails->needs()->createMany($det['needs']);
+                    'products_offereds_id' => $product->id,
+
+                    'name' => $det['name'],
+
+                    'measure_id' => $det['measure_id'],
+
+                    'init'=> $det['init'],
+
+                    'end' => $det['end']
+                ]);
+
+                $pdetails->needs()->createMany($det['needs']);
+            }
+
+            return response()->json('Datos creado con exito!', 200);
+
+        } catch (\Exception $e) {
+
+            return response()->json('Ya existe un producto con ese nombre', 500);
         }
 
-        return response()->json('Datos creado con exito!', 200);
+
     }
 
     public function update(Request $request, $id) {
 
-        $mat = ProductOffereds::where('name', $request->name)->where('id', '<>', $id)->first();
+      /*  try {*/
 
-        if (!empty($mat)) { return response()->json('Ya existe un producto con ese nombre', 500);}
+            $product = ProductOffereds::find($id);
 
-        $product = ProductOffereds::find($id);
+            $product->update(['name' => $request->name]);
 
-        $product->update($request->except('details'));
+            $actuals = $product->details->pluck('id'); // IDENTIFICADORES ACTUALES
 
-        $product->details()->delete();
+            foreach ($request->details as $det) {
 
-        foreach ($request->details as $det) {
+                $pdetails = ProductOfferedsDetails::updateOrCreate([
 
-            $pdetails =  ProductOfferedsDetails::create([
-                'products_offereds_id' => $product->id,
-                'name' => $det['name'],
-                'measure_id' => $det['measure_id'],
-                'init'=> $det['init'],
-                'end' => $det['end']
-            ]);
+                    'id' => $det['id']],
+                    [
+                    'products_offereds_id' => $product->id,
 
-            $pdetails->needs()->createMany($det['needs']);
-        }
+                    'name' => $det['name'],
 
-        return response()->json('Datos actualizados con exito!', 200);
+                    'measure_id' => $det['measure_id'],
+
+                    'init'=> $det['init'],
+
+                    'end' => $det['end']
+                ]);
+
+                $actualsNeed = $pdetails->needs->pluck('id'); // IDENTIFICADORES ACTUALES NEEDS
+
+                foreach ($det['needs'] as $need) {
+
+                    ProductOfferedNeed::updateOrCreate([
+
+                        'id' => $need['id']],
+                        [
+                            'products_offereds_detail_id' => $pdetails->id,
+
+                            'element_id' => $need['element_id'],
+
+                            'cant' => $need['cant'],
+
+                        ]);
+                }
+
+                $updatesNeeds = collect($det['needs'])->pluck('id'); // IDENTIFICADORES ACTUALIZADOS NEEDS
+
+                $ids = $actualsNeed->diff($updatesNeeds);
+
+                ProductOfferedNeed::whereIn('id', $ids)->delete();
+
+            }
+
+            $updates = collect($request->details)->pluck('id'); // IDENTIFICADORES ACTUALIZADOS
+
+            $ids = $actuals->diff($updates);
+
+            ProductOfferedsDetails::whereIn('id', $ids)->delete();
+
+            return response()->json('Datos actualizados con exito!', 200);
+
+      /*  } catch (\Exception $e) {
+
+            return response()->json('Ya existe un producto con ese nombre', 500);
+        }*/
     }
 
     public function destroy($id)  {

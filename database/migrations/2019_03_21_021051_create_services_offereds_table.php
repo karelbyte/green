@@ -15,10 +15,7 @@ class CreateServicesOfferedsTable extends Migration
     {
         Schema::create('services_offereds', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->smallInteger('init');
-            $table->smallInteger('end');
-            $table->decimal('price', 8, 2);
+            $table->string('name', 50)->unique();
             $table->engine = 'InnoDB';
         });
     }

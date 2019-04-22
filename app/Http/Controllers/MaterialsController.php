@@ -55,40 +55,51 @@ class MaterialsController extends Controller
 
     public function store(Request $request) {
 
-        $mat = Element::where('code', $request->code)->material()->first();
 
-        if (!empty($mat)) { return response()->json('Ya existe un material con ese código', 500);}
+        try {
 
-        Element::create($request->all());
+            Element::create($request->all());
 
-        return response()->json('Datos creado con exito!', 200);
+            return response()->json('Datos creado con exito!', 200);
+
+        } catch ( \Exception $e) {
+
+            return response()->json('Ya existe un material con ese código', 500);
+
+        }
+
     }
 
     public function update(Request $request, $id) {
 
-        $mat = Element::where('code', $request->code)->where('id', '<>', $id)->first();
+        try {
 
-        if (!empty($mat)) { return response()->json('Ya existe un material con ese codigo', 500);}
+            Element::where('id', $id)->update($request->except(['id', 'measure']));
 
-        Element::where('id', $id)->update($request->except(['id', 'measure']));
+            return response()->json('Datos actualizados con exito!', 200);
 
-        return response()->json('Datos actualizados con exito!', 200);
+        } catch ( \Exception $e) {
+
+            return response()->json('Ya existe un material con ese codigo', 500);
+
+        }
+
     }
 
     public function destroy($id)  {
 
-        $element = Element::find($id);
-
-        if ($element->used()) {
-
-            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
-
-        } else {
+        try {
 
             Element::destroy($id);
 
             return response()->json('Material eliminado con exito!', 200);
+
+        } catch ( \Exception $e) {
+
+            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
+
         }
+
     }
 
 }

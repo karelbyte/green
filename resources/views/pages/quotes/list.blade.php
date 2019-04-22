@@ -245,7 +245,7 @@
                             <div class="btn-group" v-if="entity.status_id !== 4 && entity.status_id !== 5">
                                 <button type="button" class="btn btn-custom dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="false">Acciones <span class="caret"></span> </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#" @click="edit(entity)"><i class="fa fa-edit m-r-5"></i>Cotizar</a></li>
+                                    <li><a href="#" @click="edit(entity)" id="edit334"><i class="fa fa-edit m-r-5"></i>Cotizar</a></li>
                                     <li v-if="entity.type_quote_id == 1"><a href="#" @click="showFiles(entity)"> <i class="fa fa-home m-r-5"></i>Visita</a></li>
                                     <li v-if="entity.details.length > 0"><a href="#" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o m-r-5"></i>Imprimir</a></li>
                                     <li v-if="entity.details.length > 0"><a href="#" @click="ShowSendInfo(entity)"><i class="fa fa-send m-r-5"></i>Enviar a cliente</a></li>
@@ -450,6 +450,28 @@
                     <div class="panel-footer text-right">
                         <button v-if="passCheckSend()" :disabled="spin" class="btn btn-danger waves-effect btn-sm" @click="sendCheckClient()">Aplicar</button>
                         <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="redirect" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"
+     data-backdrop="static" data-keyboard="false">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Atención</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>@{{redirect.message}}</p>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a :href="redirect.patch" class="btn btn-danger waves-effect btn-sm">IR A DOCUMENTO</a>
+                        <!-- <a v-if="this.item.type_compromise_id == " href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a> -->
                     </div>
                 </div>
             </div>
