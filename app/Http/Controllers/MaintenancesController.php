@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Maintenances\MaintenanceDetail;
 use App\Models\Client;
 use App\Models\Maintenances\Maintenance;
-use App\Models\ServiceOfferedsDetails;
+use App\Models\SalesNotes\SalesNote;
+use App\Models\ServicesOffereds\ServiceOfferedsDetails;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MaintenancesController extends Controller

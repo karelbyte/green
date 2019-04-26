@@ -19,7 +19,8 @@ class CreateQuotesTable extends Migration
             $table->string('token', 5)->nullable();
             $table->string('descrip', 500)->nullable();
             $table->longText('specifications')->nullable();
-            $table->integer('cglobal_id');
+            $table->bigInteger('cglobal_id')->unsigned();
+            $table->foreign('cglobal_id')->references('id')->on('cglobals')->onDelete('cascade');;
             $table->integer('type_quote_id');
             $table->smallInteger('sends')->nullable();
             $table->date('moment');

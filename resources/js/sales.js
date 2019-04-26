@@ -1,5 +1,5 @@
 import {dateEs, generateId} from './tools';
-
+import * as moment from 'moment';
 import Multiselect from "vue-multiselect";
 
 new Vue({
@@ -7,35 +7,20 @@ new Vue({
     data () {
         return {
             delobj: '',
-
             keyObjDelete: '',
-
             propertyShowDelObj: '',
-
             patchDelete: '',
-
             title: '',
-
             labeledit: '',
-
             labelnew: '',
-
             lists: [],
-
             spin: false,
-
             act: 'post',
-
             fieldtype: 'text',
-
             pager_list: {
-
                 page: 1,
-
                 recordpage: 10,
-
                 totalpage: 0
-
             },
             views: {
                 list: true,
@@ -46,6 +31,8 @@ new Vue({
                 moment: '',
                 advance: 0,
                 status_id: '',
+                paimentdate: '',
+                deliberydate: '',
                 details: []
             },
             itemDefault: {
@@ -53,6 +40,8 @@ new Vue({
                 moment: '',
                 advance: '',
                 status_id: '',
+                paimentdate: moment().format('YYYY-MM-DD'),
+                deliverydate: moment().format('YYYY-MM-DD'),
                 details: []
             },
             listfield: [{name: 'Codigo', type: 'text', field: 'salesnotes.id'}],
@@ -76,6 +65,8 @@ new Vue({
                 cant: 0,
                 descrip: '',
                 price: 0,
+                start: '',
+                timer: ''
             },
             detailDefault: {
                 id: 0,
@@ -85,12 +76,16 @@ new Vue({
                 item_id: 0,
                 cant: 0,
                 descrip: '',
-                price: 0
+                price: 0,
+                start: '',
+                timer: ''
             },
             scrpdf: 0,
             find: 0,
             elements: [],
-            TypeShow: 'Detalle a añadir'
+            mat: {},
+            TypeShow: 'Detalle a añadir',
+            elementsAplicClient: []
         }
     },
     components: {
@@ -137,7 +132,7 @@ new Vue({
 
                 this.detail.item = '';
 
-                axios.get(urldomine + 'api/inventoris/products').then(res => {
+                axios.get(urldomine + 'api/materials/products').then(res => {
 
                    this.elements = res.data
                 })
@@ -201,7 +196,6 @@ new Vue({
     },
     methods: {
         dateToEs : dateEs,
-
         getlist (pFil, pOrder, pPager) {
 
             if (pFil !== undefined) { this.filters = pFil }
@@ -245,21 +239,52 @@ new Vue({
                 this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
 
             }).catch(e => {
-
                 this.spin = false;
-
                 this.$toasted.error(e.response.data);
             })
         },
 
+        // APLICAR NOTA DE VENTA
+
+        confirmNote () {
+            let data = {
+                id : this.item.id,
+                paimentdate: this.item.paimentdate,
+                deliverydate: this.item.deliverydate
+            };
+            axios.post(urldomine + 'api/sales/confirm', data).then(r => {
+                $('#aplicCLientNote').modal('hide');
+                this.getlist()
+                this.$toasted.success(r.data);
+            })
+        },
+        // APLICAR NOTA DE VENTA
+
+        showAplic (item) {
+            this.item = item
+            this.item.paimentdate = moment().format('YYYY-MM-DD');
+            this.item.deliverydate = moment().format('YYYY-MM-DD');
+            axios.get(urldomine + 'api/sales/aplic/' + item.id ).then(r => {
+             this.elementsAplicClient = r.data
+              $('#aplicCLientNote').modal('show');
+            })
+        },
+
         // DEATALLES DE LA NOTA DE VENTA
+
+        setMant() {
+            this.item.details = this.item.details.filter(it => {
+             return it.id !== this.mat.id
+            });
+            this.item.details.push(this.mat);
+            $('#calendar').modal('hide')
+        },
         showCalendar (det) {
 
-          console.log(det.descrip);
-
-          this.detail = det;
+          this.mat = {...det};
 
           $('#calendar').modal('show')
+
         },
         updateSelected () {
 

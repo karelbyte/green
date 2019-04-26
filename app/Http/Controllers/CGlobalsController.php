@@ -10,7 +10,7 @@ use App\Models\LandScaper;
 use App\Models\ProductOffereds\ProductOffereds;
 use App\Models\Quotes\Quote;
 use App\Models\SalesNotes\SalesNote;
-use App\Models\ServiceOffereds;
+use App\Models\ServicesOffereds\ServiceOffereds;
 use App\Models\TypeContact;
 use App\Models\TypeInfo;
 use App\Models\Users\User;
@@ -196,7 +196,7 @@ class CGlobalsController extends Controller
 
                 'advance' => 0,
 
-                'status_id' => 1,
+                'status_id' => 3,
 
             ]);
 
@@ -325,7 +325,7 @@ class CGlobalsController extends Controller
 
                 'advance' => 0,
 
-                'status_id' => 1,
+                'status_id' => 3,
 
             ]);
 
@@ -364,9 +364,6 @@ class CGlobalsController extends Controller
 
         Calendar::where('cglobal_id', $id)->delete();
 
-        Quote::where('cglobal_id', $id)->delete();
-
-        SalesNote::where('global_id', $id)->delete();
 
         return response()->json('Datos eliminados con exito!', 200);
 

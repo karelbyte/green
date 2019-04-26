@@ -17858,7 +17858,11 @@ var cags = new Vue({
     },
     dateToEs: _tools__WEBPACK_IMPORTED_MODULE_4__["dateEs"],
     getMotive: function getMotive(item) {
-      return item.type_motive === 2 ? item.motive_services.name : item.motive_products.name;
+      if (item.type_motive === 2) {
+        return item.motive_services !== null ? item.motive_services.name : '';
+      } else {
+        return item.motive_products !== null ? item.motive_products.name : '';
+      }
     },
     showSendInfo: function showSendInfo() {
       $('#sendinfo').modal('show');

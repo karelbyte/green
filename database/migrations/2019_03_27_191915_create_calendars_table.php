@@ -15,7 +15,7 @@ class CreateCalendarsTable extends Migration
     {
         Schema::create('calendars', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('cglobal_id');
+            $table->bigInteger('cglobal_id');
             $table->date('moment');
             $table->time('timer');
             $table->string('title', 50);

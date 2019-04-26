@@ -1,18 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\ServicesOffereds;
 
+use App\Models\Measure;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @property integer $id
- * @property string $name
- * @property integer $init
- * @property integer $end
- * @property float $price
- * @property string $created_at
- * @property string $updated_at
- */
+
 class ServiceOfferedsDetails extends Model
 {
     protected $table = 'services_offereds_details';
@@ -26,5 +19,10 @@ class ServiceOfferedsDetails extends Model
     public function Measure () {
 
         return $this->hasOne(Measure::class, 'id', 'measure_id');
+    }
+
+    public function needs() {
+
+        return $this->hasMany(ServiceOfferedNeed::class, 'services_offereds_detail_id', 'id');
     }
 }

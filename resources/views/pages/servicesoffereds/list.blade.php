@@ -22,6 +22,64 @@
         </div>
     </div>
 </div>
+
+<div v-if="views.needs" class="row" v-cloak>
+    <div class="col-lg-12">
+        <div class="panel panel-border panel-inverse">
+            <div class="panel-heading">
+                <h3 class="panel-title">Necesidades del producto</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6  m-t-20">
+                        <span class="txtblack">Productos o Herramienta<span class="require">*</span></span>
+                        <multiselect style="z-index: 9"  v-model="need.element"
+                                     :options="elements"
+                                     label="name"
+                                     track-by="id"
+                                     placeholder=""
+                        ></multiselect>
+                    </div>
+                    <div class="col-lg-3  m-t-20">
+                        <span class="txtblack">Cantidad<span class="require">*</span></span>
+                        <input v-focus class="form-control" type="text" v-model.number="need.cant">
+                    </div>
+                    <div v-if="need.element !== '' && need.cant > 0">
+                        <div class="col-lg-3 m-t-40">
+                            <button class="btn btn-default" @click="showAddNeed()">Añadir +</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="item.details.length > 0" class="row m-t-20">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th class="cel_fix">Descripción</th>
+                            <th class="cel_fix">Cantidad</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="mouse" v-for="need in needs" :key="need.id">
+                            <td class="cel_fix">@{{need.element.name}}</td>
+                            <td class="cel_fix">@{{need.cant}}</td>
+                            <td>
+                                <button class="btn btn-danger waves-effect btn-sm" @click="delNeed(need.id)"><i class="fa fa-eraser"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer footer_fix">
+                <button  class="btn btn-success waves-effect btn-sm" @click="closeNeed()">Actualizar</button>
+                <button class="btn btn-default waves-effect btn-sm" @click="closeNeed()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div v-if="views.new" class="row" v-cloak>
     <div class="col-lg-12" style="height: 80vh">
         <div class="panel panel-border panel-inverse">
@@ -65,6 +123,7 @@
                                     <td class="cel_fix">@{{parseFloat(det.price).toFixed(2)}}</td>
                                     <td>
                                         <button class="btn btn-teal waves-effect btn-sm" @click="showEditDet(det)"><i class="fa fa-edit"></i></button>
+                                        <button class="btn btn-info waves-effect btn-sm" @click="needsShow(det)">Detalles</button>
                                         <button class="btn btn-danger waves-effect btn-sm" @click="delDetail(det.id)"><i class="fa fa-eraser"></i></button>
                                     </td>
                                 </tr>

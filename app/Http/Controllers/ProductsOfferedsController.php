@@ -103,7 +103,7 @@ class ProductsOfferedsController extends Controller
 
     public function update(Request $request, $id) {
 
-      /*  try {*/
+       try {
 
             $product = ProductOffereds::find($id);
 
@@ -161,10 +161,10 @@ class ProductsOfferedsController extends Controller
 
             return response()->json('Datos actualizados con exito!', 200);
 
-      /*  } catch (\Exception $e) {
+        } catch (\Exception $e) {
 
             return response()->json('Ya existe un producto con ese nombre', 500);
-        }*/
+        }
     }
 
     public function destroy($id)  {

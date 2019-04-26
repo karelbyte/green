@@ -2,6 +2,7 @@
 
 namespace App\Models\SalesNotes;
 
+use App\Models\Maintenances\Maintenance;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -23,9 +24,14 @@ class SalesNoteDetails extends Model
     /**
      * @var array
      */
-    protected $fillable = ['sale_id', 'type_item', 'item_id', 'descrip', 'cant', 'price'];
+    protected $fillable = ['sale_id', 'type_item', 'item_id', 'descrip', 'cant', 'price', 'start', 'timer'];
 
 
     public $timestamps = false;
+
+    public function maintenances() {
+
+       return $this->hasOne(Maintenance::class, 'sales_note_details_id', 'id');
+    }
 
 }

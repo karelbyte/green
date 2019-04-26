@@ -165,6 +165,12 @@ class AppSeeder extends Seeder
         $statusSalesList = [
             ['id' => 1, 'name' => 'RECIBIDO'],
             ['id' => 2, 'name' => 'PAGADA'],
+            ['id' => 3, 'name' => 'EN PROCESO'],
+            ['id' => 4, 'name' => 'RECIBIDO - EN EJECUCION'],
+            ['id' => 5, 'name' => 'PAGADA - EN EJECUCION'],
+            ['id' => 6, 'name' => 'EN EJECUCION'],
+            ['id' => 7, 'name' => 'PAGADA - TERMINADA'],
+            ['id' => 8, 'name' => 'RECIBIDO - TERMINADA '],
         ];
         \App\Models\SalesNotes\SalesNoteStatus::insert($statusSalesList);
 

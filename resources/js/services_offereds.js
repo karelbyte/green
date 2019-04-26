@@ -12,6 +12,7 @@ new Vue({
             views: {
                 list: true,
                 new: false,
+                needs: false
             },
             item: {
                 id: 0,
@@ -29,7 +30,8 @@ new Vue({
                 init: 1,
                 end: '',
                 price: '',
-                measure: ''
+                measure: '',
+                needs: []
             },
             detDedault: {
                 id: 0,
@@ -37,7 +39,20 @@ new Vue({
                 init: 1,
                 end: '',
                 price: '',
-                measure: ''
+                measure: '',
+                needs: []
+            },
+            need: {
+                id: 0,
+                element: '',
+                element_id: 0,
+                cant: 0
+            },
+            needDefault: {
+                id: 0,
+                element: '',
+                element_id: 0,
+                cant: 0
             },
             listfield: [{name: 'Codigo', type: 'text', field: 'services_offereds.name'},],
             filters_list: {
@@ -49,7 +64,9 @@ new Vue({
                 field: 'services_offereds.name',
                 type: 'asc'
             },
-            measures: []
+            measures: [],
+            elements: [],
+            needs: [],
         }
     },
     components: {
@@ -102,6 +119,8 @@ new Vue({
 
                 this.measures = res.data.measures;
 
+                this.elements = res.data.elements;
+
                 this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
 
             }).catch(e => {
@@ -115,13 +134,33 @@ new Vue({
 
             this.spin = true;
 
+            let itemSendToback = JSON.parse( JSON.stringify(this.item));
+
+            itemSendToback.details = itemSendToback.details.map(it => {
+                return {
+                    id: it.id,
+                    name: it.name,
+                    measure_id: it.measure.id,
+                    price: it.price,
+                    init: it.init,
+                    end: it.end,
+                    needs: it.needs.map(ne => {
+                        return {
+                            id: ne.id,
+                            cant: ne.cant,
+                            element_id : ne.element.id
+                        }
+                    })
+                }
+            });
+
             axios({
 
                 method: this.act,
 
                 url: urldomine + 'api/servicesoffereds' + (this.act === 'post' ? '' : '/' + this.item.id),
 
-                data: this.item
+                data: itemSendToback
 
             }).then(response => {
 
@@ -224,6 +263,48 @@ new Vue({
             let end = this.det.end !== '' && this.det.end > 0;
 
             return name && init && end
-        }
+        },
+        needsShow (det) {
+
+            this.det = det;
+
+            this.needs = this.det.needs;
+
+            this.needscant = this.needs.length;
+
+            this.onviews('needs')
+        },
+        delNeed (id) {
+
+            this.needs = this.needs.filter(it => it.id !== id);
+        },
+        showAddNeed() {
+
+            let foun = this.needs.find(it => {
+
+                return  it.element.id === this.need.element.id
+
+            });
+
+            if (foun === undefined) {
+
+                this.need.id = generateId(9);
+
+                this.needs.push({...this.need});
+
+                this.need = {...this.needDefault}
+
+            } else {
+
+                foun.cant += this.need.cant
+            }
+
+        },
+        closeNeed () {
+
+            this.det.needs  =  this.needs;
+
+            this.onviews('new')
+        },
     }
 });

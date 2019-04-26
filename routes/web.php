@@ -10,10 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Route;
+use \Illuminate\Support\Facades\Auth;
+
 
 
 Auth::routes();
-
 
 Route::get('/publicar', function () {
 
@@ -41,7 +43,6 @@ Route::get('/generar', function () {
 
 
 Route::get('/limpiar_cache', function () {
-
 
     Artisan::call('view:clear');
 

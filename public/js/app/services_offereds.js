@@ -166,7 +166,8 @@ new Vue({
     return {
       views: {
         list: true,
-        "new": false
+        "new": false,
+        needs: false
       },
       item: {
         id: 0,
@@ -184,7 +185,8 @@ new Vue({
         init: 1,
         end: '',
         price: '',
-        measure: ''
+        measure: '',
+        needs: []
       },
       detDedault: {
         id: 0,
@@ -192,7 +194,20 @@ new Vue({
         init: 1,
         end: '',
         price: '',
-        measure: ''
+        measure: '',
+        needs: []
+      },
+      need: {
+        id: 0,
+        element: '',
+        element_id: 0,
+        cant: 0
+      },
+      needDefault: {
+        id: 0,
+        element: '',
+        element_id: 0,
+        cant: 0
       },
       listfield: [{
         name: 'Codigo',
@@ -208,7 +223,9 @@ new Vue({
         field: 'services_offereds.name',
         type: 'asc'
       },
-      measures: []
+      measures: [],
+      elements: [],
+      needs: []
     };
   },
   components: {
@@ -251,6 +268,7 @@ new Vue({
         _this.spin = false;
         _this.lists = res.data.list;
         _this.measures = res.data.measures;
+        _this.elements = res.data.elements;
         _this.pager_list.totalpage = Math.ceil(res.data.total / _this.pager_list.recordpage);
       })["catch"](function (e) {
         _this.spin = false;
@@ -262,10 +280,28 @@ new Vue({
       var _this2 = this;
 
       this.spin = true;
+      var itemSendToback = JSON.parse(JSON.stringify(this.item));
+      itemSendToback.details = itemSendToback.details.map(function (it) {
+        return {
+          id: it.id,
+          name: it.name,
+          measure_id: it.measure.id,
+          price: it.price,
+          init: it.init,
+          end: it.end,
+          needs: it.needs.map(function (ne) {
+            return {
+              id: ne.id,
+              cant: ne.cant,
+              element_id: ne.element.id
+            };
+          })
+        };
+      });
       axios({
         method: this.act,
         url: urldomine + 'api/servicesoffereds' + (this.act === 'post' ? '' : '/' + this.item.id),
-        data: this.item
+        data: itemSendToback
       }).then(function (response) {
         _this2.spin = false;
 
@@ -339,6 +375,36 @@ new Vue({
       var init = this.det.init !== '' && this.det.init > 0;
       var end = this.det.end !== '' && this.det.end > 0;
       return name && init && end;
+    },
+    needsShow: function needsShow(det) {
+      this.det = det;
+      this.needs = this.det.needs;
+      this.needscant = this.needs.length;
+      this.onviews('needs');
+    },
+    delNeed: function delNeed(id) {
+      this.needs = this.needs.filter(function (it) {
+        return it.id !== id;
+      });
+    },
+    showAddNeed: function showAddNeed() {
+      var _this4 = this;
+
+      var foun = this.needs.find(function (it) {
+        return it.element.id === _this4.need.element.id;
+      });
+
+      if (foun === undefined) {
+        this.need.id = Object(_tools__WEBPACK_IMPORTED_MODULE_2__["generateId"])(9);
+        this.needs.push(_objectSpread({}, this.need));
+        this.need = _objectSpread({}, this.needDefault);
+      } else {
+        foun.cant += this.need.cant;
+      }
+    },
+    closeNeed: function closeNeed() {
+      this.det.needs = this.needs;
+      this.onviews('new');
     }
   }
 });

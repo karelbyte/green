@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel-body" :class="{'sales-pagado': entity.status_id === 3,  'sales-recibido': entity.status_id === 2}">
+                <div class="panel-body" :class="{'sales-pagado': entity.status_id === 2,  'sales-recibido': entity.status_id === 1}">
                     <div class="row">
                         <div class="col-lg-12 col-xs-12">
                             Fecha emisión: <span class="txtblack">@{{dateToEs(entity.moment)}}</span>
@@ -81,12 +81,11 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-lg-6">
-                            <button class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                            <button v-if="entity.type_quote_id == 1" class="btn btn-default waves-effect btn-sm" @click="showFiles(entity)">Archivos</button>
-                            <button class="btn btn-info waves-effect btn-sm" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o"></i></button>
-                            <button class="btn btn-default waves-effect btn-sm" @click="sendEmail(entity.id)"><i class="fa fa-send"></i></button>
+                            <button v-if="entity.status_id !== 2" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
+                            <button v-if="entity.status_id <= 3 && entity.details.length > 0" class="btn btn-primary waves-effect btn-sm" @click="showAplic(entity)">Aplicar</button>
+                            <button v-if="entity.details.length > 0" class="btn btn-info waves-effect btn-sm" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o"></i></button>
                         </div>
-                        <div v-if="entity.status_id === 1" class="col-lg-6 text-right" style="font-style: italic">
+                        <div class="col-lg-6 text-right" style="font-style: italic">
                             <span class="txtblack">@{{entity.status.name  }}</span>
                         </div>
                     </div>
@@ -109,7 +108,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-9">
-                        <button class="btn btn-brown btn-default" @click="showFormDet()" >Detalles +</button>
+                        <button v-if="item.status_id < 3" class="btn btn-brown btn-default" @click="showFormDet()" >Detalles +</button>
                     </div>
                     <div class="col-lg-3">
                     </div>
@@ -137,7 +136,7 @@
                                     <button v-if="detail.type_item === 3" class="btn btn-info btn-sm m-t-5" @click="showCalendar(detail)">
                                         <i class="fa fa-calendar"></i>
                                     </button>
-                                    <button class="btn btn-danger btn-sm m-t-5" @click="deleteDet(detail.id)">
+                                    <button v-if="item.status_id < 3" class="btn btn-danger btn-sm m-t-5" @click="deleteDet(detail.id)">
                                         <i class="fa fa-eraser"></i>
                                     </button>
                                 </td>
@@ -242,15 +241,15 @@
                     <div class="panel-body">
                         <div class="col-lg-6 m-t-20">
                             <span class="txtblack">Inicio <span class="require">*</span></span>
-                            <input class="form-control" type="date" v-model="detail.start">
+                            <input class="form-control" type="date" v-model="mat.start">
                         </div>
                         <div class="col-lg-6 m-t-20">
                             <span class="txtblack">Frecuencia <span class="require">*</span></span>
-                            <input v-numeric-only class="form-control" type="text" v-model.number="detail.timer">
+                            <input v-numeric-only class="form-control" type="text" v-model.number="mat.timer">
                         </div>
                     </div>
                     <div class="panel-footer text-right">
-                        <button class="btn btn-success  btn-sm" @click="setMant()">Agendar</button>
+                        <button v-if="mat.start !== '' && mat.timer > 0" class="btn btn-success  btn-sm" @click="setMant()">Agendar</button>
                         <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
                     </div>
                 </div>
@@ -271,6 +270,56 @@
                         <iframe  id="iframe" :src="scrpdf" frameborder="0" width="100%" height="450px" allowfullscreen></iframe>
                     </div>
                     <div class="panel-footer text-right">
+                        <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="aplicCLientNote" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center modal-lg">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Aplicar nota de venta</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Descripcion</th>
+                                <th>Existencias </th>
+                                <th>Pedido</th>
+                                <th>Entregar</th>
+                                <th>Restan</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="it in elementsAplicClient" :class="[it.avility ? 'acept' : 'noacept']">
+                                <td>@{{ it.descrip }}</td>
+                                <td>@{{ it.exis }} </td>
+                                <td>@{{ it.cant }} </td>
+                                <td>@{{ it.delivered }} </td>
+                                <td>@{{ it.missing }} </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <span class="txtblack">Fecha de entrega (alerta)</span>
+                                <input v-focus class="form-control" type="date" v-model="item.deliverydate">
+                            </div>
+                            <div v-if="item.status_id !== 2" class="col-lg-3">
+                                <span class="txtblack">Fecha de pocible pago (alerta)</span>
+                                <input v-focus class="form-control" type="date" v-model="item.paimentdate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a href="#" data-dismiss="modal" class="btn btn-success btn-sm" @click="confirmNote()">Confirmar</a>
                         <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
                     </div>
                 </div>

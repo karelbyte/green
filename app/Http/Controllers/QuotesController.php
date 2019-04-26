@@ -208,7 +208,7 @@ class QuotesController extends Controller
 
                     'strategy' => $quote->strategy,
 
-                    'status_id' => 1,
+                    'status_id' => 3,
 
                 ]);
 

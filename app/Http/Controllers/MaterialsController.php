@@ -20,6 +20,13 @@ class MaterialsController extends Controller
 
     }
 
+    public function getProducts()
+    {
+        $data = Element::where('elements.type', 1)->get();
+
+        return $data;
+    }
+
     public function getList(Request $request) {
 
             $skip = $request->input('start') * $request->input('take');
@@ -54,7 +61,6 @@ class MaterialsController extends Controller
     }
 
     public function store(Request $request) {
-
 
         try {
 

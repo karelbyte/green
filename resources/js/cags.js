@@ -1,11 +1,7 @@
 import {core} from './core';
-
 import * as moment from 'moment';
-
 import KnobControl from 'vue-knob-control'
-
 import Multiselect from 'vue-multiselect'
-
 import {dateEs, generateId} from './tools';
 
 const cags = new Vue({
@@ -184,8 +180,16 @@ const cags = new Vue({
             return map[val];
         },
         dateToEs : dateEs,
+
         getMotive(item) {
-            return item.type_motive === 2 ? item.motive_services.name : item.motive_products.name
+            if (item.type_motive === 2) {
+
+               return  item.motive_services !== null ? item.motive_services.name : ''
+
+            } else {
+
+                return item.motive_products !== null ?  item.motive_products.name  : ''
+            }
         },
         showSendInfo () {
             $('#sendinfo').modal('show')

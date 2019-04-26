@@ -15,10 +15,13 @@ class CreateSalesnotesTable extends Migration
     {
         Schema::create('salesnotes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('global_id');
+            $table->bigInteger('global_id')->unsigned();
+            $table->foreign('global_id')->references('id')->on('cglobals')->onDelete('cascade');
             $table->date('moment');
             $table->decimal('advance', 8,2)->nullable();
             $table->string('strategy', 500)->nullable();
+            $table->date('paimentdate')->nullable();
+            $table->date('deliberydate')->nullable();
             $table->smallInteger('status_id');
             $table->engine = 'InnoDB';
         });

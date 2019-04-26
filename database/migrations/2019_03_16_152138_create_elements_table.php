@@ -18,7 +18,7 @@ class CreateElementsTable extends Migration
             $table->string('code', 10)->unique();
             $table->smallInteger('type');
             $table->string('name');
-            $table->bigInteger('measure_id')->unsigned();
+            $table->bigInteger('measure_id')->unsigned()->default(1);
             $table->foreign('measure_id')->references('id')->on('measures');
             $table->decimal('price', 8, 2)->default(0);
             $table->engine = 'InnoDB';

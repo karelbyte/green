@@ -3,7 +3,7 @@
 namespace App\Models\Maintenances;
 
 use App\Models\Client;
-use App\Models\ServiceOfferedsDetails;
+use App\Models\ServicesOffereds\ServiceOfferedsDetails;
 use Illuminate\Database\Eloquent\Model;
 
 class Maintenance extends Model

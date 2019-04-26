@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Element;
 use App\Models\Measure;
-use App\Models\ServiceOffereds;
-use App\Models\ServiceOfferedsDetails;
+use App\Models\ServicesOffereds\ServiceOfferedNeed;
+use App\Models\ServicesOffereds\ServiceOffereds;
+use App\Models\ServicesOffereds\ServiceOfferedsDetails;
 use Illuminate\Http\Request;
 
 class ServicesOfferedsController extends Controller
@@ -29,11 +31,11 @@ class ServicesOfferedsController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = ServiceOffereds::with( ['details' => function ($q) {
-
-            $q->with('measure');
-
-        }])->select('*');
+        $datos = ServiceOffereds::with( ['details' => function($q) {
+            $q->with(['measure', 'needs' => function ($n) {
+                $n->with('element');
+            }]);
+        }]);
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
@@ -43,13 +45,17 @@ class ServicesOfferedsController extends Controller
 
         $list =  $datos->skip($skip)->take($request['take'])->get();
 
+        $elements = Element::select('id', 'name')->get();
+
         $result = [
 
             'total' => $total,
 
             'list' =>  $list,
 
-            'measures' => Measure::all()
+            'measures' => Measure::all(),
+
+            'elements' => $elements
 
         ];
 
@@ -68,9 +74,9 @@ class ServicesOfferedsController extends Controller
 
             foreach ($request->details as $det) {
 
-                try {
+              try {
 
-                    $service->details()->create([
+                    $ser =  $service->details()->create([
 
                         'name' => $det['name'],
 
@@ -80,8 +86,10 @@ class ServicesOfferedsController extends Controller
 
                         'price' => $det['price'],
 
-                        'measure_id' => $det['measure']['id']
+                        'measure_id' => $det['measure_id']
                     ]);
+
+                    $ser->needs()->createMany($det['needs']);
                 }
                  catch ( \Exception $e) {
 
@@ -113,9 +121,9 @@ class ServicesOfferedsController extends Controller
 
             foreach ($request->details as $det) {
 
-                ServiceOfferedsDetails::updateOrCreate([
-                    'id' => $det['id']
-                    ],
+             $ser = ServiceOfferedsDetails::updateOrCreate([
+
+                    'id' => $det['id']],
                     [
                     'services_offereds_id' => $id,
 
@@ -127,9 +135,31 @@ class ServicesOfferedsController extends Controller
 
                     'price' => $det['price'],
 
-                    'measure_id' => $det['measure']['id']
-
+                    'measure_id' => $det['measure_id']
                 ]);
+
+                $actualsNeed = $ser->needs->pluck('id'); // IDENTIFICADORES ACTUALES NEEDS
+
+                foreach ($det['needs'] as $need) {
+
+                    ServiceOfferedNeed::updateOrCreate([
+
+                        'id' => $need['id']],
+                        [
+                            'products_offereds_detail_id' => $ser->id,
+
+                            'element_id' => $need['element_id'],
+
+                            'cant' => $need['cant'],
+
+                        ]);
+                }
+
+                $updatesNeeds = collect($det['needs'])->pluck('id'); // IDENTIFICADORES ACTUALIZADOS NEEDS
+
+                $ids = $actualsNeed->diff($updatesNeeds);
+
+                ServiceOfferedNeed::whereIn('id', $ids)->delete();
             }
 
             $updates = collect($request->details)->pluck('id'); // IDENTIFICADORES ACTUALIZADOS

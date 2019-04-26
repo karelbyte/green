@@ -5,23 +5,11 @@ namespace App\Models\CGlobal;
 
 use App\Models\LandScaper;
 use App\Models\ProductOffereds\ProductOffereds;
-use App\Models\ServiceOffereds;
+use App\Models\ServicesOffereds\ServiceOffereds;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @property integer $id
- * @property int $client_id
- * @property int $user_id
- * @property int $type_contact_id
- * @property integer $repeater
- * @property integer $type_motive_id
- * @property integer $required_time
- * @property integer $type_compromise_id
- * @property string $note
- * @property string $created_at
- * @property string $updated_at
- */
+
 class CGlobal extends Model
 {
     protected $table = 'cglobals';

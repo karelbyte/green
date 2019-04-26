@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });*/
 
 Route::get('/notifications/today', 'NotificationsController@today');
-
 
 // RUTAS DEL CICLO DE ATENCION GLOBAL
 Route::prefix('cags')->group(function () {
@@ -48,7 +48,9 @@ Route::prefix('sales')->group(function () {
 
     Route::post('list', 'SalesNoteController@getList');
 
-    Route::get('/get/id', 'SalesNotesController@sendID');
+    Route::get('/aplic/{id}', 'SalesNoteController@NoteAplic');
+
+    Route::post('/confirm', 'SalesNoteController@NoteConfirm');
 
     // DETALLES
 
@@ -170,12 +172,14 @@ Route::prefix('measures')->group(function () {
 Route::resource('/measures', 'MeasuresController');
 
 
-// RUTAS DE MATERIALES
+// RUTAS DE PRODUCTOS Y HERRAMIENTAS
 Route::prefix('materials')->group(function () {
 
     Route::post('list', 'MaterialsController@getList');
 
     Route::get('get', 'MaterialsController@getMaterials');
+
+    Route::get('products', 'MaterialsController@getProducts');
 });
 Route::resource('/materials', 'MaterialsController');
 

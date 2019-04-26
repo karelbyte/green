@@ -52,7 +52,20 @@ class SalesNote extends Model
     }
 
     public function details_inventoris () {
+
         return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')->where('type_item', 1);
     }
+
+
+    public function details_products () {
+
+        return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')->where('type_item', 2);
+    }
+
+    public function details_services () {
+
+        return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')->where('type_item', 3);
+    }
+
 
 }
