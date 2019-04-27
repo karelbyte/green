@@ -111,7 +111,7 @@ class ServicesOfferedsController extends Controller
 
     public function update(Request $request, $id) {
 
-        try {
+       /* try {*/
 
             $service = ServiceOffereds::find($id);
 
@@ -146,7 +146,7 @@ class ServicesOfferedsController extends Controller
 
                         'id' => $need['id']],
                         [
-                            'products_offereds_detail_id' => $ser->id,
+                            'services_offereds_detail_id' => $ser->id,
 
                             'element_id' => $need['element_id'],
 
@@ -178,11 +178,11 @@ class ServicesOfferedsController extends Controller
 
             return response()->json('Datos actualizados con exito!', 200);
 
-        } catch ( \Exception $e) {
+      /*  } catch ( \Exception $e) {
 
             return response()->json('Ya existe un servicio con esa descripción', 500);
 
-        }
+        }*/
     }
 
     public function destroy($id)  {
