@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Element;
 use App\Models\Inventori;
+use App\Models\Maintenances\Maintenance;
 use App\Models\SalesNotes\SalesNote;
+use App\Models\SalesNotes\SalesNoteDelivered;
 use App\Models\SalesNotes\SalesNoteDetails;
-use App\Models\SalesNotes\SalesNoteStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SalesNoteController extends Controller
@@ -24,6 +27,7 @@ class SalesNoteController extends Controller
     const EJECUCION = 6;
     const PAGADA_TERMINADA = 7;
     const RECIBIDO_TERMINADA = 8;
+    const TERMINADA = 9;
 
     public function index($id = 0)
     {
@@ -38,10 +42,10 @@ class SalesNoteController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = SalesNote::with(['details', 'status', 'globals' => function($q){
-
+        $datos = SalesNote::with([ 'status', 'globals' => function($q){
             $q->with('client');
-
+        }, 'details' => function($d) {
+            $d->with('measure');
         }]);
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
@@ -66,204 +70,272 @@ class SalesNoteController extends Controller
 
     public function SaveDetails(Request $request) {
 
-        $total = collect($request->details)->reduce( function ($carry, $item) {
-            return $carry + ($item['cant'] * $item['price']);
-        });
-
-        $status = self::PROCESO;
-
-        if ( (double) $request->advance > 0) {
-           $status = (double) $request->advance >= (double) $total ? self::PAGADA : self::RECIBIDO;
-        }
-
-        // ACTUALIZANDO NOTA DE VENTA
-
         $sale = SalesNote::find($request->id);
 
-        $sale->advance = $request->advance;
+        $total = $sale->total();
 
-        $sale->status_id = $status;
+        if ($sale->status_id > self::PROCESO) { // ACTULIZANDO PAGO Y ESTADOS
+            $status = 0;
+            if ( (double) $request->advance > 0) {
+                switch ($sale->status_id) {
+                    case self::EJECUCION;
+                        $status = (double) $request->advance >= (double) $total ? self::PAGADA_EJECUCION : self::RECIBIDO_EJECUCION;
+                        $sale->globals()->update(['status_id' => 6, 'traser' => 12]);
+                        break;
+                    case self::TERMINADA;
+                        $status = (double) $request->advance >= (double) $total ? self::PAGADA_TERMINADA : self::RECIBIDO_TERMINADA;
+                        $sale->globals()->update(['status_id' => 7, 'traser' => 15]);
+                        break;
+                    case self::RECIBIDO_TERMINADA;
+                        $status = (double) $request->advance >= (double) $total ? self::PAGADA_TERMINADA : self::RECIBIDO_TERMINADA;
+                        $sale->globals()->update(['status_id' => 7, 'traser' => 15]);
+                        break;
+                    case self::RECIBIDO_EJECUCION;
+                        $status = (double) $request->advance >= (double) $total ? self::PAGADA_EJECUCION : self::ECIBIDO_EJECUCION;
+                        $sale->globals()->update(['status_id' => 7, 'traser' => 14]);
+                        break;
+                }
+            }
+            // ACTUALIZANDO NOTA DE VENTA
+            $sale->advance = $request->advance;
+            $sale->status_id = $status;
+            $sale->save();
 
-        $sale->save();
+            return response()->json('Detalles guardados con exito!', 200);
 
-        // ACTUALIZANDO CICLO DE ATENCION GLOBAL
+        }  else { // EDITANDO DETALLES
 
-        if ($status == self::PROCESO) { $statusglobal = 2;  $traser = 2; }
+            $status = self::PROCESO;
+            if ( (double) $request->advance > 0) {
+                $status = (double) $request->advance >= (double) $total ? self::PAGADA : self::RECIBIDO;
+            }
 
-        if ($status == self::RECIBIDO) { $statusglobal = 3; $traser = 4; }
+            // ACTUALIZANDO NOTA DE VENTA
+            $sale->advance = $request->advance;
+            $sale->status_id = $status;
+            $sale->save();
 
-        if ($status == self::PAGADA ) { $statusglobal = 4; $traser = 10; }
+            // ACTUALIZANDO CICLO DE ATENCION GLOBAL
+            if ($sale->origin === SalesNote::ORIGIN_CAG)   {
 
-        $sale->globals()->update(['status_id' => $statusglobal, 'traser' => $traser]);
+                if ($status == self::PROCESO) { $statusglobal = 2;  $traser = 2; }
+                if ($status == self::RECIBIDO) { $statusglobal = 3; $traser = 4; }
+                if ($status == self::PAGADA ) { $statusglobal = 4; $traser = 10; }
+                $sale->globals()->update(['status_id' => $statusglobal, 'traser' => $traser]);
+            }
 
+            // ACTUALIZANDO DETALLES NOTA DE VENTA
+            $actuals = $sale->details->pluck('id');
 
-        // ACTUALIZANDO DETALLES NOTA DE VENTA
+            foreach ($request->details as $det) {
 
-        $actuals = $sale->details->pluck('id');
+                SalesNoteDetails::updateOrCreate([
 
-        foreach ($request->details as $det) {
+                    'id' => $det['id']],
+                    [
+                        'sale_id' => $sale->id,
 
-            SalesNoteDetails::updateOrCreate([
+                        'type_item' => $det['type_item'],
 
-                'id' => $det['id']],
-                [
-                    'sale_id' => $sale->id,
+                        'item_id' => $det['item_id'],
 
-                    'type_item' => $det['type_item'],
+                        'descrip' => $det['descrip'],
 
-                    'item_id' => $det['item_id'],
+                        'measure_id' => $det['measure_id'],
 
-                    'descrip' => $det['descrip'],
+                        'cant' => $det['cant'],
 
-                    'cant' => $det['cant'],
+                        'price' => $det['price'],
 
-                    'price' => $det['price'],
+                        'start' => $det['start'],
 
-                    'start' => $det['start'],
+                        'timer' => $det['timer'],
+                    ]);
+            }
 
-                    'timer' => $det['timer'],
-                ]);
+            $updates = collect($request->details)->pluck('id'); // IDENTIFICADORES ACTUALIZADOS
+
+            $ids = $actuals->diff($updates);
+
+            SalesNoteDetails::whereIn('id', $ids)->delete();
+
+            return response()->json('Detalles guardados con exito!', 200);
         }
-        $updates = collect($request->details)->pluck('id'); // IDENTIFICADORES ACTUALIZADOS
 
-        $ids = $actuals->diff($updates);
+    }
 
-        SalesNoteDetails::whereIn('id', $ids)->delete();
+    public function NoteDeliverClient($id) {
 
-        return response()->json('Detalles guardados con exito!', 200);
+       $inventoris = SalesNoteDelivered::query()->where('sale_id', $id)->whereRaw('delivered < cant')->get();
+       $notfull = 0;
+       foreach ($inventoris as $det) {
+                $pro = Inventori::where('element_id', $det['element_id'])->first();
+                $avility = (double) $pro['cant'] >= (double) $det['cant'];
+                if (!$avility) { $notfull++;}
+        }
+       if ($notfull > 0) {
+           return response()->json('Faltan existencia no se puede finalizar!', 500);
+       } else {
+           foreach ($inventoris as $det) {
+               $pro = Inventori::where('element_id', $det['element_id'])->first();
+               $discount = (double) $det['cant'] - (double) $pro['delivered'];
+               $pro->update(['cant' => $pro['cant'] - $discount]);
+               SalesNoteDelivered::where('id', $det['id'])->update(['delivered' =>  $det['cant']]);
+           }
+       }
+      $sale =  SalesNote::find($id);
+      switch ($sale->status_id) {
+                case self::EJECUCION:
+                    $sale->status_id = self::TERMINADA;
+                    break;
+                case self::PAGADA_EJECUCION:
+                    $sale->status_id = self::PAGADA_TERMINADA;
+                    break;
+                case self::RECIBIDO_EJECUCION:
+                    $sale->status_id = self::RECIBIDO_TERMINADA;
+                    break;
+       }
+       $sale->save();
+       $sale->globals()->update(['status_id' => 6, 'traser' => 15]);
+       return response()->json('Se actualizo el inventario y la nota de venta!', 200);
     }
 
     // APLICANDO CANTIDADES Y GENERANDO ALERTAS
     public function NoteConfirm(Request $request) {
-        $found = SalesNote::leftjoin('sales_note_details', 'sales_note_details.sale_id', 'salesnotes.id')
 
-            ->where('salesnotes.id', $request->id)->whereIn('sales_note_details.type_item', [self::PRODUCTO, self::SERVICIO])->first();
+        // ACTULIZANDO INVENTARIOS
+        $needs =  $this->needs($request->id);
+        $notfull = 0;
+         foreach (  $needs   as $det) {
+                $delivered = 0;
+                $det['cant'] = $det['type_item'] > 1 ? $det['cant']  * $det['cant_general'] : $det['cant'];
+                $pro = Inventori::where('element_id', $det['item_id'])->first();
+                if ($pro !== null) {
+                    $avility = $pro['cant'] >= $det['cant'];
+                    if (!$avility) { $notfull++;}
+                    $delivered =  $avility ? $det['cant'] : $pro['cant'];
+                    $pro->update(['cant' => $pro['cant'] - $delivered]);
+                };
+                SalesNoteDelivered::query()->create([
+                    'sale_id' => $request->id,
+                    'element_id' => $det['item_id'],
+                    'cant' => $det['cant'],
+                    'delivered' => $delivered
+                ]);
+        }
 
-        if ($found !== null) {
-            // NOTA COMPLEJA
-        } else {
-            $sale = SalesNote::query()->find($request->id);
+
+            $sale = SalesNote::find($request->id);
+            // GENERANDO MANTENIMIENTOS
+            if ($sale->origin === SalesNote::ORIGIN_CAG) {
+                foreach ($sale->products_services as $maintenance) {
+                    $newMait = Maintenance::query()->create([
+                        'sales_note_details_id' => $maintenance->id,
+                        'client_id' => $sale->globals->client_id,
+                        'service_offereds_id' => $maintenance->item_id,
+                        'timer' =>  $maintenance->timer,
+                        'start' =>  $maintenance->start,
+                        'status_id' => 1
+                    ]);
+                    $newMait->details()->create([
+                        'moment' => Carbon::now(),
+                        'sale_id' => $request->id,
+                        'price' => $sale->total(),
+                        'status_id' => 1]);
+
+                }
+                // ESTADO DEL CICLO DE ATENCION
+                $sale->globals()->update(['status_id' => 6, 'traser' => 12]);
+            }
+
+           // ESTADOS
             switch ($sale->status_id) {
                 case self::PROCESO:
-                    $sale->status_id = self::EJECUCION;
+                    $sale->status_id = $notfull > 0 ? self::EJECUCION : self::TERMINADA;
                     break;
                 case self::RECIBIDO:
-                    $sale->status_id = self::RECIBIDO_EJECUCION;
+                    $sale->status_id =  $notfull > 0 ? self::RECIBIDO_EJECUCION : self::RECIBIDO_TERMINADA;
                     break;
                 case self::PAGADA:
-                    $sale->status_id = self::PAGADA_EJECUCION;
+                    $sale->status_id = $notfull > 0 ? self::PAGADA_EJECUCION : self::PAGADA_TERMINADA;
                     break;
             }
             $sale->paimentdate = $request->paimentdate;
             $sale->deliverydate = $request->deliverydate;
             $sale->save();
 
-            $inventoris = $sale->details_inventoris;
-            foreach ($inventoris  as $det) {
-                $pro = Inventori::where('element_id', ($det['item_id']))->first();
-                $avility = $pro->cant >= $det['cant'];
-                $delivered =  $avility ? $det['cant'] : $pro['cant'];
-                $pro->update(['cant' => $pro['cant'] - $delivered]);
-                SalesNoteDetails::query()->where('id', $det['id'])->update(['delivered' => $delivered]);
-            }
-
-        }
-        return response()->json('Se generaron alertas y se actulizo el inventario!', 200);
+            return response()->json('Se generaron alertas y se actualizo el inventario!', 200);
     }
 
     public function NoteAplic($id) {
 
-        $found = SalesNote::leftjoin('sales_note_details', 'sales_note_details.sale_id', 'salesnotes.id')
+        $needs = $this->needs($id);
 
-            ->where('salesnotes.id', $id)->whereIn('sales_note_details.type_item', [self::PRODUCTO, self::SERVICIO])->first();
+            if (count($needs) > 0) {
 
-        if ($found !== null) {
+                foreach ($needs as $det) {
 
-            // REVISANDO INVENTARIO PARA PRODUCTOS COMPUESTOS
-            $sale = SalesNote::find($id);
+                    $itemType = Element::query()->find($det['item_id']);
 
-            $products = SalesNote::leftjoin('sales_note_details', 'sales_note_details.sale_id', 'salesnotes.id')
+                    $pro = Inventori::where('element_id', $det['item_id'])->first();
 
-                ->leftjoin('products_offereds_details', 'products_offereds_details.id', 'sales_note_details.item_id')
+                    if ( $itemType->type !== 2) {
 
-                ->leftjoin('products_offereds_needs', 'products_offereds_needs.products_offereds_detail_id', 'products_offereds_details.id')
+                        $det['cant'] = $det['type_item'] > 1  ? $det['cant']  * $det['cant_general'] : $det['cant'];
+                    }
 
-                ->leftjoin('elements', 'products_offereds_needs.element_id', 'elements.id')
+                    $det['exis'] = $pro['cant'] ?? 0;
 
-                ->select('elements.id', 'elements.code', 'elements.name', 'products_offereds_needs.cant')
+                    $det['avility'] =   $pro['cant'] >= $det['cant'];
 
-                ->where('salesnotes.id', $id)->where('sales_note_details.type_item', 2)->get();
+                    $det['delivered'] =  $det['avility'] ? $det['cant'] : $pro['cant'];
 
-            foreach ($products as $det) {
+                    $det['missing'] =  $det['avility'] ? '' : abs($pro['cant'] - $det['cant']);
 
-                $pro = Inventori::where('element_id', ($det['id']))->first();
-
-                $det['avility'] =   $pro['cant'] >= $det['cant'];
-
-                $det['missing'] =  abs($pro['cant'] - $det['cant']);
-
+                }
             }
+         return $needs;
+    }
 
-            // REVISANDO INVENTARIO PARA PRODUCTOS SIMPLES
+    public function needs($id) {
 
-            $inventoris = $sale->details_inventoris;
+        $products = SalesNoteDetails::leftjoin('products_offereds_details', 'products_offereds_details.id', 'sales_note_details.item_id')
 
-            foreach ($sale->details_inventoris  as $det) {
+            ->leftjoin('products_offereds_needs', 'products_offereds_needs.products_offereds_detail_id', 'products_offereds_details.id')
 
-                $pro = Inventori::where('element_id', ($det['item_id']))->first();
+            ->leftjoin('elements', 'products_offereds_needs.element_id', 'elements.id')
 
-                $det['avility'] =   $pro['cant'] >= $det['cant'];
+            ->select('sales_note_details.cant as cant_general', 'sales_note_details.type_item', 'elements.id as item_id',
+                'elements.code', 'elements.name as descrip', 'products_offereds_needs.cant')
 
-                $det['missing'] =  abs($pro['cant'] - $det['cant']);
+            ->where('sales_note_details.sale_id', $id)->where('sales_note_details.type_item', self::PRODUCTO)->get();
 
+        $services = SalesNoteDetails::leftjoin('services_offereds_details', 'services_offereds_details.id', 'sales_note_details.item_id')
+
+            ->leftjoin('services_offereds_needs', 'services_offereds_needs.services_offereds_detail_id', 'services_offereds_details.id')
+
+            ->leftjoin('elements', 'services_offereds_needs.element_id', 'elements.id')
+
+            ->select('sales_note_details.cant as cant_general', 'sales_note_details.type_item' , 'elements.id as item_id', 'elements.code',
+                'elements.name as descrip', 'services_offereds_needs.cant')
+
+            ->where('sales_note_details.sale_id', $id)->where('sales_note_details.type_item', self::SERVICIO)->get();
+
+        $sale = SalesNote::find($id);
+
+        $inventoris = $sale->details_inventoris;
+
+        $needs = $services->concat($products)->concat($inventoris);
+
+        $finaly = $needs->reduce(function ($acumulador, $item){
+            if (array_key_exists($item->item_id, $acumulador)) {
+                $acumulador[$item->item_id]->cant += $item->cant;
+            } else {
+                $acumulador[$item->item_id] = $item;
             }
+            return $acumulador;
+        }, []);
 
-            /* if (count($inventoris) > 0 ) {
-
-                 foreach ($inventoris as $inv) {
-
-                     $pro = Inventori::where('element_id', ($inv->item_id))->first();
-
-                     $pro->update(['cant' => $pro->cant + $inv->cant]);
-
-                 }
-             }*/
-
-
-            // REVISANDO SERVICIOS
-            $services = $sale->details_services;
-
-            return $services;
-
-            /*
-
-            foreach ($sale->details_inventoris  as $det) {
-
-                    $pro = Inventori::where('element_id', ($det['item_id']))->first();
-
-                    $pro->update(['cant' => $pro->cant - $det['cant']]);
-
-            }*/
-        } else {
-
-            $sale = SalesNote::find($id);
-
-            $inventoris = $sale->details_inventoris;
-
-            foreach ($inventoris  as $det) {
-
-                $pro = Inventori::where('element_id', ($det['item_id']))->first();
-
-                $det['exis'] = $pro['cant'] == null ? 0 : $pro['cant'];
-
-                $det['avility'] =   $pro['cant'] >= $det['cant'];
-
-                $det['delivered'] =  $det['avility'] ? $det['cant'] : $pro['cant'];
-
-                $det['missing'] =  $det['avility'] ? '' : abs($pro['cant'] - $det['cant']);
-
-            }
-            return $inventoris;
-        }
+        return  array_values($finaly);
     }
 }

@@ -5,37 +5,20 @@ namespace App\Models\SalesNotes;
 use App\Models\CGlobal\CGlobal;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @property integer $id
- * @property int $global_id
- * @property string $moment
- * @property float $advance
- * @property integer $status
- */
+
 class SalesNote extends Model
 {
-    /**
-     * The table associated with the model.
-     * 
-     * @var string
-     */
+    // ORIGEN DE LA NOTA DE VENTA
+    const ORIGIN_CAG = 1;
+    const ORIGIN_SALE_NOTE = 2;
+
     protected $table = 'salesnotes';
 
-    /**
-     * The "type" of the auto-incrementing ID.
-     * 
-     * @var string
-     */
     protected $keyType = 'integer';
-
 
     public $timestamps = false;
 
-    /**
-     * @var array
-     */
-    protected $fillable = ['global_id', 'moment', 'advance', 'status_id', 'strategy', 'status_id'];
-
+    protected $fillable = ['global_id', 'moment', 'advance', 'status_id', 'strategy', 'status_id', 'origin'];
 
     public function globals() {
 
@@ -59,13 +42,32 @@ class SalesNote extends Model
 
     public function details_products () {
 
-        return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')->where('type_item', 2);
+        return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')
+            ->where('type_item', 2);
     }
 
     public function details_services () {
 
-        return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')->where('type_item', 3);
+        return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')
+            ->where('type_item', 3);
     }
 
+    public function products_services () {
+
+        return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')
+            ->wherein('type_item', [2, 3])->whereNotNull('start');
+    }
+
+    public function delivered () {
+
+        return $this->hasMany(SalesNoteDelivered::class, 'sale_id', 'id');
+    }
+
+    public function total() {
+      $data = $this->details;
+      return $data->reduce( function ($carry, $item) {
+            return $carry + ($item['cant'] * $item['price']);
+        });
+    }
 
 }

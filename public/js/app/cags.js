@@ -17830,7 +17830,7 @@ var cags = new Vue({
         13: 'CAG 13',
         14: 'CAG 14',
         15: 'CAG 15',
-        16: 'CAG 16'
+        16: 'FIN'
       };
       return map[val];
     },

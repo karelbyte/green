@@ -21,9 +21,7 @@ class CreateMaintenancesTable extends Migration
             $table->foreign('service_offereds_id')->references('id')->on('services_offereds_details');
             $table->integer('timer');
             $table->date('start');
-            $table->bigInteger('status_id')->unsigned();
-            $table->foreign('status_id')->references('id')->on('maintenance_status');
-            $table->bigInteger('sales_note_details_id')->unsigned();
+            $table->smallInteger('status_id')->unsigned();
             $table->foreign('sales_note_details_id')->references('id')->on('sales_note_details');
             $table->timestamps();
             $table->engine = 'InnoDB';

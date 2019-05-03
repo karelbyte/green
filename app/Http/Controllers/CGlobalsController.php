@@ -196,6 +196,8 @@ class CGlobalsController extends Controller
 
                 'advance' => 0,
 
+                'origin' => SalesNote::ORIGIN_CAG,
+
                 'status_id' => 3,
 
             ]);

@@ -190,9 +190,7 @@ class QuotesController extends Controller
 
 
             }
-
             $quote->save();
-
 
             if ($request->clientemit == 1) {  // GENERAR NOTA DE VENTA
 
@@ -215,7 +213,6 @@ class QuotesController extends Controller
                 $sale->details()->createMany($quote->details()->get()->toArray());
 
                 return response()->json($sale->id, 200);
-
 
             } else {
 

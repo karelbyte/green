@@ -20,7 +20,7 @@ class ProductsOfferedsController extends Controller
 
     public function getProduct() {
 
-        return ProductOfferedsDetails::all();
+        return ProductOfferedsDetails::with('measure')->get();
 
     }
 

@@ -26,6 +26,8 @@
     </div>
 </div>
 <input type="text" id="find" value="{{$find}}" hidden>
+
+<!-- LISTADO DE COTIZACIONES -->
 <div v-if="views.list" v-cloak>
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
@@ -50,7 +52,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel-body" :class="{'sales-pagado': entity.status_id === 2,  'sales-recibido': entity.status_id === 1}">
+                <div class="panel-body" :class="{'sales-pagado': entity.status_id === 2 || entity.status_id === 5 || entity.status_id === 7,
+                    'sales-recibido': entity.status_id === 1 || entity.status_id === 4 || entity.status_id === 8 }">
                     <div class="row">
                         <div class="col-lg-12 col-xs-12">
                             Fecha emisión: <span class="txtblack">@{{dateToEs(entity.moment)}}</span>
@@ -81,12 +84,13 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-lg-6">
-                            <button v-if="entity.status_id !== 2" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
+                            <button v-if="entity.status_id !== 7 && entity.status_id !== 2 && entity.status_id !== 5" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
                             <button v-if="entity.status_id <= 3 && entity.details.length > 0" class="btn btn-primary waves-effect btn-sm" @click="showAplic(entity)">Aplicar</button>
+                            <button v-if="entity.status_id >3 && entity.status_id < 7 " class="btn btn-success waves-effect btn-sm" @click="noteDeliverClient(entity.id)">FINALIZAR</button>
                             <button v-if="entity.details.length > 0" class="btn btn-info waves-effect btn-sm" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o"></i></button>
                         </div>
                         <div class="col-lg-6 text-right" style="font-style: italic">
-                            <span class="txtblack">@{{entity.status.name  }}</span>
+                            <span class="txtblack" :class="{'acept': entity.status_id === 7}">@{{entity.status.name  }}</span>
                         </div>
                     </div>
                 </div>
@@ -108,7 +112,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-9">
-                        <button v-if="item.status_id < 3" class="btn btn-brown btn-default" @click="showFormDet()" >Detalles +</button>
+                        <button v-if="item.status_id === 3" class="btn btn-brown btn-default" @click="showFormDet()" >Detalles +</button>
                     </div>
                     <div class="col-lg-3">
                     </div>
@@ -121,6 +125,7 @@
                             <tr>
                                 <th>Descripcion</th>
                                 <th>Cantidad</th>
+                                <th>Unida de medida</th>
                                 <th>Precio</th>
                                 <th>Total</th>
                                 <th></th>
@@ -130,13 +135,18 @@
                             <tr v-for="detail in item.details">
                                 <td>@{{ detail.descrip }}</td>
                                 <td>@{{ detail.cant }} </td>
+                                <th>@{{ detail.measure.name }}</th>
                                 <td>@{{ parseFloat(detail.price).toFixed(2) }} </td>
                                 <td>@{{ (parseFloat(detail.price) * detail.cant).toFixed(2) }} </td>
                                 <td>
-                                    <button v-if="detail.type_item === 3" class="btn btn-info btn-sm m-t-5" @click="showCalendar(detail)">
+                                    <button v-if="detail.type_item === 3 && item.status_id === 3 && item.origin === 1"
+                                        class="btn btn-info btn-sm m-t-5" @click="showCalendar(detail)">
                                         <i class="fa fa-calendar"></i>
                                     </button>
-                                    <button v-if="item.status_id < 3" class="btn btn-danger btn-sm m-t-5" @click="deleteDet(detail.id)">
+                                    <button v-if="item.status_id === 3" class="btn btn-teal btn-sm m-t-5" @click="showFormDetEdit(detail)">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <button v-if="item.status_id === 3" class="btn btn-danger btn-sm m-t-5" @click="deleteDet(detail.id)">
                                         <i class="fa fa-eraser"></i>
                                     </button>
                                 </td>
@@ -298,18 +308,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="it in elementsAplicClient" :class="[it.avility ? 'acept' : 'noacept']">
-                                <td>@{{ it.descrip }}</td>
-                                <td>@{{ it.exis }} </td>
+                            <tr v-for="it in elementsAplicClient" >
+                                <td >@{{ it.descrip }}</td>
+                                <td :class="[it.avility ? 'acept' : 'noacept']">@{{ it.exis }} </td>
                                 <td>@{{ it.cant }} </td>
                                 <td>@{{ it.delivered }} </td>
-                                <td>@{{ it.missing }} </td>
+                                <td :class="[it.avility ? 'acept' : 'noacept']">@{{ it.missing }} </td>
                             </tr>
                             </tbody>
                         </table>
                         <div class="row">
-                            <div class="col-lg-3">
-                                <span class="txtblack">Fecha de entrega (alerta)</span>
+                            <div v-if="isNotFull"  class="col-lg-3">
+                                <span  class="txtblack">Fecha de entrega (alerta)</span>
                                 <input v-focus class="form-control" type="date" v-model="item.deliverydate">
                             </div>
                             <div v-if="item.status_id !== 2" class="col-lg-3">

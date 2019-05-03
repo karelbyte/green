@@ -22,9 +22,7 @@ class MaterialsController extends Controller
 
     public function getProducts()
     {
-        $data = Element::where('elements.type', 1)->get();
-
-        return $data;
+        return Element::with('measure')->where('elements.type', 1)->get();
     }
 
     public function getList(Request $request) {

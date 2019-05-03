@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSalesNoteDetailsTable extends Migration
+class CreateSalesNoteDeliveredsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,14 @@ class CreateSalesNoteDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sales_note_details', function (Blueprint $table) {
+        Schema::create('sales_note_delivereds', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('sale_id')->unsigned();
             $table->foreign('sale_id')->references('id')->on('salesnotes')->onDelete('cascade');
-            $table->integer('type_item');
-            $table->integer('item_id');
-            $table->string('descrip', 400);
-            $table->bigInteger('measure_id')->unsigned();
+            $table->bigInteger('element_id');
             $table->decimal('cant');
-            $table->decimal('price');
-            $table->date('start');
-            $table->smallInteger('timer')->unsigned();
-            $table->engine = 'InnoDB';
+            $table->decimal('delivered');
+
 
         });
     }
@@ -37,6 +32,6 @@ class CreateSalesNoteDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales_note_details');
+        Schema::dropIfExists('sales_note_delivereds');
     }
 }

@@ -66,6 +66,8 @@ new Vue({
                 descrip: '',
                 price: 0,
                 start: '',
+                measure_id: 0,
+                measure: {},
                 timer: ''
             },
             detailDefault: {
@@ -78,6 +80,8 @@ new Vue({
                 descrip: '',
                 price: 0,
                 start: '',
+                measure_id: 0,
+                measure: {},
                 timer: ''
             },
             scrpdf: 0,
@@ -85,7 +89,9 @@ new Vue({
             elements: [],
             mat: {},
             TypeShow: 'Detalle a añadir',
-            elementsAplicClient: []
+            elementsAplicClient: [],
+            isNotFull: false,
+            editItem: false
         }
     },
     components: {
@@ -125,49 +131,17 @@ new Vue({
             this.getlist()
         },
         'detail.type_item': function () {
+            if (!this.editItem) {
 
-            if (this.detail.type_item === 1) {
+                this.getDatas();
 
-                this.TypeShow = 'Inventario';
+                this.detail.descrip = '';
 
-                this.detail.item = '';
+                this.detail.price = '';
 
-                axios.get(urldomine + 'api/materials/products').then(res => {
-
-                   this.elements = res.data
-                })
-
-            }
-            if (this.detail.type_item === 2) {
-
-                this.TypeShow = 'Producto';
-
-                this.detail.item = '';
-
-                axios.get(urldomine + 'api/productsoffereds/products').then(res => {
-
-                    this.elements = res.data
-                })
-
-            }
-            if (this.detail.type_item === 3){
-
-                this.TypeShow = 'Servicio';
-
-                this.detail.item = '';
-
-                axios.get(urldomine + 'api/servicesoffereds/services').then(res => {
-
-                    this.elements = res.data
-                })
-
+                this.detail.cant = '';
             }
 
-            this.detail.descrip = '';
-
-            this.detail.price = '';
-
-            this.detail.cant = '';
         }
     },
     mounted () {
@@ -196,6 +170,43 @@ new Vue({
     },
     methods: {
         dateToEs : dateEs,
+        getDatas () {
+            if (this.detail.type_item === 1) {
+
+                this.TypeShow = 'Inventario';
+
+                this.detail.item = '';
+
+                axios.get(urldomine + 'api/materials/products').then(res => {
+
+                    this.elements = res.data
+                })
+
+            }
+            if (this.detail.type_item === 2) {
+
+                this.TypeShow = 'Producto';
+
+                this.detail.item = '';
+
+                axios.get(urldomine + 'api/productsoffereds/products').then(res => {
+
+                    this.elements = res.data
+                })
+
+            }
+            if (this.detail.type_item === 3){
+
+                this.TypeShow = 'Servicio';
+
+                this.detail.item = '';
+
+                axios.get(urldomine + 'api/servicesoffereds/services').then(res => {
+
+                    this.elements = res.data
+                })
+            }
+        },
         getlist (pFil, pOrder, pPager) {
 
             if (pFil !== undefined) { this.filters = pFil }
@@ -258,14 +269,29 @@ new Vue({
                 this.$toasted.success(r.data);
             })
         },
-        // APLICAR NOTA DE VENTA
+        // ENTREGAR PRODUCTO O SERVICIO
+        noteDeliverClient (id) {
+            axios.get(urldomine + 'api/sales/notedeliverclient/' + id ).then(r => {
+               this.$toasted.success(r.data);
+               this.getlist();
+            }).catch(e => {
+                this.$toasted.info(e.response.data);
+            })
+        },
 
         showAplic (item) {
-            this.item = item
+            let founInventoriItem = item.details.find (it => {
+                return it.type_item === 1
+            });
+            this.item = item;
             this.item.paimentdate = moment().format('YYYY-MM-DD');
             this.item.deliverydate = moment().format('YYYY-MM-DD');
             axios.get(urldomine + 'api/sales/aplic/' + item.id ).then(r => {
-             this.elementsAplicClient = r.data
+              this.elementsAplicClient = r.data
+              let NotFull = this.elementsAplicClient.find(it => {
+                  return it.missing > 0
+              });
+              this.isNotFull = founInventoriItem !== undefined && NotFull !== undefined;
               $('#aplicCLientNote').modal('show');
             })
         },
@@ -340,6 +366,49 @@ new Vue({
           $('#new_det').modal('show')
 
         },
+        showFormDetEdit(it) {
+
+            let response = res => {
+                this.elements = res.data;
+                this.detail.item = this.elements.find(it => {
+                    return it.id === this.detail.item_id
+                });
+                $('#new_det').modal('show')
+            };
+
+            this.editItem = true;
+
+            this.detail = {...it};
+
+            if (this.detail.type_item === 1) {
+
+                this.TypeShow = 'Inventario';
+
+                this.detail.item = '';
+
+                axios.get(urldomine + 'api/materials/products').then(response)
+
+            }
+            if (this.detail.type_item === 2) {
+
+                this.TypeShow = 'Producto';
+
+                this.detail.item = '';
+
+                axios.get(urldomine + 'api/productsoffereds/products').then(response)
+
+            }
+            if (this.detail.type_item === 3){
+
+                this.TypeShow = 'Servicio';
+
+                this.detail.item = '';
+
+                axios.get(urldomine + 'api/servicesoffereds/services').then(response)
+            }
+
+
+        },
         deleteDet (id) {
 
           this.item.details = this.item.details.filter(it => it.id !== id)
@@ -347,10 +416,28 @@ new Vue({
         },
         saveNewDet() {
 
-          this.detail.id = generateId(9);
+          if (this.detail.id !== 0) {
+              this.item.details = this.item.details.filter(it => {
+                return  it.id !== this.detail.id
+              })
 
-          this.item.details.push({...this.detail});
+              this.detail.measure_id = this.detail.item.measure_id;
 
+              this.detail.measure = this.detail.item.measure;
+
+              this.item.details.push({...this.detail});
+
+          } else {
+              this.detail.id = generateId(9);
+
+              this.detail.measure_id = this.detail.item.measure_id;
+
+              this.detail.measure = this.detail.item.measure;
+
+              this.item.details.push({...this.detail});
+          }
+
+          this.editItem = false;
           $('#new_det').modal('hide')
 
         },

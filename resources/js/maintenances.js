@@ -14,10 +14,12 @@ new Vue({
             views: {
                 list: true,
                 new: false,
+                details: false,
             },
             item: {
                 id: 0,
                 client: '',
+                moment: '',
                 service: '',
                 start: '',
                 status: '',
@@ -26,10 +28,17 @@ new Vue({
             itemDefault: {
                 id: 0,
                 client: '',
+                moment: '',
                 service: '',
                 start: '',
                 status: '',
                 details: [],
+            },
+            details: [],
+            detail: {
+                note_gardener: '',
+                note_client: '',
+                visting_time: '',
             },
             listfield: [{name: 'Cliente', type: 'text', field: 'clients.name'}],
             filters_list: {
@@ -42,7 +51,8 @@ new Vue({
                 type: 'desc'
             },
             value: '',
-            scrpdf: ''
+            scrpdf: '',
+            aux: {}
         }
     },
     components: {
@@ -64,25 +74,27 @@ new Vue({
     methods: {
         dateToEs : dateEs,
         aplic () {
-
             this.spin = true;
 
-            axios.post( urldomine + 'api/maintenances/aplic', {id: this.item.id}).then( r => {
+            axios.get( urldomine + 'api/maintenances/confirm/' + this.aux.id).then( r => {
 
-                $('#aplicar').modal('hide');
+                $('#confirm').modal('hide');
 
                 this.spin = false;
 
                 this.$toasted.success(r.data);
 
-                this.getlist()
+                axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(r => {
+                    this.details = r.data;
+                })
             })
         },
-        showaplic (it) {
+        confirm (it) {
 
-            this.item = it;
+            this.aux = it;
 
-            $('#aplicar').modal('show');
+            $('#confirm').modal('show');
+
         },
         getlist (pFil, pOrder, pPager) {
             if (pFil !== undefined) { this.filters = pFil }
@@ -129,10 +141,7 @@ new Vue({
             })
         },
         save () {
-
            this.spin = true;
-
-
             axios({
 
                 method: this.act,
@@ -184,6 +193,46 @@ new Vue({
             this.onviews('new')
 
         },
+        saveInfo () {
+            axios.post(urldomine + 'api/maintenances/update/info',  this.detail).then(r => {
+                this.$toasted.success(r.data);
+                axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(r => {
+                    this.details = r.data;
+                    $('#retroInfo').modal('hide')
+                })
+            })
+        },
+        retroInfo (detail) {
+            this.detail = detail;
+            $('#retroInfo').modal('show')
+        },
+        saveDetail () {
+            axios.post(urldomine + 'api/maintenances/details/update',  this.detail).then(r => {
+
+                this.$toasted.success(r.data);
+
+                axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(r => {
+
+                    this.details = r.data;
+
+                    $('#editItem').modal('hide')
+
+                })
+            })
+        },
+        editDetail (it) {
+            this.detail = it;
+            $('#editItem').modal('show')
+        },
+        closeForm () {
+            axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(r => {
+
+                this.details = r.data;
+
+                $('#editItem').modal('hide')
+
+            })
+        },
         pass () {
 
             let client = this.item.client !== '';
@@ -195,6 +244,23 @@ new Vue({
             let timer = this.item.timer !== ' ' && this.item.timer > 0;
 
             return client && moment && service && timer
+        },
+        passConfirm () {
+
+            let moment = this.detail.moment !== '';
+
+            let time = this.detail.visiting_time !== '' && this.detail.visiting_time !== null;
+
+            let price = this.detail.price !== '';
+
+            return time && moment && price
+        },
+        showdetails (item) {
+            this.item = item;
+            axios.get(urldomine + 'api/maintenances/details/' + item.id).then(r => {
+                this.details = r.data
+                this.onviews('details')
+            });
         },
         viewpdf (id) {
 

@@ -168,11 +168,13 @@ new Vue({
       services: [],
       views: {
         list: true,
-        "new": false
+        "new": false,
+        details: false
       },
       item: {
         id: 0,
         client: '',
+        moment: '',
         service: '',
         start: '',
         status: '',
@@ -181,10 +183,17 @@ new Vue({
       itemDefault: {
         id: 0,
         client: '',
+        moment: '',
         service: '',
         start: '',
         status: '',
         details: []
+      },
+      details: [],
+      detail: {
+        note_gardener: '',
+        note_client: '',
+        visting_time: ''
       },
       listfield: [{
         name: 'Cliente',
@@ -201,7 +210,8 @@ new Vue({
         type: 'desc'
       },
       value: '',
-      scrpdf: ''
+      scrpdf: '',
+      aux: {}
     };
   },
   components: {
@@ -220,20 +230,20 @@ new Vue({
       var _this = this;
 
       this.spin = true;
-      axios.post(urldomine + 'api/maintenances/aplic', {
-        id: this.item.id
-      }).then(function (r) {
-        $('#aplicar').modal('hide');
+      axios.get(urldomine + 'api/maintenances/confirm/' + this.aux.id).then(function (r) {
+        $('#confirm').modal('hide');
         _this.spin = false;
 
         _this.$toasted.success(r.data);
 
-        _this.getlist();
+        axios.get(urldomine + 'api/maintenances/details/' + _this.item.id).then(function (r) {
+          _this.details = r.data;
+        });
       });
     },
-    showaplic: function showaplic(it) {
-      this.item = it;
-      $('#aplicar').modal('show');
+    confirm: function confirm(it) {
+      this.aux = it;
+      $('#confirm').modal('show');
     },
     getlist: function getlist(pFil, pOrder, pPager) {
       var _this2 = this;
@@ -308,6 +318,46 @@ new Vue({
       this.title = this.labeledit;
       this.onviews('new');
     },
+    saveInfo: function saveInfo() {
+      var _this4 = this;
+
+      axios.post(urldomine + 'api/maintenances/update/info', this.detail).then(function (r) {
+        _this4.$toasted.success(r.data);
+
+        axios.get(urldomine + 'api/maintenances/details/' + _this4.item.id).then(function (r) {
+          _this4.details = r.data;
+          $('#retroInfo').modal('hide');
+        });
+      });
+    },
+    retroInfo: function retroInfo(detail) {
+      this.detail = detail;
+      $('#retroInfo').modal('show');
+    },
+    saveDetail: function saveDetail() {
+      var _this5 = this;
+
+      axios.post(urldomine + 'api/maintenances/details/update', this.detail).then(function (r) {
+        _this5.$toasted.success(r.data);
+
+        axios.get(urldomine + 'api/maintenances/details/' + _this5.item.id).then(function (r) {
+          _this5.details = r.data;
+          $('#editItem').modal('hide');
+        });
+      });
+    },
+    editDetail: function editDetail(it) {
+      this.detail = it;
+      $('#editItem').modal('show');
+    },
+    closeForm: function closeForm() {
+      var _this6 = this;
+
+      axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(function (r) {
+        _this6.details = r.data;
+        $('#editItem').modal('hide');
+      });
+    },
     pass: function pass() {
       var client = this.item.client !== '';
       var moment = this.item.start !== '';
@@ -315,13 +365,29 @@ new Vue({
       var timer = this.item.timer !== ' ' && this.item.timer > 0;
       return client && moment && service && timer;
     },
+    passConfirm: function passConfirm() {
+      var moment = this.detail.moment !== '';
+      var time = this.detail.visiting_time !== '' && this.detail.visiting_time !== null;
+      var price = this.detail.price !== '';
+      return time && moment && price;
+    },
+    showdetails: function showdetails(item) {
+      var _this7 = this;
+
+      this.item = item;
+      axios.get(urldomine + 'api/maintenances/details/' + item.id).then(function (r) {
+        _this7.details = r.data;
+
+        _this7.onviews('details');
+      });
+    },
     viewpdf: function viewpdf(id) {
-      var _this4 = this;
+      var _this8 = this;
 
       this.spin = true;
       axios.get(urldomine + 'api/maintenances/pdf/' + id).then(function (response) {
-        _this4.spin = false;
-        _this4.scrpdf = response.data;
+        _this8.spin = false;
+        _this8.scrpdf = response.data;
         window.$('#pdf').modal('show');
       });
     }

@@ -1,0 +1,11 @@
+INSERT INTO measures (id, name) VALUES (6, 'arpilla');
+INSERT INTO measures (id, name) VALUES (11, 'bulto');
+INSERT INTO measures (id, name) VALUES (5, 'costal');
+INSERT INTO measures (id, name) VALUES (9, 'gr');
+INSERT INTO measures (id, name) VALUES (2, 'kilo');
+INSERT INTO measures (id, name) VALUES (3, 'litro');
+INSERT INTO measures (id, name) VALUES (4, 'm2');
+INSERT INTO measures (id, name) VALUES (7, 'm3');
+INSERT INTO measures (id, name) VALUES (1, 'pieza');
+INSERT INTO measures (id, name) VALUES (10, 'tonelada');
+INSERT INTO measures (id, name) VALUES (8, 'unidad');

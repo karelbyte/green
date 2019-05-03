@@ -3,6 +3,7 @@
 namespace App\Models\SalesNotes;
 
 use App\Models\Maintenances\Maintenance;
+use App\Models\Measure;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -24,7 +25,8 @@ class SalesNoteDetails extends Model
     /**
      * @var array
      */
-    protected $fillable = ['sale_id', 'type_item', 'item_id', 'descrip', 'cant', 'price', 'start', 'timer'];
+    protected $fillable = ['sale_id', 'type_item', 'item_id',
+        'measure_id', 'descrip', 'cant', 'price', 'start', 'timer'];
 
 
     public $timestamps = false;
@@ -34,4 +36,13 @@ class SalesNoteDetails extends Model
        return $this->hasOne(Maintenance::class, 'sales_note_details_id', 'id');
     }
 
+    public function sale() {
+
+        return $this->hasOne(SalesNote::class, 'id', 'sale_id');
+    }
+
+    public function measure() {
+
+        return $this->hasOne(Measure::class, 'id', 'measure_id');
+    }
 }

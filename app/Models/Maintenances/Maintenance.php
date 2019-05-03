@@ -10,7 +10,8 @@ class Maintenance extends Model
 {
     protected $keyType = 'integer';
 
-    protected $fillable = ['client_id', 'service_offereds_id', 'timer', 'start', 'status_id', 'created_at', 'updated_at'];
+    protected $fillable = ['client_id', 'sales_note_details_id', 'service_offereds_id', 'timer', 'start',
+        'status_id', 'created_at', 'updated_at'];
 
 
     public function client () {

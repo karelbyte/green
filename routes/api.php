@@ -52,6 +52,8 @@ Route::prefix('sales')->group(function () {
 
     Route::post('/confirm', 'SalesNoteController@NoteConfirm');
 
+    Route::get('/notedeliverclient/{id}', 'SalesNoteController@NoteDeliverClient');
+
     // DETALLES
 
     Route::post('/details', 'SalesNoteController@SaveDetails');
@@ -107,7 +109,15 @@ Route::prefix('maintenances')->group(function () {
 
     Route::post('list', 'MaintenancesController@getList');
 
-    Route::get('/get/id', 'MaintenancesController@sendID');
+    Route::get('details/{id}', 'MaintenancesController@details');
+
+    Route::post('details/update', 'MaintenancesController@detailsUpdate');
+
+    Route::get('confirm/{id}', 'MaintenancesController@confirm');
+
+    Route::post('update/info/', 'MaintenancesController@updateInfo');
+
+   // Route::get('/get/id', 'MaintenancesController@sendID');
 
 });
 Route::resource('/maintenances', 'MaintenancesController');

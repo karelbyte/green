@@ -19,7 +19,7 @@ class ServicesOfferedsController extends Controller
 
     public function getServices() {
 
-        return ServiceOfferedsDetails::all();
+        return ServiceOfferedsDetails::with('measure')->get();
 
     }
 

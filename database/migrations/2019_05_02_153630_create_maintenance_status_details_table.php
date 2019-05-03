@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMaintenanceStatusTable extends Migration
+class CreateMaintenanceStatusDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateMaintenanceStatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('maintenance_status', function (Blueprint $table) {
-            $table->smallInteger('id');
+        Schema::create('maintenance_status_details', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('name');
             $table->engine = 'InnoDB';
         });
@@ -27,6 +27,6 @@ class CreateMaintenanceStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('maintenance_status');
+        Schema::dropIfExists('maintenance_status_details');
     }
 }

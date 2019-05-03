@@ -138,8 +138,10 @@ class AppSeeder extends Seeder
             ['id' => 1, 'name' => 'EN ESPERA'],
             ['id' => 2, 'name' => 'EN CURSO'],
             ['id' => 3, 'name' => 'EN PROCESO DE VENTA'],
-            ['id' => 4, 'name' => 'FINALIZADA - VENTA'],
+            ['id' => 4, 'name' => 'VENTA'],
             ['id' => 5, 'name' => 'FINALIZADA - NO VENTA'],
+            ['id' => 6, 'name' => 'EN EJECUCION'],
+            ['id' => 7, 'name' => 'RECOMENDACIONES'],
         ];
         \App\Models\CGlobal\CGlobalStatus::insert($CAGSt);
 
@@ -190,10 +192,20 @@ class AppSeeder extends Seeder
 
         // ESTADO DE MANTENIMIENTO
        $statusManteList = [
-           ['id' => 2, 'name' => 'Inactivo'],
+           ['id' => 0, 'name' => 'Inactivo'],
            ['id' => 1, 'name' => 'Activo'],
        ];
         \App\Models\Maintenances\MaintenanceStatus::insert($statusManteList);
+
+        // ESTADO DE MANTENIMIENTO  DETALLE
+        $statusManteDetailList = [
+            ['id' => 1, 'name' => 'EN ESPERA'],
+            ['id' => 2, 'name' => 'EN PROCESO'],
+            ['id' => 3, 'name' => 'EN EJECUCION'],
+            ['id' => 4, 'name' => 'TERMINADO'],
+            ['id' => 5, 'name' => 'TERMINADO - PAGADO'],
+        ];
+        \App\Models\Maintenances\MaintenaceStatusDetail::insert($statusManteDetailList);
 
     }
 }
