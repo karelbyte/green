@@ -12,18 +12,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TypeCompromise extends Model
 {
-    /**
-     * The "type" of the auto-incrementing ID.
-     * 
-     * @var string
-     */
+
+    const SALE_NOTE = 1;
+    const QUOTE_DISTANCE = 2;
+    const QUOTE_HOME = 3;
+    const INFO_SEND = 4;
+
     protected $keyType = 'integer';
 
-    /**
-     * @var array
-     */
     protected $fillable = ['name', 'created_at', 'updated_at'];
-
 
     protected $hidden = ['created_at', 'updated_at'];
 

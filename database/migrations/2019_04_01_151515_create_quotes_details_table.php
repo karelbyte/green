@@ -15,9 +15,11 @@ class CreateQuotesDetailsTable extends Migration
     {
         Schema::create('quotes_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('quote_id');
+            $table->bigInteger('quote_id')->unsigned();
+            $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('cascade');
             $table->integer('type_item');
             $table->integer('item_id');
+            $table->bigInteger('measure_id')->unsigned();
             $table->integer('cant');
             $table->string('descrip',500);
             $table->decimal('price', 8,2);

@@ -74,6 +74,8 @@ new Vue({
                 cant: 0,
                 descrip: '',
                 price: 0,
+                measure_id: 0,
+                measure: {},
                 total: () => {
                     return  this.cant * this.price
                 }
@@ -83,6 +85,8 @@ new Vue({
                 cant: 0,
                 descrip: '',
                 price: 0,
+                measure_id: 0,
+                measure: {},
                 total: () => {
                   return  this.cant * this.price
                 }
@@ -126,7 +130,8 @@ new Vue({
             redirect: {
                 patch: '',
                 message: ''
-            }
+            },
+            editItem: false
         }
     },
     directives: {
@@ -163,49 +168,50 @@ new Vue({
     },
     watch: {
         'detail.type_item': function () {
+            if (!this.editItem) {
+                if (this.detail.type_item === 1) {
 
-            if (this.detail.type_item === 1) {
+                    this.TypeShow = 'Inventario';
 
-                this.TypeShow = 'Inventario';
+                    this.detail.item = '';
 
-                this.detail.item = '';
+                    axios.get(urldomine + 'api/materials/products').then(res => {
 
-                axios.get(urldomine + 'api/inventoris/products').then(res => {
+                        this.elements = res.data
+                    })
 
-                    this.elements = res.data
-                })
+                }
+                if (this.detail.type_item === 2) {
 
+                    this.TypeShow = 'Producto';
+
+                    this.detail.item = '';
+
+                    axios.get(urldomine + 'api/productsoffereds/products').then(res => {
+
+                        this.elements = res.data
+                    })
+
+                }
+                if (this.detail.type_item === 3){
+
+                    this.TypeShow = 'Servicio';
+
+                    this.detail.item = '';
+
+                    axios.get(urldomine + 'api/servicesoffereds/services').then(res => {
+
+                        this.elements = res.data
+                    })
+
+                }
+
+                this.detail.descrip = '';
+
+                this.detail.price = '';
+
+                this.detail.cant = '';
             }
-            if (this.detail.type_item === 2) {
-
-                this.TypeShow = 'Producto';
-
-                this.detail.item = '';
-
-                axios.get(urldomine + 'api/productsoffereds/products').then(res => {
-
-                    this.elements = res.data
-                })
-
-            }
-            if (this.detail.type_item === 3){
-
-                this.TypeShow = 'Servicio';
-
-                this.detail.item = '';
-
-                axios.get(urldomine + 'api/servicesoffereds/services').then(res => {
-
-                    this.elements = res.data
-                })
-
-            }
-
-            this.detail.descrip = '';
-
-            this.detail.price = '';
-
-            this.detail.cant = '';
         },
         'filters_list.value': function () {
             this.getlist()
@@ -351,6 +357,40 @@ new Vue({
           $('#new_det').modal('show')
 
         },
+        showFormDetEdit(it) {
+            let response = res => {
+                this.elements = res.data;
+                this.detail.item = this.elements.find(it => {
+                    return it.id === this.detail.item_id
+                });
+                $('#new_det').modal('show')
+            };
+
+            this.editItem = true;
+
+            this.detail = {...it};
+
+            if (this.detail.type_item === 1) {
+
+                this.TypeShow = 'Inventario';
+
+                axios.get(urldomine + 'api/materials/products').then(response)
+
+            }
+            if (this.detail.type_item === 2) {
+
+                this.TypeShow = 'Producto';
+
+                axios.get(urldomine + 'api/productsoffereds/products').then(response)
+
+            }
+            if (this.detail.type_item === 3){
+
+                this.TypeShow = 'Servicio';
+
+                axios.get(urldomine + 'api/servicesoffereds/services').then(response)
+            }
+        },
         deleteDet (id) {
 
           this.item.details = this.item.details.filter(it => it.id !== id)
@@ -358,11 +398,29 @@ new Vue({
         },
         saveNewDet() {
 
-          this.detail.id = generateId(9);
+            if (this.detail.id !== 0) {
+                this.item.details = this.item.details.filter(it => {
+                    return  it.id !== this.detail.id
+                });
 
-          this.item.details.push({...this.detail});
+                this.detail.measure_id = this.detail.item.measure_id;
 
-          $('#new_det').modal('hide')
+                this.detail.measure = this.detail.item.measure;
+
+                this.item.details.push({...this.detail});
+
+            } else {
+                this.detail.id = generateId(9);
+
+                this.detail.measure_id = this.detail.item.measure_id;
+
+                this.detail.measure = this.detail.item.measure;
+
+                this.item.details.push({...this.detail});
+            }
+
+            this.editItem = false;
+            $('#new_det').modal('hide')
 
         },
         passNewDet () {

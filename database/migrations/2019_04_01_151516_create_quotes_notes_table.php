@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCglobalInfoClientsTable extends Migration
+class CreateQuotesNotesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateCglobalInfoClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cglobal_info_clients', function (Blueprint $table) {
+        Schema::create('quotes_notes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('cglobal_id');
-            $table->date('moment');
-            $table->smallInteger('type_info_id');
+            $table->bigInteger('quote_id')->unsigned();
+            $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('cascade');
+            $table->string('note', 500);
             $table->engine = 'InnoDB';
         });
     }
@@ -29,6 +29,6 @@ class CreateCglobalInfoClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cglobal_info_clients');
+        Schema::dropIfExists('quotes_notes');
     }
 }

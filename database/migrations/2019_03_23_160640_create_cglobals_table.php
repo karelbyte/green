@@ -9,7 +9,7 @@ class CreateCGlobalsTable extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
+     * @return void d
      */
     public function up()
     {

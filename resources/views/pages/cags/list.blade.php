@@ -257,7 +257,7 @@
                         <div class="col-lg-6">
                             <button v-if="parseInt(entity.status_id) === 1" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
                             <button v-if="parseInt(entity.status_id) === 1" class="btn btn-danger waves-effect btn-sm" @click="showdelete(trait(entity))"><i class="fa fa-eraser"></i></button>
-                            <button class="btn btn-info waves-effect btn-sm" @click="showdView(entity)"><i class="fa fa-file-pdf-o"></i></button>
+                            <button class="btn btn-info waves-effect btn-sm" @click="showpdf(entity.id)"><i class="fa fa-file-pdf-o"></i></button>
                         </div>
                         <div class="col-lg-6 text-right" style="font-style: italic">
                             <span class="txtblack">@{{entity.status.name  }}</span>
@@ -466,6 +466,26 @@
                     <div class="panel-footer text-right">
                         <button v-if="passClient()" :disabled="spin" @click="saveNewClient()" class="btn btn-danger waves-effect btn-sm">Guardar</button>
                         <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pdf" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center modal-lg">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Visor</h3>
+                    </div>
+                    <div class="panel-body">
+                        <iframe  id="iframe" :src="scrpdf" frameborder="0" width="100%" height="450px"></iframe>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
                     </div>
                 </div>
             </div>

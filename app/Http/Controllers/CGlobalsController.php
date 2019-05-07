@@ -6,11 +6,13 @@ use App\Models\Calendar;
 use App\Models\CGlobal\CGlobal;
 use App\Models\CGlobal\CGlobalInfo;
 use App\Models\Client;
+use App\Models\Company;
 use App\Models\LandScaper;
 use App\Models\ProductOffereds\ProductOffereds;
 use App\Models\Quotes\Quote;
 use App\Models\SalesNotes\SalesNote;
 use App\Models\ServicesOffereds\ServiceOffereds;
+use App\Models\TypeCompromise;
 use App\Models\TypeContact;
 use App\Models\TypeInfo;
 use App\Models\Users\User;
@@ -67,13 +69,13 @@ class CGlobalsController extends Controller
 
             'list' =>  $list,
 
-            'clients' => Client::select('id', 'name')->get(),
+            'clients' => Client::query()->select('id', 'name')->get(),
 
-            'type_contacts' => TypeContact::select('id', 'name')->get(),
+            'type_contacts' => TypeContact::query()->select('id', 'name')->get(),
 
             'type_infos' => TypeInfo::with('detail')->get(),
 
-            'landscapers' => User::where('position_id', 3)->select('uid', 'name')->get(),
+            'landscapers' => User::query()->where('position_id', 3)->select('uid', 'name')->get(),
 
             'servicesOffereds' => ServiceOffereds::all(),
 
@@ -81,10 +83,11 @@ class CGlobalsController extends Controller
 
         ];
 
-        return response()->json($result, 200);
+        return response()->json($result);
 
     }
 
+    // CREANDO CICLO DE ATENCION GLOBAL
     public function store(Request $request) {
 
        $data = $request->all();
@@ -134,7 +137,7 @@ class CGlobalsController extends Controller
 
        // CREANDO COTIZACION A  DOMICIOLIO
 
-       if ($data['type_compromise_id'] == 3) {
+       if ($data['type_compromise_id'] === TypeCompromise::QUOTE_HOME) {
 
            $cg->LandScaper()->create($data['landscaper']);
 
@@ -168,7 +171,7 @@ class CGlobalsController extends Controller
         }
 
 
-        if ($data['type_compromise_id'] == 4) {
+        if ($data['type_compromise_id'] === TypeCompromise::INFO_SEND) {
 
             $cg->Documents()->create($data['documents']);
 
@@ -186,7 +189,7 @@ class CGlobalsController extends Controller
             return response()->json('Se generó un evento de envio de informacion a cliente!', 200);
         }
 
-        if ($data['type_compromise_id'] == 1) {
+        if ($data['type_compromise_id'] === TypeCompromise::SALE_NOTE) {
 
           $sale = SalesNote::create([
 
@@ -202,10 +205,10 @@ class CGlobalsController extends Controller
 
             ]);
 
-           return response()->json(['id'=>$sale->id], 200);
+           return response()->json(['id'=>$sale->id]);
         }
 
-        if ($data['type_compromise_id'] == 2) {
+        if ($data['type_compromise_id'] === TypeCompromise::QUOTE_DISTANCE) {
 
             $quote =   Quote::create([
 
@@ -221,7 +224,7 @@ class CGlobalsController extends Controller
 
             ]);
 
-            return response()->json(['id'=>$quote->id], 200);
+            return response()->json(['id'=>$quote->id]);
         }
 
 
@@ -264,8 +267,7 @@ class CGlobalsController extends Controller
 
         SalesNote::where('global_id', $cg->id)->delete();
 
-
-        if ($data['type_compromise_id'] == 3) {
+        if ($data['type_compromise_id'] === TypeCompromise::QUOTE_HOME) {
 
             $cg->LandScaper()->create($data['landscaper']);
 
@@ -298,8 +300,7 @@ class CGlobalsController extends Controller
             return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!', 200);
         }
 
-
-        if ($data['type_compromise_id'] == 4) {
+        if ($data['type_compromise_id'] === TypeCompromise::INFO_SEND) {
 
             $cg->Documents()->create($data['documents']);
 
@@ -317,7 +318,7 @@ class CGlobalsController extends Controller
             return response()->json('Se generó un evento de envio de informacion a cliente!', 200);
         }
 
-        if ($data['type_compromise_id'] == 1) {
+        if ($data['type_compromise_id'] === TypeCompromise::SALE_NOTE) {
 
             $sale = SalesNote::create([
 
@@ -331,10 +332,10 @@ class CGlobalsController extends Controller
 
             ]);
 
-            return response()->json(['id'=>$sale->id], 200);
+            return response()->json(['id'=>$sale->id]);
         }
 
-        if ($data['type_compromise_id'] == 2) {
+        if ($data['type_compromise_id'] === TypeCompromise::QUOTE_DISTANCE) {
 
             $quote =  Quote::create([
 
@@ -350,36 +351,91 @@ class CGlobalsController extends Controller
 
             ]);
 
-            return response()->json(['id'=>$quote->id], 200);
+            return response()->json(['id'=>$quote->id]);
         }
 
 
+    }
+
+    public function pdf($id) {
+
+        $pdf = \App::make('snappy.pdf.wrapper');
+
+        $datos = CGlobal::query()->with(['MotiveServices', 'MotiveProducts', 'documents', 'compromise','contact',
+            'attended', 'client', 'status', 'info' => function($q) {
+                $q->with('info', 'info_det');
+            }, 'landscaper' => function($l) {
+                $l->with('user');
+            }])->where('id', $id)->first();
+
+        $sale =  SalesNote::with([ 'status', 'details' => function($d) {
+            $d->with('measure');
+        }])->where('global_id', $id)->first();
+
+        $data = [
+
+            'company' => Company::query()->find(1),
+
+            'data' =>  $datos,
+
+            'sale' => $sale
+
+        ];
+
+        $html = \View::make('pages.cags.pdf', $data)->render();
+
+        $pdf->loadHTML($html);
+
+        $pdfBase64 = base64_encode($pdf->inline());
+
+        return 'data:application/pdf;base64,' . $pdfBase64;
+    }
+
+    public function html($id) {
+
+        $pdf = \App::make('snappy.pdf.wrapper');
+
+        $datos = CGlobal::query()->with(['MotiveServices', 'MotiveProducts', 'documents', 'compromise','contact',
+            'attended', 'client', 'status', 'info' => function($q) {
+                $q->with('info', 'info_det');
+            }, 'landscaper' => function($l) {
+                $l->with('user');
+            }])->where('id', $id)->first();
+
+        $sale =  SalesNote::with([ 'status', 'details' => function($d) {
+            $d->with('measure');
+        }])->where('global_id', $id)->first();
+
+        $data = [
+
+            'company' => Company::query()->find(1),
+
+            'data' =>  $datos,
+
+            'sale' => $sale
+
+        ];
+        // return  $data;
+        // $footer = View::make('components.footer')->render();
+
+        $html = \View::make('pages.cags.pdf', $data)->render();
+
+        $pdf->loadHTML($html); //->setOption('footer-html', $footer);
+
+        return $pdf->inline();
+
+        $pdfBase64 = base64_encode($pdf->inline());
+
+        return 'data:application/pdf;base64,' . $pdfBase64;
     }
 
     public function destroy($id)  {
 
         CGlobal::destroy($id);
 
-        CGlobalInfo::where('cglobal_id', $id)->delete();
-
-        LandScaper::where('cglobal_id', $id)->delete();
-
         Calendar::where('cglobal_id', $id)->delete();
 
+        return response()->json('Datos eliminados con exito!');
 
-        return response()->json('Datos eliminados con exito!', 200);
-
-        /*$pro = Product::find($id);
-
-        if ($pro->used()) {
-
-            return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
-
-        } else {
-
-            Product::destroy($id);
-
-            return response()->json('Producto eliminado con exito!', 200);
-        } */
     }
 }

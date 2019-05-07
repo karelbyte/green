@@ -3,9 +3,13 @@
 namespace App\Models\CGlobal;
 
 
+use App\Models\Client;
 use App\Models\LandScaper;
 use App\Models\ProductOffereds\ProductOffereds;
+use App\Models\SalesNotes\SalesNote;
 use App\Models\ServicesOffereds\ServiceOffereds;
+use App\Models\TypeCompromise;
+use App\Models\TypeContact;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,7 +29,7 @@ class CGlobal extends Model
 
     public function Contact() {
 
-        return $this->hasOne('App\Models\TypeContact', 'id', 'type_contact_id');
+        return $this->hasOne(TypeContact::class, 'id', 'type_contact_id');
 
     }
 
@@ -43,13 +47,13 @@ class CGlobal extends Model
 
     public function Compromise() {
 
-        return $this->hasOne('App\Models\TypeCompromise', 'id', 'type_compromise_id');
+        return $this->hasOne(TypeCompromise::class, 'id', 'type_compromise_id');
 
     }
 
     public function Client() {
 
-        return $this->hasOne('App\Models\Client', 'id', 'client_id');
+        return $this->hasOne(Client::class, 'id', 'client_id');
 
     }
 
@@ -78,6 +82,11 @@ class CGlobal extends Model
     public function Documents () {
 
         return $this->hasOne(CGlobalInfoClient::class, 'cglobal_id', 'id');
+    }
+
+    public function SaleNote () {
+
+        return $this->hasOne(SalesNote::class, 'global_id', 'id');
     }
 
 

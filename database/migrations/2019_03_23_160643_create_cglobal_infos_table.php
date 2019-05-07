@@ -15,7 +15,9 @@ class CreateCglobalInfosTable extends Migration
     {
         Schema::create('cglobal_infos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('cglobal_id');
+            $table->bigInteger('cglobal_id')->unsigned();
+            $table->foreign('cglobal_id')->references('id')->on('cglobals')->onDelete('cascade');
+
             $table->integer('type_info_id');
             $table->integer('type_info_detail_id');
             $table->string( 'info_descrip', 250);

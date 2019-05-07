@@ -224,6 +224,12 @@
                         <a href="{{route('maintenance')}}" class="waves-effect"><i class="typcn typcn-weather-downpour "></i><span>Mantenimientos </span></a>
                     </li>
                     @endcan
+                    <li class="has_sub">
+                        <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-paste "></i><span> Informes</span><span class="menu-arrow"></span> </a>
+                         <ul class="list-unstyled">
+                            <li><a href="{{route('info')}}">Cotizaciones</a></li>
+                         </ul>
+                    </li>
                     @can('clients')
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-card-details"></i> <span>Clientes</span> <span class="menu-arrow"></span></a>

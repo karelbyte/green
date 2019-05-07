@@ -26,7 +26,12 @@ class UsersController extends Controller
         return UserPosition::all();
     }
 
-    // OBTINE LA LISTA DE USUARIOS Y LOS ENVIA AL FRONT PAGINADO
+    public function getlanscapers()
+    {
+        return User::query()->where('position_id', UserPosition::LANDSCAPERS)->get();
+    }
+
+    // OBTIENE LA LISTA DE USUARIOS Y LOS ENVIA AL FRONT PAGINADO
     public function getList(Request $request) {
 
         $skip = $request->input('start') * $request->input('take');

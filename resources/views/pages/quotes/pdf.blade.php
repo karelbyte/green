@@ -15,17 +15,183 @@
             width: 100%;
             font-size: 12px;
         }
-        .th {
-            padding: 10px 10px 10px 10px;
+        .top {
+            border: 1px solid grey;
+            margin-bottom: 15px;
         }
-        .th_r{
-            padding: 10px 10px 10px 10px; text-align: right
+        .logo {
+            width: 15%;
+            text-align: left;
+            margin-top: 10px
         }
-        .td {
-           padding: 5px 5px 5px 10px; border-bottom: 1px solid rgba(169,169,169,0.29)
+        .generals {
+            width: 85%;
+            text-align: left;
+            margin-top: 15px
         }
-        td_r {
-            padding: 5px 5px 5px 10px; border-bottom: 1px solid rgba(169,169,169,0.29);text-align: right
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        a {
+            color: #115830;
+            text-decoration: none;
+        }
+
+        header {
+            padding: 10px 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #AAAAAA;
+        }
+
+        #details {
+            margin-bottom: 50px;
+        }
+
+        #client {
+            padding-left: 6px;
+            border-left: 6px solid #125c27;
+        }
+
+        #client .to {
+            color: #777777;
+        }
+
+        h2.name {
+            font-size: 1.4em;
+            font-weight: normal;
+            margin: 0;
+        }
+        #invoice {
+            text-align: right;
+        }
+
+        #invoice h1 {
+            color: #125c27;
+            font-size: 2.4em;
+            line-height: 1em;
+            font-weight: normal;
+            margin: 0  0 5px 0;
+        }
+
+        #invoice .date {
+            font-size: 1.1em;
+            color: #777777;
+        }
+        /* */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin-bottom: 10px;
+        }
+
+        table th,
+        table td {
+            padding: 5px;
+            background: #EEEEEE;
+            text-align: center;
+            border-bottom: 1px solid #FFFFFF;
+        }
+
+        table th {
+            white-space: nowrap;
+            font-weight: normal;
+        }
+
+        table td {
+            text-align: right;
+        }
+
+        table td h3{
+            color: rgba(89, 219, 35, 0.34);
+            font-size: 1.1em;
+            font-weight: normal;
+            margin: 0 0 0.2em 0;
+        }
+
+        table .no {
+            color: #FFFFFF;
+            font-size: 1.1em;
+            background: #555555;
+        }
+
+        table .desc {
+            text-align: left;
+        }
+
+        table .unit {
+            background: #DDDDDD;
+        }
+
+        table .qty {
+        }
+
+        table .total {
+            background: rgba(62, 159, 100, 0.49);
+            color: black;
+        }
+
+        table td.unit,
+        table td.qty,
+        table td.total {
+            font-size: 1.1em;
+        }
+
+        table tbody tr:last-child td {
+            border: none;
+        }
+
+
+        table tfoot td {
+            padding: 10px 10px;
+            background: #FFFFFF;
+            border-bottom: none;
+            font-size: 1.2em;
+            white-space: nowrap;
+            border-top: 1px solid #AAAAAA;
+        }
+
+        table tfoot tr:first-child td {
+            border-top: none;
+        }
+
+        table tfoot tr:last-child td {
+            color: #1130b2;
+            font-size: 1.4em;
+            border-top: 1px solid #57B223;
+
+        }
+
+        table tfoot tr td:first-child {
+            border-top: 1px solid #AAAAAA;
+        }
+
+        #thanks{
+            font-size: 2em;
+            margin-bottom: 50px;
+        }
+
+        #notices{
+            padding-left: 6px;
+            border-left: 6px solid #0087C3;
+        }
+
+        #notices .notice {
+            font-size: 1.2em;
+        }
+
+        footer {
+            color: #777777;
+            width: 100%;
+            height: 30px;
+            position: absolute;
+            bottom: 0;
+            /* border-top: 1px solid #AAAAAA; */
+            padding: 8px 0;
+            text-align: center;
         }
     </style>
 </head>
@@ -33,70 +199,92 @@
 @php
     $total = 0
 @endphp
-   <p class="ql-align-center">
-       <span style="color: black; font-size: 16px">{!! $data['descrip'] !!}</span>
-   </p>
+<div class="top">
+    <div class="logo">
+        <img src="{{asset('images/gc/logo192.png')}}" alt="" width="96">
+    </div>
+    <div  class="generals">
+        <div style="width: 30%; text-align: left;">
+            <div style="font-weight:bolder;">{{$company->name}}</div>
+            <div style="padding-bottom: 10px;">{{$company->address}}</div>
+        </div>
+        <div style="width: 21%; text-align: left;  padding-left: 15px;  border-left: 1px solid grey">
+            <span style="font-weight: bolder">Email</span>
+            {{$company->email}} <br>
+            <span style="font-weight: bolder">RFC:</span>
+            {{$company->rfc}}
+        </div>
+        <div style="width: 15%; text-align: center; padding-left: 5px; border-left: 1px solid grey">
+            <span style="font-weight: bolder">Teléfono:</span>
+            {{$company->phone1}} <br>
+            <span style="font-weight: bolder">WhastApp:</span>
+            {{$company->phone2}}
+        </div>
+    </div>
+</div>
+<div id="details" class="clearfix">
+    <div id="client" style="width: 50%">
+        <div class="to">COTIZADO A:</div>
+        <h2 class="name">{{$client->client->name}}</h2>
+        <div class="address">{{$client->client->address}}</div>
+        <div class="email">{{$client->client->email}}</div>
+    </div>
+    <div id="invoice" style="width: 50%">
+        <h1>COTIZACION {{$data['id']}}</h1>
+        <div class="date">FECHA: {{Carbon\Carbon::parse($data['moment'])->format('d-m-Y')}}</div>
+    </div>
+</div>
 
-<div style="width: 100%; text-align: left; margin-top: 25px; border: 2px solid grey;">
-    <table style="width: 100%">
-        <thead>
-        <tr style="font-weight: bold; background-color: rgba(201,201,201,0.28); font-size: 11px;">
-            <th class="th">Descripción</th>
-            <th class="th">Cantidad</th>
-            <th class="th">Precio Unitario</th>
-            <th class="th">Total</th>
+<table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <th class="no">#</th>
+        <th class="desc">DESCRIPCION</th>
+        <th class="unit">UNIDAD MEDIDA</th>
+        <th class="unit">CANTIDAD</th>
+        <th class="unit">PRECIO</th>
+        <th class="unit">IMPORTE</th>
+    </tr>
+
+    <tbody>
+    @php
+        $total = 0;
+    @endphp
+    @foreach ($data['details'] as $index => $det)
+        <tr>
+            <td class="no">{{$index+1}}</td>
+            <td class="desc">{{$det->descrip}}</td>
+            <td class="desc">{{$det->measure->name}}</td>
+            <td class="desc">{{$det->cant}}</td>
+            <td class="desc">{{$det->price}}</td>
+            <td class="total">{{number_format($det->price * $det->cant, 2, '.', '')}}</td>
+            @php
+                 $total += $det->price * $det->cant
+            @endphp
         </tr>
-        </thead>
-        <tbody>
-        @foreach($data['details'] as $det)
-            <tr style="font-size: 10px;">
-                <td class="td">{{$det->descrip}}</td>
-                <td class="td">{{$det->cant}}</td>
-                <td class="td">{{$det->price}}</td>
-                <td class="td">{{number_format($det->price * $det->cant, 2, '.', '')}}</td>
-                @php
-                    $total += $det->price * $det->cant
-                @endphp
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
-</div>
-   <div style="width: 100%">
-       <div style="width: 60%"></div>
-       <div style="width: 40%">
-           <table  style="width: 100%;">
-               <thead>
-               <tr style="font-weight: bold; background-color: rgba(201,201,201,0.28); font-size: 11px;">
-                   <th style="padding: 10px 10px 10px 10px;">Base Imponible</th>
-                   <th style="padding: 10px 10px 10px 10px;">Tipo IVA</th>
-                   <th style="padding: 10px 10px 10px 10px;">IVA</th>
-               </tr>
-               </thead>
-               <tbody>
-               <tr style="font-size: 10px;">
-                   <td style="padding: 5px 5px 5px 10px; border-bottom: 1px solid rgba(169,169,169,0.29);">{{number_format($total, 2, '.', '')}}</td>
-                   <td style="padding: 5px 5px 5px 10px; border-bottom: 1px solid rgba(169,169,169,0.29);">16%</td>
-                   @php
-                       $iva = $total * 0.16
-                   @endphp
-                   <td style="padding: 5px 5px 5px 10px; border-bottom: 1px solid rgba(169,169,169,0.29);">{{$iva}}</td>
-               </tr>
-               </tbody>
-           </table>
-       </div>
-   </div>
-<div style="margin-top: 15px; width: 100%">
-    <div style="width: 30%;">
-
-    </div>
-    <div style="width: 23%;">
-    </div>
-    <div style="width: 35%; font-weight: bold;  padding: 10px 10px 10px 10px; background-color: rgba(201,201,201,0.28); border: 2px solid grey; float: right ">
-        <div style="width: 50%; text-align: left"><span>Total:</span></div>
-        <div style="width: 50%; text-align: right">{{number_format($total + $iva, 2, '.', '')}}</div>
-    </div>
-</div>
+    @endforeach
+    <tr>
+        <td></td>
+        <td colspan="2"></td>
+        <td colspan="2">BASE IMPONIBLE</td>
+        <td class="unit">{{number_format($total, 2, '.', '')}}</td>
+    </tr>
+    <tr>
+        @php
+            $iva = $total * 0.16
+        @endphp
+        <td></td>
+        <td colspan="2"></td>
+        <td colspan="2">SUBTOTAL IVA</td>
+        <td  class="unit">{{number_format($iva, 2, '.', '')}}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="2"></td>
+        <td colspan="2">IMPORTE TOTAL</td>
+        <td  class="total">{{number_format($total + $iva, 2, '.', '')}}</td>
+    </tr>
+    </tbody>
+</table>
   <div>
       {!! $data['specifications'] !!}
   </div>

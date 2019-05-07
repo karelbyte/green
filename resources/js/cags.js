@@ -4,7 +4,7 @@ import KnobControl from 'vue-knob-control'
 import Multiselect from 'vue-multiselect'
 import {dateEs, generateId} from './tools';
 
-const cags = new Vue({
+new Vue({
     mixins: [core],
     el: '#app',
     data () {
@@ -13,6 +13,7 @@ const cags = new Vue({
                 list: true,
                 new: false,
             },
+            scrpdf: '',
             item: {
                 id: 0,
                 client: '',
@@ -191,14 +192,30 @@ const cags = new Vue({
                 return item.motive_products !== null ?  item.motive_products.name  : ''
             }
         },
+        showpdf(id) {
+
+            this.spin = true;
+
+            axios.get(urldomine + 'api/cags/pdf/' + id).then(response => {
+
+                this.spin = false;
+
+                this.scrpdf = response.data;
+
+                window.$('#pdf').modal('show')
+
+            })
+        },
         showSendInfo () {
             $('#sendinfo').modal('show')
         },
         showVisit() {
-            $('#visita').modal('show')
+            axios.get(urldomine + 'api/users/landscapers/list').then(r => {
+                this.landscapers = r.data;
+                $('#visita').modal('show')
+            })
         },
         showInfo() {
-
             $('#info').modal('show')
         },
         deleteInfo (id) {

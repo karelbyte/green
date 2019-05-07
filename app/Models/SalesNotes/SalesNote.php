@@ -65,9 +65,10 @@ class SalesNote extends Model
 
     public function total() {
       $data = $this->details;
-      return $data->reduce( function ($carry, $item) {
+      $total = $data->reduce( function ($carry, $item) {
             return $carry + ($item['cant'] * $item['price']);
         });
+      return number_format($total, '2', '.', '');
     }
 
 }

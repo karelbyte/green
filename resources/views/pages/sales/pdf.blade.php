@@ -1,104 +1,122 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cotizacion</title>
-    <link href="{{asset('css/quill.css')}}" rel="stylesheet">
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <title>Nota de venta</title>
+    <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
     <style>
+        body {
+            @if($sale['status_id'] === 2 || $sale['status_id'] === 7 || $sale['status_id'] === 5) background-image: url("{{asset('images/gc/paid.png')}}"); @endif
+            @if($sale['status_id'] === 1 || $sale['status_id'] === 4 || $sale['status_id'] === 8) background-image: url("{{asset('images/gc/advance.png')}}"); @endif
+            background-position: top; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-size: auto;
+            height: 11in;
+        }
         div {
             display: block;
             float: left;
             width: 100%;
             font-size: 12px;
         }
-        .th {
-            padding: 10px 10px 10px 10px;
+        .top {
+            border: 1px solid grey;
         }
-        .th_r{
-            padding: 10px 10px 10px 10px; text-align: right
+        .logo {
+            width: 15%;
+            text-align: left;
+            margin-top: 10px
         }
-        .td {
-           padding: 5px 5px 5px 10px; border-bottom: 1px solid rgba(169,169,169,0.29)
-        }
-        td_r {
-            padding: 5px 5px 5px 10px; border-bottom: 1px solid rgba(169,169,169,0.29);text-align: right
+        .generals {
+            width: 85%;
+            text-align: left;
+            margin-top: 15px
         }
     </style>
 </head>
 <body>
-@php
-    $total = 0
-@endphp
-   <p class="ql-align-center">
-       <span style="color: black; font-size: 16px">{!! $data['descrip'] !!}</span>
-   </p>
-
-<div style="width: 100%; text-align: left; margin-top: 25px; border: 2px solid grey;">
-    <table style="width: 100%">
-        <thead>
-        <tr style="font-weight: bold; background-color: rgba(201,201,201,0.28); font-size: 11px;">
-            <th class="th">Descripción</th>
-            <th class="th">Cantidad</th>
-            <th class="th">Precio Unitario</th>
-            <th class="th">Total</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($data['details'] as $det)
-            <tr style="font-size: 10px;">
-                <td class="td">{{$det->descrip}}</td>
-                <td class="td">{{$det->cant}}</td>
-                <td class="td">{{$det->price}}</td>
-                <td class="td">{{number_format($det->price * $det->cant, 2, '.', '')}}</td>
-                @php
-                    $total += $det->price * $det->cant
-                @endphp
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+<!-- HEADER DEL DOC  DATOS DE LA EMPRESA-->
+<div class="top">
+    <div class="logo">
+        <img src="{{asset('images/gc/logo192.png')}}" alt="" width="96">
+    </div>
+    <div  class="generals">
+        <div style="width: 30%; text-align: left;">
+            <div style="font-weight:bolder;">{{$company->name}}</div>
+            <div style="padding-bottom: 10px;">{{$company->address}}</div>
+        </div>
+        <div style="width: 21%; text-align: left;  padding-left: 15px;  border-left: 1px solid grey">
+            <span style="font-weight: bolder">Email</span>
+            {{$company->email}} <br>
+            <span style="font-weight: bolder">RFC:</span>
+            {{$company->rfc}}
+        </div>
+        <div style="width: 15%; text-align: center; padding-left: 5px; border-left: 1px solid grey">
+            <span style="font-weight: bolder">Teléfono:</span>
+            {{$company->phone1}} <br>
+            <span style="font-weight: bolder">WhastApp:</span>
+            {{$company->phone2}}
+        </div>
+    </div>
 </div>
-   <div style="width: 100%">
-       <div style="width: 60%"></div>
-       <div style="width: 40%">
-           <table  style="width: 100%;">
-               <thead>
-               <tr style="font-weight: bold; background-color: rgba(201,201,201,0.28); font-size: 11px;">
-                   <th style="padding: 10px 10px 10px 10px;">Base Imponible</th>
-                   <th style="padding: 10px 10px 10px 10px;">Tipo IVA</th>
-                   <th style="padding: 10px 10px 10px 10px;">IVA</th>
-               </tr>
-               </thead>
-               <tbody>
-               <tr style="font-size: 10px;">
-                   <td style="padding: 5px 5px 5px 10px; border-bottom: 1px solid rgba(169,169,169,0.29);">{{number_format($total, 2, '.', '')}}</td>
-                   <td style="padding: 5px 5px 5px 10px; border-bottom: 1px solid rgba(169,169,169,0.29);">16%</td>
-                   @php
-                       $iva = $total * 0.16
-                   @endphp
-                   <td style="padding: 5px 5px 5px 10px; border-bottom: 1px solid rgba(169,169,169,0.29);">{{$iva}}</td>
-               </tr>
-               </tbody>
-           </table>
-       </div>
-   </div>
-<div style="margin-top: 15px; width: 100%">
+<div style="text-align: center; font-size: 18px; margin: 10px 0 10px 0">
+    <p>NOTA DE VENTA</p>
+</div>
+<div style="font-size: 12px; border-bottom: 1px solid grey; margin-bottom: 10px">
+    <b><span>CLIENTE</span></b>
+</div>
+<div style="width: 100%; margin-bottom: 25px">
+    <div style="width: 25%;">
+        CODIGO: <b>{{$data['client']['code']}}</b>
+    </div>
     <div style="width: 30%;">
-
+        NOMBRE: <b>{{$data['client']['name']}}</b>
     </div>
-    <div style="width: 23%;">
-    </div>
-    <div style="width: 35%; font-weight: bold;  padding: 10px 10px 10px 10px; background-color: rgba(201,201,201,0.28); border: 2px solid grey; float: right ">
-        <div style="width: 50%; text-align: left"><span>Total:</span></div>
-        <div style="width: 50%; text-align: right">{{number_format($total + $iva, 2, '.', '')}}</div>
+    <div style="width: 30%;">
+        CONTACTO:  <b>{{$data['client']['contact']}}</b>
     </div>
 </div>
-  <div>
-      {!! $data['specifications'] !!}
-  </div>
+
+<div style="width: 25%; margin-bottom: 15px">
+    NOTA: <b>{{$sale['id']}}</b>
+</div>
+<div style="width: 25%;">
+    FECHA: <b>{{Carbon\Carbon::parse($sale['moment'])->format('d-m-Y')}}</b>
+</div>
+<div style="width: 25%;">
+    RECIBIDO: <b>{{number_format($sale['advance'], 2, '.', '')}}$</b>
+</div>
+<div style="width: 25%; text-align: right">
+    ESTADO: <b>{{$sale['status']['name']}}</b>
+</div>
+<table class="table table-hover sales-pagado">
+    <thead>
+    <tr>
+        <th>Descripción</th>
+        <th>Unidad de Medida</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach($sale['details'] as $det)
+        <tr>
+            <td>{{$det['descrip']}}</td>
+            <td>{{$det['measure']['name']}}</td>
+            <td>{{$det['cant']}}</td>
+            <td>{{$det['price']}}$</td>
+            <td>{{ number_format($det['cant'] * $det['price'], 2, '.', '')}}$</td>
+        </tr>
+    @endforeach
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Total</td>
+        <td><b>{{$sale->total()}}$</b></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

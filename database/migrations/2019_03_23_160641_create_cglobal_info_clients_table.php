@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLandscapersTable extends Migration
+class CreateCglobalInfoClientsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateLandscapersTable extends Migration
      */
     public function up()
     {
-        Schema::create('landscapers', function (Blueprint $table) {
+        Schema::create('cglobal_info_clients', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('cglobal_id');
+            $table->bigInteger('cglobal_id')->unsigned();
+            $table->foreign('cglobal_id')->references('id')->on('cglobals')->onDelete('cascade');
             $table->date('moment');
-            $table->time('timer');
-            $table->string('note', 500)->nullable();
-            $table->uuid('user_uid');
-            $table->integer('status_id')->default(0);
+            $table->smallInteger('type_info_id');
             $table->engine = 'InnoDB';
         });
     }
@@ -32,6 +30,6 @@ class CreateLandscapersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('landscapers');
+        Schema::dropIfExists('cglobal_info_clients');
     }
 }

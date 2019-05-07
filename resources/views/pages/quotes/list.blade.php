@@ -131,6 +131,7 @@
                               <tr>
                                   <th>Descripcion</th>
                                   <th>Cantidad</th>
+                                  <th>Unidad de Medida</th>
                                   <th>Precio</th>
                                   <th>Total</th>
                                   <th></th>
@@ -140,9 +141,13 @@
                                <tr v-for="det in item.details">
                                    <td>@{{ det.descrip }}</td>
                                    <td>@{{ det.cant }} </td>
+                                   <td>@{{ det.measure.name }} </td>
                                    <td>@{{ parseFloat(det.price).toFixed(2) }} </td>
                                    <td>@{{ (parseFloat(det.price) * det.cant).toFixed(2) }} </td>
                                    <td>
+                                       <button  class="btn btn-teal btn-sm m-t-5" @click="showFormDetEdit(det)">
+                                           <i class="fa fa-edit"></i>
+                                       </button>
                                        <button class="btn btn-danger btn-sm m-t-5" @click="deleteDet(det.id)"><i class="fa fa-eraser"></i></button>
                                    </td>
                                </tr>
@@ -386,7 +391,6 @@
     </div>
 </div>
 
-
 <!-- VERIFICACION DE INFORMACION AL CLIENTE -->
 <div id="check" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
     <div class="vertical-alignment-helper">
@@ -540,6 +544,7 @@
         </div>
     </div>
 </div>
+
 <vue-progress-bar></vue-progress-bar>
 @component('com.eliminar')@endcomponent
 @component('com.spiner')@endcomponent

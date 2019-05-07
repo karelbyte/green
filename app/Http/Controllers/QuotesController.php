@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendQuoteClient;
+use App\Models\CGlobal\CGlobal;
 use App\Models\Company;
 use App\Models\LandScaper;
 use App\Models\Quotes\Quote;
@@ -93,14 +94,15 @@ class QuotesController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = Quote::with(['notes', 'details', 'TypeSend', 'docs', 'status', 'globals' => function($q){
+        $datos = Quote::with(['notes',  'TypeSend', 'docs', 'status', 'globals' => function($q){
 
             $q->with(['client', 'landscaper' => function ($d) {
 
                 $d->with('user');
 
             }]);
-
+        }, 'details' => function($d) {
+            $d->with('measure');
         }]);
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
@@ -230,7 +232,7 @@ class QuotesController extends Controller
 
     public function sendInfo(Request $request) {
 
-        $quote = Quote::with(['notes', 'details', 'docs', 'status', 'globals' => function($q){
+        $quote = Quote::with(['notes', 'docs', 'status', 'globals' => function($q){
 
             $q->with(['client', 'Attended',  'landscaper' => function ($d) {
 
@@ -238,7 +240,12 @@ class QuotesController extends Controller
 
             }]);
 
-        }])->where('id',$request->id)->first();
+        }, 'details' => function($d) {
+            $d->with('measure');
+        }])->where('id', $request->id)->first();
+
+
+        $client = CGlobal::query()->with('client')->where('id',  $quote->cglobal_id)->first();
 
         if ($quote->status_id == 2 ) {  // SE ENVIA PARA CONFIRMACION 1 VES
 
@@ -306,7 +313,9 @@ class QuotesController extends Controller
 
                 'patch' => $patch . '/cotizacion-'. $quote->token . '.pdf',
 
-                'namepdf' =>  'cotizacion-'. $quote->token . '.pdf'
+                'namepdf' =>  'cotizacion-'. $quote->token . '.pdf',
+
+                'client' => $client
 
             ];
 
@@ -378,15 +387,24 @@ class QuotesController extends Controller
 
         $pdf = \App::make('snappy.pdf.wrapper');
 
-        $datos = Quote::with('details')->where('id', $id)->select('*')->first();
+        $datos = Quote::query()->with(['details' => function($d) {
+            $d->with('measure');
+        }])->where('id', $id)->select('*')->first();
+
+        $client = CGlobal::query()->with('client')->where('id',  $datos->cglobal_id)->first();
+
 
         $data = [
 
-            'company' => Company::find(1),
+            'company' => Company::query()->find(1),
 
             'data' =>  $datos,
 
+            'client' => $client
+
         ];
+
+       // return $data;
 
         // $footer = View::make('components.footer')->render();
 

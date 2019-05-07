@@ -15,7 +15,8 @@ class CreateQuotesDocsTable extends Migration
     {
         Schema::create('quotes_docs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('quote_id');
+            $table->bigInteger('quote_id')->unsigned();
+            $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('cascade');
             $table->string('name');
             $table->string('ext', 5);
             $table->string('url', 500);

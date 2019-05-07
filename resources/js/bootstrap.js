@@ -35,9 +35,8 @@ let option = {
     duration: '2000'
 };
 
+
 Vue.use(Toasted, option);
-
-
 
 // import Echo from 'laravel-echo'
 

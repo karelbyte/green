@@ -419,7 +419,7 @@ new Vue({
           if (this.detail.id !== 0) {
               this.item.details = this.item.details.filter(it => {
                 return  it.id !== this.detail.id
-              })
+              });
 
               this.detail.measure_id = this.detail.item.measure_id;
 

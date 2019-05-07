@@ -1,24 +1,20 @@
 <?php
 
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
 
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
+// NOTIFICACIONES
 Route::get('/notifications/today', 'NotificationsController@today');
+
+
+// GRAFICAS Y ESTADISTICAS
+Route::prefix('grafics')->group(function () {
+
+    Route::get('data_month', 'GraficsController@getDataMonth');
+
+});
+
 
 // RUTAS DEL CICLO DE ATENCION GLOBAL
 Route::prefix('cags')->group(function () {
@@ -26,6 +22,8 @@ Route::prefix('cags')->group(function () {
     Route::post('list', 'CGlobalsController@getList');
 
     Route::get('/get/id', 'CGlobalsController@sendID');
+
+    Route::get('pdf/{id}', 'CGlobalsController@pdf');
 
 });
 Route::resource('/cags', 'CGlobalsController');
@@ -170,6 +168,9 @@ Route::prefix('users')->group(function () {
     Route::post('list', 'UsersController@getList');
 
     Route::get('positions', 'UsersController@getUserPositions');
+
+    Route::get('landscapers/list', 'UsersController@getlanscapers');
+
 });
 Route::resource('/users', 'UsersController');
 

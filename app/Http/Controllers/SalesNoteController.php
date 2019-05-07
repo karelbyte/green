@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CGlobal\CGlobal;
+use App\Models\Company;
 use App\Models\Element;
 use App\Models\Inventori;
 use App\Models\Maintenances\Maintenance;
@@ -10,6 +12,7 @@ use App\Models\SalesNotes\SalesNoteDelivered;
 use App\Models\SalesNotes\SalesNoteDetails;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Symfony\Component\Finder\Glob;
 
 class SalesNoteController extends Controller
 {
@@ -19,7 +22,7 @@ class SalesNoteController extends Controller
     const INVENTARIO = 1;
 
     // ESTADOS DE LA NOTA DE VENTA
-    const RECIBIDO= 1;
+    const RECIBIDO = 1;
     const PAGADA = 2;
     const PROCESO = 3;
     const RECIBIDO_EJECUCION = 4;
@@ -64,7 +67,7 @@ class SalesNoteController extends Controller
 
         ];
 
-        return response()->json($result, 200);
+        return response()->json($result);
 
     }
 
@@ -75,59 +78,53 @@ class SalesNoteController extends Controller
         $total = $sale->total();
 
         if ($sale->status_id > self::PROCESO) { // ACTULIZANDO PAGO Y ESTADOS
-            $status = 0;
             if ( (double) $request->advance > 0) {
                 switch ($sale->status_id) {
                     case self::EJECUCION;
-                        $status = (double) $request->advance >= (double) $total ? self::PAGADA_EJECUCION : self::RECIBIDO_EJECUCION;
+                        $sale->status_id = (double) $request->advance >= (double) $total ? self::PAGADA_EJECUCION : self::RECIBIDO_EJECUCION;
                         $sale->globals()->update(['status_id' => 6, 'traser' => 12]);
                         break;
                     case self::TERMINADA;
-                        $status = (double) $request->advance >= (double) $total ? self::PAGADA_TERMINADA : self::RECIBIDO_TERMINADA;
+                        $sale->status_id = (double) $request->advance >= (double) $total ? self::PAGADA_TERMINADA : self::RECIBIDO_TERMINADA;
                         $sale->globals()->update(['status_id' => 7, 'traser' => 15]);
                         break;
                     case self::RECIBIDO_TERMINADA;
-                        $status = (double) $request->advance >= (double) $total ? self::PAGADA_TERMINADA : self::RECIBIDO_TERMINADA;
+                        $sale->status_id = (double) $request->advance >= (double) $total ? self::PAGADA_TERMINADA : self::RECIBIDO_TERMINADA;
                         $sale->globals()->update(['status_id' => 7, 'traser' => 15]);
                         break;
                     case self::RECIBIDO_EJECUCION;
-                        $status = (double) $request->advance >= (double) $total ? self::PAGADA_EJECUCION : self::ECIBIDO_EJECUCION;
+                        $sale->status_id = (double) $request->advance >= (double) $total ? self::PAGADA_EJECUCION : self::ECIBIDO_EJECUCION;
                         $sale->globals()->update(['status_id' => 7, 'traser' => 14]);
                         break;
                 }
             }
             // ACTUALIZANDO NOTA DE VENTA
             $sale->advance = $request->advance;
-            $sale->status_id = $status;
             $sale->save();
-
             return response()->json('Detalles guardados con exito!', 200);
 
         }  else { // EDITANDO DETALLES
 
-            $status = self::PROCESO;
-            if ( (double) $request->advance > 0) {
-                $status = (double) $request->advance >= (double) $total ? self::PAGADA : self::RECIBIDO;
-            }
-
-            // ACTUALIZANDO NOTA DE VENTA
-            $sale->advance = $request->advance;
-            $sale->status_id = $status;
-            $sale->save();
+         if ( (double) $request->advance > 0) {
+             $sale->status_id = (double) $request->advance >= (double) $total ? self::PAGADA : self::RECIBIDO;
+         }
+         /// ACTUALIZANDO NOTA DE VENTA
+         $sale->advance = $request->advance;
+         $sale->save();
 
             // ACTUALIZANDO CICLO DE ATENCION GLOBAL
-            if ($sale->origin === SalesNote::ORIGIN_CAG)   {
+         if ($sale->origin === SalesNote::ORIGIN_CAG)   {
 
-                if ($status == self::PROCESO) { $statusglobal = 2;  $traser = 2; }
-                if ($status == self::RECIBIDO) { $statusglobal = 3; $traser = 4; }
-                if ($status == self::PAGADA ) { $statusglobal = 4; $traser = 10; }
+                if ($sale->status_id == self::PROCESO) { $statusglobal = 2;  $traser = 2; }
+                if ($sale->status_id == self::RECIBIDO) { $statusglobal = 3; $traser = 4; }
+                if ($sale->status_ids == self::PAGADA ) { $statusglobal = 4; $traser = 10; }
                 $sale->globals()->update(['status_id' => $statusglobal, 'traser' => $traser]);
-            }
+          }
 
-            // ACTUALIZANDO DETALLES NOTA DE VENTA
-            $actuals = $sale->details->pluck('id');
+         // ACTUALIZANDO DETALLES NOTA DE VENTA
+         $actuals = $sale->details->pluck('id');
 
-            foreach ($request->details as $det) {
+         foreach ($request->details as $det) {
 
                 SalesNoteDetails::updateOrCreate([
 
@@ -151,16 +148,16 @@ class SalesNoteController extends Controller
 
                         'timer' => $det['timer'],
                     ]);
-            }
+         }
 
-            $updates = collect($request->details)->pluck('id'); // IDENTIFICADORES ACTUALIZADOS
+         $updates = collect($request->details)->pluck('id'); // IDENTIFICADORES ACTUALIZADOS
 
-            $ids = $actuals->diff($updates);
+         $ids = $actuals->diff($updates);
 
-            SalesNoteDetails::whereIn('id', $ids)->delete();
+          SalesNoteDetails::whereIn('id', $ids)->delete();
 
-            return response()->json('Detalles guardados con exito!', 200);
-        }
+         return response()->json('Detalles guardados con exito!', 200);
+       }
 
     }
 
@@ -337,5 +334,34 @@ class SalesNoteController extends Controller
         }, []);
 
         return  array_values($finaly);
+    }
+
+    public function pdf($id) {
+
+        $pdf = \App::make('snappy.pdf.wrapper');
+
+        $sale =  SalesNote::with(['status', 'details' => function($d) {
+            $d->with('measure');
+        },])->where('id', $id)->first();
+
+        $datos = CGlobal::with('client')->where('id', $sale->global_id)->first();
+
+        $data = [
+
+            'company' => Company::query()->find(1),
+
+            'data' =>  $datos,
+
+            'sale' => $sale
+
+        ];
+
+        $html = \View::make('pages.sales.pdf', $data)->render();
+
+        $pdf->loadHTML($html);
+
+        $pdfBase64 = base64_encode($pdf->inline());
+
+        return 'data:application/pdf;base64,' . $pdfBase64;
     }
 }

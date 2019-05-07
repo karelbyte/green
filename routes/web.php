@@ -13,7 +13,7 @@
 use Illuminate\Support\Facades\Route;
 use \Illuminate\Support\Facades\Auth;
 
-
+Route::get('pdf/{id}', 'CGlobalsController@pdf');
 
 Auth::routes();
 
@@ -123,6 +123,9 @@ Route::middleware('auth')->group(function () {
 
     // CALENDARIO
     Route::get('/calendario', 'CalendarsController@index')->name('calendars');
+
+    // CALENDARIO
+    Route::get('/info', 'CalendarsController@index')->name('info');
 
 
 });

@@ -84,7 +84,7 @@
         </div>
     </div>
 
-
+</div>
 @component('com.spiner')@endcomponent
 @endsection
 @section('script')
