@@ -26,7 +26,7 @@ class SalesNoteDetails extends Model
      * @var array
      */
     protected $fillable = ['sale_id', 'type_item', 'item_id',
-        'measure_id', 'descrip', 'cant', 'price', 'start', 'timer'];
+        'measure_id', 'descrip', 'cant', 'price', 'start', 'timer', 'deliver_product'];
 
 
     public $timestamps = false;

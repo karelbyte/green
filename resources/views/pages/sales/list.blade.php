@@ -268,25 +268,7 @@
     </div>
 </div>
 
-<div id="pdf" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center modal-lg">
-            <div class="modal-content p-0 b-0">
-                <div class="panel panel-border panel-brown">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Visor</h3>
-                    </div>
-                    <div class="panel-body">
-                        <iframe  id="iframe" :src="scrpdf" frameborder="0" width="100%" height="450px" allowfullscreen></iframe>
-                    </div>
-                    <div class="panel-footer text-right">
-                        <a href="#" data-dismiss="modal" class="btn btn-default  btn-sm">Cerrar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@component('com.visor_pdf') @endcomponent
 
 <div id="aplicCLientNote" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
     <div class="vertical-alignment-helper">
@@ -326,7 +308,22 @@
                                 <span class="txtblack">Fecha de pocible pago (alerta)</span>
                                 <input v-focus class="form-control" type="date" v-model="item.paimentdate">
                             </div>
+                            <div class="col-lg-3">
+                                <span class="txtblack">Enviar por correo<span class="require">*</span></span>
+                                <select v-model="item.emailto" class="form-control">
+                                    <option v-for="user in users" :value="user.email">@{{ user.name }}</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 m-t-20">
+                                <div class="checkbox checkbox-primary">
+                                    <input  type="checkbox" v-model="item.generate_pdf">
+                                    <label for="checkbox2" class="txtblack">
+                                        Imprimir
+                                    </label>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                     <div class="panel-footer text-right">
                         <a href="#" data-dismiss="modal" class="btn btn-success btn-sm" @click="confirmNote()">Confirmar</a>

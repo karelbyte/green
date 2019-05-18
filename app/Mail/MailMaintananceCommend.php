@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendQuoteClient extends Mailable
+class MailMaintananceCommend extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -21,12 +21,12 @@ class SendQuoteClient extends Mailable
     public function build()
     {
 
-        return $this->view('pages.quotes.mail')
-            ->subject( 'GreenCenter Cotizacion No: ' . $this->data['data']['id'])
+        return $this->view('pages.maintenances.mail')
+            ->subject( 'GreenCenter Recomendaciones')
 
             ->attach( $this->data['patch'], [
                 'as' =>  $this->data['namepdf'],
-                'mime' => 'application/pdf',
+                'mime' => $this->data['mime'],
             ]);
     }
 }

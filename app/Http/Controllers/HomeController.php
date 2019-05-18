@@ -16,14 +16,30 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-      return view('pages.panel.home');
+
+      if ( auth()->user()->can('board.graphic')) {
+         $view = view('pages.panel.home')->render();
+          return $view;
+      }
+
+      if ( auth()->user()->can('board.notification')) {
+          $view = view('pages.notifications.list')->render();
+          return $view;
+      }
+
+      if ( auth()->user()->can('quote')) {
+          $view = view('pages.quotes.list',  ['find' => 0])->render();
+          return $view;
+      }
+
+      if ( auth()->user()->can('cag')) {
+            $view = view('pages.cags.list')->render();
+            return $view;
+      }
+
+      return view('layouts.permisions');
     }
 
 }

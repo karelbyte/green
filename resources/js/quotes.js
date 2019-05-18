@@ -22,6 +22,7 @@ new Vue({
     el: '#app',
     data () {
         return {
+            user_id_auth: 0,
             sendM: false,
             editorOption: {
                 theme: 'snow'
@@ -97,35 +98,20 @@ new Vue({
             confircode: 0,
             landscapers: [],
             delobj: '',
-
             keyObjDelete: '',
-
             propertyShowDelObj: '',
-
             patchDelete: '',
-
             title: '',
-
             labeledit: '',
-
             labelnew: '',
-
             lists: [],
-
             spin: false,
-
             act: 'post',
-
             fieldtype: 'text',
-
             pager_list: {
-
                 page: 1,
-
                 recordpage: 10,
-
                 totalpage: 0
-
             },
             redirect: {
                 patch: '',
@@ -231,6 +217,8 @@ new Vue({
 
         this.find = parseInt($('#find').val());
 
+        this.user_id_auth = parseInt($('#user_id_auth').val());
+
         if (this.find > 0) {
 
             this.filters_list.value = this.find;
@@ -267,7 +255,9 @@ new Vue({
 
                     filters: this.filters_list,
 
-                    orders: this.orders_list
+                    orders: this.orders_list,
+
+                    user_id_auth : this.user_id_auth
                 }
 
             }).then(res => {

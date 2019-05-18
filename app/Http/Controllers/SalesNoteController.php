@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMails;
+use App\Mail\MailSaleRequeriments;
 use App\Models\CGlobal\CGlobal;
 use App\Models\Company;
 use App\Models\Element;
@@ -10,8 +12,12 @@ use App\Models\Maintenances\Maintenance;
 use App\Models\SalesNotes\SalesNote;
 use App\Models\SalesNotes\SalesNoteDelivered;
 use App\Models\SalesNotes\SalesNoteDetails;
+use App\Models\Users\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Finder\Glob;
 
 class SalesNoteController extends Controller
@@ -39,6 +45,8 @@ class SalesNoteController extends Controller
 
     public function getList(Request $request) {
 
+        $user = User::query()->find($request->user_id_auth);
+
         $skip = $request->input('start') * $request->input('take');
 
         $filters = $request->filters;
@@ -49,13 +57,18 @@ class SalesNoteController extends Controller
             $q->with('client');
         }, 'details' => function($d) {
             $d->with('measure');
-        }]);
+        }])->leftJoin('cglobals', 'cglobals.id', 'salesnotes.global_id');
+
+        if ( $user->position_id !== 1) {
+
+            $datos->where('cglobals.user_id', $request->user_id_auth);
+        }
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
 
-        $total = $datos->select('*')->count();
+        $total = $datos->select('salesnotes.*')->count();
 
         $list =  $datos->skip($skip)->take($request['take'])->get();
 
@@ -64,6 +77,8 @@ class SalesNoteController extends Controller
             'total' => $total,
 
             'list' =>  $list,
+
+            'users' => User::query()->select('uid', 'name', 'email')->get()
 
         ];
 
@@ -114,7 +129,6 @@ class SalesNoteController extends Controller
 
             // ACTUALIZANDO CICLO DE ATENCION GLOBAL
          if ($sale->origin === SalesNote::ORIGIN_CAG)   {
-
                 if ($sale->status_id == self::PROCESO) { $statusglobal = 2;  $traser = 2; }
                 if ($sale->status_id == self::RECIBIDO) { $statusglobal = 3; $traser = 4; }
                 if ($sale->status_ids == self::PAGADA ) { $statusglobal = 4; $traser = 10; }
@@ -147,6 +161,8 @@ class SalesNoteController extends Controller
                         'start' => $det['start'],
 
                         'timer' => $det['timer'],
+
+                        'deliver_product' => $det['item']['end'],
                     ]);
          }
 
@@ -154,7 +170,7 @@ class SalesNoteController extends Controller
 
          $ids = $actuals->diff($updates);
 
-          SalesNoteDetails::whereIn('id', $ids)->delete();
+         SalesNoteDetails::whereIn('id', $ids)->delete();
 
          return response()->json('Detalles guardados con exito!', 200);
        }
@@ -162,7 +178,6 @@ class SalesNoteController extends Controller
     }
 
     public function NoteDeliverClient($id) {
-
        $inventoris = SalesNoteDelivered::query()->where('sale_id', $id)->whereRaw('delivered < cant')->get();
        $notfull = 0;
        foreach ($inventoris as $det) {
@@ -199,11 +214,11 @@ class SalesNoteController extends Controller
 
     // APLICANDO CANTIDADES Y GENERANDO ALERTAS
     public function NoteConfirm(Request $request) {
-
-        // ACTULIZANDO INVENTARIOS
+        // ACTUALIZANDO INVENTARIOS
         $needs =  $this->needs($request->id);
+
         $notfull = 0;
-         foreach (  $needs   as $det) {
+         foreach ($needs as $det) {
                 $delivered = 0;
                 $det['cant'] = $det['type_item'] > 1 ? $det['cant']  * $det['cant_general'] : $det['cant'];
                 $pro = Inventori::where('element_id', $det['item_id'])->first();
@@ -222,7 +237,7 @@ class SalesNoteController extends Controller
         }
 
 
-            $sale = SalesNote::find($request->id);
+            $sale = SalesNote::query()->find($request->id);
             // GENERANDO MANTENIMIENTOS
             if ($sale->origin === SalesNote::ORIGIN_CAG) {
                 foreach ($sale->products_services as $maintenance) {
@@ -258,10 +273,102 @@ class SalesNoteController extends Controller
                     break;
             }
             $sale->paimentdate = $request->paimentdate;
-            $sale->deliverydate = $request->deliverydate;
+            // CALCULAR TIEMPOS DE ENTREGA
+            $det = $sale->products_services_null;
+            if ($det !== null) {
+                $sale->deliverydate = Carbon::now()->addDays($det[0]['deliver_product'] - 1);
+            } else {
+                $sale->deliverydate = $request->deliverydate;
+            }
+
             $sale->save();
 
-            return response()->json('Se generaron alertas y se actualizo el inventario!', 200);
+            // ENVIANDO CORREO E IMPRIMIENDO
+            if ($request->has('emailto') &&  $request->emailto !== '') {
+               $this->emailTo($request->id, $request->emailto);
+            }
+
+            if ($request->generate_pdf) {
+              return  $this->pdf_requirements($request->id);
+            }
+
+            return response()->json('Se generaron alertas y se actualizo el inventario!');
+    }
+
+    public function pdf_requirements($id) {
+
+        $pdf = \App::make('snappy.pdf.wrapper');
+
+        $sale = SalesNote::with('status')->where('id', $id)->first();
+
+        $datos = CGlobal::with('client')->where('id', $sale->global_id)->first();
+
+        $details = $this->NoteAplic($id);
+
+        $data = [
+
+            'company' => Company::query()->find(1),
+
+            'data' =>  $datos,
+
+            'sale' => $sale,
+
+            'details' => $details,
+
+        ];
+
+        $html = \View::make('pages.sales.pdf_requirements', $data)->render();
+
+        $pdf->loadHTML($html);
+
+        $pdfBase64 = base64_encode($pdf->inline());
+
+        return 'data:application/pdf;base64,' . $pdfBase64;
+    }
+
+    public function emailTo($id, $email) {
+
+        $pdf = \App::make('snappy.pdf.wrapper');
+
+        $sale = SalesNote::with('status')->where('id', $id)->first();
+
+        $datos = CGlobal::with('client')->where('id', $sale->global_id)->first();
+
+        $details = $this->NoteAplic($id);
+
+        $patch = storage_path('app/public/notes');
+
+        File::exists( $patch) or File::makeDirectory($patch , 0777, true, true);
+
+        if (File::exists( $patch . '/note-'. $id . '.pdf')) {
+
+            Storage::disk('public')->delete('notes/note-'. $id . '.pdf');
+
+        }
+        $data = [
+
+            'company' => Company::query()->find(1),
+
+            'data' =>  $datos,
+
+            'sale' => $sale,
+
+            'details' => $details,
+
+            'patch' => $patch . '/note-'. $id . '.pdf',
+
+            'namepdf' =>  'nota-'. $id . '.pdf',
+
+        ];
+
+        $html = \View::make('pages.sales.pdf_requirements', $data)->render();
+
+        $pdf->loadHTML($html);
+
+        $pdf->save($patch . '/note-'. $id . '.pdf');
+
+        Mail::to($email)->send(new MailSaleRequeriments($data));
+
     }
 
     public function NoteAplic($id) {
@@ -274,7 +381,7 @@ class SalesNoteController extends Controller
 
                     $itemType = Element::query()->find($det['item_id']);
 
-                    $pro = Inventori::where('element_id', $det['item_id'])->first();
+                    $pro = Inventori::query()->where('element_id', $det['item_id'])->first();
 
                     if ( $itemType->type !== 2) {
 

@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'mail.elpuertodigital.com'),
+    'host' => env('MAIL_HOST', 'smtpout.secureserver.net'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'desarrollos@elpuertodigital.com'),
-        'name' => env('MAIL_FROM_NAME', 'Desarrollos elpuertodigital'),
+        'address' => env('MAIL_FROM_ADDRESS', 'contacto@greencenter.mx'),
+        'name' => env('MAIL_FROM_NAME', 'Diseño de Jardines Paisajismo'),
     ],
 
     /*

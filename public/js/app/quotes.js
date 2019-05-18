@@ -14424,6 +14424,7 @@ new Vue({
     var _this = this;
 
     return {
+      user_id_auth: 0,
       sendM: false,
       editorOption: {
         theme: 'snow'
@@ -14600,6 +14601,7 @@ new Vue({
     this.patchDelete = 'api/clients/';
     this.keyObjDelete = 'id';
     this.find = parseInt($('#find').val());
+    this.user_id_auth = parseInt($('#user_id_auth').val());
 
     if (this.find > 0) {
       this.filters_list.value = this.find;
@@ -14632,7 +14634,8 @@ new Vue({
           start: this.pager_list.page - 1,
           take: this.pager_list.recordpage,
           filters: this.filters_list,
-          orders: this.orders_list
+          orders: this.orders_list,
+          user_id_auth: this.user_id_auth
         }
       }).then(function (res) {
         _this3.spin = false;

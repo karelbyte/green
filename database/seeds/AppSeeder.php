@@ -104,6 +104,8 @@ class AppSeeder extends Seeder
             ['id' => 6, 'name' => 'Mercado Libre'],
             ['id' => 7, 'name' => 'Pagina Web'],
             ['id' => 8, 'name' => 'Facebook'],
+            ['id' => 9, 'name' => 'BNI Interno'],
+            ['id' => 10, 'name' => 'BNI Externo'],
         ];
         \App\Models\TypeContact::insert($TypeContact);
 
@@ -204,6 +206,7 @@ class AppSeeder extends Seeder
             ['id' => 3, 'name' => 'EN EJECUCION'],
             ['id' => 4, 'name' => 'TERMINADO'],
             ['id' => 5, 'name' => 'TERMINADO - PAGADO'],
+            ['id' => 6, 'name' => 'TERMINADO-RECOMENDACIONES'],
         ];
         \App\Models\Maintenances\MaintenaceStatusDetail::insert($statusManteDetailList);
 

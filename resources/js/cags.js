@@ -264,7 +264,9 @@ new Vue({
 
                     filters: this.filters_list,
 
-                    orders: this.orders_list
+                    orders: this.orders_list,
+
+                    user_id_auth : this.user_id_auth
                 }
 
             }).then(res => {

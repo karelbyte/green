@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMails;
 use App\Mail\SendQuoteClient;
 use App\Models\CGlobal\CGlobal;
 use App\Models\Company;
@@ -88,6 +89,8 @@ class QuotesController extends Controller
 
     public function getList(Request $request) {
 
+        $user = User::query()->find($request->user_id_auth);
+
         $skip = $request->input('start') * $request->input('take');
 
         $filters = $request->filters;
@@ -95,21 +98,24 @@ class QuotesController extends Controller
         $orders =  $request->orders;
 
         $datos = Quote::with(['notes',  'TypeSend', 'docs', 'status', 'globals' => function($q){
-
             $q->with(['client', 'landscaper' => function ($d) {
 
                 $d->with('user');
-
             }]);
         }, 'details' => function($d) {
             $d->with('measure');
-        }]);
+        }])->leftJoin('cglobals', 'cglobals.id', 'quotes.cglobal_id');
+
+        if ( $user->position_id !== 1) {
+
+            $datos->where('cglobals.user_id', $request->user_id_auth);
+        }
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
 
-        $total = $datos->select('*')->count();
+        $total = $datos->select('quotes.*')->count();
 
         $list =  $datos->skip($skip)->take($request['take'])->get();
 
@@ -119,12 +125,12 @@ class QuotesController extends Controller
 
             'list' =>  $list,
 
-            'landscapers' => User::where('position_id', 3)->select('uid', 'name')->get(),
+            'landscapers' => User::query()->where('position_id', 3)->select('uid', 'name')->get(),
 
 
         ];
 
-        return response()->json($result, 200);
+        return response()->json($result);
 
     }
 
@@ -153,21 +159,21 @@ class QuotesController extends Controller
 
     public function checkInfo(Request $request) {
 
-        $quote = Quote::where('id',$request->id)->first();
+        $quote = Quote::query()->where('id',$request->id)->first();
 
-        if ($quote->token == $request->code) {
+        if ((int) $quote->token === (int) $request->code) {
 
             $quote->type_check_id = $request->type_check_id;
 
             $quote->feedback = $request->feedback;
 
-            if ($request->clientemit == 1) {
+            if ($request->clientemit === 1) {
 
                 $quote->status_id = 4; // SE ACEPTO EL PRESUPUESTO VA A NOTA DE VENTA
 
             } else {
 
-                if ($request->emit == 2) { // NO SE ACEPTO FINALMENTE SE ARCHIVA
+                if ($request->emit === 2) { // NO SE ACEPTO FINALMENTE SE ARCHIVA
 
                     $quote->status_id = 5;
 
@@ -194,7 +200,7 @@ class QuotesController extends Controller
             }
             $quote->save();
 
-            if ($request->clientemit == 1) {  // GENERAR NOTA DE VENTA
+            if ($request->clientemit === 1) {  // GENERAR NOTA DE VENTA
 
                 $quote->globals()->update(['status_id' => 3, 'traser' => 10]);
 
@@ -221,8 +227,6 @@ class QuotesController extends Controller
                 return response()->json('Se verificó la recepción!', 200);
             }
 
-
-
         } else {
 
             return response()->json('No coincide el código de confirmación!', 500);
@@ -233,13 +237,11 @@ class QuotesController extends Controller
     public function sendInfo(Request $request) {
 
         $quote = Quote::with(['notes', 'docs', 'status', 'globals' => function($q){
-
             $q->with(['client', 'Attended',  'landscaper' => function ($d) {
 
                 $d->with('user');
 
             }]);
-
         }, 'details' => function($d) {
             $d->with('measure');
         }])->where('id', $request->id)->first();
@@ -247,7 +249,7 @@ class QuotesController extends Controller
 
         $client = CGlobal::query()->with('client')->where('id',  $quote->cglobal_id)->first();
 
-        if ($quote->status_id == 2 ) {  // SE ENVIA PARA CONFIRMACION 1 VES
+        if ($quote->status_id === 2 ) {  // SE ENVIA PARA CONFIRMACION 1 VES
 
             $quote->type_send_id = $request->type_send_id;
 
@@ -262,7 +264,7 @@ class QuotesController extends Controller
             $quote->globals()->update(['status_id' => 2, 'traser' => 6]);
 
         }
-        if ($quote->status_id == 6 ){
+        if ($quote->status_id === 6 ){
 
             $quote->type_send_id = $request->type_send_id;
 
@@ -277,7 +279,7 @@ class QuotesController extends Controller
             $quote->globals()->update(['status_id' => 2, 'traser' => 8]);
         }
 
-        if ($quote->status_id == 8 ){
+        if ($quote->status_id === 8 ){
 
             $quote->type_send_id = $request->type_send_id;
 
@@ -294,7 +296,6 @@ class QuotesController extends Controller
             $quote->globals()->update(['status_id' => 2, 'traser' => 10]);
         }
 
-
             // Creando rutas para guardar cotizacion --------------------
 
             $patch = storage_path('app/public/') . $quote->uid;
@@ -307,7 +308,7 @@ class QuotesController extends Controller
 
             $data = [
 
-                'company' => Company::find(1),
+                'company' => Company::query()->find(1),
 
                 'data' =>  $quote,
 
@@ -331,11 +332,7 @@ class QuotesController extends Controller
 
             $pdf->save($patch . '/cotizacion-'. $quote->token . '.pdf');
 
-            // Enviando correo
-
             Mail::to($quote['globals']['client']['email'])->send(new SendQuoteClient($data));
-
-           // ---------------------
 
         return response()->json('Se actualizó el estado de envio de la información!', 200);
 

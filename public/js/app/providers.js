@@ -32,7 +32,8 @@ var core = {
         page: 1,
         recordpage: 10,
         totalpage: 0
-      }
+      },
+      user_id_auth: 0
     };
   },
   directives: {
@@ -67,6 +68,7 @@ var core = {
     }
   },
   mounted: function mounted() {
+    this.user_id_auth = parseInt($('#user_id_auth').val());
     this.getlist();
   },
   methods: {

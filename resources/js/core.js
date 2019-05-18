@@ -33,7 +33,8 @@ export const core = {
 
                 totalpage: 0
 
-            }
+            },
+            user_id_auth: 0
         }
     },
     directives: {
@@ -71,6 +72,7 @@ export const core = {
         }
     },
     mounted () {
+        this.user_id_auth = parseInt($('#user_id_auth').val());
         this.getlist();
     },
     methods: {

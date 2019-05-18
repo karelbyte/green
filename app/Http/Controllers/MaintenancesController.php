@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMails;
+use App\Mail\MailMaintananceCommend;
+use App\Models\Company;
 use App\Models\Maintenances\MaintenanceDetail;
 use App\Models\Client;
 use App\Models\Maintenances\Maintenance;
@@ -19,7 +22,7 @@ class MaintenancesController extends Controller
     }
 
     public function details($id) {
-        return MaintenanceDetail::query()->with('status')->where('maintenance_id', $id)
+        return MaintenanceDetail::query()->with('status', 'accepts')->where('maintenance_id', $id)
             ->orderBy('moment', 'desc')
             ->get();
     }
@@ -94,9 +97,9 @@ class MaintenancesController extends Controller
 
             'list' =>  $list,
 
-            'clients' => Client::select('id', 'name')->get(),
+            'clients' => Client::query()->select('id', 'name')->get(),
 
-            'services' => ServiceOfferedsDetails::select('id', 'name', 'price')->get()
+            'services' => ServiceOfferedsDetails::query()->select('id', 'name', 'price')->get()
 
         ];
 
@@ -146,5 +149,57 @@ class MaintenancesController extends Controller
         ]);
 
         return response()->json('Datos actualizados con exito!');
+    }
+
+    public function updateCommendClientAccept(Request $request) {
+
+         MaintenanceDetail::query()->where('id', $request->id)->update([
+            'accept' => $request->accept,
+            'status_id' => 7 // RECOMENDADO VERIFICADO
+         ]);
+        return response()->json('Datos actualizados con exito!');
+    }
+
+    public function commends(Request $request) {
+
+        $client = Client::query()->find($request->client_id);
+
+        $maintenance = MaintenanceDetail::query()->find($request->id);
+
+        $patch = 'maintenance/client-' . $client->code;
+
+        $name = $maintenance->id .'.'. $request->doc->getClientOriginalExtension();
+
+        if ($request->has('doc'))  {
+
+            $request->doc->storeAs('public/'. $patch, $name);
+
+            $maintenance ->url_commend = 'storage/' .$patch . '/' .  $name;
+
+            $maintenance ->mime =  $request->doc->getMimeType();
+
+        }
+        $maintenance->note_advisor = $request->note;
+        $maintenance->status_id = 6; // ENVIADO RECOMENDACIONES
+        $maintenance->save();
+
+
+        $data = [
+
+            'company' => Company::query()->find(1),
+
+            'client' =>  $client,
+
+            'patch' => storage_path('app/public/'). $patch. '/' .  $name,
+
+            'namepdf' =>  $request->doc->getClientOriginalName(),
+
+            'mime' =>  $request->doc->getMimeType()
+
+        ];
+
+        SendMails::dispatch(new MailMaintananceCommend($data), $client->email);
+
+        return response()->json('Se envio las recomendaciones al cliente!');
     }
 }

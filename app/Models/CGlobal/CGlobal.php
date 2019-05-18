@@ -6,6 +6,7 @@ namespace App\Models\CGlobal;
 use App\Models\Client;
 use App\Models\LandScaper;
 use App\Models\ProductOffereds\ProductOffereds;
+use App\Models\Quotes\Quote;
 use App\Models\SalesNotes\SalesNote;
 use App\Models\ServicesOffereds\ServiceOffereds;
 use App\Models\TypeCompromise;
@@ -26,6 +27,10 @@ class CGlobal extends Model
 
                           'required_time', 'type_compromise_id', 'note', 'status_id', 'traser'];
 
+    public function user () {
+
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 
     public function Contact() {
 
@@ -70,9 +75,7 @@ class CGlobal extends Model
     }
 
     public function LandScaper() {
-
         return $this->hasOne(LandScaper::class, 'cglobal_id', 'id');
-
     }
 
     public function Info () {
@@ -80,14 +83,16 @@ class CGlobal extends Model
     }
 
     public function Documents () {
-
         return $this->hasOne(CGlobalInfoClient::class, 'cglobal_id', 'id');
     }
 
     public function SaleNote () {
-
         return $this->hasOne(SalesNote::class, 'global_id', 'id');
     }
 
+
+    public function Quote () {
+        return $this->hasOne(Quote::class, 'cglobal_id', 'id');
+    }
 
 }

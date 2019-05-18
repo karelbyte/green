@@ -17929,7 +17929,8 @@ new Vue({
           start: this.pager_list.page - 1,
           take: 9,
           filters: this.filters_list,
-          orders: this.orders_list
+          orders: this.orders_list,
+          user_id_auth: this.user_id_auth
         }
       }).then(function (res) {
         _this3.spin = false;
@@ -18164,7 +18165,8 @@ var core = {
         page: 1,
         recordpage: 10,
         totalpage: 0
-      }
+      },
+      user_id_auth: 0
     };
   },
   directives: {
@@ -18199,6 +18201,7 @@ var core = {
     }
   },
   mounted: function mounted() {
+    this.user_id_auth = parseInt($('#user_id_auth').val());
     this.getlist();
   },
   methods: {

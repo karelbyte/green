@@ -11,26 +11,59 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tools */ "./resources/js/tools.js");
 
-new Vue({
+var notifications = new Vue({
   el: '#app',
   data: function data() {
     return {
+      user_id_auth: 0,
       spin: false,
       landscapers: [],
       quoteconfirm: [],
-      quotetracing: []
+      quotetracing: [],
+      sale_note_not_close: [],
+      quote_local_close: [],
+      sale_note_not_payment: [],
+      sale_note_not_delivered: [],
+      not: 0
     };
   },
   methods: {
-    dateToEs: _tools__WEBPACK_IMPORTED_MODULE_0__["dateEs"]
+    dateToEs: _tools__WEBPACK_IMPORTED_MODULE_0__["dateEs"],
+    gotoUrl: function gotoUrl(id, type) {
+      var patch = '';
+
+      switch (type) {
+        case 1:
+          // COTIZACION A DOMICIOLIO
+          patch = document.location.origin + '/cotizaciones/' + id;
+          break;
+
+        case 2:
+          // NOTAS DE VENTA
+          patch = document.location.origin + '/notas-de-ventas/' + id;
+          break;
+
+        default:
+      }
+
+      return patch;
+    }
   },
   mounted: function mounted() {
     var _this = this;
 
-    axios.get(urldomine + 'api/notifications/today').then(function (r) {
+    this.user_id_auth = parseInt($('#user_id_auth').val());
+    axios.post(urldomine + 'api/notifications/today', {
+      user_id_auth: this.user_id_auth
+    }).then(function (r) {
       _this.landscapers = r.data.landscapers;
       _this.quoteconfirm = r.data.quoteconfirm;
       _this.quotetracing = r.data.quotetracing;
+      _this.sale_note_not_close = r.data.sale_note_not_close;
+      _this.quote_local_close = r.data.quote_local_close;
+      _this.sale_note_not_payment = r.data.sale_note_not_payment;
+      _this.sale_note_not_delivered = r.data.sale_note_not_delivered;
+      _this.not = _this.landscapers.length === 0 && _this.quoteconfirm.length === 0 && _this.quotetracing.length === 0 && _this.sale_note_not_close.length === 0 && _this.quote_local_close.length === 0 && _this.sale_note_not_payment.length && _this.sale_note_not_delivered.length;
     });
   }
 });

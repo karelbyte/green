@@ -11,6 +11,8 @@ new Vue({
         return {
             clients: [],
             services: [],
+            formData: 0,
+            file: null,
             views: {
                 list: true,
                 new: false,
@@ -38,7 +40,9 @@ new Vue({
             detail: {
                 note_gardener: '',
                 note_client: '',
+                note_advisor: '',
                 visting_time: '',
+                accept: 1
             },
             listfield: [{name: 'Cliente', type: 'text', field: 'clients.name'}],
             filters_list: {
@@ -59,6 +63,8 @@ new Vue({
         Multiselect
     },
     mounted () {
+
+        this.formData = new FormData();
 
         this.propertyShowDelObj = 'client.name';
 
@@ -194,10 +200,12 @@ new Vue({
 
         },
         saveInfo () {
+            this.spin = true;
             axios.post(urldomine + 'api/maintenances/update/info',  this.detail).then(r => {
                 this.$toasted.success(r.data);
                 axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(r => {
                     this.details = r.data;
+                    this.spin = false;
                     $('#retroInfo').modal('hide')
                 })
             })
@@ -207,18 +215,58 @@ new Vue({
             $('#retroInfo').modal('show')
         },
         saveDetail () {
+            this.spin = true;
             axios.post(urldomine + 'api/maintenances/details/update',  this.detail).then(r => {
-
                 this.$toasted.success(r.data);
-
                 axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(r => {
-
                     this.details = r.data;
-
+                    this.spin = false;
                     $('#editItem').modal('hide')
-
                 })
             })
+        },
+        passCommend () {
+           return  this.detail.note_advisor !== '' && this.detail.note_advisor !== null && this.file !== null
+        },
+        sendCommend () {
+            this.spin = true;
+            this.formData.append('note', this.detail.note_advisor);
+            axios.post(urldomine + 'api/maintenances/commends', this.formData,
+                {headers: {'content-type': 'multipart/form-data'}}
+                ).then(r => {
+                $('#commend').modal('hide');
+                axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(r => {
+                    this.details = r.data;
+                    this.spin = false;
+                    $('#editItem').modal('hide')
+                })
+                this.$toasted.success(r.data);
+            })
+
+        },
+        commend (it) {
+            this.detail = it;
+
+            this.formData.append('client_id', this.item.client_id);
+
+            this.formData.append('id', it.id);
+
+            $('#commend').modal('show')
+        },
+        getfile(e) {
+
+            let files = e.target.files || e.dataTransfer.files;
+
+            if (!files.length) {
+
+                this.file = null
+
+            } else {
+
+                this.file = files[0];
+
+                this.formData.append('doc', this.file)
+            }
         },
         editDetail (it) {
             this.detail = it;
@@ -226,11 +274,8 @@ new Vue({
         },
         closeForm () {
             axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(r => {
-
                 this.details = r.data;
-
                 $('#editItem').modal('hide')
-
             })
         },
         pass () {
@@ -244,6 +289,18 @@ new Vue({
             let timer = this.item.timer !== ' ' && this.item.timer > 0;
 
             return client && moment && service && timer
+        },
+        confirmCommend(detail) {
+            this.detail = detail;
+            $('#confirmCommend').modal('show')
+        },
+        applyCommend () {
+            axios.post(urldomine + 'api/maintenances/update-commend-client', this.detail).then(r => {
+                axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(r => {
+                    this.details = r.data;
+                    $('#confirmCommend').modal('hide')
+                })
+            })
         },
         passConfirm () {
 

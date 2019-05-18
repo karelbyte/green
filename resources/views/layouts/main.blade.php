@@ -41,63 +41,82 @@
                 </ul>
 
                 <!-- Right(Notification) -->
-                <ul class="nav navbar-nav navbar-right" id="notify">
-                 <li>
+                <ul class="nav navbar-nav navbar-right" id="notify" v-cloak>
+                 <li v-if="quote_local_close > 0">
                         <a href="{{route('notifications')}}" class="right-menu-item">
-                            <i class="fa fa-home"></i>
-                            <span v-if="landscapers > 0" class="badge up bg-danger">@{{ landscapers }}</span>
+                            <i class="mdi mdi-coin"></i>
+                            <span class="badge up bg-danger">@{{ quote_local_close }}</span>
                         </a>
                  </li>
-                    <li>
+                    <li v-if="sale_note_not_close > 0">
                         <a href="{{route('notifications')}}" class="right-menu-item">
-                            <i class="ion-android-call "></i>
-                            <span v-if="quoteconfirm > 0" class="badge up bg-danger">@{{ quoteconfirm }}</span>
+                            <i class="mdi mdi-note-plus-outline"></i>
+                            <span class="badge up bg-danger">@{{ sale_note_not_close }}</span>
                         </a>
                     </li>
+                 <li v-if="landscapers > 0" >
+                        <a href="{{route('notifications')}}" class="right-menu-item">
+                            <i class="fa fa-home"></i>
+                            <span class="badge up bg-danger">@{{ landscapers }}</span>
+                        </a>
+                 </li>
+                 <li v-if="quote_confirm > 0">
+                        <a href="{{route('notifications')}}" class="right-menu-item">
+                            <i class="ion-android-call "></i>
+                            <span  class="badge up bg-danger">@{{ quote_confirm }}</span>
+                        </a>
+                 </li>
+                 <li v-if="sale_note_not_delivered > 0">
+                        <a href="{{route('notifications')}}" class="right-menu-item">
+                            <i class="mdi mdi-truck-delivery"></i>
+                            <span  class="badge up bg-danger">@{{ sale_note_not_delivered }}</span>
+                        </a>
+                  </li>
 
 
 
-                     <!--    <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
-                            <li>
-                                <h5>Notificaciones</h5>
-                            </li>
-                            <li>
-                                <a href="#" class="user-list-item">
-                                    <div class="icon bg-info">
-                                        <i class="mdi mdi-account"></i>
-                                    </div>
-                                    <div class="user-desc">
-                                        <span class="name">New Signup</span>
-                                        <span class="time">5 hours ago</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="user-list-item">
-                                    <div class="icon bg-danger">
-                                        <i class="mdi mdi-comment"></i>
-                                    </div>
-                                    <div class="user-desc">
-                                        <span class="name">New Message received</span>
-                                        <span class="time">1 day ago</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="user-list-item">
-                                    <div class="icon bg-warning">
-                                        <i class="mdi mdi-settings"></i>
-                                    </div>
-                                    <div class="user-desc">
-                                        <span class="name">Settings</span>
-                                        <span class="time">1 day ago</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="all-msgs text-center">
-                                <p class="m-0"><a href="#">See all Notification</a></p>
-                            </li>
-                        </ul>-->
+
+                    <!--    <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right dropdown-lg user-list notify-list">
+                           <li>
+                               <h5>Notificaciones</h5>
+                           </li>
+                           <li>
+                               <a href="#" class="user-list-item">
+                                   <div class="icon bg-info">
+                                       <i class="mdi mdi-account"></i>
+                                   </div>
+                                   <div class="user-desc">
+                                       <span class="name">New Signup</span>
+                                       <span class="time">5 hours ago</span>
+                                   </div>
+                               </a>
+                           </li>
+                           <li>
+                               <a href="#" class="user-list-item">
+                                   <div class="icon bg-danger">
+                                       <i class="mdi mdi-comment"></i>
+                                   </div>
+                                   <div class="user-desc">
+                                       <span class="name">New Message received</span>
+                                       <span class="time">1 day ago</span>
+                                   </div>
+                               </a>
+                           </li>
+                           <li>
+                               <a href="#" class="user-list-item">
+                                   <div class="icon bg-warning">
+                                       <i class="mdi mdi-settings"></i>
+                                   </div>
+                                   <div class="user-desc">
+                                       <span class="name">Settings</span>
+                                       <span class="time">1 day ago</span>
+                                   </div>
+                               </a>
+                           </li>
+                           <li class="all-msgs text-center">
+                               <p class="m-0"><a href="#">See all Notification</a></p>
+                           </li>
+                       </ul>-->
                     </li>
 
                    <!-- <li>
@@ -194,7 +213,7 @@
                               <li><a href="{{route('notifications')}}">Notificaciones</a></li>
                             @endcan
                             @can('board.graphic')
-                              <li><a href="{{route('inicio')}}">Graficas</a></li>
+                              <li><a href="{{route('inicio')}}">Estadisticas</a></li>
                             @endcan
                         </ul>
                     </li>

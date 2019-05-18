@@ -2719,16 +2719,26 @@ var app = new Vue({
   el: '#notify',
   data: function data() {
     return {
+      user_id_auth: 0,
       landscapers: 0,
-      quoteconfirm: 0
+      quote_confirm: 0,
+      sale_note_not_close: 0,
+      quote_local_close: 0,
+      sale_note_not_delivered: 0
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    axios.get(urldomine + 'api/notifications/today').then(function (r) {
+    this.user_id_auth = parseInt($('#user_id_auth').val());
+    axios.post(urldomine + 'api/notifications/today', {
+      user_id_auth: this.user_id_auth
+    }).then(function (r) {
       _this.landscapers = r.data.landscapers.length;
-      _this.quoteconfirm = r.data.quoteconfirm.length;
+      _this.quote_confirm = r.data.quoteconfirm.length + r.data.quotetracing.length;
+      _this.sale_note_not_close = r.data.sale_note_not_close.length + r.data.sale_note_not_payment.length;
+      _this.quote_local_close = r.data.quote_local_close.length;
+      _this.sale_note_not_delivered = r.data.sale_note_not_delivered.length;
     });
   }
 });

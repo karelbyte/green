@@ -104,6 +104,10 @@ class UsersController extends Controller
 
         $data = $request->input('user');
 
+        $user = User::query()->where('email', $data['email'])->where('uid', '<>', $id) ->first();
+
+        if (!empty($user)) return response()->json('Ya existe un usuario con ese email!', 500);
+
         $user = User::findUid($id);
 
         $user->name = $data['name'];

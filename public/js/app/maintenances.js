@@ -43,7 +43,8 @@ var core = {
         page: 1,
         recordpage: 10,
         totalpage: 0
-      }
+      },
+      user_id_auth: 0
     };
   },
   directives: {
@@ -78,6 +79,7 @@ var core = {
     }
   },
   mounted: function mounted() {
+    this.user_id_auth = parseInt($('#user_id_auth').val());
     this.getlist();
   },
   methods: {
@@ -166,6 +168,8 @@ new Vue({
     return {
       clients: [],
       services: [],
+      formData: 0,
+      file: null,
       views: {
         list: true,
         "new": false,
@@ -193,7 +197,9 @@ new Vue({
       detail: {
         note_gardener: '',
         note_client: '',
-        visting_time: ''
+        note_advisor: '',
+        visting_time: '',
+        accept: 1
       },
       listfield: [{
         name: 'Cliente',
@@ -218,6 +224,7 @@ new Vue({
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   mounted: function mounted() {
+    this.formData = new FormData();
     this.propertyShowDelObj = 'client.name';
     this.labeledit = 'Actualizar mantenimiento';
     this.labelnew = 'Añadir mantenimiento';
@@ -321,11 +328,13 @@ new Vue({
     saveInfo: function saveInfo() {
       var _this4 = this;
 
+      this.spin = true;
       axios.post(urldomine + 'api/maintenances/update/info', this.detail).then(function (r) {
         _this4.$toasted.success(r.data);
 
         axios.get(urldomine + 'api/maintenances/details/' + _this4.item.id).then(function (r) {
           _this4.details = r.data;
+          _this4.spin = false;
           $('#retroInfo').modal('hide');
         });
       });
@@ -337,24 +346,65 @@ new Vue({
     saveDetail: function saveDetail() {
       var _this5 = this;
 
+      this.spin = true;
       axios.post(urldomine + 'api/maintenances/details/update', this.detail).then(function (r) {
         _this5.$toasted.success(r.data);
 
         axios.get(urldomine + 'api/maintenances/details/' + _this5.item.id).then(function (r) {
           _this5.details = r.data;
+          _this5.spin = false;
           $('#editItem').modal('hide');
         });
       });
+    },
+    passCommend: function passCommend() {
+      return this.detail.note_advisor !== '' && this.detail.note_advisor !== null && this.file !== null;
+    },
+    sendCommend: function sendCommend() {
+      var _this6 = this;
+
+      this.spin = true;
+      this.formData.append('note', this.detail.note_advisor);
+      axios.post(urldomine + 'api/maintenances/commends', this.formData, {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      }).then(function (r) {
+        $('#commend').modal('hide');
+        axios.get(urldomine + 'api/maintenances/details/' + _this6.item.id).then(function (r) {
+          _this6.details = r.data;
+          _this6.spin = false;
+          $('#editItem').modal('hide');
+        });
+
+        _this6.$toasted.success(r.data);
+      });
+    },
+    commend: function commend(it) {
+      this.detail = it;
+      this.formData.append('client_id', this.item.client_id);
+      this.formData.append('id', it.id);
+      $('#commend').modal('show');
+    },
+    getfile: function getfile(e) {
+      var files = e.target.files || e.dataTransfer.files;
+
+      if (!files.length) {
+        this.file = null;
+      } else {
+        this.file = files[0];
+        this.formData.append('doc', this.file);
+      }
     },
     editDetail: function editDetail(it) {
       this.detail = it;
       $('#editItem').modal('show');
     },
     closeForm: function closeForm() {
-      var _this6 = this;
+      var _this7 = this;
 
       axios.get(urldomine + 'api/maintenances/details/' + this.item.id).then(function (r) {
-        _this6.details = r.data;
+        _this7.details = r.data;
         $('#editItem').modal('hide');
       });
     },
@@ -365,6 +415,20 @@ new Vue({
       var timer = this.item.timer !== ' ' && this.item.timer > 0;
       return client && moment && service && timer;
     },
+    confirmCommend: function confirmCommend(detail) {
+      this.detail = detail;
+      $('#confirmCommend').modal('show');
+    },
+    applyCommend: function applyCommend() {
+      var _this8 = this;
+
+      axios.post(urldomine + 'api/maintenances/update-commend-client', this.detail).then(function (r) {
+        axios.get(urldomine + 'api/maintenances/details/' + _this8.item.id).then(function (r) {
+          _this8.details = r.data;
+          $('#confirmCommend').modal('hide');
+        });
+      });
+    },
     passConfirm: function passConfirm() {
       var moment = this.detail.moment !== '';
       var time = this.detail.visiting_time !== '' && this.detail.visiting_time !== null;
@@ -372,22 +436,22 @@ new Vue({
       return time && moment && price;
     },
     showdetails: function showdetails(item) {
-      var _this7 = this;
+      var _this9 = this;
 
       this.item = item;
       axios.get(urldomine + 'api/maintenances/details/' + item.id).then(function (r) {
-        _this7.details = r.data;
+        _this9.details = r.data;
 
-        _this7.onviews('details');
+        _this9.onviews('details');
       });
     },
     viewpdf: function viewpdf(id) {
-      var _this8 = this;
+      var _this10 = this;
 
       this.spin = true;
       axios.get(urldomine + 'api/maintenances/pdf/' + id).then(function (response) {
-        _this8.spin = false;
-        _this8.scrpdf = response.data;
+        _this10.spin = false;
+        _this10.scrpdf = response.data;
         window.$('#pdf').modal('show');
       });
     }

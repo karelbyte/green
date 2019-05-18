@@ -25,6 +25,7 @@ class CreateSalesNoteDetailsTable extends Migration
             $table->decimal('price');
             $table->date('start');
             $table->smallInteger('timer')->unsigned();
+            $table->smallInteger('deliver_product')->unsigned();
             $table->engine = 'InnoDB';
 
         });

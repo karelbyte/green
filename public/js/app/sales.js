@@ -17674,6 +17674,7 @@ new Vue({
   el: '#app',
   data: function data() {
     return {
+      user_id_auth: 0,
       delobj: '',
       keyObjDelete: '',
       propertyShowDelObj: '',
@@ -17701,6 +17702,8 @@ new Vue({
         status_id: '',
         paimentdate: '',
         deliberydate: '',
+        emailto: '',
+        generate_pdf: false,
         details: []
       },
       itemDefault: {
@@ -17710,6 +17713,8 @@ new Vue({
         status_id: '',
         paimentdate: moment__WEBPACK_IMPORTED_MODULE_1__().format('YYYY-MM-DD'),
         deliverydate: moment__WEBPACK_IMPORTED_MODULE_1__().format('YYYY-MM-DD'),
+        emailto: '',
+        generate_pdf: false,
         details: []
       },
       listfield: [{
@@ -17758,6 +17763,7 @@ new Vue({
       },
       scrpdf: 0,
       find: 0,
+      users: [],
       elements: [],
       mat: {},
       TypeShow: 'Detalle a añadir',
@@ -17815,6 +17821,7 @@ new Vue({
     this.patchDelete = 'api/sales/';
     this.keyObjDelete = 'id';
     this.find = parseInt($('#find').val());
+    this.user_id_auth = parseInt($('#user_id_auth').val());
 
     if (this.find > 0) {
       this.filters_list.value = this.find;
@@ -17874,7 +17881,8 @@ new Vue({
           start: this.pager_list.page - 1,
           take: this.pager_list.recordpage,
           filters: this.filters_list,
-          orders: this.orders_list
+          orders: this.orders_list,
+          user_id_auth: this.user_id_auth
         }
       }).then(function (res) {
         _this2.spin = false;
@@ -17886,6 +17894,7 @@ new Vue({
           _this2.onviews('newdetails');
         }
 
+        _this2.users = res.data.users;
         _this2.pager_list.totalpage = Math.ceil(res.data.total / _this2.pager_list.recordpage);
       })["catch"](function (e) {
         _this2.spin = false;
@@ -17897,17 +17906,27 @@ new Vue({
     confirmNote: function confirmNote() {
       var _this3 = this;
 
+      this.spin = true;
       var data = {
         id: this.item.id,
         paimentdate: this.item.paimentdate,
-        deliverydate: this.item.deliverydate
+        deliverydate: this.item.deliverydate,
+        emailto: this.item.emailto,
+        generate_pdf: this.item.generate_pdf
       };
       axios.post(urldomine + 'api/sales/confirm', data).then(function (r) {
         $('#aplicCLientNote').modal('hide');
 
         _this3.getlist();
 
-        _this3.$toasted.success(r.data);
+        _this3.spin = false;
+
+        if (_this3.item.generate_pdf) {
+          _this3.scrpdf = r.data;
+          $('#pdf').modal('show');
+        } else {
+          _this3.$toasted.success(r.data);
+        }
       });
     },
     // ENTREGAR PRODUCTO O SERVICIO

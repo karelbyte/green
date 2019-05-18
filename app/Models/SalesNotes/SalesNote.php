@@ -39,7 +39,6 @@ class SalesNote extends Model
         return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')->where('type_item', 1);
     }
 
-
     public function details_products () {
 
         return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')
@@ -56,6 +55,12 @@ class SalesNote extends Model
 
         return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')
             ->wherein('type_item', [2, 3])->whereNotNull('start');
+    }
+
+    public function products_services_null () {
+
+        return $this->hasMany(SalesNoteDetails::class, 'sale_id', 'id')
+            ->wherein('type_item', [2, 3]);
     }
 
     public function delivered () {

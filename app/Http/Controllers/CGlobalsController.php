@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMails;
+use App\Mail\AlertLandscape;
 use App\Models\Calendar;
 use App\Models\CGlobal\CGlobal;
 use App\Models\CGlobal\CGlobalInfo;
 use App\Models\Client;
 use App\Models\Company;
-use App\Models\LandScaper;
 use App\Models\ProductOffereds\ProductOffereds;
 use App\Models\Quotes\Quote;
 use App\Models\SalesNotes\SalesNote;
@@ -19,6 +20,7 @@ use App\Models\Users\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\GenerateID;
+use Illuminate\Support\Facades\Mail;
 
 
 class CGlobalsController extends Controller
@@ -29,7 +31,6 @@ class CGlobalsController extends Controller
     {
         return view('pages.cags.list');
     }
-
 
     public function getCglobals() {
 
@@ -44,6 +45,8 @@ class CGlobalsController extends Controller
 
     public function getList(Request $request) {
 
+        $user = User::query()->find($request->user_id_auth);
+
         $skip = $request->input('start') * $request->input('take');
 
         $filters = $request->filters;
@@ -54,6 +57,11 @@ class CGlobalsController extends Controller
            'attended', 'client', 'status', 'info' => function($q) {
             $q->with('info', 'info_det');
         }]);
+
+        if ( $user->position_id !== 1) {
+
+            $datos->where('user_id', $request->user_id_auth);
+        }
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
@@ -141,7 +149,20 @@ class CGlobalsController extends Controller
 
            $cg->LandScaper()->create($data['landscaper']);
 
-           Calendar::create([
+           $user_email = User::query()->where('uid', $data['landscaper']['user_uid'])->first();
+
+           $client = Client::query()->find($data['client']['id']);
+
+           $data_email = [
+               'user' => $user_email,
+               'visit' => $data['landscaper'],
+               'client' => $client,
+               'company' => Company::query()->find(1),
+           ];
+           // ENVIANDO ALERTA A PAISAJISTA
+           SendMails::dispatch(new AlertLandscape($data_email), $user_email->email);
+
+           Calendar::query()->create([
 
                'cglobal_id' => $cg->id,
 
@@ -158,16 +179,14 @@ class CGlobalsController extends Controller
 
                'type_quote_id' => 1,
 
-               'token' => mt_rand(0,99999),
+               'token' => random_int(0,99999),
 
                'moment' => Carbon::now(),
 
                'status_id' => 1,
-
-
            ]);
 
-           return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!', 200);
+           return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!');
         }
 
 
@@ -254,6 +273,18 @@ class CGlobalsController extends Controller
 
         ]);
 
+        $user_email = User::query()->where('uid', $data['landscaper']['user_uid'])->first();
+
+        $client = Client::query()->find($data['client']['id']);
+
+        $data_email = [
+            'user' => $user_email,
+            'visit' => $data['landscaper'],
+            'client' => $client,
+            'company' => Company::query()->find(1),
+        ];
+        // ENVIANDO ALERTA A PAISAJISTA
+        Mail::to($user_email->email)->send(new AlertLandscape($data_email));
 
         // CREANDO COTIZACION A DOMICILIO
 

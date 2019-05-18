@@ -6,6 +6,7 @@ new Vue({
     el: '#app',
     data () {
         return {
+            user_id_auth: 0,
             delobj: '',
             keyObjDelete: '',
             propertyShowDelObj: '',
@@ -33,6 +34,8 @@ new Vue({
                 status_id: '',
                 paimentdate: '',
                 deliberydate: '',
+                emailto: '',
+                generate_pdf: false,
                 details: []
             },
             itemDefault: {
@@ -42,6 +45,8 @@ new Vue({
                 status_id: '',
                 paimentdate: moment().format('YYYY-MM-DD'),
                 deliverydate: moment().format('YYYY-MM-DD'),
+                emailto: '',
+                generate_pdf: false,
                 details: []
             },
             listfield: [{name: 'Codigo', type: 'text', field: 'salesnotes.id'}],
@@ -86,6 +91,7 @@ new Vue({
             },
             scrpdf: 0,
             find: 0,
+            users: [],
             elements: [],
             mat: {},
             TypeShow: 'Detalle a añadir',
@@ -157,6 +163,8 @@ new Vue({
         this.keyObjDelete = 'id';
 
         this.find = parseInt($('#find').val());
+
+        this.user_id_auth = parseInt($('#user_id_auth').val());
 
         if (this.find > 0) {
 
@@ -230,7 +238,9 @@ new Vue({
 
                     filters: this.filters_list,
 
-                    orders: this.orders_list
+                    orders: this.orders_list,
+
+                    user_id_auth : this.user_id_auth
                 }
 
             }).then(res => {
@@ -247,6 +257,8 @@ new Vue({
 
                 }
 
+                this.users = res.data.users;
+
                 this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
 
             }).catch(e => {
@@ -258,15 +270,25 @@ new Vue({
         // APLICAR NOTA DE VENTA
 
         confirmNote () {
+            this.spin = true;
             let data = {
                 id : this.item.id,
                 paimentdate: this.item.paimentdate,
-                deliverydate: this.item.deliverydate
+                deliverydate: this.item.deliverydate,
+                emailto: this.item.emailto,
+                generate_pdf: this.item.generate_pdf,
             };
             axios.post(urldomine + 'api/sales/confirm', data).then(r => {
                 $('#aplicCLientNote').modal('hide');
-                this.getlist()
-                this.$toasted.success(r.data);
+                this.getlist();
+                this.spin = false;
+                if (this.item.generate_pdf) {
+                    this.scrpdf = r.data;
+                    $('#pdf').modal('show')
+                } else {
+                    this.$toasted.success(r.data);
+                }
+
             })
         },
         // ENTREGAR PRODUCTO O SERVICIO

@@ -4,17 +4,12 @@
 use Illuminate\Support\Facades\Route;
 
 
-// NOTIFICACIONES
-Route::get('/notifications/today', 'NotificationsController@today');
-
+Route::post('notifications/today', 'NotificationsController@today');
 
 // GRAFICAS Y ESTADISTICAS
 Route::prefix('grafics')->group(function () {
-
     Route::get('data_month', 'GraficsController@getDataMonth');
-
 });
-
 
 // RUTAS DEL CICLO DE ATENCION GLOBAL
 Route::prefix('cags')->group(function () {
@@ -40,7 +35,6 @@ Route::prefix('calendars')->group(function () {
 Route::resource('/calendars', 'CalendarsController');
 
 
-
 // RUTAS NOTAS DE VENTA
 Route::prefix('sales')->group(function () {
 
@@ -60,7 +54,6 @@ Route::prefix('sales')->group(function () {
 
 });
 Route::resource('/sales', 'SalesNoteController');
-
 
 // RUTAS COTIZACIONES
 Route::prefix('quotes')->group(function () {
@@ -101,7 +94,6 @@ Route::prefix('quotes')->group(function () {
 Route::resource('/quotes', 'QuotesController');
 
 
-
 // RUTAS DEL MANTENIMIENTOS
 Route::prefix('maintenances')->group(function () {
 
@@ -115,11 +107,14 @@ Route::prefix('maintenances')->group(function () {
 
     Route::post('update/info/', 'MaintenancesController@updateInfo');
 
+    Route::post('commends', 'MaintenancesController@commends');
+
+    Route::post('update-commend-client', 'MaintenancesController@updateCommendClientAccept');
+
    // Route::get('/get/id', 'MaintenancesController@sendID');
 
 });
 Route::resource('/maintenances', 'MaintenancesController');
-
 
 
 // RUTAS DE AJUSTE DE DATOS DE LA EMPRESA
@@ -239,7 +234,6 @@ Route::prefix('providers')->group(function () {
 Route::resource('/providers', 'ProvidersController');
 
 
-
 // RUTAS DE CLIENTES
 Route::prefix('clients')->group(function () {
 
@@ -249,4 +243,6 @@ Route::prefix('clients')->group(function () {
 
 });
 Route::resource('/clients', 'ClientsController');
+
+
 

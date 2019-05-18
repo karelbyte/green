@@ -139,6 +139,8 @@
                 <th class="cel_fix">Hora</th>
                 <th class="cel_fix">Precio</th>
                 <th class="cel_fix">Nota de venta</th>
+                <th >Documento</th>
+                <th class="cel_fix">Aceptado</th>
                 <th class="cel_fix">Estado</th>
                 <th></th>
             </tr>
@@ -149,12 +151,15 @@
                 <td class="cel_fix">@{{detail.visiting_time}}</td>
                 <td class="cel_fix">@{{detail.price}}</td>
                 <td class="cel_fix">@{{detail.sale_id}}</td>
+                <td><a v-if="detail.status_id > 5 " :href="detail.url_commend" target="_blank">Recomendación</a></td>
+                <td class="cel_fix">@{{detail.accepts.name}}</td>
                 <td class="cel_fix">@{{detail.status.name}}</td>
                 <td>
                     <button v-if="detail.status_id === 1" class="btn btn-primary  waves-effect btn-sm" @click="editDetail(detail)"><i class="fa fa-check-square"></i></button>
                     <button v-if="detail.status_id === 2" class="btn btn-primary  waves-effect btn-sm" @click="confirm(detail)">Ejecutar</button>
-
                     <button v-if="detail.status_id == 3" class="btn btn-success  waves-effect btn-sm" @click="retroInfo(detail)">Concluir</button>
+                    <button v-if="detail.status_id == 4" class="btn btn-success  waves-effect btn-sm" @click="commend(detail)">Recomendaciones</button>
+                    <button v-if="detail.status_id == 6" class="btn btn-brown  waves-effect btn-sm" @click="confirmCommend(detail)">Verificar</button>
                 </td>
             </tr>
             </tbody>
@@ -197,6 +202,68 @@
     </div>
 </div>
 
+<div id="commend" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Recomendaciones Asesor a cliente</h3>
+                    </div>
+                    <div class="panel-body">
+                        <span class="txtblack m-t-20">Observaciones adicionales <span class="require">*</span></span>
+                        <textarea type="text" class="form-control" v-model="detail.note_advisor"></textarea>
+                        <br>
+                        <span class="txtblack m-t-20">Adjuntar documento <span class="require">*</span></span>
+                        <input id="file" type="file" accept=".doc,.docx,.pdf" @change="getfile($event)">
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button v-if="passCommend()" :disabled="spin"  class="btn btn-brown -effect btn-sm" @click="sendCommend()">Enviar a cliente</button>
+                        <a href="#" data-dismiss="modal"  class="btn btn-default  waves-effect btn-sm" >Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmCommend" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"
+     data-backdrop="static" data-keyboard="false">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Verificacion de recomendaciones</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-12">
+                            <div class="radio radio-primary checkbox-inline">
+                                <input type="radio"  id="radio3" value="8" v-model.number="detail.accept">
+                                <label for="radio3">
+                                    Aceptado
+                                </label>
+                            </div>
+                         </div>
+                        <div class="col-lg-12">
+                            <div class="radio radio-primary checkbox-inline">
+                                <input type="radio" id="radio4" value="9" v-model.number="detail.accept">
+                                <label for="radio4">
+                                   No aceptado
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a href="#" class="btn btn-danger waves-effect btn-sm" @click="applyCommend()">Confirmar</a>
+                        <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="confirm" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"
      data-backdrop="static" data-keyboard="false">
     <div class="vertical-alignment-helper">
@@ -207,7 +274,7 @@
                         <h3 class="panel-title">Atención</h3>
                     </div>
                     <div class="panel-body">
-                        <p>Se cambiara el estado a en ejecucuión</p>
+                        <p>Se cambiara el estado a en ejecución!</p>
                     </div>
                     <div class="panel-footer text-right">
                         <a href="#" class="btn btn-danger waves-effect btn-sm" @click="aplic()">Confirmar</a>
