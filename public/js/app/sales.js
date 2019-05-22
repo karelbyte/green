@@ -17934,9 +17934,14 @@ new Vue({
       var _this4 = this;
 
       axios.get(urldomine + 'api/sales/notedeliverclient/' + id).then(function (r) {
-        _this4.$toasted.success(r.data);
+        if (r.data.type === 1) {
+          _this4.$toasted.success(r.data.data);
 
-        _this4.getlist();
+          _this4.getlist();
+        } else {
+          _this4.scrpdf = r.data.data;
+          $('#pdf').modal('show');
+        }
       })["catch"](function (e) {
         _this4.$toasted.info(e.response.data);
       });

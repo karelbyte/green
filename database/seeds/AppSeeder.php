@@ -210,5 +210,14 @@ class AppSeeder extends Seeder
         ];
         \App\Models\Maintenances\MaintenaceStatusDetail::insert($statusManteDetailList);
 
+        $statusQualitiesList = [
+            ['id' => 1, 'name' => 'EN ESPERA'],
+            ['id' => 2, 'name' => 'EN ENVIADA'],
+            ['id' => 3, 'name' => 'CONFIRMADA'],
+            ['id' => 4, 'name' => 'FINALIZADA']
+        ];
+
+        \App\Models\Qualities\QualityStatus::query()->insert($statusQualitiesList);
+
     }
 }

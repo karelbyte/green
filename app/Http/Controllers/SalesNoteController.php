@@ -82,17 +82,18 @@ class SalesNoteController extends Controller
 
         ];
 
-        return response()->json($result);
+        return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
 
     }
 
     public function SaveDetails(Request $request) {
 
-        $sale = SalesNote::find($request->id);
-
-        $total = $sale->total();
+        $sale = SalesNote::query()->find($request->id);
 
         if ($sale->status_id > self::PROCESO) { // ACTULIZANDO PAGO Y ESTADOS
+
+            $total = $sale->total();
+
             if ( (double) $request->advance > 0) {
                 switch ($sale->status_id) {
                     case self::EJECUCION;
@@ -119,28 +120,12 @@ class SalesNoteController extends Controller
             return response()->json('Detalles guardados con exito!', 200);
 
         }  else { // EDITANDO DETALLES
+            // ACTUALIZANDO DETALLES NOTA DE VENTA
+            $actuals = $sale->details->pluck('id');
 
-         if ( (double) $request->advance > 0) {
-             $sale->status_id = (double) $request->advance >= (double) $total ? self::PAGADA : self::RECIBIDO;
-         }
-         /// ACTUALIZANDO NOTA DE VENTA
-         $sale->advance = $request->advance;
-         $sale->save();
+            foreach ($request->details as $det) {
 
-            // ACTUALIZANDO CICLO DE ATENCION GLOBAL
-         if ($sale->origin === SalesNote::ORIGIN_CAG)   {
-                if ($sale->status_id == self::PROCESO) { $statusglobal = 2;  $traser = 2; }
-                if ($sale->status_id == self::RECIBIDO) { $statusglobal = 3; $traser = 4; }
-                if ($sale->status_ids == self::PAGADA ) { $statusglobal = 4; $traser = 10; }
-                $sale->globals()->update(['status_id' => $statusglobal, 'traser' => $traser]);
-          }
-
-         // ACTUALIZANDO DETALLES NOTA DE VENTA
-         $actuals = $sale->details->pluck('id');
-
-         foreach ($request->details as $det) {
-
-                SalesNoteDetails::updateOrCreate([
+                SalesNoteDetails::query()->updateOrCreate([
 
                     'id' => $det['id']],
                     [
@@ -162,15 +147,36 @@ class SalesNoteController extends Controller
 
                         'timer' => $det['timer'],
 
-                        'deliver_product' => $det['item']['end'],
+                        'deliver_product' => (int) $det['type_item'] > 1 ? $det['item']['end']: 1
                     ]);
-         }
+            }
 
-         $updates = collect($request->details)->pluck('id'); // IDENTIFICADORES ACTUALIZADOS
+            $updates = collect($request->details)->pluck('id'); // IDENTIFICADORES ACTUALIZADOS
 
-         $ids = $actuals->diff($updates);
+            $ids = $actuals->diff($updates);
 
-         SalesNoteDetails::whereIn('id', $ids)->delete();
+            SalesNoteDetails::whereIn('id', $ids)->delete();
+
+            $total = (double) SalesNote::query()->find($request->id)->total();
+
+            if ( (double) $request->advance > 0) {
+
+                 $sale->status_id = (double) $request->advance >=  $total ? self::PAGADA : self::RECIBIDO;
+            }
+             /// ACTUALIZANDO NOTA DE VENTA
+            $sale->advance = $request->advance;
+            $sale->save();
+
+                // ACTUALIZANDO CICLO DE ATENCION GLOBAL
+            $status_global = 0;
+            $traser = 0;
+
+             if ( (int) $sale->origin === SalesNote::ORIGIN_CAG)   {
+                    if ((int) $sale->status_id === self::PROCESO) { $status_global = 2;  $traser = 2; }
+                    if ((int) $sale->status_id === self::RECIBIDO) { $status_global = 3; $traser = 4; }
+                    if ((int) $sale->status_id === self::PAGADA ) { $status_global = 4; $traser = 10; }
+                    $sale->globals()->update(['status_id' => $status_global, 'traser' => $traser]);
+              }
 
          return response()->json('Detalles guardados con exito!', 200);
        }
@@ -181,21 +187,21 @@ class SalesNoteController extends Controller
        $inventoris = SalesNoteDelivered::query()->where('sale_id', $id)->whereRaw('delivered < cant')->get();
        $notfull = 0;
        foreach ($inventoris as $det) {
-                $pro = Inventori::where('element_id', $det['element_id'])->first();
+                $pro = Inventori::query()->where('element_id', $det['element_id'])->first();
                 $avility = (double) $pro['cant'] >= (double) $det['cant'];
                 if (!$avility) { $notfull++;}
         }
        if ($notfull > 0) {
-           return response()->json('Faltan existencia no se puede finalizar!', 500);
+           return response()->json(['data'=> $this->pdf_requirements($id), 'type'=> 2]);
        } else {
            foreach ($inventoris as $det) {
-               $pro = Inventori::where('element_id', $det['element_id'])->first();
+               $pro = Inventori::query()->where('element_id', $det['element_id'])->first();
                $discount = (double) $det['cant'] - (double) $pro['delivered'];
                $pro->update(['cant' => $pro['cant'] - $discount]);
                SalesNoteDelivered::where('id', $det['id'])->update(['delivered' =>  $det['cant']]);
            }
        }
-      $sale =  SalesNote::find($id);
+      $sale =  SalesNote::query()->find($id);
       switch ($sale->status_id) {
                 case self::EJECUCION:
                     $sale->status_id = self::TERMINADA;
@@ -209,7 +215,7 @@ class SalesNoteController extends Controller
        }
        $sale->save();
        $sale->globals()->update(['status_id' => 6, 'traser' => 15]);
-       return response()->json('Se actualizo el inventario y la nota de venta!', 200);
+       return response()->json(['data'=> 'Se actualizo el inventario y la nota de venta!', 'type'=> 1]);
     }
 
     // APLICANDO CANTIDADES Y GENERANDO ALERTAS
@@ -263,19 +269,20 @@ class SalesNoteController extends Controller
            // ESTADOS
             switch ($sale->status_id) {
                 case self::PROCESO:
-                    $sale->status_id = $notfull > 0 ? self::EJECUCION : self::TERMINADA;
+                    $sale->status_id = self::EJECUCION;  // $notfull > 0 ? self::EJECUCION : self::TERMINADA;
                     break;
                 case self::RECIBIDO:
-                    $sale->status_id =  $notfull > 0 ? self::RECIBIDO_EJECUCION : self::RECIBIDO_TERMINADA;
+                    $sale->status_id =   self::RECIBIDO_EJECUCION; // $notfull > 0 ? self::RECIBIDO_EJECUCION : self::RECIBIDO_TERMINADA;
                     break;
                 case self::PAGADA:
-                    $sale->status_id = $notfull > 0 ? self::PAGADA_EJECUCION : self::PAGADA_TERMINADA;
+                    $sale->status_id = self::PAGADA_EJECUCION; // $notfull > 0 ? self::PAGADA_EJECUCION : self::PAGADA_TERMINADA;
                     break;
             }
             $sale->paimentdate = $request->paimentdate;
+
             // CALCULAR TIEMPOS DE ENTREGA
             $det = $sale->products_services_null;
-            if ($det !== null) {
+            if (count($det) > 0) {
                 $sale->deliverydate = Carbon::now()->addDays($det[0]['deliver_product'] - 1);
             } else {
                 $sale->deliverydate = $request->deliverydate;

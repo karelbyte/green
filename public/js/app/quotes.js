@@ -14947,7 +14947,7 @@ new Vue({
         id: Object(_tools__WEBPACK_IMPORTED_MODULE_0__["generateId"])(9),
         note: this.note
       });
-      axios.post(urldomine + 'api/quotes/note/save', data).then(function (res) {
+      axios.post(urldomine + 'api/quotes/note/save', data).then(function () {
         axios.get(urldomine + 'api/quotes/notes/' + _this14.item.id).then(function (r) {
           _this14.spin = false;
           _this14.item.notes = r.data.notes;
@@ -14969,8 +14969,11 @@ new Vue({
           headers: {
             'Content-Type': 'multipart/form-data'
           }
-        }).then(function (res) {
+        }).then(function () {
           axios.get(urldomine + 'api/quotes/files/' + _this15.item.id).then(function (r) {
+            $('#camera_img').val(null);
+            $('#camera_video').val(null);
+            $('#microphone').val(null);
             _this15.spin = false;
             _this15.item.docs = r.data.docs;
 
@@ -14991,8 +14994,14 @@ new Vue({
         });
       }
     },
-    showCamera: function showCamera() {
-      $('#file').click();
+    showCamera_Image: function showCamera_Image() {
+      $('#camera_img').click();
+    },
+    showCamera_Video: function showCamera_Video() {
+      $('#camera_video').click();
+    },
+    showCamera_Audio: function showCamera_Audio() {
+      $('#microphone').click();
     },
     setfield: function setfield(f) {
       this.filters_list.value = '';

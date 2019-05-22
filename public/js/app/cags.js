@@ -17802,7 +17802,7 @@ new Vue({
   },
   watch: {
     'item.type_motive': function itemType_motive() {
-      this.ArrayTypeMotives = this.item.type_motive === 2 ? this.servicesOffereds : this.productsOffereds;
+      this.ArrayTypeMotives = parseInt(this.item.type_motive) === 2 ? this.servicesOffereds : this.productsOffereds;
     }
   },
   mounted: function mounted() {
@@ -17934,7 +17934,10 @@ new Vue({
         }
       }).then(function (res) {
         _this3.spin = false;
-        _this3.lists = res.data.list;
+        _this3.lists = res.data.list.map(function (it) {
+          it.traser = parseInt(it.traser);
+          return it;
+        });
         _this3.clients = res.data.clients;
         _this3.type_contacts = res.data.type_contacts;
         _this3.type_infos = res.data.type_infos;

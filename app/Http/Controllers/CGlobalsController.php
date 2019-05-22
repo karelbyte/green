@@ -91,7 +91,7 @@ class CGlobalsController extends Controller
 
         ];
 
-        return response()->json($result);
+        return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
 
     }
 
@@ -100,7 +100,7 @@ class CGlobalsController extends Controller
 
        $data = $request->all();
 
-       $cg = CGlobal::create([
+       $cg = CGlobal::query()->create([
 
            'moment' => $data['moment'],
 
@@ -131,7 +131,7 @@ class CGlobalsController extends Controller
 
        foreach ($data['info'] as $inf) {
 
-           CGlobalInfo::create([
+           CGlobalInfo::query()->create([
 
                'cglobal_id' => $cg->id,
 
@@ -464,7 +464,7 @@ class CGlobalsController extends Controller
 
         CGlobal::destroy($id);
 
-        Calendar::where('cglobal_id', $id)->delete();
+        Calendar::query()->where('cglobal_id', $id)->delete();
 
         return response()->json('Datos eliminados con exito!');
 

@@ -130,7 +130,7 @@ class QuotesController extends Controller
 
         ];
 
-        return response()->json($result);
+        return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
 
     }
 
@@ -143,7 +143,7 @@ class QuotesController extends Controller
 
         $ext = $file->getClientOriginalExtension();
 
-        $name = $file->getClientOriginalName();
+        $name = Carbon::now()->timestamp .'.'. $ext; //file->getClientOriginalName();
 
         $patch = storage_path('app/public/') . $quote->uid .'/visit';
 
@@ -153,7 +153,7 @@ class QuotesController extends Controller
 
         $quote->docs()->create(['url' => 'storage/' . $quote->uid .'/visit/'. $name, 'name' => $name, 'ext' => $ext] );
 
-        return response()->json('', 200);
+        return response()->json('' );
     }
 
 

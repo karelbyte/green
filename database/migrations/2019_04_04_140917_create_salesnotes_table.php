@@ -21,7 +21,7 @@ class CreateSalesnotesTable extends Migration
             $table->decimal('advance')->nullable();
             $table->string('strategy', 500)->nullable();
             $table->date('paimentdate')->nullable();
-            $table->date('deliberydate')->nullable();
+            $table->date('deliverydate')->nullable();
             $table->smallInteger('status_id');
             $table->smallInteger('origin');
             $table->engine = 'InnoDB';

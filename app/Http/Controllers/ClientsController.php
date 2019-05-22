@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailNotyNewClient;
 use App\Models\Client;
 use App\Traits\GenerateID;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ClientsController extends Controller
 {
@@ -60,7 +62,7 @@ class ClientsController extends Controller
 
         ];
 
-        return response()->json($result, 200);
+        return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
     }
 
     // CREA CLIENTES
@@ -70,9 +72,16 @@ class ClientsController extends Controller
 
             $this->setID('clients', $request->code);
 
-            Client::create($request->except('id'));
+            $client = Client::query()->create($request->except('id'));
 
-            return response()->json('Cliente añadido con exito!', 200);
+            $data = [
+                'client' => $client->name,
+                'company' => \App\Models\Company::query()->find(1)
+            ];
+
+            Mail::to($request->email)->send(new MailNotyNewClient($data));
+
+            return response()->json('Cliente añadido con exito!');
 
         } catch ( \Exception $e) {
 

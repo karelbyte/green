@@ -118,7 +118,7 @@ new Vue({
 
         'item.type_motive' : function () {
 
-          this.ArrayTypeMotives = this.item.type_motive === 2 ? this.servicesOffereds : this.productsOffereds
+          this.ArrayTypeMotives = parseInt(this.item.type_motive) === 2 ? this.servicesOffereds : this.productsOffereds
 
         }
     },
@@ -273,7 +273,10 @@ new Vue({
 
                 this.spin = false;
 
-                this.lists = res.data.list;
+                this.lists = res.data.list.map(it => {
+                    it.traser = parseInt(it.traser);
+                    return it
+                });
 
                 this.clients = res.data.clients;
 
@@ -445,7 +448,7 @@ new Vue({
 
            this.item.type_motive_id = it.type_motive_id;
 
-            this.item.required_time = it.required_time;
+           this.item.required_time = it.required_time;
 
            this.item.documents = it.documents === null ? {} : it.documents;
 

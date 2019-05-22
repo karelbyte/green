@@ -238,6 +238,12 @@
                         <a href="{{route('sales')}}" class="waves-effect"><i class="mdi mdi-note-plus-outline"></i><span>Notas de venta </span></a>
                     </li>
                     @endcan
+                    @can('cag') <!-- CALIDAD DEL SERVICIO -->
+                       <li>
+                           <a href="{{route('quality')}}" class="waves-effect"><i class="mdi mdi-checkbox-multiple-marked-circle"></i><span>Calidad </span></a>
+                      </li>
+                    @endcan
+
                     @can('maintenance')
                     <li>
                         <a href="{{route('maintenance')}}" class="waves-effect"><i class="typcn typcn-weather-downpour "></i><span>Mantenimientos </span></a>

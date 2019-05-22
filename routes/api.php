@@ -245,4 +245,15 @@ Route::prefix('clients')->group(function () {
 Route::resource('/clients', 'ClientsController');
 
 
+// RUTAS DE CALIDAD
+Route::prefix('qualities')->group(function () {
+
+    Route::post('list', 'QualityController@getList');
+
+    Route::get('/get/id', 'QualityController@sendID');
+
+});
+Route::resource('/qualities', 'QualityController');
+
+
 

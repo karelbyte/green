@@ -35,19 +35,16 @@ class CGlobal extends Model
     public function Contact() {
 
         return $this->hasOne(TypeContact::class, 'id', 'type_contact_id');
-
     }
 
     public function MotiveServices() {
 
         return $this->hasOne(ServiceOffereds::class, 'id', 'type_motive_id');
-
     }
 
     public function MotiveProducts() {
 
         return $this->hasOne(ProductOffereds::class, 'id', 'type_motive_id');
-
     }
 
     public function Compromise() {
@@ -59,19 +56,16 @@ class CGlobal extends Model
     public function Client() {
 
         return $this->hasOne(Client::class, 'id', 'client_id');
-
     }
 
     public function Attended() {
 
         return $this->hasOne(User::class, 'id', 'user_id');
-
     }
 
     public function Status() {
 
         return $this->hasOne(CGlobalStatus::class, 'id', 'status_id');
-
     }
 
     public function LandScaper() {
@@ -89,7 +83,6 @@ class CGlobal extends Model
     public function SaleNote () {
         return $this->hasOne(SalesNote::class, 'global_id', 'id');
     }
-
 
     public function Quote () {
         return $this->hasOne(Quote::class, 'cglobal_id', 'id');

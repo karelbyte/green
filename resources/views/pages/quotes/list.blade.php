@@ -58,56 +58,75 @@
                 </div>
                 <hr>
                 <div class="row m-t-20">
+                    <div class="col-lg-12  m-t-20">
+                        <button class="m-t-20" @click="showNote()">Nota + </button>
+                    </div>
+                    <div class="col-lg-12  m-t-20">
+                        <span class="txtblack">Imagen +<span class="require">*</span></span>
+                        <input type="file" id="camera_img"  accept="image/*" capture="camera" @change="saveFile($event)">
+                    </div>
+                    <div class="col-lg-12  m-t-20">
+                        <span class="txtblack">Video +<span class="require">*</span></span>
+                        <input type="file" id="camera_video"  accept="video/*" capture="camcorder" @change="saveFile($event)">
+                    </div>
+                    <div class="col-lg-12  m-t-20">
+                        <span class="txtblack">Audio +<span class="require">*</span></span>
+                        <input type="file" id="microphone" accept="audio/*"  @change="saveFile($event)">
+                    </div>
                     <div class="col-lg-12">
-                        <button class="btn btn-default btn-default" @click="showCamera()" >Imagen o video +</button>
-                        <button class="btn btn-default btn-default" @click="showNote()">Nota + </button>
-                        <input type="file" id="file" capture=camera style="display: none" @change="saveFile($event)">
-                    </div>
-                </div>
-                <hr>
-                <div v-for="doc in item.docs" class="row m-t-10">
-                    <div class="col-lg-6"><a :href="doc.url" target="_blank"> @{{ doc.name }} </a> </div>
-                    <div class="col-lg-6">
-                        <button class="btn btn-default btn-sm" @click="showVisor(doc)"><i class="fa fa-eye"></i></button>
-                        <button class="btn btn-danger btn-sm" @click="deleteFile(doc.id)"><i class="fa fa-eraser"></i></button>
-                    </div>
-                </div>
-                <div v-for="not in item.notes" class="row m-t-10">
-                    <div class="col-lg-8"><textarea disabled class="form-control">@{{ not.note }}</textarea> </div>
-                    <div class="col-lg-2">
-                        <button class="btn btn-danger btn-sm m-t-5" @click="deleteNote(not.id)"><i class="fa fa-eraser"></i></button>
-                    </div>
-                </div>
-                <div class="row m-t-20">
-                    <div class="col-lg-12">
-                        <div class="checkbox checkbox-primary">
-                            <input  type="checkbox" v-model="item.globals.landscaper.status_id">
-                            <label for="checkbox2" class="txtblack">
-                                VISITA CONCLUIDA
-                            </label>
-                        </div>
-                    </div>
+                       <!-- <button class="m-t-20" @click="showCamera_Image()" >Imagen +</button>
+                        <button class="m-t-20" @click="showCamera_Video()" >Video +</button>
+                        <button class="m-t-20" @click="showCamera_Audio()" >Audio +</button>
+                        <button class="m-t-20" @click="showNote()">Nota + </button> -->
+                        <!--  <input type="file" id="camera_img"  accept="image/*" capture="camera" @change="saveFile($event)">
+                         <input type="file" id="camera_video"  accept="video/*" capture="camcorder" @change="saveFile($event)">
+                         <input type="file" id="microphone" accept="audio/*"  capture="microphone" @change="saveFile($event)"> -->
+                     </div>
+                 </div>
+                 <hr>
+                 <div v-for="doc in item.docs" class="row m-t-10">
+                     <div class="col-lg-6"><a :href="doc.url" target="_blank"> @{{ doc.name }} </a> </div>
+                     <div class="col-lg-6">
+                         <button class="btn btn-default btn-sm" @click="showVisor(doc)"><i class="fa fa-eye"></i></button>
+                         <button class="btn btn-danger btn-sm" @click="deleteFile(doc.id)"><i class="fa fa-eraser"></i></button>
+                     </div>
+                 </div>
+                 <div v-for="not in item.notes" class="row m-t-10">
+                     <div class="col-lg-8"><textarea disabled class="form-control">@{{ not.note }}</textarea> </div>
+                     <div class="col-lg-2">
+                         <button class="btn btn-danger btn-sm m-t-5" @click="deleteNote(not.id)"><i class="fa fa-eraser"></i></button>
+                     </div>
+                 </div>
+                 <div class="row m-t-20">
+                     <div class="col-lg-12">
+                         <div class="checkbox checkbox-primary">
+                             <input  type="checkbox" v-model.number="item.globals.landscaper.status_id">
+                             <label for="checkbox2" class="txtblack">
+                                 VISITA CONCLUIDA
+                             </label>
+                         </div>
+                     </div>
 
-                </div>
-            </div>
-            <div class="panel-footer footer_fix">
-                <div class="row">
-                    <div class="col-lg-6 col-xs-12">
-                        <button v-if="passVisit()" class="btn btn-success waves-effect btn-sm" @click="saveInfoVisint()">Guardar</button>
-                        <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
-                    </div>
-                    <div class="col-lg-6 col-xs-12 text-right">
-                        <span>Los datos tomados en la visita guardan automántico!</span>
-                    </div>
-                </div>
+                 </div>
+             </div>
+             <div class="panel-footer footer_fix">
+                 <div class="row">
+                     <div class="col-lg-6 col-xs-12">
+                         <button v-if="passVisit()" class="btn btn-success waves-effect btn-sm" @click="saveInfoVisint()">Guardar</button>
+                         <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
+                     </div>
+                     <div class="col-lg-6 col-xs-12 text-right">
+                         <span>Los datos tomados en la visita guardan automántico!</span>
+                     </div>
+                 </div>
 
 
-            </div>
-        </div>
-    </div>
-</div>
+             </div>
+         </div>
+     </div>
+ </div>
 
-<!-- AÑADIENDO FICHEROS DE COTIZACION A DISTANCIA -->
+ <!-- AÑADIENDO FICHEROS DE COTIZACION A DISTANCIA -->
 <div v-if="views.newdetails" class="row" v-cloak>
     <div class="col-lg-12">
         <div class="panel panel-border panel-inverse">
@@ -181,6 +200,7 @@
         </div>
     </div>
 </div>
+
 <div v-if="views.list" v-cloak>
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
@@ -285,7 +305,7 @@
                           <div class="col-lg-12">
                               <div v-if="doc.ext == 'jpg' || doc.ext == 'jpeg' || doc.ext == 'png'"><img :src="doc.url" alt="" width="100%" height="300px" /></div>
                               <div v-if="doc.ext == 'mp3' || doc.ext == '3gpp'" > <audio :src="doc.url" controls ></audio></div>
-                              <div v-if="doc.ext == 'mp4' || doc.ext == 'mov' "> <video :src="doc.url" controls width="100%" height="300px"></video></div>
+                              <div v-if="doc.ext == 'mp4' || doc.ext == 'MOV' "> <video :src="doc.url" controls width="100%" height="300px"></video></div>
                           </div>
                       </div>
                     </div>
@@ -482,8 +502,6 @@
         </div>
     </div>
 </div>
-
-
 <!-- ENVIO DE INFORMACION AL CLIENTE -->
 <div id="sendinfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="vertical-alignment-helper">

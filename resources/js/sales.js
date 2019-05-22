@@ -294,8 +294,14 @@ new Vue({
         // ENTREGAR PRODUCTO O SERVICIO
         noteDeliverClient (id) {
             axios.get(urldomine + 'api/sales/notedeliverclient/' + id ).then(r => {
-               this.$toasted.success(r.data);
-               this.getlist();
+               if  (r.data.type === 1) {
+                   this.$toasted.success(r.data.data);
+                   this.getlist();
+               } else {
+                   this.scrpdf = r.data.data;
+                   $('#pdf').modal('show')
+               }
+
             }).catch(e => {
                 this.$toasted.info(e.response.data);
             })

@@ -58,7 +58,12 @@ Route::get('/limpiar_cache', function () {
 
 Route::get('/pruebas', function () {
 
-     return view('pruebas');
+
+     $data = [
+         'client' =>    $data = \App\Models\Client::query()->find(2)->name,
+         'company' => \App\Models\Company::query()->find(1)
+     ];
+     return view('pages.clients.mail_client', ['data' => $data]);
 });
 
 
@@ -127,6 +132,8 @@ Route::middleware('auth')->group(function () {
     // CALENDARIO
     Route::get('/info', 'CalendarsController@index')->name('info');
 
+    // CALIDAD
+    Route::get('/calidad/{id?}', 'QualityController@index')->name('quality');
 
 });
 

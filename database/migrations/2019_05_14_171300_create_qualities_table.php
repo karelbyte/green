@@ -20,8 +20,9 @@ class CreateQualitiesTable extends Migration
             $table->date('moment');
             $table->date('confirm');
             $table->string('url_doc', 250);
+            $table->string('client_comment', 250);
             $table->smallInteger('status_id');
-            $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

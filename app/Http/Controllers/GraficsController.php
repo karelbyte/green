@@ -58,7 +58,7 @@ class GraficsController extends Controller
             'amout_sale_month_last' => $amout_sale_month_last[0]->total
         ];
 
-        return response()->json($data);
+        return response()->json($data,  200, [], JSON_NUMERIC_CHECK);
     }
 
 }

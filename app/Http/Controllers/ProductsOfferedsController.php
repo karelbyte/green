@@ -60,7 +60,7 @@ class ProductsOfferedsController extends Controller
 
         ];
 
-        return response()->json($result, 200);
+        return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
 
     }
 

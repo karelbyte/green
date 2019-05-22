@@ -67,7 +67,7 @@ class UsersController extends Controller
             'positions' => UserPosition::all()
         ];
 
-        return response()->json($result, 200);
+        return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
     }
 
     // CREA USUARIO CON SU ROL EN EL SISTEMA

@@ -58,7 +58,7 @@
                 </thead>
                 <tbody>
                 <tr class="mouse" v-for="land in landscapers" :key="land.id">
-                    <td >@{{land.id}}</td>
+                    <td >@{{land.cglobal_id}}</td>
                     <td >@{{land.global.client.name}}</td>
                     <td >@{{land.global.client.address}}</td>
                     <td >@{{dateToEs(land.moment)}}</td>

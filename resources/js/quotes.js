@@ -690,7 +690,7 @@ new Vue({
 
            this.item.notes.push({id: generateId(9), note: this.note});
 
-            axios.post(urldomine + 'api/quotes/note/save', data).then(res => {
+            axios.post(urldomine + 'api/quotes/note/save', data).then(() => {
 
                 axios.get(urldomine + 'api/quotes/notes/' + this.item.id).then(r => {
 
@@ -720,9 +720,15 @@ new Vue({
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
-                }).then(res => {
+                }).then(() => {
 
                   axios.get(urldomine + 'api/quotes/files/' + this.item.id).then(r => {
+
+                      $('#camera_img').val(null);
+
+                      $('#camera_video').val(null);
+
+                      $('#microphone').val(null);
 
                       this.spin = false;
 
@@ -749,11 +755,15 @@ new Vue({
                 })
             }
         },
-        showCamera() {
-
-          $('#file').click()
+        showCamera_Image() {
+          $('#camera_img').click();
         },
-
+        showCamera_Video() {
+            $('#camera_video').click();
+        },
+        showCamera_Audio() {
+            $('#microphone').click();
+        },
         setfield (f){
 
             this.filters_list.value = '';
