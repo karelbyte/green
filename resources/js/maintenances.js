@@ -239,10 +239,9 @@ new Vue({
                     this.details = r.data;
                     this.spin = false;
                     $('#editItem').modal('hide')
-                })
+                });
                 this.$toasted.success(r.data);
             })
-
         },
         commend (it) {
             this.detail = it;
@@ -254,17 +253,11 @@ new Vue({
             $('#commend').modal('show')
         },
         getfile(e) {
-
             let files = e.target.files || e.dataTransfer.files;
-
             if (!files.length) {
-
                 this.file = null
-
             } else {
-
                 this.file = files[0];
-
                 this.formData.append('doc', this.file)
             }
         },

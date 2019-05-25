@@ -335,6 +335,27 @@
     </div>
 </div>
 
+<div id="redirect" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"
+     data-backdrop="static" data-keyboard="false">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Atención</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>@{{redirect.message}}</p>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a :href="redirect.patch" class="btn btn-danger waves-effect btn-sm">IR A DOCUMENTO</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @component('com.eliminar')@endcomponent
 @component('com.spiner')@endcomponent
 @endsection

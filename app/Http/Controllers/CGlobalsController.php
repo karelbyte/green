@@ -160,7 +160,8 @@ class CGlobalsController extends Controller
                'company' => Company::query()->find(1),
            ];
            // ENVIANDO ALERTA A PAISAJISTA
-           SendMails::dispatch(new AlertLandscape($data_email), $user_email->email);
+          //  SendMails::dispatch(new AlertLandscape($data_email), $user_email->email);
+           Mail::to($user_email->email)->send(new AlertLandscape($data_email));
 
            Calendar::query()->create([
 
@@ -205,7 +206,7 @@ class CGlobalsController extends Controller
                 'title' => 'Envio de información'
             ]);
 
-            return response()->json('Se generó un evento de envio de informacion a cliente!', 200);
+            return response()->json('Se generó un evento de envio de informacion a cliente!');
         }
 
         if ($data['type_compromise_id'] === TypeCompromise::SALE_NOTE) {
@@ -413,9 +414,13 @@ class CGlobalsController extends Controller
 
         ];
 
+        $footer = \View::make('pdf.footer')->render();
+
+        $header = \View::make('pdf.header', ['company' => \App\Models\Company::query()->find(1)])->render();
+
         $html = \View::make('pages.cags.pdf', $data)->render();
 
-        $pdf->loadHTML($html);
+        $pdf->loadHTML($html)->setOption('header-html', $header)->setOption('footer-html', $footer);
 
         $pdfBase64 = base64_encode($pdf->inline());
 

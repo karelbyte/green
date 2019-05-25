@@ -304,8 +304,8 @@
                       <div class="row">
                           <div class="col-lg-12">
                               <div v-if="doc.ext == 'jpg' || doc.ext == 'jpeg' || doc.ext == 'png'"><img :src="doc.url" alt="" width="100%" height="300px" /></div>
-                              <div v-if="doc.ext == 'mp3' || doc.ext == '3gpp'" > <audio :src="doc.url" controls ></audio></div>
-                              <div v-if="doc.ext == 'mp4' || doc.ext == 'MOV' "> <video :src="doc.url" controls width="100%" height="300px"></video></div>
+                              <div v-if="doc.ext == 'mp3' || doc.ext == '3gpp' || doc.ext == 'm4a'"> <audio :src="doc.url" controls ></audio></div>
+                              <div v-if="doc.ext == 'mp4' || doc.ext == 'MOV' || doc.ext == 'mov'"> <video :src="doc.url" controls width="100%" height="300px"></video></div>
                           </div>
                       </div>
                     </div>

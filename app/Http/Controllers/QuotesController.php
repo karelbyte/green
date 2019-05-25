@@ -27,43 +27,29 @@ class QuotesController extends Controller
     }
 
     public function getQuoteFiles($id) {
-
-        $datos = Quote::with('docs')->where('id', $id)->select('*')->first();
-
-        return $datos;
-
+        return Quote::with('docs')->where('id', $id)->select('*')->first();
     }
 
     public function getQuoteNotes($id) {
-
-        $datos = Quote::with('notes')->where('id', $id)->select('*')->first();
-
-        return $datos;
-
+        return Quote::with('notes')->where('id', $id)->select('*')->first();
     }
 
     public function deleteQuoteNote($id) {
-
         QuotesNote::destroy($id);
-
-        return response(null, 200);
-
+        return http_response_code(200);
     }
 
     public function deleteQuoteFile($id) {
 
-        $doc = QuoteDoc::find($id);
+        $doc = QuoteDoc::query()->find($id);
 
         $patch = substr($doc->url, 8, strlen($doc->url));
-
-       // Storage::delete(storage_path().'/app/public/' . $patch);
 
         Storage::disk('public')->delete($patch);
 
         QuoteDoc::destroy($id);
 
-       return response(null, 200);
-
+        return http_response_code(200);
     }
 
     public function SaveNote(Request $request) {
@@ -72,7 +58,7 @@ class QuotesController extends Controller
 
         $quote->notes()->create($request->all());
 
-        return response()->json('', 200);
+        return response()->json('');
     }
 
     public function SetDate(Request $request) {
@@ -83,7 +69,7 @@ class QuotesController extends Controller
 
         $quote->save();
 
-        return response()->json('', 200);
+        return response()->json('');
     }
 
 
@@ -137,25 +123,24 @@ class QuotesController extends Controller
 
     public function SaveFile(Request $request) {
 
-        $quote = Quote::find($request->id);
+        $quote = Quote::query()->find($request->id);
 
         $file = $request->file;
 
         $ext = $file->getClientOriginalExtension();
 
-        $name = Carbon::now()->timestamp .'.'. $ext; //file->getClientOriginalName();
+        $name = Carbon::now()->timestamp .'.'. $ext;
 
-        $patch = storage_path('app/public/') . $quote->uid .'/visit';
+        $patch =  storage_path('app/public/cliente-') . $quote->globals->client->code. '/cag-' .  $quote->globals->id .'/visit';
 
         File::exists( $patch) or File::makeDirectory($patch , 0777, true, true);
 
-        $request->file->storeAs('public/'.$quote->uid .'/visit', $name);
+        $request->file->storeAs('/public/cliente-' . $quote->globals->client->code. '/cag-' .  $quote->globals->id .'/visit', $name);
 
-        $quote->docs()->create(['url' => 'storage/' . $quote->uid .'/visit/'. $name, 'name' => $name, 'ext' => $ext] );
+        $quote->docs()->create(['url' => 'storage/cliente-' . $quote->globals->client->code. '/cag-' .  $quote->globals->id .'/visit/'. $name, 'name' => $name, 'ext' => $ext] );
 
         return response()->json('' );
     }
-
 
     public function checkInfo(Request $request) {
 
@@ -278,7 +263,6 @@ class QuotesController extends Controller
 
             $quote->globals()->update(['status_id' => 2, 'traser' => 8]);
         }
-
         if ($quote->status_id === 8 ){
 
             $quote->type_send_id = $request->type_send_id;
@@ -298,7 +282,7 @@ class QuotesController extends Controller
 
             // Creando rutas para guardar cotizacion --------------------
 
-            $patch = storage_path('app/public/') . $quote->uid;
+            $patch = storage_path('app/public/cliente-') . $quote->globals->client->code. '/cag-' .  $quote->globals->id;
 
             File::exists( $patch) or File::makeDirectory($patch , 0777, true, true);
 
@@ -320,9 +304,13 @@ class QuotesController extends Controller
 
             ];
 
+            $footer = \View::make('pdf.footer')->render();
+
+            $header = \View::make('pdf.header', ['company' => \App\Models\Company::query()->find(1)])->render();
+
             $html = \View::make('pages.quotes.pdf', $data)->render();
 
-            $pdf->loadHTML($html);
+            $pdf->loadHTML($html)->setOption('header-html', $header)->setOption('footer-html', $footer);
 
             if (File::exists( $patch . '/cotizacion-'. $quote->token . '.pdf')) {
 
@@ -334,7 +322,7 @@ class QuotesController extends Controller
 
             Mail::to($quote['globals']['client']['email'])->send(new SendQuoteClient($data));
 
-        return response()->json('Se actualizó el estado de envio de la información!', 200);
+        return response()->json('Se actualizó el estado de envio de la información!');
 
     }
 
@@ -357,7 +345,7 @@ class QuotesController extends Controller
 
         $lan->update($request->except('id'));
 
-        return response()->json('Detalles guardados con exito!', 200);
+        return response()->json('Detalles guardados con exito!');
     }
 
     // GUARDAR DETALLES
@@ -379,7 +367,6 @@ class QuotesController extends Controller
       return response()->json('Detalles guardados con exito!', 200);
     }
 
-
     public function pdf($id) {
 
         $pdf = \App::make('snappy.pdf.wrapper');
@@ -400,14 +387,13 @@ class QuotesController extends Controller
             'client' => $client
 
         ];
+        $footer = \View::make('pdf.footer')->render();
 
-       // return $data;
-
-        // $footer = View::make('components.footer')->render();
+        $header = \View::make('pdf.header', ['company' => \App\Models\Company::query()->find(1)])->render();
 
         $html = \View::make('pages.quotes.pdf', $data)->render();
 
-        $pdf->loadHTML($html); //->setOption('footer-html', $footer);
+        $pdf->loadHTML($html)->setOption('header-html', $header)->setOption('footer-html', $footer);
 
         $pdfBase64 = base64_encode($pdf->inline());
 

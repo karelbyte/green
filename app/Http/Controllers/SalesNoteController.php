@@ -9,9 +9,14 @@ use App\Models\Company;
 use App\Models\Element;
 use App\Models\Inventori;
 use App\Models\Maintenances\Maintenance;
+use App\Models\ProductOffereds\ProductOffereds;
+use App\Models\ProductOffereds\ProductOfferedsDetails;
+use App\Models\Qualities\Quality;
 use App\Models\SalesNotes\SalesNote;
 use App\Models\SalesNotes\SalesNoteDelivered;
 use App\Models\SalesNotes\SalesNoteDetails;
+use App\Models\ServicesOffereds\ServiceOffereds;
+use App\Models\ServicesOffereds\ServiceOfferedsDetails;
 use App\Models\Users\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -117,14 +122,24 @@ class SalesNoteController extends Controller
             // ACTUALIZANDO NOTA DE VENTA
             $sale->advance = $request->advance;
             $sale->save();
-            return response()->json('Detalles guardados con exito!', 200);
+            return response()->json('Detalles guardados con exito!');
 
         }  else { // EDITANDO DETALLES
             // ACTUALIZANDO DETALLES NOTA DE VENTA
             $actuals = $sale->details->pluck('id');
 
             foreach ($request->details as $det) {
-
+                $deliver = 1;
+                if (array_key_exists('item',  $det)) {
+                    $deliver = (int) $det['type_item'] > 1 ? $det['item']['end']: 1;
+                } else {
+                    if ((int) $det['type_item'] === 2) {
+                        $deliver = ProductOfferedsDetails::query()->find($det['item_id'])->end;
+                    }
+                    if ((int) $det['type_item'] === 3) {
+                        $deliver = ServiceOfferedsDetails::query()->find($det['item_id'])->end;
+                    }
+                }
                 SalesNoteDetails::query()->updateOrCreate([
 
                     'id' => $det['id']],
@@ -147,7 +162,7 @@ class SalesNoteController extends Controller
 
                         'timer' => $det['timer'],
 
-                        'deliver_product' => (int) $det['type_item'] > 1 ? $det['item']['end']: 1
+                        'deliver_product' => $deliver
                     ]);
             }
 
@@ -215,7 +230,19 @@ class SalesNoteController extends Controller
        }
        $sale->save();
        $sale->globals()->update(['status_id' => 6, 'traser' => 15]);
-       return response()->json(['data'=> 'Se actualizo el inventario y la nota de venta!', 'type'=> 1]);
+       // CREANDO RECURSO DE CALIDAD
+
+       Quality::query()->create([
+            'cglobal_id' => $sale->global_id,
+            'moment' => Carbon::now(),
+            'status_id' => 1
+        ]);
+       $sale->globals()->update(['status_id' => 7, 'traser' => 16]);
+       return response()->json([
+           'data'=> 'Se actualizo el inventario, la nota de venta, se genero un apartado de calidad para este ciclo!',
+           'id' =>  $sale->global_id,
+           'type'=> 1]
+       );
     }
 
     // APLICANDO CANTIDADES Y GENERANDO ALERTAS
@@ -259,6 +286,7 @@ class SalesNoteController extends Controller
                         'moment' => Carbon::now(),
                         'sale_id' => $request->id,
                         'price' => $sale->total(),
+                        'accept' => 1,
                         'status_id' => 1]);
 
                 }
@@ -367,10 +395,13 @@ class SalesNoteController extends Controller
             'namepdf' =>  'nota-'. $id . '.pdf',
 
         ];
+        $footer = \View::make('pdf.footer')->render();
+
+        $header = \View::make('pdf.header', ['company' => Company::query()->find(1)])->render();
 
         $html = \View::make('pages.sales.pdf_requirements', $data)->render();
 
-        $pdf->loadHTML($html);
+        $pdf->loadHTML($html)->setOption('header-html', $header)->setOption('footer-html', $footer);
 
         $pdf->save($patch . '/note-'. $id . '.pdf');
 
@@ -470,9 +501,13 @@ class SalesNoteController extends Controller
 
         ];
 
+        $footer = \View::make('pdf.footer')->render();
+
+        $header = \View::make('pdf.header', ['company' => Company::query()->find(1)])->render();
+
         $html = \View::make('pages.sales.pdf', $data)->render();
 
-        $pdf->loadHTML($html);
+        $pdf->loadHTML($html)->setOption('header-html', $header)->setOption('footer-html', $footer);
 
         $pdfBase64 = base64_encode($pdf->inline());
 

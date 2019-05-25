@@ -5,33 +5,33 @@ new Vue({
     el: '#app',
     data () {
         return {
+            formData: 0,
+            file: null,
             views: {
                 list: true,
                 new: false,
             },
             item: {
                 id: 0,
-                name: '',
-                code: '',
-                contact: '',
-                email: '',
-                movil: '',
-                phone: '',
-                address: ''
+                cglobal_id: 0,
+                moment: 0,
+                confirm: 0,
+                url_doc: '',
+                client_comment: '',
+                status_id: 0
             },
             itemDefault: {
                 id: 0,
-                name: '',
-                code: '',
-                contact: '',
-                email: '',
-                movil: '',
-                phone: '',
-                address: ''
+                cglobal_id: 0,
+                moment: 0,
+                confirm: 0,
+                url_doc: '',
+                client_comment: '',
+                status_id: 0
             },
-            listfield: [{name: 'CAG', type: 'text', field: 'qualitie.name'}, {name: 'Cliente', type: 'text', field: 'clients.code'}],
+            listfield: [{name: 'CAG', type: 'text', field: 'qualities.cglobal_id'}, {name: 'Cliente', type: 'text', field: 'clients.name'}],
             filters_list: {
-                descrip: 'Nombre',
+                descrip: 'CAG',
                 field: 'qualities.cglobal_id',
                 value: ''
             },
@@ -39,10 +39,21 @@ new Vue({
                 field: 'qualities.cglobal_id',
                 type: 'asc'
             },
-
+           find: 0,
+           scrpdf: ''
         }
     },
     mounted () {
+        this.formData = new FormData();
+        this.find = parseInt($('#find').val());
+        if (this.find > 0) {
+
+            this.filters_list.value = this.find;
+
+        } else {
+
+            this.getlist()
+        }
     },
     methods: {
         dateToEs : dateEs,
@@ -145,6 +156,42 @@ new Vue({
             let email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.item.email);
 
             return name && contact && code && email
-        }
+        },
+        commend (it) {
+
+            this.item = it;
+
+            this.formData.append('client_id', this.item.global.client_id);
+
+            this.formData.append('id', it.id);
+
+            $('#commend').modal('show')
+        },
+        sendCommend () {
+            this.spin = true;
+            axios.post(urldomine + 'api/qualities/commends', this.formData,
+                {headers: {'content-type': 'multipart/form-data'}}
+            ).then(r => {
+                $('#commend').modal('hide');
+                axios.get(urldomine + 'api/qualities/details/' + this.item.id).then(r => {
+                    this.details = r.data;
+                    this.spin = false;
+                    $('#editItem').modal('hide')
+                });
+                this.$toasted.success(r.data);
+            })
+        },
+        passCommend () {
+            return  this.file !== null
+        },
+        getfile(e) {
+            let files = e.target.files || e.dataTransfer.files;
+            if (!files.length) {
+                this.file = null
+            } else {
+                this.file = files[0];
+                this.formData.append('doc', this.file)
+            }
+        },
     }
 });

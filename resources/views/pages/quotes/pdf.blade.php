@@ -15,20 +15,6 @@
             width: 100%;
             font-size: 12px;
         }
-        .top {
-            border: 1px solid grey;
-            margin-bottom: 15px;
-        }
-        .logo {
-            width: 15%;
-            text-align: left;
-            margin-top: 10px
-        }
-        .generals {
-            width: 85%;
-            text-align: left;
-            margin-top: 15px
-        }
         .clearfix:after {
             content: "";
             display: table;
@@ -199,30 +185,7 @@
 @php
     $total = 0
 @endphp
-<div class="top">
-    <div class="logo">
-        <img src="{{asset('images/gc/logo192.png')}}" alt="" width="96">
-    </div>
-    <div  class="generals">
-        <div style="width: 30%; text-align: left;">
-            <div style="font-weight:bolder;">{{$company->name}}</div>
-            <div style="padding-bottom: 10px;">{{$company->address}}</div>
-        </div>
-        <div style="width: 21%; text-align: left;  padding-left: 15px;  border-left: 1px solid grey">
-            <span style="font-weight: bolder">Email</span>
-            {{$company->email}} <br>
-            <span style="font-weight: bolder">RFC:</span>
-            {{$company->rfc}}
-        </div>
-        <div style="width: 15%; text-align: center; padding-left: 5px; border-left: 1px solid grey">
-            <span style="font-weight: bolder">Teléfono:</span>
-            {{$company->phone1}} <br>
-            <span style="font-weight: bolder">WhastApp:</span>
-            {{$company->phone2}}
-        </div>
-    </div>
-</div>
-<div id="details" class="clearfix">
+<div id="details" style="margin-top: 110px" class="clearfix">
     <div id="client" style="width: 50%">
         <div class="to">COTIZADO A:</div>
         <h2 class="name">{{$client->client->name}}</h2>
@@ -253,9 +216,9 @@
         <tr>
             <td class="no">{{$index+1}}</td>
             <td class="desc">{{$det->descrip}}</td>
-            <td class="desc">{{$det->measure->name}}</td>
-            <td class="desc">{{$det->cant}}</td>
-            <td class="desc">{{$det->price}}</td>
+            <td class="unit">{{$det->measure->name}}</td>
+            <td class="unit">{{$det->cant}}</td>
+            <td class="unit">{{$det->price}}</td>
             <td class="total">{{number_format($det->price * $det->cant, 2, '.', '')}}</td>
             @php
                  $total += $det->price * $det->cant

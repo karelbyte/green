@@ -21,6 +21,7 @@
         </div>
     </div>
 </div>
+<input type="text" id="find" value="{{$find}}" hidden>
 <div v-if="views.list" v-cloak>
     <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
@@ -49,17 +50,39 @@
                 <td class="cel_fix">@{{entity.global.id}}</td>
                 <td class="cel_fix">@{{entity.global.client.name}}</td>
                 <td class="cel_fix">@{{dateToEs(entity.moment)}}</td>
-                <td class="cel_fix">@{{entity.url_doc}}</td>
+                <td><a v-if="entity.status_id > 1 " :href="entity.url_doc" target="_blank">Recomendación</a></td>
                 <td class="cel_fix">@{{entity.status.name}}</td>
                 <td>
-                 <button class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                 <button class="btn btn-default waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-send-o"></i></button>
+                 <button class="btn btn-teal waves-effect btn-sm" @click="commend(entity)"><i class="fa fa-send-o"></i></button>
+                 <button v-if="entity.status_id === 2" class="btn btn-default waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-send-o"></i></button>
                 </td>
             </tr>
             </tbody>
         </table>
         <div class="panel-footer" style="padding: 2px 0 0 10px">
             <paginator :tpage="pager_list.totalpage" :pager="pager_list" v-on:getresult="getlist"></paginator>
+        </div>
+    </div>
+</div>
+
+<div id="commend" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Recomendaciones Asesor a cliente</h3>
+                    </div>
+                    <div class="panel-body">
+                        <span class="txtblack m-t-20">Adjuntar documento <span class="require">*</span></span>
+                        <input id="file" type="file" accept=".doc,.docx,.pdf" @change="getfile($event)">
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button v-if="passCommend()" :disabled="spin"  class="btn btn-brown -effect btn-sm" @click="sendCommend()">Enviar a cliente</button>
+                        <a href="#" data-dismiss="modal"  class="btn btn-default  waves-effect btn-sm" >Cerrar</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

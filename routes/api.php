@@ -250,7 +250,7 @@ Route::prefix('qualities')->group(function () {
 
     Route::post('list', 'QualityController@getList');
 
-    Route::get('/get/id', 'QualityController@sendID');
+    Route::post('commends', 'QualityController@commends');
 
 });
 Route::resource('/qualities', 'QualityController');

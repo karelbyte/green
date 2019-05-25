@@ -18,9 +18,10 @@ class CreateQualitiesTable extends Migration
             $table->bigInteger('cglobal_id')->unsigned();
             $table->foreign('cglobal_id')->references('id')->on('cglobals')->onDelete('cascade');
             $table->date('moment');
-            $table->date('confirm');
-            $table->string('url_doc', 250);
-            $table->string('client_comment', 250);
+            $table->date('confirm')->nullable();
+            $table->string('url_doc', 250)->nullable();
+            $table->string('client_comment', 250)->nullable();
+            $table->string('mime', 150)->nullable();
             $table->smallInteger('status_id');
             $table->engine = 'InnoDB';
         });

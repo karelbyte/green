@@ -24,6 +24,7 @@ class CreateMaintenanceDetailsTable extends Migration
             $table->string('note_client', 500)->nullable();
             $table->string('note_advisor', 500)->nullable();
             $table->string('url_commend', 250)->nullable();
+            $table->string('mime', 150)->nullable();
             $table->smallInteger('status_id')->unsigned();
             $table->smallInteger('accept')->unsigned();
             $table->engine = 'InnoDB';

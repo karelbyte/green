@@ -152,51 +152,62 @@ new Vue({
   el: '#app',
   data: function data() {
     return {
+      formData: 0,
+      file: null,
       views: {
         list: true,
         "new": false
       },
       item: {
         id: 0,
-        name: '',
-        code: '',
-        contact: '',
-        email: '',
-        movil: '',
-        phone: '',
-        address: ''
+        cglobal_id: 0,
+        moment: 0,
+        confirm: 0,
+        url_doc: '',
+        client_comment: '',
+        status_id: 0
       },
       itemDefault: {
         id: 0,
-        name: '',
-        code: '',
-        contact: '',
-        email: '',
-        movil: '',
-        phone: '',
-        address: ''
+        cglobal_id: 0,
+        moment: 0,
+        confirm: 0,
+        url_doc: '',
+        client_comment: '',
+        status_id: 0
       },
       listfield: [{
         name: 'CAG',
         type: 'text',
-        field: 'qualitie.name'
+        field: 'qualities.cglobal_id'
       }, {
         name: 'Cliente',
         type: 'text',
-        field: 'clients.code'
+        field: 'clients.name'
       }],
       filters_list: {
-        descrip: 'Nombre',
+        descrip: 'CAG',
         field: 'qualities.cglobal_id',
         value: ''
       },
       orders_list: {
         field: 'qualities.cglobal_id',
         type: 'asc'
-      }
+      },
+      find: 0,
+      scrpdf: ''
     };
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.formData = new FormData();
+    this.find = parseInt($('#find').val());
+
+    if (this.find > 0) {
+      this.filters_list.value = this.find;
+    } else {
+      this.getlist();
+    }
+  },
   methods: {
     dateToEs: _tools__WEBPACK_IMPORTED_MODULE_1__["dateEs"],
     getlist: function getlist(pFil, pOrder, pPager) {
@@ -274,6 +285,44 @@ new Vue({
       var code = this.item.code !== '';
       var email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.item.email);
       return name && contact && code && email;
+    },
+    commend: function commend(it) {
+      this.item = it;
+      this.formData.append('client_id', this.item.global.client_id);
+      this.formData.append('id', it.id);
+      $('#commend').modal('show');
+    },
+    sendCommend: function sendCommend() {
+      var _this4 = this;
+
+      this.spin = true;
+      axios.post(urldomine + 'api/qualities/commends', this.formData, {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      }).then(function (r) {
+        $('#commend').modal('hide');
+        axios.get(urldomine + 'api/qualities/details/' + _this4.item.id).then(function (r) {
+          _this4.details = r.data;
+          _this4.spin = false;
+          $('#editItem').modal('hide');
+        });
+
+        _this4.$toasted.success(r.data);
+      });
+    },
+    passCommend: function passCommend() {
+      return this.file !== null;
+    },
+    getfile: function getfile(e) {
+      var files = e.target.files || e.dataTransfer.files;
+
+      if (!files.length) {
+        this.file = null;
+      } else {
+        this.file = files[0];
+        this.formData.append('doc', this.file);
+      }
     }
   }
 });

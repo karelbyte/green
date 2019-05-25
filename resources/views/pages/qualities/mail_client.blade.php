@@ -433,15 +433,16 @@
                                     <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 15px; padding-top: 20px; padding-bottom: 0px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
                                     <div style="color:#052d3d;font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif;line-height:150%;padding-top:20px;padding-right:10px;padding-bottom:0px;padding-left:15px;">
                                         <div style="font-size: 12px; line-height: 18px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; color: #052d3d;">
-                                            <p style="font-size: 14px; line-height: 75px; text-align: center; margin: 0;"><span style="font-size: 50px;"><strong><span style="line-height: 75px; font-size: 50px;"><span style="font-size: 38px; line-height: 57px;">BIENVENIDO</span></span></strong></span></p>
-                                            <p style="font-size: 14px; line-height: 51px; text-align: center; margin: 0;"><span style="font-size: 34px;"><strong><span style="line-height: 51px; font-size: 34px;"><span style="color: #2190e3; line-height: 51px; font-size: 34px;">{{$data['client']}}</span></span></strong></span></p>
+                                            <p>Estimado: <strong>{{$data['client']['name']}}</strong> nos complace hacerle llegar algunas recomendaciones,
+                                                referentes a nuestro ultimo servicio .</p>
+
+                                            <p>Se ha generado un documento con los detalles, pude verlo en el archivo adjunto.</p>
                                         </div>
                                     </div>
                                     <!--[if mso]></td></tr></table><![endif]-->
                                     <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
                                     <div style="color:#555555;font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                         <div style="font-size: 12px; line-height: 14px; color: #555555; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif;">
-                                            <p style="font-size: 14px; line-height: 21px; text-align: center; margin: 0;"><span style="font-size: 18px; color: #000000;">Gracias por la preferencia. Le enviaremos un correo electrónico ocasional con todo lo nuevo y bueno que probablemente desee conocer: cotizaciones, nuevos productos, publicaciones, promociones.!<br></span></p>
                                         </div>
                                     </div>
                                     <!--[if mso]></td></tr></table><![endif]-->

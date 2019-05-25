@@ -17769,7 +17769,11 @@ new Vue({
       TypeShow: 'Detalle a añadir',
       elementsAplicClient: [],
       isNotFull: false,
-      editItem: false
+      editItem: false,
+      redirect: {
+        patch: '',
+        message: ''
+      }
     };
   },
   components: {
@@ -17937,7 +17941,9 @@ new Vue({
         if (r.data.type === 1) {
           _this4.$toasted.success(r.data.data);
 
-          _this4.getlist();
+          _this4.redirect.patch = document.location.origin + '/calidad/' + r.data.id;
+          _this4.redirect.message = 'Se a generado un apartado de calidad con número de cag: ' + r.data.id;
+          $('#redirect').modal('show');
         } else {
           _this4.scrpdf = r.data.data;
           $('#pdf').modal('show');

@@ -97,7 +97,11 @@ new Vue({
             TypeShow: 'Detalle a añadir',
             elementsAplicClient: [],
             isNotFull: false,
-            editItem: false
+            editItem: false,
+            redirect: {
+                patch: '',
+                message: ''
+            }
         }
     },
     components: {
@@ -296,7 +300,9 @@ new Vue({
             axios.get(urldomine + 'api/sales/notedeliverclient/' + id ).then(r => {
                if  (r.data.type === 1) {
                    this.$toasted.success(r.data.data);
-                   this.getlist();
+                   this.redirect.patch = document.location.origin + '/calidad/' + r.data.id;
+                   this.redirect.message = 'Se a generado un apartado de calidad con número de cag: ' +  r.data.id;
+                   $('#redirect').modal('show');
                } else {
                    this.scrpdf = r.data.data;
                    $('#pdf').modal('show')

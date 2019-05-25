@@ -13,6 +13,7 @@ use App\Models\SalesNotes\SalesNoteDetails;
 use App\Models\ServicesOffereds\ServiceOfferedsDetails;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class MaintenancesController extends Controller
 {
@@ -166,7 +167,7 @@ class MaintenancesController extends Controller
 
         $maintenance = MaintenanceDetail::query()->find($request->id);
 
-        $patch = 'maintenance/client-' . $client->code;
+        $patch = '/cliente-' . $client->code . '/mantenimientos/';
 
         $name = $maintenance->id .'.'. $request->doc->getClientOriginalExtension();
 
@@ -174,16 +175,16 @@ class MaintenancesController extends Controller
 
             $request->doc->storeAs('public/'. $patch, $name);
 
-            $maintenance ->url_commend = 'storage/' .$patch . '/' .  $name;
+            $maintenance ->url_commend = 'storage' .$patch .  $name;
 
             $maintenance ->mime =  $request->doc->getMimeType();
 
         }
         $maintenance->note_advisor = $request->note;
-        $maintenance->status_id = 6; // ENVIADO RECOMENDACIONES
+        $maintenance->status_id = 6;
         $maintenance->save();
 
-
+        // ENVIADO RECOMENDACIONES
         $data = [
 
             'company' => Company::query()->find(1),
@@ -198,7 +199,7 @@ class MaintenancesController extends Controller
 
         ];
 
-        SendMails::dispatch(new MailMaintananceCommend($data), $client->email);
+        Mail::to($client->email)->send(new MailMaintananceCommend($data));
 
         return response()->json('Se envio las recomendaciones al cliente!');
     }

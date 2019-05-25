@@ -58,12 +58,38 @@ Route::get('/limpiar_cache', function () {
 
 Route::get('/pruebas', function () {
 
+    $pdf = \App::make('snappy.pdf.wrapper');
 
-     $data = [
-         'client' =>    $data = \App\Models\Client::query()->find(2)->name,
-         'company' => \App\Models\Company::query()->find(1)
-     ];
-     return view('pages.clients.mail_client', ['data' => $data]);
+    $datos = \App\Models\CGlobal\CGlobal::query()->with(['MotiveServices', 'MotiveProducts', 'documents', 'compromise','contact',
+        'attended', 'client', 'status', 'info' => function($q) {
+            $q->with('info', 'info_det');
+        }, 'landscaper' => function ($l) {
+            $l->with('user');
+        }])->where('id', 1)->first();
+
+    $sale =  \App\Models\SalesNotes\SalesNote::with([ 'status', 'details' => function($d) {
+        $d->with('measure');
+    }])->where('global_id', 1)->first();
+
+    $data = [
+
+        'data' =>  $datos,
+
+        'sale' => $sale
+
+    ];
+
+    $footer = \View::make('pdf.footer', ['company' => \App\Models\Company::query()->find(1)])->render();
+
+    $header = \View::make('pdf.header', ['company' => \App\Models\Company::query()->find(1)])->render();
+
+    $html = \View::make('pages.cags.pdf', $data)->render();
+
+    $pdf->loadHTML($html)->setOption('header-html', $header)->setOption('footer-html', $footer);
+
+    $pdfBase64 = base64_encode($pdf->inline());
+
+    return $pdf->inline();
 });
 
 
