@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,7 +20,12 @@ class Client extends Model
 
     protected $keyType = 'integer';
 
-    protected $fillable = ['code', 'name', 'contact', 'email', 'movil', 'phone', 'address'];
+    protected $fillable = ['code', 'name', 'contact', 'email', 'movil', 'phone', 'address', 'register_to'];
+
+    public function user () {
+
+        return $this->hasOne(User::class, 'id', 'register_to');
+    }
 
     public $timestamps = false;
 

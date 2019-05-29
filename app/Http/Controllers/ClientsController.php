@@ -43,7 +43,7 @@ class ClientsController extends Controller
 
         $orders =$request->input('orders');
 
-        $datos = Client::select('*');
+        $datos = Client::query()->with('user')->select('*');
 
         if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
 
@@ -69,34 +69,24 @@ class ClientsController extends Controller
     public function store(Request $request)
     {
         try {
-
             $this->setID('clients', $request->code);
-
             $client = Client::query()->create($request->except('id'));
-
             $data = [
                 'client' => $client->name,
                 'company' => \App\Models\Company::query()->find(1)
             ];
-
             Mail::to($request->email)->send(new MailNotyNewClient($data));
-
             return response()->json('Cliente añadido con exito!');
-
         } catch ( \Exception $e) {
-
             return response()->json('Ya existe un cliente con ese codigo!', 500);
-
         }
     }
 
     // MODFICA CLIENTE
     public function update(Request $request, $id)
     {
-
-        Client::where('id', $id)->update($request->all());
-
-        return response()->json('Datos actualizados con exito!', 200);
+        Client::query()->where('id', $id)->update($request->all());
+        return response()->json('Datos actualizados con exito!');
     }
 
     // ELIMINA CLIENTE
@@ -107,7 +97,7 @@ class ClientsController extends Controller
 
             Client::destroy($id);
 
-            return response()->json('Datos eliminados con exito!', 200);
+            return response()->json('Datos eliminados con exito!');
 
         } catch ( \Exception $e) {
 

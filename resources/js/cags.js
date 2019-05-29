@@ -561,6 +561,8 @@ new Vue({
 
             this.spin = true;
 
+            this.client.register_to = this.user_id_auth;
+
             axios.post(urldomine + 'api/clients', this.client).then(res => {
 
                 this.spin = false;

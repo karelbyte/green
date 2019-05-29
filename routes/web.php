@@ -56,6 +56,17 @@ Route::get('/limpiar_cache', function () {
 
 });
 
+Route::get('tareas', function () {
+
+    $data = [
+        'client' => 'MENSAJE DE CROM',
+        'company' => \App\Models\Company::query()->find(1)
+    ];
+
+   \Illuminate\Support\Facades\Mail::to('karelpuerto78@gmail.com')->send(new \App\Mail\MailNotyNewClient($data));
+
+});
+
 Route::get('/pruebas', function () {
 
     $pdf = \App::make('snappy.pdf.wrapper');

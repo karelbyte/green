@@ -40,15 +40,16 @@
     </div>
     <hr>
     <div class="row">
-        <div v-for="entity in lists" :key="entity.id" class="col-lg-4" style="height: 320px">
-            <div  class="panel panel-border panel-inverse m-t-5">
+        <div v-for="entity in lists" :key="entity.id" class="col-lg-4" style="height: 320px; margin-top: 30px !important; font-size: 12px">
+            <div  class="panel panel-border panel-inverse">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-lg-8 col-xs-12">
+                        <div class="col-lg-4 col-xs-12">
                             No:<span class="txtblack">@{{ entity.id }}</span>
-                        </div>
-                        <div class="col-lg-4 col-xs-12 text-right">
                             CAG: <span class="txtblack">@{{entity.globals.id}}</span>
+                        </div>
+                        <div class="col-lg-8 col-xs-12 text-right" style="font-size: 11px">
+                            Elab. por: <span class="txtblack">@{{ entity.globals.user.name }}</span>
                         </div>
                     </div>
                 </div>

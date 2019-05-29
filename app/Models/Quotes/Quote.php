@@ -4,6 +4,7 @@ namespace App\Models\Quotes;
 
 use App\Models\CGlobal\CGlobal;
 use App\Models\TypeWaySendInfo;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -60,4 +61,5 @@ class Quote extends Model
 
         return $this->hasOne(QuoteStatus::class, 'id', 'status_id');
     }
+
 }

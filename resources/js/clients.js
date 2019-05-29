@@ -100,6 +100,8 @@ new Vue({
 
             this.spin = true;
 
+            this.item.register_to = this.user_id_auth;
+
             axios({
 
                 method: this.act,

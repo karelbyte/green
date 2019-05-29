@@ -84,15 +84,14 @@ class QuotesController extends Controller
         $orders =  $request->orders;
 
         $datos = Quote::with(['notes',  'TypeSend', 'docs', 'status', 'globals' => function($q){
-            $q->with(['client', 'landscaper' => function ($d) {
-
+            $q->with(['client', 'user', 'landscaper' => function ($d) {
                 $d->with('user');
             }]);
         }, 'details' => function($d) {
             $d->with('measure');
         }])->leftJoin('cglobals', 'cglobals.id', 'quotes.cglobal_id');
 
-        if ( $user->position_id !== 1) {
+        if ( (int) $user->position_id !== 1) {
 
             $datos->where('cglobals.user_id', $request->user_id_auth);
         }

@@ -61,13 +61,21 @@
                     <div class="col-lg-12  m-t-20">
                         <button class="m-t-20" @click="showNote()">Nota + </button>
                     </div>
-                    <div class="col-lg-12  m-t-20">
-                        <span class="txtblack">Imagen +<span class="require">*</span></span>
+                    <div class="col-lg-6  m-t-20">
+                        <span class="txtblack">Imagen directa<span class="require">*</span></span>
                         <input type="file" id="camera_img"  accept="image/*" capture="camera" @change="saveFile($event)">
                     </div>
-                    <div class="col-lg-12  m-t-20">
-                        <span class="txtblack">Video +<span class="require">*</span></span>
+                    <div class="col-lg-6 m-t-20">
+                        <span class="txtblack">Imagen adjunta<span class="require">*</span></span>
+                        <input type="file" id="camera_img"  accept="image/*" @change="saveFile($event)">
+                    </div>
+                    <div class="col-lg-6  m-t-20">
+                        <span class="txtblack">Video directo<span class="require">*</span></span>
                         <input type="file" id="camera_video"  accept="video/*" capture="camcorder" @change="saveFile($event)">
+                    </div>
+                    <div class="col-lg-6  m-t-20">
+                        <span class="txtblack">Video adjunto<span class="require">*</span></span>
+                        <input type="file" id="camera_video"  accept="video/*"  @change="saveFile($event)">
                     </div>
                     <div class="col-lg-12  m-t-20">
                         <span class="txtblack">Audio +<span class="require">*</span></span>
@@ -213,15 +221,16 @@
     </div>
     <hr>
     <div class="row">
-        <div v-for="entity in lists" :key="entity.id" class="col-lg-4" style="height: 380px">
-            <div  class="panel panel-border panel-inverse m-t-5">
+        <div v-for="entity in lists" :key="entity.id" class="col-lg-4" style="height: 340px">
+            <div  class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-lg-8 col-xs-12">
+                        <div class="col-lg-4 col-xs-12">
                             No:<span class="txtblack">@{{ entity.id }}</span>
-                        </div>
-                        <div class="col-lg-4 col-xs-12 text-right">
                             CAG: <span class="txtblack">@{{entity.globals.id}}</span>
+                        </div>
+                        <div class="col-lg-8 col-xs-12 text-right" style="font-size: 11px">
+                            Elab. por: <span class="txtblack">@{{ entity.globals.user.name }}</span>
                         </div>
                     </div>
                 </div>

@@ -110,6 +110,7 @@ new Vue({
       var _this2 = this;
 
       this.spin = true;
+      this.item.register_to = this.user_id_auth;
       axios({
         method: this.act,
         url: urldomine + 'api/clients' + (this.act === 'post' ? '' : '/' + this.item.id),

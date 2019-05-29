@@ -2,7 +2,9 @@
 
 namespace App\Console;
 
+use App\Console\Commands\NotifyDaily;
 use App\Console\Commands\NotifyVisits;
+use App\Console\Commands\TestComand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,7 +16,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-         NotifyVisits::class
+        NotifyVisits::class,
+        NotifyDaily::class
+       // TestComand::class
     ];
 
     /**
@@ -26,6 +30,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('notify:visits')->dailyAt('8:00');
+
+        $schedule->command('notify:daily')->dailyAt('8:00');
+
+      //  $schedule->command('prueba:test')->everyMinute();
     }
 
     /**

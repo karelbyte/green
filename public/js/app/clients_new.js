@@ -40,10 +40,12 @@ new Vue({
         phone: '',
         address: ''
       },
-      act: 'post'
+      act: 'post',
+      user_id_auth: 0
     };
   },
   mounted: function mounted() {
+    this.user_id_auth = parseInt($('#user_id_auth').val());
     this.add();
   },
   methods: {
@@ -51,6 +53,7 @@ new Vue({
       var _this = this;
 
       this.spin = true;
+      this.item.register_to = this.user_id_auth;
       axios({
         method: this.act,
         url: urldomine + 'api/clients' + (this.act === 'post' ? '' : '/' + this.item.id),

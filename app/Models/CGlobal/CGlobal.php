@@ -59,7 +59,6 @@ class CGlobal extends Model
     }
 
     public function Attended() {
-
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 

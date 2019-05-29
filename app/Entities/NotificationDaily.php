@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: papitoff
- * Date: 18/05/19
- * Time: 11:11 AM
- */
 
 namespace App\Entities;
 
@@ -17,11 +11,11 @@ class NotificationDaily
 {
     protected $id;
     protected $position;
-    
+
     public function __construct($id, $position)
     {
-      $this->id = $id;
-      $this->position = $position;
+        $this->id = $id;
+        $this->position = $position;
     }
 
     protected function Notifications() {
@@ -100,10 +94,10 @@ class NotificationDaily
             ->whereRaw('DATEDIFF(now() , salesnotes.paimentdate) >= 0')
             ->wherein('salesnotes.status_id', [1, 4, 6, 8]);
         if ( $this->position !== 1) {
-            $sale_note_not_payment  =   $sale_note_not_payment ->where('cglobals.user_id', $this->id)
+            $sale_note_not_payment = $sale_note_not_payment ->where('cglobals.user_id', $this->id)
                 ->select('salesnotes.*' )->get();
         } else {
-            $sale_note_not_payment  =   $sale_note_not_payment ->select('salesnotes.*')->get();
+            $sale_note_not_payment = $sale_note_not_payment ->select('salesnotes.*')->get();
         }
 
         // INSTALACION O ENGREAGA DE TRABAJOS
@@ -140,11 +134,11 @@ class NotificationDaily
     }
 
     public function exitNotify() {
-        $data = $this->Notifications();
 
+        $data = $this->Notifications();
         $land = count($data['landscapers']) > 0;
         $quoteconfirm = count($data['quoteconfirm']) > 0;
-        $quotetracing= count($data['quotetracing']) > 0;
+        $quotetracing = count($data['quotetracing']) > 0;
         $sale_note_not_close= count($data['sale_note_not_close']) > 0;
         $quote_local_close= count($data['quote_local_close']) > 0;
         $sale_note_not_payment= count($data['sale_note_not_payment']) > 0;
@@ -155,6 +149,6 @@ class NotificationDaily
     }
 
     public function Daily() {
-       return $this->Notifications();
+        return $this->Notifications();
     }
 }

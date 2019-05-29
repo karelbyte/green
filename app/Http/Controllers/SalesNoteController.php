@@ -59,12 +59,12 @@ class SalesNoteController extends Controller
         $orders =  $request->orders;
 
         $datos = SalesNote::with([ 'status', 'globals' => function($q){
-            $q->with('client');
+            $q->with('client', 'user');
         }, 'details' => function($d) {
             $d->with('measure');
         }])->leftJoin('cglobals', 'cglobals.id', 'salesnotes.global_id');
 
-        if ( $user->position_id !== 1) {
+        if ( (int) $user->position_id !== 1) {
 
             $datos->where('cglobals.user_id', $request->user_id_auth);
         }

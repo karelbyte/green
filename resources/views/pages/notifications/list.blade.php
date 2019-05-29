@@ -9,7 +9,7 @@
 </div>
 
 <div v-if="sale_note_not_delivered.length > 0" class="row m-t-20" v-cloak>
-    <div class="panel panel-border panel-inverse m-t-5">
+    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
         <div class="panel-heading text-center">
             <h3>SERVICIOS O PRODUCTOS EN TERMINO DE ENTREGA</h3>
         </div>
@@ -39,7 +39,7 @@
 </div>
 
 <div v-if="landscapers.length > 0" class="row m-t-20" v-cloak>
-    <div class="panel panel-border panel-inverse m-t-5">
+    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
         <div class="panel-heading text-center">
            <h3>VISITAS A DOMICILIOS</h3>
         </div>
@@ -73,7 +73,7 @@
 </div>
 
 <div v-if="quoteconfirm.length > 0" class="row m-t-20" v-cloak>
-    <div class="panel panel-border panel-inverse m-t-5">
+    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
         <div class="panel-heading text-center">
             <h3>LLAMADAS DE CONFIRMACION PARA HOY</h3>
         </div>
@@ -103,7 +103,7 @@
 </div>
 
 <div v-if="quotetracing.length > 0" class="row m-t-20" v-cloak>
-    <div class="panel panel-border panel-inverse m-t-5">
+    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
         <div class="panel-heading text-center">
             <h3>CLIENTES EN SEGUIMIENTO PARA HOY</h3>
         </div>
@@ -133,7 +133,7 @@
 </div>
 
 <div v-if="sale_note_not_payment.length > 0" class="row m-t-20" v-cloak>
-    <div class="panel panel-border panel-inverse m-t-5">
+    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
         <div class="panel-heading text-center">
             <h3>NOTAS DE VENTAS EN GESTION DE CABRANZA</h3>
         </div>
@@ -163,7 +163,7 @@
 </div>
 
 <div v-if="sale_note_not_close.length > 0" class="row m-t-20" v-cloak>
-    <div class="panel panel-border panel-inverse m-t-5">
+    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
         <div class="panel-heading text-center">
             <h3>NOTAS DE VENTAS SIN APLICAR</h3>
         </div>
@@ -191,7 +191,7 @@
 </div>
 
 <div v-if="quote_local_close.length > 0" class="row m-t-20" v-cloak>
-    <div class="panel panel-border panel-inverse m-t-5">
+    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
         <div class="panel-heading text-center">
             <h3>COTIZACION A DISTANCIA SIN TERMINAR</h3>
         </div>

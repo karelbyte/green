@@ -18116,6 +18116,7 @@ new Vue({
       var _this7 = this;
 
       this.spin = true;
+      this.client.register_to = this.user_id_auth;
       axios.post(urldomine + 'api/clients', this.client).then(function (res) {
         _this7.spin = false;
         $('#client_new').modal('hide');

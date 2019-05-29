@@ -28,17 +28,18 @@ new Vue({
                 phone: '',
                 address: ''
             },
-            act: 'post'
+            act: 'post',
+            user_id_auth: 0
         }
     },
     mounted () {
+        this.user_id_auth = parseInt($('#user_id_auth').val());
         this.add()
     },
     methods: {
         save () {
-
             this.spin = true;
-
+            this.item.register_to = this.user_id_auth;
             axios({
 
                 method: this.act,

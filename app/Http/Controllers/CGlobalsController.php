@@ -58,7 +58,7 @@ class CGlobalsController extends Controller
             $q->with('info', 'info_det');
         }]);
 
-        if ( $user->position_id !== 1) {
+        if ( (int) $user->position_id !== 1) {
 
             $datos->where('user_id', $request->user_id_auth);
         }
