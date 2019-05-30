@@ -36,6 +36,10 @@
             </div>
             <div class="panel-body">
                 <div class="row">
+                    <div class="col-lg-12 m-t-20">
+                        <span >CLIENTE:</span>
+                        <span class="txtblack">@{{item.globals.client.name}}</span>
+                    </div>
                     <div class="col-lg-2  m-t-20">
                         <span class="txtblack">Fecha<span class="require">*</span></span>
                         <input type="date" class="form-control" v-model="item.globals.landscaper.moment">
