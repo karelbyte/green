@@ -4,10 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="GreenCenter Crm">
-    <meta name="author" content="Coderthemes">
     <link rel="shortcut icon" href="icon.ico">
     <title>GreenCenter CRM</title>
-    <title>GreenCenter Crm</title>
     <link rel="stylesheet" type="text/css" href="{{asset('loging/bootstrap.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('loging/fontawesome-all.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('loging/style.css')}}">

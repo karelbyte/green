@@ -413,8 +413,8 @@
                                 <!--[if (!mso)&(!IE)]><!-->
                                 <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                     <!--<![endif]-->
-                                    <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
-                                    <div style="color:#000000;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                    <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                    <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                         <div style="font-size: 16px; line-height: 19px; color: #000000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;">
                                             <p style="font-size: 16px; line-height: 19px; text-align: left; margin: 0;"><em><strong>NOTIFICACIONES DIARIAS<br></strong></em></p>
                                         </div>
@@ -435,7 +435,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <div style="font-size:16px;text-align:center;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif">
+                                    <div style="font-size:16px;text-align:center;">
                                         <div class="our-class"> {{\Carbon\Carbon::now()->format('d-m-Y')}}</div>
                                     </div>
                                     <!--[if (!mso)&(!IE)]><!-->
@@ -450,7 +450,7 @@
             </div>
             @if (count($data['data']['sale_note_not_delivered']) > 0)
                 <div style="background-color:transparent;">
-                    <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE;;">
+                    <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE">
                         <div style="border-collapse: collapse;display: table;width: 100%;background-color:#AEAEAE;">
                             <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:#AEAEAE"><![endif]-->
                             <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:#AEAEAE;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
@@ -459,9 +459,9 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
-                                        <div style="color:#000000;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                            <div style="font-size: 12px; line-height: 14px; color: #000000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;">
+                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                        <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="">
                                                 <p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;">SERVICIOS O PRODUCTOS EN TERMINO DE ENTREGA</p>
                                             </div>
                                         </div>
@@ -484,9 +484,9 @@
                             <div class="col num12" style="min-width: 320px; max-width: 900px; display: table-cell; vertical-align: top;;">
                                 <div style="width:100% !important;">
                                     <!--[if (!mso)&(!IE)]><!-->
-                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                    <div style="border-top:0 solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <div style="font-size:16px;text-align:center;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif">
+                                        <div style="font-size:16px;text-align:center;">
                                             <div class="our-class">
                                                 <table class="comicGreen">
                                                     <thead>
@@ -532,9 +532,9 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
-                                        <div style="color:#000000;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                            <div style="font-size: 12px; line-height: 14px; color: #000000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;">
+                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                        <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="">
                                                 <p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;">VISITAS A DOMICILIOS</p>
                                             </div>
                                         </div>
@@ -559,7 +559,7 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <div style="font-size:16px;text-align:center;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif">
+                                        <div style="font-size:16px;text-align:center;">
                                             <div class="our-class">
                                                 <table class="comicGreen">
                                                     <thead>
@@ -609,9 +609,9 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
-                                        <div style="color:#000000;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                            <div style="font-size: 12px; line-height: 14px; color: #000000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;">
+                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                        <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="">
                                                 <p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;">LLAMADAS DE CONFIRMACION PARA HOY</p>
                                             </div>
                                         </div>
@@ -636,7 +636,7 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <div style="font-size:16px;text-align:center;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif">
+                                        <div style="font-size:16px;text-align:center;">
                                             <div class="our-class">
                                                 <table class="comicGreen">
                                                     <thead>
@@ -684,9 +684,9 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
-                                        <div style="color:#000000;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                            <div style="font-size: 12px; line-height: 14px; color: #000000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;">
+                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                        <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="">
                                                 <p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;">CLIENTES EN SEGUIMIENTO PARA HOY</p>
                                             </div>
                                         </div>
@@ -711,7 +711,7 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <div style="font-size:16px;text-align:center;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif">
+                                        <div style="font-size:16px;text-align:center;">
                                             <div class="our-class">
                                                 <table class="comicGreen">
                                                     <thead>
@@ -757,9 +757,9 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
-                                        <div style="color:#000000;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                            <div style="font-size: 12px; line-height: 14px; color: #000000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;">
+                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                        <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="">
                                                 <p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;">NOTAS DE VENTAS EN GESTION DE CABRANZA</p>
                                             </div>
                                         </div>
@@ -784,7 +784,7 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <div style="font-size:16px;text-align:center;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif">
+                                        <div style="font-size:16px;text-align:center;">
                                             <div class="our-class">
                                                 <table class="comicGreen">
                                                     <thead>
@@ -830,9 +830,9 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
-                                        <div style="color:#000000;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                            <div style="font-size: 12px; line-height: 14px; color: #000000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;">
+                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                        <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="">
                                                 <p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;">NOTAS DE VENTAS SIN APLICAR</p>
                                             </div>
                                         </div>
@@ -857,7 +857,7 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <div style="font-size:16px;text-align:center;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif">
+                                        <div style="font-size:16px;text-align:center;">
                                             <div class="our-class">
                                                 <table class="comicGreen">
                                                     <thead>
@@ -901,9 +901,9 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
-                                        <div style="color:#000000;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-                                            <div style="font-size: 12px; line-height: 14px; color: #000000; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;">
+                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                        <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="">
                                                 <p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;">COTIZACION A DISTANCIA SIN TERMINAR</p>
                                             </div>
                                         </div>
@@ -928,7 +928,7 @@
                                     <!--[if (!mso)&(!IE)]><!-->
                                     <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
                                         <!--<![endif]-->
-                                        <div style="font-size:16px;text-align:center;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif">
+                                        <div style="font-size:16px;text-align:center;">
                                             <div class="our-class">
                                                 <table class="comicGreen">
                                                     <thead>

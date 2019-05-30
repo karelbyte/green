@@ -56,6 +56,5 @@ class NotifyVisits extends Command
            ];
            Mail::to( $scaper->user->email)->send(new AlertLandscape($data_email));
        }
-
     }
 }

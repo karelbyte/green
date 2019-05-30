@@ -136,7 +136,7 @@
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
-                                    Price: <span class="txtblack">@{{entity.price}}</span>
+                                    Precio: <span class="txtblack">@{{entity.price}}</span>
                                 </div>
                             </div>
                         </div>

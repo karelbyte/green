@@ -131,6 +131,8 @@ class AppSeeder extends Seeder
             ['id' => 7, 'name' => 'SEGIMIENTO'],
             ['id' => 8, 'name' => 'ESTRATEGIA DE VENTA'],
             ['id' => 9, 'name' => 'CONFIRMAR E.VENTA'],
+            ['id' => 10, 'name' => 'VISITADO'],
+            ['id' => 11, 'name' => 'CONTIZANDO'],
         ];
         \App\Models\Quotes\QuoteStatus::insert($QuoteStatus);
 
@@ -144,6 +146,8 @@ class AppSeeder extends Seeder
             ['id' => 5, 'name' => 'FINALIZADA - NO VENTA'],
             ['id' => 6, 'name' => 'EN EJECUCION'],
             ['id' => 7, 'name' => 'RECOMENDACIONES'],
+            ['id' => 8, 'name' => 'VISITA A DOMICILIO'],
+            ['id' => 9, 'name' => 'COTIZADO'],
         ];
         \App\Models\CGlobal\CGlobalStatus::insert($CAGSt);
 

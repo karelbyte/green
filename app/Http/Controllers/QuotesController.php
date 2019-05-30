@@ -331,16 +331,18 @@ class QuotesController extends Controller
 
         $quote =  Quote::find($request->id);
 
-        if ($request->status_id == true) {
+        if ($request->status_id === true && $quote->status_id === 1) {
 
-            $quote->status_id = 2;
+            $quote->status_id = 10;
 
             $quote->save();
+
+            $quote->globals()->update(['status_id' => 8, 'traser' => 3]);
         }
 
         $cg = $quote->globals; // ->LandScaper()->update($request->except('id'));
 
-        $lan = LandScaper::where('cglobal_id', $cg->id)->first();
+        $lan = LandScaper::query()->where('cglobal_id', $cg->id)->first();
 
         $lan->update($request->except('id'));
 
@@ -351,11 +353,20 @@ class QuotesController extends Controller
 
     public function SaveDetails(Request $request) {
 
-      $quote =  Quote::find($request->id);
+      $quote =  Quote::query()->find($request->id);
 
       $quote->descrip = $request->descrip;
 
       $quote->specifications = $request->specifications;
+
+        if ($quote->status_id === 10 || $quote->status_id  === 2 || $quote->status_id  === 10) {
+
+            $quote->status_id = 11;
+
+            $quote->save();
+
+            $quote->globals()->update(['status_id' => 9, 'traser' => 4]);
+        }
 
       $quote->save();
 

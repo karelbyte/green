@@ -39,65 +39,168 @@
 </div>
 
 <div v-if="landscapers.length > 0" class="row m-t-20" v-cloak>
-    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
-        <div class="panel-heading text-center">
-           <h3>VISITAS A DOMICILIOS</h3>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
+            <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
+                <div class="panel-heading text-center">
+                    <h3>VISITAS A DOMICILIOS</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th >CAG</th>
+                            <th >Cliente</th>
+                            <th >Dirección</th>
+                            <th >Fecha</th>
+                            <th >Hora</th>
+                            <th >Paisajista</th>
+                            <th ></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="mouse" v-for="land in landscapers" :key="land.id">
+                            <td >@{{land.cglobal_id}}</td>
+                            <td >@{{land.global.client.name}}</td>
+                            <td >@{{land.global.client.address}}</td>
+                            <td >@{{dateToEs(land.moment)}}</td>
+                            <td >@{{land.timer}}</td>
+                            <td >@{{land.user.name}}</td>
+                            <td ><a :href="gotoUrl(land.global.quote.id, 1)" style="font-style: oblique">IR A DOCUMENTO</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th >CAG</th>
-                    <th >Cliente</th>
-                    <th >Dirección</th>
-                    <th >Fecha</th>
-                    <th >Hora</th>
-                    <th >Paisajista</th>
-                    <th ></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="mouse" v-for="land in landscapers" :key="land.id">
-                    <td >@{{land.cglobal_id}}</td>
-                    <td >@{{land.global.client.name}}</td>
-                    <td >@{{land.global.client.address}}</td>
-                    <td >@{{dateToEs(land.moment)}}</td>
-                    <td >@{{land.timer}}</td>
-                    <td >@{{land.user.name}}</td>
-                    <td ><a :href="gotoUrl(land.global.quote.id, 1)" style="font-style: oblique">IR A DOCUMENTO</a></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        <div class="hidden-lg hidden-md hidden-sm col-xs-12">
+            <div class="panel-heading text-center">
+                <h4>VISITAS A DOMICILIOS</h4>
+            </div>
+            <div v-for="land in landscapers" :key="land.id"  class="panel panel-border panel-inverse m-t-5">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-xs-12">
+                                    CAG: <span class="txtblack">@{{land.cglobal_id}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Cliente: <span class="txtblack">@{{land.global.client.name}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Dirección: <span class="txtblack">@{{land.global.client.address}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                   Fecha: <span class="txtblack">@{{dateToEs(land.moment)}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Hora: <span class="txtblack">@{{land.timer}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Paisajista: <span class="txtblack">@{{land.user.name}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    <a :href="gotoUrl(land.global.quote.id, 1)" style="font-style: oblique">IR A DOCUMENTO</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               </div>
+           </div>
+      </div>
 </div>
 
 <div v-if="quoteconfirm.length > 0" class="row m-t-20" v-cloak>
-    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
-        <div class="panel-heading text-center">
-            <h3>LLAMADAS DE CONFIRMACION PARA HOY</h3>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
+            <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
+                <div class="panel-heading text-center">
+                    <h3>LLAMADAS DE CONFIRMACION</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th >Cotizacion</th>
+                            <th >Fecha</th>
+                            <th >Cliente</th>
+                            <th >Telefono</th>
+                            <th >Correo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="mouse" v-for="con in quoteconfirm" :key="con.id">
+                            <td >@{{con.id}}</td>
+                            <td >@{{dateToEs(con.check_date)}}</td>
+                            <td >@{{con.globals.client.name}}</td>
+                            <td >@{{con.globals.client.phone}}</td>
+                            <td >@{{con.globals.client.email}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th >Cotizacion</th>
-                    <th >Fecha</th>
-                    <th >Cliente</th>
-                    <th >Telefono</th>
-                    <th >Correo</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="mouse" v-for="con in quoteconfirm" :key="con.id">
-                    <td >@{{con.id}}</td>
-                    <td >@{{dateToEs(con.check_date)}}</td>
-                    <td >@{{con.globals.client.name}}</td>
-                    <td >@{{con.globals.client.phone}}</td>
-                    <td >@{{con.globals.client.email}}</td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="hidden-lg hidden-md hidden-sm col-xs-12">
+            <div class="panel-heading text-center">
+                <h4>LLAMADAS DE CONFIRMACION</h4>
+            </div>
+            <div v-for="con in quoteconfirm" :key="con.id"  class="panel panel-border panel-inverse m-t-5">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-xs-12">
+                                    Cotización: <span class="txtblack">@{{con.id}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Fecha: <span class="txtblack">@{{dateToEs(con.check_date)}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Cliente: <span class="txtblack">@{{con.globals.client.name}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Telefono: <span class="txtblack">@{{con.globals.client.phone}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Correo: <span class="txtblack">@{{con.globals.client.email}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    <a :href="gotoUrl(con.id, 1)" style="font-style: oblique">IR A DOCUMENTO</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -163,29 +266,68 @@
 </div>
 
 <div v-if="sale_note_not_close.length > 0" class="row m-t-20" v-cloak>
-    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
-        <div class="panel-heading text-center">
-            <h3>NOTAS DE VENTAS SIN APLICAR</h3>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
+            <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
+                <div class="panel-heading text-center">
+                    <h3>NOTAS DE VENTAS SIN APLICAR</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th >Nota</th>
+                            <th >Fecha</th>
+                            <th >Usuario</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="mouse" v-for="sale in sale_note_not_close" :key="sale.id">
+                            <td >@{{sale.id}}</td>
+                            <td >@{{dateToEs(sale.moment)}}</td>
+                            <td >@{{sale.globals.user.name}}</td>
+                            <td> <a :href="gotoUrl(sale.id, 2)" style="font-style: oblique">IR A DOCUMENTO</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th >Nota</th>
-                    <th >Fecha</th>
-                    <th >Usuario</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="mouse" v-for="sale in sale_note_not_close" :key="sale.id">
-                    <td >@{{sale.id}}</td>
-                    <td >@{{dateToEs(sale.moment)}}</td>
-                    <td >@{{sale.globals.user.name}}</td>
-                    <td> <a :href="gotoUrl(sale.id, 2)" style="font-style: oblique">IR A DOCUMENTO</a></td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="hidden-lg hidden-md hidden-sm col-xs-12">
+            <div class="panel-heading text-center">
+                <h4>NOTAS DE VENTAS SIN APLICAR</h4>
+            </div>
+            <div v-for="sale in sale_note_not_close" :key="sale.id"  class="panel panel-border panel-inverse m-t-5">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-xs-12">
+                                    Nota: <span class="txtblack">@{{sale.id}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Facha: <span class="txtblack">@{{dateToEs(sale.moment)}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Usuario: <span class="txtblack">@{{sale.globals.user.name}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    <a :href="gotoUrl(sale.id, 2)" style="font-style: oblique">IR A DOCUMENTO</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
