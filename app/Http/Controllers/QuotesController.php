@@ -309,7 +309,7 @@ class QuotesController extends Controller
 
             $footer = \View::make('pdf.footer')->render();
 
-            $header = \View::make('pdf.header', ['company' => \App\Models\Company::query()->find(1)])->render();
+            $header = \View::make('pdf.header', ['company' => Company::query()->find(1)])->render();
 
             $html = \View::make('pages.quotes.pdf', $data)->render();
 

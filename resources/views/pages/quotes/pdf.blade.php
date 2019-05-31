@@ -179,6 +179,9 @@
             padding: 8px 0;
             text-align: center;
         }
+        .unit {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -198,6 +201,9 @@
     </div>
 </div>
 
+<div style="margin: 20px 0 20px 0; text-align: center">
+ <h4>{{$data['descrip']}}</h4>
+</div>
 <table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <th class="no">#</th>
