@@ -111,8 +111,6 @@ class QuotesController extends Controller
             'list' =>  $list,
 
             'landscapers' => User::query()->where('position_id', 3)->select('uid', 'name')->get(),
-
-
         ];
 
         return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
@@ -167,26 +165,32 @@ class QuotesController extends Controller
 
                     $quote->save();
 
-                    return response()->json('Se archivaron los datos en el expediente!', 200);
+                    return response()->json('Se archivaron los datos en el expediente!');
 
                 } else {
 
-                    $quote->status_id = $quote->status_id == 3 ? 6 : 8;
+                    $quote->status_id = $quote->status_id === 3 ? 6 : 8;
 
-                    if ($quote->status_id == 8) { $quote->check_date = Carbon::now()->addDay(7); }
+                    $quote->globals()->update(['status_id' => 11, 'traser' => 6]);
+
+                   if ($quote->status_id === 8) {
+
+                       $quote->check_date = Carbon::now()->addDay(7);
+
+                       $quote->globals()->update(['status_id' => 12, 'traser' => 7]);
+                   }
 
                     $quote->feedback = $request->feedback;
 
-                    $quote->globals()->update(['status_id' => 3, 'traser' => 8]);
                 }
 
-
             }
+
             $quote->save();
 
             if ($request->clientemit === 1) {  // GENERAR NOTA DE VENTA
 
-                $quote->globals()->update(['status_id' => 3, 'traser' => 10]);
+                $quote->globals()->update(['status_id' => 4, 'traser' => 9]);
 
                 $sale = SalesNote::create([
 
@@ -204,11 +208,11 @@ class QuotesController extends Controller
 
                 $sale->details()->createMany($quote->details()->get()->toArray());
 
-                return response()->json($sale->id, 200);
+                return response()->json($sale->id);
 
             } else {
 
-                return response()->json('Se verificó la recepción!', 200);
+                return response()->json('Se verificó la recepción!');
             }
 
         } else {
@@ -233,7 +237,7 @@ class QuotesController extends Controller
 
         $client = CGlobal::query()->with('client')->where('id',  $quote->cglobal_id)->first();
 
-        if ($quote->status_id === 2 ) {  // SE ENVIA PARA CONFIRMACION 1 VES
+        if ($quote->status_id === 2 || $quote->status_id === 10 || $quote->status_id === 11 ) {  // SE ENVIA PARA CONFIRMACION 1 VES
 
             $quote->type_send_id = $request->type_send_id;
 
@@ -245,7 +249,7 @@ class QuotesController extends Controller
 
             $quote->save();
 
-            $quote->globals()->update(['status_id' => 2, 'traser' => 6]);
+            $quote->globals()->update(['status_id' => 10, 'traser' => 5]);
 
         }
         if ($quote->status_id === 6 ){
@@ -260,7 +264,7 @@ class QuotesController extends Controller
 
             $quote->save();
 
-            $quote->globals()->update(['status_id' => 2, 'traser' => 8]);
+            $quote->globals()->update(['status_id' => 11, 'traser' => 6]);
         }
         if ($quote->status_id === 8 ){
 
@@ -276,7 +280,7 @@ class QuotesController extends Controller
 
             $quote->save();
 
-            $quote->globals()->update(['status_id' => 2, 'traser' => 10]);
+            $quote->globals()->update(['status_id' => 13, 'traser' => 8]);
         }
 
             // Creando rutas para guardar cotizacion --------------------
@@ -313,13 +317,14 @@ class QuotesController extends Controller
 
             if (File::exists( $patch . '/cotizacion-'. $quote->token . '.pdf')) {
 
-                Storage::disk('public')->delete($quote->uid. '/cotizacion-'. $quote->token . '.pdf');
+                Storage::disk('public')->delete('cliente-'. $quote->globals->client->code. '/cag-' .
+                    $quote->globals->id . '/cotizacion-'. $quote->token . '.pdf');
 
             }
 
-            $pdf->save($patch . '/cotizacion-'. $quote->token . '.pdf');
+           $pdf->save($patch . '/cotizacion-'. $quote->token . '.pdf');
 
-            Mail::to($quote['globals']['client']['email'])->send(new SendQuoteClient($data));
+           Mail::to($quote['globals']['client']['email'])->send(new SendQuoteClient($data));
 
         return response()->json('Se actualizó el estado de envio de la información!');
 

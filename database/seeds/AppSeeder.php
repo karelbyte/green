@@ -148,6 +148,10 @@ class AppSeeder extends Seeder
             ['id' => 7, 'name' => 'RECOMENDACIONES'],
             ['id' => 8, 'name' => 'VISITA A DOMICILIO'],
             ['id' => 9, 'name' => 'COTIZADO'],
+            ['id' => 10, 'name' => 'CONFIRMANDO COTIZACION'],
+            ['id' => 11, 'name' => 'SEGUIMIENTO DE COTIZACION'],
+            ['id' => 12, 'name' => 'ESTRATEGIA DE VENTA'],
+            ['id' => 13, 'name' => 'CONFIRMAR E.VENTA'],
         ];
         \App\Models\CGlobal\CGlobalStatus::insert($CAGSt);
 
