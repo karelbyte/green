@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\MailQualityCommend;
-use App\Models\CGlobal\CGlobal;
+use App\Models\Client;
 use App\Models\Company;
 use App\Models\Qualities\Quality;
 use App\Models\Users\User;
-use http\Client;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -58,7 +58,7 @@ class QualityController extends Controller
 
     public function commends(Request $request) {
 
-        $client = \App\Models\Client::query()->find($request->client_id);
+        $client = Client::query()->find($request->client_id);
 
         $quality = Quality::query()->find($request->id);
 
@@ -76,6 +76,7 @@ class QualityController extends Controller
 
         }
         $quality->status_id = 2;
+        $quality->info_send_date = Carbon::now();
         $quality->save();
 
         // ENVIADO RECOMENDACIONES
@@ -95,6 +96,25 @@ class QualityController extends Controller
 
         Mail::to($client->email)->send(new MailQualityCommend($data));
 
+        $quality->global()->update(['status_id' => 14, 'traser' => 14]);
+
         return response()->json('Se envio las recomendaciones al cliente!');
+    }
+
+    public function updateCommendClient(Request $request) {
+
+        $quality = Quality::query()->find($request->id);
+
+        $quality->client_comment = $request->client_comment;
+
+        $quality->confirm = Carbon::now();
+
+        $quality->status_id = 3;
+
+        $quality->save();
+
+        $quality->global()->update(['status_id' => 15, 'traser' => 16]);
+
+        return response()->json('Datos actualizados!');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\MailNotyNewClient;
 use App\Models\Client;
+use App\Models\Company;
 use App\Traits\GenerateID;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -70,10 +71,10 @@ class ClientsController extends Controller
     {
         try {
             $this->setID('clients', $request->code);
-            $client = Client::query()->create($request->except('id'));
+            $client = Client::query()->create($request->except(['id', 'user']));
             $data = [
                 'client' => $client->name,
-                'company' => \App\Models\Company::query()->find(1)
+                'company' => Company::query()->find(1)
             ];
             Mail::to($request->email)->send(new MailNotyNewClient($data));
             return response()->json('Cliente añadido con exito!');
@@ -85,7 +86,7 @@ class ClientsController extends Controller
     // MODFICA CLIENTE
     public function update(Request $request, $id)
     {
-        Client::query()->where('id', $id)->update($request->all());
+        Client::query()->where('id', $id)->update($request->except(['id', 'user']));
         return response()->json('Datos actualizados con exito!');
     }
 

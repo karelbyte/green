@@ -152,8 +152,10 @@ class AppSeeder extends Seeder
             ['id' => 11, 'name' => 'SEGUIMIENTO DE COTIZACION'],
             ['id' => 12, 'name' => 'ESTRATEGIA DE VENTA'],
             ['id' => 13, 'name' => 'CONFIRMAR E.VENTA'],
+            ['id' => 14, 'name' => 'SE ENVIO RECOMENDACIONES'],
+            ['id' => 15, 'name' => 'CONCLUIDO'],
         ];
-        \App\Models\CGlobal\CGlobalStatus::insert($CAGSt);
+        \App\Models\CGlobal\CGlobalStatus::query()->insert($CAGSt);
 
 
         // TYPO DE RECEPCION

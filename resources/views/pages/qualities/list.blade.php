@@ -43,6 +43,8 @@
                         <th class="cel_fix"><order labels="Cliente" :options="orders_list" field="clients.name"  v-on:getfilter="getlist"></order></th>
                         <th class="cel_fix">Fecha</th>
                         <th class="cel_fix">Recomendaciones</th>
+                        <th class="cel_fix">Enviada</th>
+                        <th class="cel_fix">Confirmación</th>
                         <th class="cel_fix">Estado</th>
                         <th></th>
                     </tr>
@@ -53,10 +55,13 @@
                         <td class="cel_fix">@{{entity.global.client.name}}</td>
                         <td class="cel_fix">@{{dateToEs(entity.moment)}}</td>
                         <td><a v-if="entity.status_id > 1 " :href="entity.url_doc" target="_blank">Documento</a></td>
+                        <td class="cel_fix"><span v-if="entity.info_send_date !== null">@{{dateToEs(entity.info_send_date)}}</span></td>
+                        <td class="cel_fix"><span v-if="entity.confirm !== null">@{{dateToEs(entity.confirm)}}</span></td>
                         <td class="cel_fix">@{{entity.status.name}}</td>
                         <td>
-                            <button class="btn btn-teal waves-effect btn-sm" @click="commend(entity)"><i class="fa fa-send-o"></i></button>
-                            <button v-if="entity.status_id === 2" class="btn btn-default waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-send-o"></i></button>
+                            <button v-if="entity.status_id < 3" class="btn btn-teal waves-effect btn-sm" @click="commend(entity)"><i class="fa fa-send-o"></i></button>
+                            <button v-if="entity.status_id === 2" class="btn btn-default waves-effect btn-sm" @click="confirmCommend(entity)">Verificar</button>
+                            <button v-if="entity.status_id === 3" class="btn btn-default waves-effect btn-sm" @click="pdf(entity)">Imprimir</button>
                         </td>
                     </tr>
                     </tbody>
@@ -95,6 +100,20 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="row m-t-10" v-if="entity.info_send_date !== null">
+                                <div class="col-lg-12 col-xs-12">
+                                    Enviada: <span class="txtblack">
+                                       @{{dateToEs(entity.info_send_date)}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10" v-if="entity.confirm !== null">
+                                <div class="col-lg-12 col-xs-12">
+                                    Confirmada: <span class="txtblack">
+                                      @{{dateToEs(entity.confirm)}}
+                                    </span>
+                                </div>
+                            </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
                                     Estado: <span class="txtblack">@{{entity.status.name}}</span>
@@ -104,8 +123,9 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <button class="btn btn-teal waves-effect btn-sm" @click="commend(entity)"><i class="fa fa-send-o"></i></button>
-                    <button v-if="entity.status_id === 2" class="btn btn-default waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-send-o"></i></button>
+                    <button v-if="entity.status_id < 3" class="btn btn-teal waves-effect btn-sm" @click="commend(entity)"><i class="fa fa-send-o"></i></button>
+                    <button v-if="entity.status_id === 2" class="btn btn-default waves-effect btn-sm" @click="confirmCommend(entity)">Verificar</button>
+                    <button v-if="entity.status_id === 3" class="btn btn-default waves-effect btn-sm" @click="pdf(entity)">Imprimir</button>
                 </div>
             </div>
         </div>
@@ -126,7 +146,9 @@
                         <input id="file" type="file" accept=".doc,.docx,.pdf" @change="getfile($event)">
                     </div>
                     <div class="panel-footer text-right">
-                        <button v-if="passCommend()" :disabled="spin"  class="btn btn-brown -effect btn-sm" @click="sendCommend()">Enviar a cliente</button>
+                        <button v-if="passCommend()" :disabled="spin"  class="btn btn-brown -effect btn-sm" @click="sendCommend()">Enviar a cliente
+                            <div v-if="spin" class="lds-dual-ring"></div>
+                        </button>
                         <a href="#" data-dismiss="modal"  class="btn btn-default  waves-effect btn-sm" >Cerrar</a>
                     </div>
                 </div>
@@ -134,6 +156,33 @@
         </div>
     </div>
 </div>
+
+<div id="confirmCommend" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"
+     data-backdrop="static" data-keyboard="false">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Verificacion de recomendaciones</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-12">
+                            <span class="txtblack m-t-20">Comentarios del cliente <span class="require">*</span></span>
+                            <textarea type="text" class="form-control" v-model="item.client_comment"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a href="#" class="btn btn-danger waves-effect btn-sm" @click="applyCommend()">Confirmar</a>
+                        <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @component('com.spiner')@endcomponent
 @endsection
 @section('script')

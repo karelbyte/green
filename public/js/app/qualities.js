@@ -141,10 +141,6 @@ var core = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core */ "./resources/js/core.js");
 /* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools */ "./resources/js/tools.js");
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 new Vue({
@@ -245,47 +241,6 @@ new Vue({
         toastr["error"](e.response.data);
       });
     },
-    save: function save() {
-      var _this2 = this;
-
-      this.spin = true;
-      axios({
-        method: this.act,
-        url: urldomine + 'api/clients' + (this.act === 'post' ? '' : '/' + this.item.id),
-        data: this.item
-      }).then(function (response) {
-        _this2.spin = false;
-
-        _this2.$toasted.success(response.data);
-
-        _this2.getlist();
-
-        _this2.onviews('list');
-      })["catch"](function (e) {
-        _this2.spin = false;
-
-        _this2.$toasted.error(e.response.data);
-      });
-    },
-    add: function add() {
-      var _this3 = this;
-
-      axios.get(urldomine + 'api/clients/get/id').then(function (r) {
-        _this3.item = _objectSpread({}, _this3.itemDefault);
-        _this3.act = 'post';
-        _this3.item.code = r.data;
-        _this3.title = _this3.labelnew;
-
-        _this3.onviews('new');
-      });
-    },
-    pass: function pass() {
-      var name = this.item.name !== '';
-      var contact = this.item.contact !== '';
-      var code = this.item.code !== '';
-      var email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.item.email);
-      return name && contact && code && email;
-    },
     commend: function commend(it) {
       this.item = it;
       this.formData.append('client_id', this.item.global.client_id);
@@ -293,7 +248,7 @@ new Vue({
       $('#commend').modal('show');
     },
     sendCommend: function sendCommend() {
-      var _this4 = this;
+      var _this2 = this;
 
       this.spin = true;
       axios.post(urldomine + 'api/qualities/commends', this.formData, {
@@ -302,13 +257,11 @@ new Vue({
         }
       }).then(function (r) {
         $('#commend').modal('hide');
-        axios.get(urldomine + 'api/qualities/details/' + _this4.item.id).then(function (r) {
-          _this4.details = r.data;
-          _this4.spin = false;
-          $('#editItem').modal('hide');
-        });
+        _this2.spin = false;
 
-        _this4.$toasted.success(r.data);
+        _this2.getlist();
+
+        _this2.$toasted.success(r.data);
       });
     },
     passCommend: function passCommend() {
@@ -323,6 +276,22 @@ new Vue({
         this.file = files[0];
         this.formData.append('doc', this.file);
       }
+    },
+    confirmCommend: function confirmCommend(detail) {
+      this.item = detail;
+      $('#confirmCommend').modal('show');
+    },
+    applyCommend: function applyCommend() {
+      var _this3 = this;
+
+      axios.post(urldomine + 'api/qualities/update-commend-client', this.item).then(function (r) {
+        $('#confirmCommend').modal('hide');
+        _this3.spin = false;
+
+        _this3.getlist();
+
+        _this3.$toasted.success(r.data);
+      });
     }
   }
 });

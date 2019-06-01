@@ -252,6 +252,8 @@ Route::prefix('qualities')->group(function () {
 
     Route::post('commends', 'QualityController@commends');
 
+    Route::post('update-commend-client', 'QualityController@updateCommendClient');
+
 });
 Route::resource('/qualities', 'QualityController');
 

@@ -100,63 +100,6 @@ new Vue({
                 toastr["error"](e.response.data);
             })
         },
-        save () {
-
-            this.spin = true;
-
-            axios({
-
-                method: this.act,
-
-                url: urldomine + 'api/clients' + (this.act === 'post' ? '' : '/' + this.item.id),
-
-                data: this.item
-
-            }).then(response => {
-
-                this.spin = false;
-
-                this.$toasted.success(response.data);
-
-                this.getlist();
-
-                this.onviews('list');
-
-            }).catch(e => {
-
-                this.spin = false;
-
-                this.$toasted.error(e.response.data)
-            })
-
-        },
-        add () {
-          axios.get(urldomine + 'api/clients/get/id').then(r => {
-
-            this.item = {...this.itemDefault};
-
-            this.act = 'post';
-
-            this.item.code = r.data;
-
-            this.title = this.labelnew;
-
-            this.onviews('new')
-
-            })
-        },
-        pass () {
-
-            let name = this.item.name !== '';
-
-            let contact = this.item.contact !== '';
-
-            let code = this.item.code !== '' ;
-
-            let email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.item.email);
-
-            return name && contact && code && email
-        },
         commend (it) {
 
             this.item = it;
@@ -173,11 +116,8 @@ new Vue({
                 {headers: {'content-type': 'multipart/form-data'}}
             ).then(r => {
                 $('#commend').modal('hide');
-                axios.get(urldomine + 'api/qualities/details/' + this.item.id).then(r => {
-                    this.details = r.data;
-                    this.spin = false;
-                    $('#editItem').modal('hide')
-                });
+                this.spin = false;
+                this.getlist();
                 this.$toasted.success(r.data);
             })
         },
@@ -192,6 +132,18 @@ new Vue({
                 this.file = files[0];
                 this.formData.append('doc', this.file)
             }
+        },
+        confirmCommend(detail) {
+            this.item = detail;
+            $('#confirmCommend').modal('show')
+        },
+        applyCommend () {
+            axios.post(urldomine + 'api/qualities/update-commend-client', this.item).then(r => {
+                $('#confirmCommend').modal('hide');
+                this.spin = false;
+                this.getlist();
+                this.$toasted.success(r.data);
+            })
         },
     }
 });

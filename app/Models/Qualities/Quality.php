@@ -14,7 +14,7 @@ class Quality extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['cglobal_id', 'moment', 'confirm', 'url_doc', 'status_id', 'client_comment', 'mime'];
+    protected $fillable = ['cglobal_id', 'moment', 'confirm', 'info_send_date', 'url_doc', 'status_id', 'client_comment', 'mime'];
 
     public function global()
     {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\SendMails;
 use App\Mail\SendQuoteClient;
 use App\Models\CGlobal\CGlobal;
 use App\Models\Company;
@@ -337,9 +336,12 @@ class QuotesController extends Controller
 
     public function saveInfo(Request $request) {
 
-        $quote =  Quote::find($request->id);
 
-        if ($request->status_id === true && $quote->status_id === 1) {
+        $data = $request->all();
+
+        $quote = Quote::query()->find($request->id);
+
+        if ($request->status_id === true || $request->status_id === 1) {
 
             $quote->status_id = 10;
 
@@ -348,11 +350,14 @@ class QuotesController extends Controller
             $quote->globals()->update(['status_id' => 8, 'traser' => 3]);
         }
 
-        $cg = $quote->globals; // ->LandScaper()->update($request->except('id'));
+        $data['timer'] = Carbon::parse($data['timer'])->format('H:i');
 
-        $lan = LandScaper::query()->where('cglobal_id', $cg->id)->first();
-
-        $lan->update($request->except('id'));
+        LandScaper::query()->where('cglobal_id',  $quote->globals->id)
+            ->update([
+                'moment' => $data['moment'],
+                'timer' => $data['timer'],
+                'status_id' => $request->status_id === true || $request->status_id === 1 ? 1 : 0
+            ]);
 
         return response()->json('Detalles guardados con exito!');
     }
@@ -382,7 +387,7 @@ class QuotesController extends Controller
 
       $quote->details()->createMany($request->details);
 
-      return response()->json('Detalles guardados con exito!', 200);
+      return response()->json('Detalles guardados con exito!');
     }
 
     public function pdf($id) {
@@ -407,7 +412,7 @@ class QuotesController extends Controller
         ];
         $footer = \View::make('pdf.footer')->render();
 
-        $header = \View::make('pdf.header', ['company' => \App\Models\Company::query()->find(1)])->render();
+        $header = \View::make('pdf.header', ['company' => Company::query()->find(1)])->render();
 
         $html = \View::make('pages.quotes.pdf', $data)->render();
 
