@@ -56,7 +56,7 @@ class CGlobalsController extends Controller
         $datos = CGlobal::with(['MotiveServices', 'MotiveProducts', 'documents', 'landscaper', 'compromise','contact',
            'attended', 'client', 'status', 'info' => function($q) {
             $q->with('info', 'info_det');
-        }]);
+        }])->leftJoin('clients', 'clients.id', 'cglobals.client_id');
 
         if ( (int) $user->position_id !== 1) {
 
@@ -67,7 +67,7 @@ class CGlobalsController extends Controller
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
 
-        $total = $datos->select('*')->count();
+        $total = $datos->select('cglobals.*')->count();
 
         $list =  $datos->skip($skip)->take($request['take'])->get();
 
@@ -103,6 +103,8 @@ class CGlobalsController extends Controller
        $cg = CGlobal::query()->create([
 
            'moment' => $data['moment'],
+
+           'emit' => Carbon::now(),
 
            'client_id' => $data['client']['id'],
 
@@ -174,7 +176,7 @@ class CGlobalsController extends Controller
                'title' => 'Visita a cliente'
            ]);
 
-           Quote::create([
+           Quote::query()->create([
 
                'cglobal_id' => $cg->id,
 
@@ -183,6 +185,8 @@ class CGlobalsController extends Controller
                'token' => random_int(0,99999),
 
                'moment' => Carbon::now(),
+
+               'emit' => Carbon::now(),
 
                'status_id' => 1,
            ]);
@@ -195,7 +199,7 @@ class CGlobalsController extends Controller
 
             $cg->Documents()->create($data['documents']);
 
-            Calendar::create([
+            Calendar:: query()->create([
 
                 'cglobal_id' => $cg->id,
 
@@ -217,6 +221,8 @@ class CGlobalsController extends Controller
 
                 'moment' => Carbon::now(),
 
+                'emit' => Carbon::now(),
+
                 'advance' => 0,
 
                 'origin' => SalesNote::ORIGIN_CAG,
@@ -230,15 +236,17 @@ class CGlobalsController extends Controller
 
         if ($data['type_compromise_id'] === TypeCompromise::QUOTE_DISTANCE) {
 
-            $quote =   Quote::create([
+            $quote =   Quote::query()->create([
 
-               'cglobal_id' => $cg->id,
+                'cglobal_id' => $cg->id,
 
                 'type_quote_id' => 2,
 
                 'token' => mt_rand(0,99999),
 
                 'moment' => Carbon::now(),
+
+                'emit' => Carbon::now(),
 
                 'status_id' => 2,
 
@@ -293,7 +301,7 @@ class CGlobalsController extends Controller
 
         $cg->Documents()->delete();
 
-        Calendar::where('cglobal_id', $cg->id)->delete();
+        Calendar::query()->where('cglobal_id', $cg->id)->delete();
 
         Quote::where('cglobal_id', $cg->id)->delete();
 
@@ -309,12 +317,14 @@ class CGlobalsController extends Controller
 
                 'moment' => $data['landscaper']['moment'],
 
+                'emit' => Carbon::now(),
+
                 'timer' => $data['landscaper']['timer'],
 
                 'title' => 'Visita a cliente'
             ]);
 
-            Quote::create([
+            Quote::query()->create([
 
                 'cglobal_id' => $cg->id,
 
@@ -324,9 +334,9 @@ class CGlobalsController extends Controller
 
                 'moment' => Carbon::now(),
 
-                'status_id' => 1,
+                'emit' => Carbon::now(),
 
-
+                'status_id' => 1
             ]);
 
             return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!', 200);
@@ -336,7 +346,7 @@ class CGlobalsController extends Controller
 
             $cg->Documents()->create($data['documents']);
 
-            Calendar::create([
+            Calendar::query()->create([
 
                 'cglobal_id' => $cg->id,
 
@@ -352,11 +362,13 @@ class CGlobalsController extends Controller
 
         if ($data['type_compromise_id'] === TypeCompromise::SALE_NOTE) {
 
-            $sale = SalesNote::create([
+            $sale = SalesNote::query()->create([
 
                 'global_id' => $cg->id,
 
                 'moment' => Carbon::now(),
+
+                'emit' => Carbon::now(),
 
                 'advance' => 0,
 
@@ -369,24 +381,24 @@ class CGlobalsController extends Controller
 
         if ($data['type_compromise_id'] === TypeCompromise::QUOTE_DISTANCE) {
 
-            $quote =  Quote::create([
+            $quote =  Quote::query()->create([
 
                 'cglobal_id' => $cg->id,
 
                 'type_quote_id' => 2,
 
-                'token' => mt_rand(0,99999),
+                'token' => random_int(0,99999),
 
                 'moment' => Carbon::now(),
 
-                'status_id' => 2,
+                'emit' => Carbon::now(),
+
+                'status_id' => 2
 
             ]);
 
             return response()->json(['id'=>$quote->id]);
         }
-
-
     }
 
     public function pdf($id) {

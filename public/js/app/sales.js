@@ -17721,6 +17721,10 @@ new Vue({
         name: 'Codigo',
         type: 'text',
         field: 'salesnotes.id'
+      }, {
+        name: 'Cliente',
+        type: 'text',
+        field: 'clients.name'
       }],
       filters_list: {
         descrip: 'Codigo',

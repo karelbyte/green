@@ -49,7 +49,7 @@ new Vue({
                 generate_pdf: false,
                 details: []
             },
-            listfield: [{name: 'Codigo', type: 'text', field: 'salesnotes.id'}],
+            listfield: [{name: 'Codigo', type: 'text', field: 'salesnotes.id'}, {name: 'Cliente', type: 'text', field: 'clients.name'}],
             filters_list: {
                 descrip: 'Codigo',
                 field: 'salesnotes.id',

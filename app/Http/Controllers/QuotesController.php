@@ -89,7 +89,8 @@ class QuotesController extends Controller
             }]);
         }, 'details' => function($d) {
             $d->with('measure');
-        }])->leftJoin('cglobals', 'cglobals.id', 'quotes.cglobal_id');
+        }])->leftJoin('cglobals', 'cglobals.id', 'quotes.cglobal_id')
+            ->leftJoin('clients', 'clients.id', 'cglobals.client_id');
 
         if ( (int) $user->position_id !== 1) {
 
@@ -201,6 +202,8 @@ class QuotesController extends Controller
                     'advance' => 0,
 
                     'strategy' => $quote->strategy,
+
+                    'origin' => SalesNote::ORIGIN_CAG,
 
                     'status_id' => 3,
 

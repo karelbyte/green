@@ -18,6 +18,7 @@ class CreateSalesnotesTable extends Migration
             $table->bigInteger('global_id')->unsigned();
             $table->foreign('global_id')->references('id')->on('cglobals')->onDelete('cascade');
             $table->date('moment');
+            $table->time('emit');
             $table->decimal('advance')->nullable();
             $table->string('strategy', 500)->nullable();
             $table->date('paimentdate')->nullable();

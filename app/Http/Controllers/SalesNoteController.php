@@ -62,7 +62,9 @@ class SalesNoteController extends Controller
             $q->with('client', 'user');
         }, 'details' => function($d) {
             $d->with('measure');
-        }])->leftJoin('cglobals', 'cglobals.id', 'salesnotes.global_id');
+        }])->leftJoin('cglobals', 'cglobals.id', 'salesnotes.global_id')
+            ->leftJoin('clients', 'clients.id', 'cglobals.client_id');
+
 
         if ( (int) $user->position_id !== 1) {
 
@@ -107,15 +109,15 @@ class SalesNoteController extends Controller
                         break;
                     case self::TERMINADA;
                         $sale->status_id = (double) $request->advance >= (double) $total ? self::PAGADA_TERMINADA : self::RECIBIDO_TERMINADA;
-                        $sale->globals()->update(['status_id' => 7, 'traser' => 15]);
+                        $sale->globals()->update(['status_id' => 7, 'traser' => 13]);
                         break;
                     case self::RECIBIDO_TERMINADA;
                         $sale->status_id = (double) $request->advance >= (double) $total ? self::PAGADA_TERMINADA : self::RECIBIDO_TERMINADA;
-                        $sale->globals()->update(['status_id' => 7, 'traser' => 15]);
+                        $sale->globals()->update(['status_id' => 7, 'traser' => 13]);
                         break;
                     case self::RECIBIDO_EJECUCION;
-                        $sale->status_id = (double) $request->advance >= (double) $total ? self::PAGADA_EJECUCION : self::ECIBIDO_EJECUCION;
-                        $sale->globals()->update(['status_id' => 7, 'traser' => 14]);
+                        $sale->status_id = (double) $request->advance >= (double) $total ? self::PAGADA_EJECUCION : self::RECIBIDO_EJECUCION;
+                        $sale->globals()->update(['status_id' => 6, 'traser' => 12]);
                         break;
                 }
             }
@@ -181,7 +183,6 @@ class SalesNoteController extends Controller
              /// ACTUALIZANDO NOTA DE VENTA
             $sale->advance = $request->advance;
             $sale->save();
-
                 // ACTUALIZANDO CICLO DE ATENCION GLOBAL
             $status_global = 0;
             $traser = 0;
@@ -193,7 +194,7 @@ class SalesNoteController extends Controller
                     $sale->globals()->update(['status_id' => $status_global, 'traser' => $traser]);
               }
 
-         return response()->json('Detalles guardados con exito!', 200);
+         return response()->json('Detalles guardados con exito!');
        }
 
     }
@@ -229,15 +230,13 @@ class SalesNoteController extends Controller
                     break;
        }
        $sale->save();
-       $sale->globals()->update(['status_id' => 6, 'traser' => 15]);
-       // CREANDO RECURSO DE CALIDAD
 
        Quality::query()->create([
             'cglobal_id' => $sale->global_id,
             'moment' => Carbon::now(),
             'status_id' => 1
         ]);
-       $sale->globals()->update(['status_id' => 7, 'traser' => 16]);
+       $sale->globals()->update(['status_id' => 7, 'traser' => 13]);
        return response()->json([
            'data'=> 'Se actualizo el inventario, la nota de venta, se genero un apartado de calidad para este ciclo!',
            'id' =>  $sale->global_id,
@@ -269,7 +268,6 @@ class SalesNoteController extends Controller
                 ]);
         }
 
-
             $sale = SalesNote::query()->find($request->id);
             // GENERANDO MANTENIMIENTOS
             if ($sale->origin === SalesNote::ORIGIN_CAG) {
@@ -290,9 +288,11 @@ class SalesNoteController extends Controller
                         'status_id' => 1]);
 
                 }
-                // ESTADO DEL CICLO DE ATENCION
-                $sale->globals()->update(['status_id' => 6, 'traser' => 12]);
+
             }
+
+            // ESTADO DEL CICLO DE ATENCION
+            $sale->globals()->update(['status_id' => 6, 'traser' => 10]);
 
            // ESTADOS
             switch ($sale->status_id) {

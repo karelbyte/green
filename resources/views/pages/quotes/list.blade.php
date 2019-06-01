@@ -234,14 +234,14 @@
                             CAG: <span class="txtblack">@{{entity.globals.id}}</span>
                         </div>
                         <div class="col-lg-8 col-xs-12 text-right" style="font-size: 11px">
-                            Elab. por: <span class="txtblack">@{{ entity.globals.user.name }}</span>
+                            <span class="txtblack">@{{ entity.globals.user.name }}</span>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12 col-xs-12">
-                            Fecha emisión: <span class="txtblack">@{{dateToEs(entity.moment)}}</span>
+                            Fecha emisión: <span class="txtblack">@{{dateToEs(entity.moment)}}</span> <span class="txtblack">@{{entity.emit}}</span>
                         </div>
 
                     </div>

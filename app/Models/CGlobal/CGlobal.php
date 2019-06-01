@@ -12,6 +12,7 @@ use App\Models\ServicesOffereds\ServiceOffereds;
 use App\Models\TypeCompromise;
 use App\Models\TypeContact;
 use App\Models\Users\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -23,9 +24,16 @@ class CGlobal extends Model
 
     protected $keyType = 'integer';
 
-    protected $fillable = [ 'moment', 'client_id', 'user_id', 'type_contact_id', 'repeater', 'type_motive',  'type_motive_id',
+    protected $fillable = [ 'moment', 'emit', 'client_id', 'user_id', 'type_contact_id', 'repeater', 'type_motive',  'type_motive_id',
 
                           'required_time', 'type_compromise_id', 'note', 'status_id', 'traser'];
+
+
+    public function getEmitAttribute($value)
+    {
+        if ($value === null) { return ''; }
+        return Carbon::parse($value)->format('g:i A');
+    }
 
     public function user () {
 

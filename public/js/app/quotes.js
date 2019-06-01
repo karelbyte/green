@@ -14464,6 +14464,10 @@ new Vue({
         name: 'Codigo',
         type: 'text',
         field: 'quotes.id'
+      }, {
+        name: 'Cliente',
+        type: 'text',
+        field: 'clients.name'
       }],
       filters_list: {
         descrip: 'Codigo',

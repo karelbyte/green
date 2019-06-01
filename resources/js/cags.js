@@ -84,9 +84,9 @@ new Vue({
                 phone: '',
                 address: ''
             },
-            listfield: [{name: 'Numero', type: 'text', field: 'cglobals.id'}],
+            listfield: [{name: 'CAG', type: 'text', field: 'cglobals.id'}, {name: 'Cliente', type: 'text', field: 'clients.name'}],
             filters_list: {
-                descrip: 'Codigo',
+                descrip: 'CAG',
                 field: 'cglobals.id',
                 value: ''
             },

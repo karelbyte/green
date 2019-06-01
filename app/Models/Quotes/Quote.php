@@ -5,6 +5,7 @@ namespace App\Models\Quotes;
 use App\Models\CGlobal\CGlobal;
 use App\Models\TypeWaySendInfo;
 use App\Models\Users\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -24,8 +25,14 @@ class Quote extends Model
 
     protected $fillable = ['uid', 'cglobal_id', 'descrip', 'token', 'type_send_id', 'type_check_id', 'check_date',
 
-        'specifications', 'type_quote_id', 'sends', 'moment', 'ext', 'status_id'];
+        'specifications', 'type_quote_id', 'sends', 'moment', 'emit', 'ext', 'status_id'];
 
+
+    public function getEmitAttribute($value)
+    {
+        if ($value === null) { return ''; }
+        return Carbon::parse($value)->format('g:i A');
+    }
 
     public function details() {
 

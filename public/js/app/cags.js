@@ -17767,12 +17767,16 @@ new Vue({
         address: ''
       },
       listfield: [{
-        name: 'Numero',
+        name: 'CAG',
         type: 'text',
         field: 'cglobals.id'
+      }, {
+        name: 'Cliente',
+        type: 'text',
+        field: 'clients.name'
       }],
       filters_list: {
-        descrip: 'Codigo',
+        descrip: 'CAG',
         field: 'cglobals.id',
         value: ''
       },

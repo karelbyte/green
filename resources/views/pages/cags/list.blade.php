@@ -193,7 +193,7 @@
                             No:<span class="txtblack">@{{ entity.id }}</span>
                         </div>
                         <div class="col-lg-9 col-xs-12 text-right" style="font-size: 11px">
-                            Aten. por: <span class="txtblack">@{{ entity.attended.name }}</span>
+                            <span class="txtblack">@{{ entity.attended.name }}</span>
                         </div>
                     </div>
                 </div>
@@ -202,7 +202,7 @@
                         <div class="col-lg-8 col-md-8 col-sm-8 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-12 col-xs-12">
-                                    Fecha emisión: <span class="txtblack">@{{dateToEs(entity.moment)}}</span>
+                                    Fecha emisión: <span class="txtblack">@{{dateToEs(entity.moment)}}</span> <span class="txtblack">@{{entity.emit}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">

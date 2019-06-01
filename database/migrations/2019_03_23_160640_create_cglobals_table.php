@@ -16,6 +16,7 @@ class CreateCGlobalsTable extends Migration
         Schema::create('cglobals', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('moment');
+            $table->time('emit');
             $table->bigInteger('client_id')->unsigned();
             $table->foreign('client_id')->references('id')
                 ->on('clients');

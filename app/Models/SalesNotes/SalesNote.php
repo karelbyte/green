@@ -3,6 +3,7 @@
 namespace App\Models\SalesNotes;
 
 use App\Models\CGlobal\CGlobal;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -18,7 +19,13 @@ class SalesNote extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['global_id', 'moment', 'advance', 'status_id', 'strategy', 'status_id', 'origin'];
+    protected $fillable = ['global_id', 'moment', 'emit', 'advance', 'status_id', 'strategy', 'status_id', 'origin'];
+
+    public function getEmitAttribute($value): string
+    {
+        if ($value === null) { return ''; }
+        return Carbon::parse($value)->format('g:i A');
+    }
 
     public function globals() {
 

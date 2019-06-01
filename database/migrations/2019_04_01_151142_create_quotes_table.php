@@ -24,6 +24,7 @@ class CreateQuotesTable extends Migration
             $table->integer('type_quote_id');
             $table->smallInteger('sends')->nullable();
             $table->date('moment');
+            $table->time('emit');
             $table->date('check_date')->nullable();
             $table->smallInteger('status_id');
             $table->smallInteger('type_send_id')->nullable();
