@@ -26,11 +26,10 @@ Route::resource('/cags', 'CGlobalsController');
 
 // RUTAS DEL CALENDARIO
 Route::prefix('calendars')->group(function () {
-
     Route::post('list', 'CalendarsController@getList');
-
-    Route::get('/get/id', 'CalendarsController@sendID');
-
+    Route::post('add', 'CalendarsController@add');
+    Route::post('update', 'CalendarsController@update');
+    Route::post('eraser', 'CalendarsController@eraser');
 });
 Route::resource('/calendars', 'CalendarsController');
 
@@ -161,6 +160,8 @@ Route::resource('/roles', 'RolsController');
 Route::prefix('users')->group(function () {
 
     Route::post('list', 'UsersController@getList');
+
+    Route::get('all', 'UsersController@getUsers');
 
     Route::get('positions', 'UsersController@getUserPositions');
 

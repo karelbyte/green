@@ -127,9 +127,9 @@
                     </li>
                     @endcan
                     @can('calendar')
-                    <li>
-                        <a href="{{route('calendars')}}" class="waves-effect"><i class="mdi mdi-calendar"></i><span>Calendario </span></a>
-                    </li>
+                        <li>
+                            <a href="{{route('calendars')}}" class="waves-effect"><i class="mdi mdi-calendar"></i><span>Calendario </span></a>
+                        </li>
                     @endcan
                     @can('quote')
                     <li>

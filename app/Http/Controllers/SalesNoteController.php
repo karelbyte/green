@@ -441,7 +441,7 @@ class SalesNoteController extends Controller
 
     public function needs($id) {
 
-        $products = SalesNoteDetails::leftjoin('products_offereds_details', 'products_offereds_details.id', 'sales_note_details.item_id')
+        $products = SalesNoteDetails::query()->leftjoin('products_offereds_details', 'products_offereds_details.id', 'sales_note_details.item_id')
 
             ->leftjoin('products_offereds_needs', 'products_offereds_needs.products_offereds_detail_id', 'products_offereds_details.id')
 
@@ -452,7 +452,7 @@ class SalesNoteController extends Controller
 
             ->where('sales_note_details.sale_id', $id)->where('sales_note_details.type_item', self::PRODUCTO)->get();
 
-        $services = SalesNoteDetails::leftjoin('services_offereds_details', 'services_offereds_details.id', 'sales_note_details.item_id')
+        $services = SalesNoteDetails::query()->leftjoin('services_offereds_details', 'services_offereds_details.id', 'sales_note_details.item_id')
 
             ->leftjoin('services_offereds_needs', 'services_offereds_needs.services_offereds_detail_id', 'services_offereds_details.id')
 
@@ -463,7 +463,7 @@ class SalesNoteController extends Controller
 
             ->where('sales_note_details.sale_id', $id)->where('sales_note_details.type_item', self::SERVICIO)->get();
 
-        $sale = SalesNote::find($id);
+        $sale = SalesNote::query()->find($id);
 
         $inventoris = $sale->details_inventoris;
 

@@ -101,59 +101,41 @@ class CGlobalsController extends Controller
        $data = $request->all();
 
        $cg = CGlobal::query()->create([
-
            'moment' => $data['moment'],
-
            'emit' => Carbon::now(),
-
            'client_id' => $data['client']['id'],
-
            'user_id' => $data['user_id'],
-
            'type_contact_id' => $data['type_contact_id'],
-
            'repeater' => $data['repeater'],
-
            'type_compromise_id' => $data['type_compromise_id'],
-
            'type_motive' => $data['type_motive'],
-
            'type_motive_id' => $data['type_motive_id'],
-
            'required_time' => $data['required_time'],
-
            'traser' => 1,
-
            'note' => $data['note'],
-
            'status_id' => 1
        ]);
 
        $this->setID('cglobals', $cg->id );
 
        foreach ($data['info'] as $inf) {
-
            CGlobalInfo::query()->create([
-
                'cglobal_id' => $cg->id,
-
                'type_info_id' => $inf['info']['id'],
-
                'type_info_detail_id' => $inf['info_det']['id'],
-
                'info_descrip' => $inf['info_descrip']
            ]);
        }
 
-       // CREANDO COTIZACION A  DOMICIOLIO
+       // CREANDO COTIZACION A DOMICILIO
+
+        $client = Client::query()->find($data['client']['id']);
 
        if ($data['type_compromise_id'] === TypeCompromise::QUOTE_HOME) {
 
            $cg->LandScaper()->create($data['landscaper']);
 
            $user_email = User::query()->where('uid', $data['landscaper']['user_uid'])->first();
-
-           $client = Client::query()->find($data['client']['id']);
 
            $data_email = [
                'user' => $user_email,
@@ -166,28 +148,22 @@ class CGlobalsController extends Controller
            Mail::to($user_email->email)->send(new AlertLandscape($data_email));
 
            Calendar::query()->create([
-
                'cglobal_id' => $cg->id,
-
-               'moment' => $data['landscaper']['moment'],
-
-               'timer' => $data['landscaper']['timer'],
-
-               'title' => 'Visita a cliente'
+               'user_id' => $data['user_id'],
+               'for_user_id' => 0,
+               'start' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer']),
+               'end' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer'])->addHours(2),
+               'title' => 'Visita a cliente: ' .  $client->name ,
+               'contentFull' => 'DOMICILIO: ' . $client->address . '  /  NOTA: '.  $data['landscaper']['note'],
+               'class' => 'domicilio'
            ]);
 
            Quote::query()->create([
-
                'cglobal_id' => $cg->id,
-
                'type_quote_id' => 1,
-
                'token' => random_int(0,99999),
-
                'moment' => Carbon::now(),
-
                'emit' => Carbon::now(),
-
                'status_id' => 1,
            ]);
 
@@ -199,15 +175,16 @@ class CGlobalsController extends Controller
 
             $cg->Documents()->create($data['documents']);
 
-            Calendar:: query()->create([
-
+            Calendar::query()->create([
                 'cglobal_id' => $cg->id,
-
-                'moment' => $data['documents']['moment'],
-
-                'timer' => '10:00',
-
-                'title' => 'Envio de información'
+                'user_id' => $data['user_id'],
+                'for_user_id' => 0,
+                'start' => Carbon::parse($data['documents']['moment'] . ' 8:00'),
+                'end' => Carbon::parse($data['documents']['moment'] . ' 18:00'),
+                'allDay' => 1,
+                'contentFull' => ' DOMICILIO: ' . $client->address,
+                'title' => 'Información a: ' .$client->name ,
+                'class' => 'info'
             ]);
 
             return response()->json('Se generó un evento de envio de informacion a cliente!');
@@ -216,42 +193,26 @@ class CGlobalsController extends Controller
         if ($data['type_compromise_id'] === TypeCompromise::SALE_NOTE) {
 
           $sale = SalesNote::create([
-
                 'global_id' => $cg->id,
-
                 'moment' => Carbon::now(),
-
                 'emit' => Carbon::now(),
-
                 'advance' => 0,
-
                 'origin' => SalesNote::ORIGIN_CAG,
-
                 'status_id' => 3,
-
             ]);
 
            return response()->json(['id'=>$sale->id]);
         }
 
         if ($data['type_compromise_id'] === TypeCompromise::QUOTE_DISTANCE) {
-
-            $quote =   Quote::query()->create([
-
+            $quote =  Quote::query()->create([
                 'cglobal_id' => $cg->id,
-
                 'type_quote_id' => 2,
-
                 'token' => mt_rand(0,99999),
-
                 'moment' => Carbon::now(),
-
                 'emit' => Carbon::now(),
-
                 'status_id' => 2,
-
             ]);
-
             return response()->json(['id'=>$quote->id]);
         }
 
@@ -262,24 +223,16 @@ class CGlobalsController extends Controller
 
         $data = $request->all();
 
-        $cg = CGlobal::find($id);
+        $cg = CGlobal::query()->find($id);
 
         $cg->update([
-
             'type_contact_id' => $data['type_contact_id'],
-
             'repeater' => $data['repeater'],
-
             'type_compromise_id' => $data['type_compromise_id'],
-
             'type_motive' => $data['type_motive'],
-
             'type_motive_id' => $data['type_motive_id'],
-
             'required_time' => $data['required_time'],
-
             'note' => $data['note']
-
         ]);
 
         $user_email = User::query()->where('uid', $data['landscaper']['user_uid'])->first();
@@ -292,8 +245,6 @@ class CGlobalsController extends Controller
             'client' => $client,
             'company' => Company::query()->find(1),
         ];
-        // ENVIANDO ALERTA A PAISAJISTA
-        Mail::to($user_email->email)->send(new AlertLandscape($data_email));
 
         // CREANDO COTIZACION A DOMICILIO
 
@@ -303,41 +254,36 @@ class CGlobalsController extends Controller
 
         Calendar::query()->where('cglobal_id', $cg->id)->delete();
 
-        Quote::where('cglobal_id', $cg->id)->delete();
+        Quote::query()->where('cglobal_id', $cg->id)->delete();
 
-        SalesNote::where('global_id', $cg->id)->delete();
+        SalesNote::query()->where('global_id', $cg->id)->delete();
 
         if ($data['type_compromise_id'] === TypeCompromise::QUOTE_HOME) {
 
             $cg->LandScaper()->create($data['landscaper']);
 
-            Calendar::create([
-
+            Calendar::query()->create([
                 'cglobal_id' => $cg->id,
-
-                'moment' => $data['landscaper']['moment'],
-
-                'emit' => Carbon::now(),
-
-                'timer' => $data['landscaper']['timer'],
-
-                'title' => 'Visita a cliente'
+                'user_id' => $data['user_id'],
+                'for_user_id' => 0,
+                'start' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer']),
+                'end' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer'])->addHours(2),
+                'title' => 'Visita a cliente: ' .  $client->name ,
+                'contentFull' => 'DOMICILIO: ' . $client->address . '  /  NOTA: '.  $data['landscaper']['note'],
+                'class' => 'domicilio'
             ]);
 
             Quote::query()->create([
-
                 'cglobal_id' => $cg->id,
-
                 'type_quote_id' => 1,
-
                 'token' => mt_rand(0,99999),
-
                 'moment' => Carbon::now(),
-
                 'emit' => Carbon::now(),
-
                 'status_id' => 1
             ]);
+
+            // ENVIANDO ALERTA A PAISAJISTA
+            Mail::to($user_email->email)->send(new AlertLandscape($data_email));
 
             return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!', 200);
         }
@@ -347,14 +293,15 @@ class CGlobalsController extends Controller
             $cg->Documents()->create($data['documents']);
 
             Calendar::query()->create([
-
                 'cglobal_id' => $cg->id,
-
-                'moment' => $data['documents']['moment'],
-
-                'timer' => '10:00',
-
-                'title' => 'Envio de información'
+                'user_id' => $data['user_id'],
+                'for_user_id' => 0,
+                'start' => Carbon::parse($data['documents']['moment'] . ' 8:00'),
+                'end' => Carbon::parse($data['documents']['moment'] . ' 18:00'),
+                'allDay' => 1,
+                'contentFull' => ' DOMICILIO: ' . $client->address,
+                'title' => 'Información a: ' .$client->name,
+                'class' => 'info'
             ]);
 
             return response()->json('Se generó un evento de envio de informacion a cliente!', 200);
@@ -363,38 +310,24 @@ class CGlobalsController extends Controller
         if ($data['type_compromise_id'] === TypeCompromise::SALE_NOTE) {
 
             $sale = SalesNote::query()->create([
-
                 'global_id' => $cg->id,
-
                 'moment' => Carbon::now(),
-
                 'emit' => Carbon::now(),
-
                 'advance' => 0,
-
                 'status_id' => 3,
-
             ]);
-
             return response()->json(['id'=>$sale->id]);
         }
 
         if ($data['type_compromise_id'] === TypeCompromise::QUOTE_DISTANCE) {
 
             $quote =  Quote::query()->create([
-
                 'cglobal_id' => $cg->id,
-
                 'type_quote_id' => 2,
-
                 'token' => random_int(0,99999),
-
                 'moment' => Carbon::now(),
-
                 'emit' => Carbon::now(),
-
                 'status_id' => 2
-
             ]);
 
             return response()->json(['id'=>$quote->id]);
@@ -412,7 +345,9 @@ class CGlobalsController extends Controller
                 $l->with('user');
             }])->where('id', $id)->first();
 
-        $sale =  SalesNote::with([ 'status', 'details' => function($d) {
+
+
+        $sale = SalesNote::with([ 'status', 'details' => function($d) {
             $d->with('measure');
         }])->where('global_id', $id)->first();
 
@@ -426,9 +361,11 @@ class CGlobalsController extends Controller
 
         ];
 
+        //return $data;
+
         $footer = \View::make('pdf.footer')->render();
 
-        $header = \View::make('pdf.header', ['company' => \App\Models\Company::query()->find(1)])->render();
+        $header = \View::make('pdf.header', ['company' => Company::query()->find(1)])->render();
 
         $html = \View::make('pages.cags.pdf', $data)->render();
 

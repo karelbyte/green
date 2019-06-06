@@ -29,11 +29,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('notify:visits')->dailyAt('8:00');
+        $schedule->command('notify:visits')->dailyAt('8:00')->timezone('America/Mexico_City');
 
-        $schedule->command('notify:daily')->dailyAt('8:00');
+        $schedule->command('notify:daily')->dailyAt('8:00')->timezone('America/Mexico_City');
 
-      //  $schedule->command('prueba:test')->everyMinute();
+        $schedule->command('calendar:daily')->dailyAt('8:00')->timezone('America/Mexico_City');
+
     }
 
     /**

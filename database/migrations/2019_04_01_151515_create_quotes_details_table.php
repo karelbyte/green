@@ -22,7 +22,7 @@ class CreateQuotesDetailsTable extends Migration
             $table->bigInteger('measure_id')->unsigned();
             $table->integer('cant');
             $table->string('descrip',500);
-            $table->decimal('price', 8,2);
+            $table->decimal('price');
             $table->engine = 'InnoDB';
         });
     }

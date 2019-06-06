@@ -16,10 +16,15 @@ class CreateCalendarsTable extends Migration
         Schema::create('calendars', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('cglobal_id');
-            $table->date('moment');
-            $table->time('timer');
+            $table->bigInteger('user_id');
+            $table->bigInteger('for_user_id');
+            $table->dateTime('start');
+            $table->dateTime('end');
             $table->string('title', 50);
-            $table->integer('status_id')->default(1);
+            $table->string('contentFull', 250)->nullable();
+            $table->tinyInteger('allDay')->default(1);
+            $table->string('class', 10);
+            $table->tinyInteger('status_id')->default(1);
             $table->engine = 'InnoDB';
         });
     }

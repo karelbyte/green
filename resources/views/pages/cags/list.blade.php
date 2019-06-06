@@ -337,7 +337,7 @@
                                 <div class="radio radio-primary checkbox-inline">
                                     <input type="radio" id="radio10" value="2" v-model.number="item.documents.type_info_id">
                                     <label for="radio10">
-                                       Enviar enviar recomendaciones
+                                       Enviar recomendaciones
                                     </label>
                                 </div>
                             </div>

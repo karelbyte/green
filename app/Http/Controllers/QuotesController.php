@@ -71,7 +71,6 @@ class QuotesController extends Controller
         return response()->json('');
     }
 
-
     public function getList(Request $request) {
 
         $user = User::query()->find($request->user_id_auth);
@@ -116,7 +115,6 @@ class QuotesController extends Controller
         return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
 
     }
-
 
     public function SaveFile(Request $request) {
 
@@ -192,11 +190,13 @@ class QuotesController extends Controller
 
                 $quote->globals()->update(['status_id' => 4, 'traser' => 9]);
 
-                $sale = SalesNote::create([
+                $sale = SalesNote::query()->create([
 
                     'global_id' => $quote->cglobal_id,
 
                     'moment' => Carbon::now(),
+
+                    'emit' => Carbon::now(),
 
                     'advance' => 0,
 

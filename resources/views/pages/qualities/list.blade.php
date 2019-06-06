@@ -55,8 +55,8 @@
                         <td class="cel_fix">@{{entity.global.client.name}}</td>
                         <td class="cel_fix">@{{dateToEs(entity.moment)}}</td>
                         <td><a v-if="entity.status_id > 1 " :href="entity.url_doc" target="_blank">Documento</a></td>
-                        <td class="cel_fix"><span v-if="entity.info_send_date !== null">@{{dateToEs(entity.info_send_date)}}</span></td>
-                        <td class="cel_fix"><span v-if="entity.confirm !== null">@{{dateToEs(entity.confirm)}}</span></td>
+                        <td class="cel_fix"><span v-if="entity.info_send_date">@{{dateToEs(entity.info_send_date)}}</span></td>
+                        <td class="cel_fix"><span v-if="entity.confirm">@{{dateToEs(entity.confirm)}}</span></td>
                         <td class="cel_fix">@{{entity.status.name}}</td>
                         <td>
                             <button v-if="entity.status_id < 3" class="btn btn-teal waves-effect btn-sm" @click="commend(entity)"><i class="fa fa-send-o"></i></button>
@@ -100,14 +100,14 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="row m-t-10" v-if="entity.info_send_date !== null">
+                            <div class="row m-t-10" v-if="entity.info_send_date">
                                 <div class="col-lg-12 col-xs-12">
                                     Enviada: <span class="txtblack">
                                        @{{dateToEs(entity.info_send_date)}}
                                     </span>
                                 </div>
                             </div>
-                            <div class="row m-t-10" v-if="entity.confirm !== null">
+                            <div class="row m-t-10" v-if="entity.confirm">
                                 <div class="col-lg-12 col-xs-12">
                                     Confirmada: <span class="txtblack">
                                       @{{dateToEs(entity.confirm)}}

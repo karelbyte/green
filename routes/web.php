@@ -58,13 +58,8 @@ Route::get('/limpiar_cache', function () {
 
 Route::get('tareas', function () {
 
-    $data = [
-        'client' => 'MENSAJE DE CROM',
-        'company' => \App\Models\Company::query()->find(1)
-    ];
-
-   \Illuminate\Support\Facades\Mail::to('karelpuerto78@gmail.com')->send(new \App\Mail\MailNotyNewClient($data));
-
+    $data = \App\Models\Calendar::query()->where('user_id', 2)->whereDate('start', \Carbon\Carbon::now())->get();
+    return  $data;
 });
 
 Route::get('/pruebas', function () {

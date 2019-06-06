@@ -23,8 +23,8 @@ class CreateSalesNoteDetailsTable extends Migration
             $table->bigInteger('measure_id')->unsigned();
             $table->decimal('cant');
             $table->decimal('price');
-            $table->date('start');
-            $table->smallInteger('timer')->unsigned();
+            $table->date('start')->nullable();
+            $table->smallInteger('timer')->unsigned()->nullable();
             $table->smallInteger('deliver_product')->unsigned();
             $table->engine = 'InnoDB';
 

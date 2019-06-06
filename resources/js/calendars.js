@@ -1,5 +1,10 @@
-Vue.config.devtools = true;
-
+import VueCal from 'vue-cal'
+import 'vue-cal/dist/vuecal.css'
+import Multiselect from 'vue-multiselect'
+import datePicker from 'vue-bootstrap-datetimepicker';
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+import moment from 'moment'
+Vue.use(datePicker);
 new Vue({
     el: '#app',
     data () {
@@ -7,86 +12,111 @@ new Vue({
            spin: false,
             item: {
                 id: 0,
+                user_id: 0,
+                title: '',
+                start: '',
+                end: '',
+                background: true,
                 name: '',
-                password: '',
-                email: '',
-                rol: '',
-                active_id: false,
-                position_id: ''
-            },
-            itemDefault: {
-                id: 0,
-                name: '',
-                password: '',
-                email: '',
-                rol: '',
-                active_id: false,
-                position_id: ''
+                class: 'user',
+                contentFull: '',
+                dayoff_id: 0,
+                allDay: false,
+                user: {
+                    name: ''
+                }
             },
             datas: [],
-            act: 'post'
+            user_id_auth: 0,
+            act: 'post',
+            options: {
+                locale: 'es',
+                format: 'DD-MM-YYYY HH:mm'
+            },
+            users : []
         }
     },
     components: {
-        Multiselect: window.VueMultiselect.default,
-        'vue-cal': vuecal
+        Multiselect, VueCal
     },
     mounted () {
-        axios.post( urldomine + 'api/calendars/list').then(r => {
-            this.datas = r.data.data;
+        this.user_id_auth = parseInt($('#user_id_auth').val());
+        let date = moment();
+        this.getList(date.month() + 1, date.year());
+        axios.get( urldomine + 'api/users/all').then(r => {
+            this.users = r.data;
         });
     },
     methods: {
-        save () {
-
-            this.spin = true;
-
-            this.item.rol = this.value;
-
-            let data = {
-
-                'user': this.item,
-            };
-
-            axios({
-
-                method: this.act,
-
-                url: urldomine + 'api/users' + (this.act === 'post' ? '' : '/' + this.item.uid),
-
-                data: data
-
-            }).then(response => {
-
-                this.spin = false;
-
-                toastr["success"](response.data);
-
-                this.item = {...this.itemDefault};
-
-                this.value = ''
-
-            }).catch(e => {
-
-                this.spin = false;
-
-                toastr["error"](e.response.data);
-            })
-
+        logEvents(event) {
+           let date = moment(event.startDate);
+           this.getList( date.month() + 1, date.year() );
         },
-        pass () {
-
-            let name = this.item.name !== '';
-
-            let position = this.item.position_id !== '';
-
-            let password = (this.item.password === this.repassword) && (this.item.password !== '');
-
-            let email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.item.email);
-
-            let rols = this.value !== '';
-
-            return name && password && email && rols && position
+       dateEstoUs (s) {
+            let b = s.split(' ');
+            let d = b[0].split('-');
+            return d[2] + '-' + d[1] + '-' + d[0] + ' ' + b[1]
+        },
+        getList(m, y) {
+            let data = {
+                user_id_auth :  this.user_id_auth,
+                month: m,
+                year: y
+            };
+            axios.post( urldomine + 'api/calendars/list',  data).then(r => {
+                this.datas = r.data;
+            });
+        },
+        onEventClick (event, e) {
+            if (!isNaN(event.id)) {
+                this.act = 'put';
+                this.item.user_id = event.user_id;
+                this.item.allDay = event.allDay;
+                this.item.id = event.id;
+                this.item.for_user_id = event.for_user_id;
+                this.item.start =  new moment(event.start).format('DD-MM-YYYY HH:ss');
+                this.item.end = new moment(event.end).format('DD-MM-YYYY HH:ss');
+                this.item.title = event.title;
+                this.item.contentFull = event.contentFull;
+                this.item.cglobal_id = event.cglobal_id;
+                this.item.user.name = event.user.name;
+                $('#scheduleedit').modal('show');
+                e.stopPropagation()
+            }  else {
+                toastr["info"]('Encuentre el inicio del evento!');
+            }
+        },
+        addEvent() {
+           if (this.act === 'post') {
+               axios.post( urldomine + 'api/calendars/add', this.item).then(() => {
+                   $('#schedule').modal('hide');
+                   this.getList(new moment().month() + 1);
+               });
+           } else {
+               axios.post( urldomine + 'api/calendars/update', this.item).then(() => {
+                   $('#scheduleedit').modal('hide');
+                   this.getList(new moment().month() + 1);
+               });
+           }
+        },
+        clickDay (event) {
+            this.act = 'post';
+            this.item.user_id  = this.user_id_auth;
+            this.item.start =  new moment(event).add(8, 'h').format('DD-MM-YYYY HH:ss');
+            this.item.end = new moment(event).add(18, 'h').format('DD-MM-YYYY HH:ss');
+            this.item.title = '';
+            this.public = false;
+            this.item.allDay = false;
+            this.item.dayoff_id = 0;
+            this.item.contentFull = '';
+            $('#schedule').modal('show');
+        },
+        deleteEvent() {
+            axios.post(urldomine + 'api/calendars/eraser', {id : this.item.id}).then((r) => {
+                this.getList(new moment().month() + 1);
+                this.$toasted.success(r.data);
+                $('#scheduleedit').modal('hide');
+            })
         }
     }
 });

@@ -2,6 +2,7 @@
     "/js/app/app.js": "/js/app/app.js",
     "/css/app.css": "/css/app.css",
     "/js/app/cags.js": "/js/app/cags.js",
+    "/js/app/calendars.js": "/js/app/calendars.js",
     "/js/app/clients.js": "/js/app/clients.js",
     "/js/app/clients_new.js": "/js/app/clients_new.js",
     "/js/app/company.js": "/js/app/company.js",

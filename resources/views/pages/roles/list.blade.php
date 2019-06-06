@@ -134,6 +134,14 @@
                             </label>
                         </div>
                     </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('calendar')" type="checkbox" v-model="grants" value="calendar.others">
+                            <label for="checkbox2">
+                                Agendar a otros
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="row txtblack" style="padding-left: 10px">
                    Modulo Cotizaciones

@@ -26,6 +26,11 @@ class UsersController extends Controller
         return UserPosition::all();
     }
 
+    public function getUsers()
+    {
+        return User::query()->select('id', 'name')->get();
+    }
+
     public function getlanscapers()
     {
         return User::query()->where('position_id', UserPosition::LANDSCAPERS)->get();
@@ -79,7 +84,7 @@ class UsersController extends Controller
 
         if (!empty($user)) return response()->json('Ya existe un usuario con ese email!', 500);
 
-        $user = User::create([
+        $user = User::query()->create([
 
             'name' => $data['name'],
 

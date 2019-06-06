@@ -137,6 +137,11 @@
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
+                                    Dirección: <span class="txtblack">@{{entity.address}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
                                    Contacto: <span class="txtblack">@{{entity.contact}}</span>
                                 </div>
                             </div>

@@ -40,6 +40,10 @@
                         <span >CLIENTE:</span>
                         <span class="txtblack">@{{item.globals.client.name}}</span>
                     </div>
+                    <div class="col-lg-12 m-t-20">
+                        <span >DIRECCION:</span>
+                        <span class="txtblack">@{{item.globals.client.address}}</span>
+                    </div>
                     <div class="col-lg-2  m-t-20">
                         <span class="txtblack">Fecha<span class="require">*</span></span>
                         <input type="date" class="form-control" v-model="item.globals.landscaper.moment">
@@ -97,10 +101,17 @@
                  </div>
                  <hr>
                  <div v-for="doc in item.docs" class="row m-t-10">
-                     <div class="col-lg-6"><a :href="doc.url" target="_blank"> @{{ doc.name }} </a> </div>
                      <div class="col-lg-6">
-                         <button class="btn btn-default btn-sm" @click="showVisor(doc)"><i class="fa fa-eye"></i></button>
-                         <button class="btn btn-danger btn-sm" @click="deleteFile(doc.id)"><i class="fa fa-eraser"></i></button>
+                         <a :href="doc.url" target="_blank">
+                             <div v-if="doc.ext == 'jpg' || doc.ext == 'jpeg' || doc.ext == 'png'">
+                                 <img :src="doc.url" class="img_fix"/>
+                             </div>
+                             <span v-else >@{{ doc.name }}</span>
+                         </a>
+                     </div>
+                     <div class="col-lg-6 ">
+                         <button class="btn btn-default btn-sm m-t-10" @click="showVisor(doc)"><i class="fa fa-eye"></i></button>
+                         <button class="btn btn-danger btn-sm m-t-10" @click="deleteFile(doc.id)"><i class="fa fa-eraser"></i></button>
                      </div>
                  </div>
                  <div v-for="not in item.notes" class="row m-t-10">

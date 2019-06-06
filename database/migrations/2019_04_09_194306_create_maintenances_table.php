@@ -23,6 +23,7 @@ class CreateMaintenancesTable extends Migration
             $table->integer('timer');
             $table->date('start');
             $table->smallInteger('status_id')->unsigned();
+            $table->bigInteger('sales_note_details_id')->unsigned();
             $table->foreign('sales_note_details_id')->references('id')
                 ->on('sales_note_details')->onDelete('cascade');
             $table->timestamps();
