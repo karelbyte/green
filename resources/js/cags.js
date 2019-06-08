@@ -2,7 +2,7 @@ import {core} from './core';
 import * as moment from 'moment';
 import KnobControl from 'vue-knob-control'
 import Multiselect from 'vue-multiselect'
-import {dateEs, generateId} from './tools';
+import {dateEs, generateId, convertTime12to24} from './tools';
 
 new Vue({
     mixins: [core],
@@ -184,26 +184,17 @@ new Vue({
 
         getMotive(item) {
             if (item.type_motive === 2) {
-
                return  item.motive_services !== null ? item.motive_services.name : ''
-
             } else {
-
                 return item.motive_products !== null ?  item.motive_products.name  : ''
             }
         },
         showpdf(id) {
-
             this.spin = true;
-
             axios.get(urldomine + 'api/cags/pdf/' + id).then(response => {
-
                 this.spin = false;
-
                 this.scrpdf = response.data;
-
                 window.$('#pdf').modal('show')
-
             })
         },
         showSendInfo () {
@@ -225,47 +216,32 @@ new Vue({
 
             let info = {
                 id: generateId(9),
-
                 info: this.info,
-
                 info_det: this.info_det,
-
                 info_descrip: this.info_descrip
             };
 
             this.item.info.push(info);
-
             this.info = '';
-
             this.info_descrip = '';
-
             $('#info').modal('hide')
         },
         getlist (pFil, pOrder, pPager) {
 
             if (pFil !== undefined) { this.filters = pFil }
-
             if (pOrder !== undefined) { this.orders = pOrder }
-
             if (pPager !== undefined) { this.pager = pPager }
-
             this.spin = true;
-
             axios({
                 method: 'post',
 
                 url: urldomine + 'api/cags/list',
 
                 data: {
-
                     start: this.pager_list.page - 1,
-
                     take: 9,
-
                     filters: this.filters_list,
-
                     orders: this.orders_list,
-
                     user_id_auth : this.user_id_auth
                 }
 
@@ -279,38 +255,25 @@ new Vue({
                 });
 
                 this.clients = res.data.clients;
-
                 this.type_contacts = res.data.type_contacts;
-
                 this.type_infos = res.data.type_infos;
-
                 this.landscapers = res.data.landscapers;
-
                 this.productsOffereds = res.data.productsOffereds;
-
                 this.servicesOffereds = res.data.servicesOffereds;
-
                 this.pager_list.totalpage = Math.ceil(res.data.total / 9)
 
             }).catch(e => {
-
                 this.spin = false;
-
                 this.$toasted.error(e.response.data)
             })
         },
         save () {
-
            this.spin = true;
 
            window.axios({
-
                 method: this.act,
-
                 url: urldomine + 'api/cags' + (this.act === 'post' ? '' : '/' + this.item.id),
-
                 data: this.item
-
             }).then(res => {
 
                this.spin = false;
@@ -322,36 +285,21 @@ new Vue({
                switch (this.item.type_compromise_id) {
 
                    case 1:
-
                        this.redirect.patch = document.location.origin + '/notas-de-ventas/' + res.data.id;
-
                        this.redirect.message = 'Se a generado una nota de venta con número: ' +  res.data.id;
-
                        $('#redirect').modal({
-
                            backdrop: 'static',
-
                            keyboard: false
                        });
-
                        break;
-
                    case 2:
-
                        this.redirect.patch = document.location.origin + '/cotizaciones/' + res.data.id;
-
                        this.redirect.message = 'Se a generado una cotizacion con número: ' +  res.data.id;
-
                        $('#redirect').modal('show');
-
                        break;
-
                    default:
-
                        this.$toasted.success(res.data);
-
                        this.getlist();
-
                        this.onviews('list');
                }
 

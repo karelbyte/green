@@ -43,7 +43,8 @@ new Vue({
                 type_check_id: 0,
                 feedback: '',
                 notes: [],
-                clientemit: 0
+                clientemit: 0,
+                have_iva: false
             },
             itemDefault: {
                 id: 0,
@@ -56,7 +57,8 @@ new Vue({
                 type_check_id: 0,
                 feedback: '',
                 notes: [],
-                clientemit: 0
+                clientemit: 0,
+                have_iva: false
             },
             listfield: [{name: 'Codigo', type: 'text', field: 'quotes.id'}, {name: 'Cliente', type: 'text', field: 'clients.name'}],
             filters_list: {
@@ -325,13 +327,23 @@ new Vue({
 
         },
         getTotal () {
-
-          return  this.item.details.reduce( (a, b) => {
-
+         let iva = 0;
+         let subtotal = 0;
+         subtotal = this.item.details.reduce( (a, b) => {
                return a + parseFloat(b.price) * parseFloat(b.cant)
-
-          }, 0).toFixed(2)
-
+          }, 0);
+           if (this.item.have_iva === 1 ||  this.item.have_iva === true) {
+                iva = this.item.details.reduce( (a, b) => {
+                    return a + parseFloat(b.price) * parseFloat(b.cant)
+                }, 0) * 0.16;
+               subtotal = (subtotal + iva).toFixed(2)
+            }
+           return subtotal;
+        },
+        getIva () {
+            return  (this.item.details.reduce( (a, b) => {
+                return a + parseFloat(b.price) * parseFloat(b.cant)
+            }, 0) * 0.16).toFixed(2)
         },
         edit (it) {
 
@@ -430,6 +442,8 @@ new Vue({
               id : this.item.id,
 
               details : this.item.details,
+
+              have_iva : this.item.have_iva,
 
               descrip: this.item.descrip,
 

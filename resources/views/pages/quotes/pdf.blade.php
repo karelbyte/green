@@ -231,12 +231,14 @@
             @endphp
         </tr>
     @endforeach
+    @if ($data['have_iva'] === 1)
     <tr>
         <td></td>
         <td colspan="2"></td>
         <td colspan="2">BASE IMPONIBLE</td>
         <td class="unit">{{number_format($total, 2, '.', '')}}</td>
     </tr>
+
     <tr>
         @php
             $iva = $total * 0.16
@@ -246,11 +248,16 @@
         <td colspan="2">SUBTOTAL IVA</td>
         <td  class="unit">{{number_format($iva, 2, '.', '')}}</td>
     </tr>
+    @endif
     <tr>
         <td></td>
         <td colspan="2"></td>
         <td colspan="2">IMPORTE TOTAL</td>
+        @if ($data['have_iva'] === 1)
         <td  class="total">{{number_format($total + $iva, 2, '.', '')}}</td>
+            @else
+            <td  class="total">{{number_format($total, 2, '.', '')}}</td>
+        @endif
     </tr>
     </tbody>
 </table>

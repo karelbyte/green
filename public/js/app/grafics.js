@@ -74,8 +74,11 @@ new Vue({
         title: {
           text: 'CLIENTES POR PROCESO DEL CAG'
         },
+        subtitle: {
+          text: ''
+        },
         tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
+          pointFormat: '{series.name}: <b>{point.y}</b>'
         },
         plotOptions: {
           pie: {
@@ -83,74 +86,34 @@ new Vue({
             cursor: 'pointer',
             dataLabels: {
               enabled: true,
-              format: '<b>{point.name}</b>: {point.percentage:.1f}',
+              format: '<b>{point.name}</b>: {point.y}',
               style: {
                 color: Highcharts.theme && Highcharts.theme.contrastTextColor || 'black'
               }
             }
           }
         },
-        series: [{
-          name: 'Brands',
-          colorByPoint: true,
-          data: [{
-            name: 'VISITA A DOMICIO',
-            y: 10,
-            sliced: true,
-            selected: true
-          }, {
-            name: 'COTIZACION A DISTANCIA',
-            y: 20
-          }, {
-            name: 'ENVIO DE INFORMACION',
-            y: 20
-          }, {
-            name: 'EN ESPERA DE CONFIRMACION',
-            y: 10
-          }, {
-            name: 'COTIZANDO',
-            y: 5
-          }, {
-            name: 'EN PROCESO DE EJECUCION',
-            y: 10
-          }, {
-            name: 'VENTA DIRECTA',
-            y: 10
-          }, {
-            name: 'MANTENIMIENTO',
-            y: 5
-          }, {
-            name: 'RECOMENDACIONES',
-            y: 10
-          }]
-        }]
+        series: []
       },
-      options: {
+      sale_for_month: {
         chart: {
-          type: 'column'
+          type: 'line'
         },
         title: {
-          text: 'Monthly Average Rainfall'
+          text: 'Monto de ventas por mes para el año ' + new Date().getFullYear()
         },
         subtitle: {
-          text: 'Source: WorldClimate.com'
+          text: 'Ventas brutas'
         },
         xAxis: {
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
           crosshair: true
         },
         yAxis: {
           min: 0,
           title: {
-            text: 'Rainfall (mm)'
+            text: 'Miles de pesos'
           }
-        },
-        tooltip: {
-          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' + '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-          footerFormat: '</table>',
-          shared: true,
-          useHTML: true
         },
         plotOptions: {
           column: {
@@ -158,19 +121,7 @@ new Vue({
             borderWidth: 0
           }
         },
-        series: [{
-          name: 'Tokyo',
-          data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-        }, {
-          name: 'New York',
-          data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-        }, {
-          name: 'London',
-          data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-        }, {
-          name: 'Berlin',
-          data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
-        }]
+        series: []
       }
     };
   },
@@ -200,7 +151,21 @@ new Vue({
       _this.maintenance_month_last = r.data.maintenance_month_last; // MOTO VENTA DEL MES
 
       _this.amout_sale_month = r.data.amout_sale_month;
-      _this.amout_sale_month_last = r.data.amout_sale_month_last;
+      _this.amout_sale_month_last = r.data.amout_sale_month_last; // GRAFICA DE PIE CAG ESTADOS
+
+      _this.pie.subtitle.text = 'CANTIDAD EN EL MES ' + r.data.pie_cag_status.cant_cag;
+
+      _this.pie.series.push({
+        name: 'Brands',
+        colorByPoint: true,
+        data: r.data.pie_cag_status.data
+      });
+
+      _this.sale_for_month.series.push({
+        name: 'Venta',
+        color: "#257f4d",
+        data: r.data.sales_for_year
+      });
     });
   }
 });
@@ -211,7 +176,7 @@ new Vue({
 /*!*******************************!*\
   !*** ./resources/js/tools.js ***!
   \*******************************/
-/*! exports provided: options, rangoutil, dateEs, generateId */
+/*! exports provided: options, rangoutil, dateEs, generateId, convertTime12to24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -220,6 +185,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rangoutil", function() { return rangoutil; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dateEs", function() { return dateEs; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateId", function() { return generateId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convertTime12to24", function() { return convertTime12to24; });
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 window.urldomine = document.location.origin + '/';
 var options = {
   "closeButton": true,
@@ -316,6 +290,27 @@ Vue.directive('numeric-only', {
     });
   }
 });
+function convertTime12to24(time12h) {
+  var _time12h$split = time12h.split(' '),
+      _time12h$split2 = _slicedToArray(_time12h$split, 2),
+      time = _time12h$split2[0],
+      modifier = _time12h$split2[1];
+
+  var _time$split = time.split(':'),
+      _time$split2 = _slicedToArray(_time$split, 2),
+      hours = _time$split2[0],
+      minutes = _time$split2[1];
+
+  if (hours === '12') {
+    hours = '00';
+  }
+
+  if (modifier === 'PM') {
+    hours = parseInt(hours, 10) + 12;
+  }
+
+  return "".concat(hours, ":").concat(minutes);
+}
 
 /***/ }),
 

@@ -158,11 +158,19 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-10">
                         <input type="text" class="form-control" v-model="item.descrip" placeholder="Titulo de la cotización">
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-1">
                         <button class="btn btn-brown btn-default" @click="showFormDet()" >Detalles +</button>
+                    </div>
+                    <div class="col-lg-1 text-left">
+                        <div class="checkbox checkbox-primary">
+                            <input  type="checkbox" v-model="item.have_iva">
+                            <label for="checkbox2" class="txtblack">
+                                IVA
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -196,6 +204,14 @@
 
                             </tbody>
                             <tfoot>
+                            <tr v-if="item.have_iva === 1 || item.have_iva === true">
+                                <td></td>
+                                <td></td>
+                                <td>IVA (16 %)</td>
+                                <td class="txtblack">@{{getIva() }} </td>
+                                <td>
+                                </td>
+                            </tr>
                             <tr>
                                 <td></td>
                                 <td></td>

@@ -76,13 +76,13 @@
             <div class="row" >
                 <div class="col-lg-6">
                     <div class="card-box">
-                        <highcharts :options="pie" ref="bar"></highcharts>
+                        <highcharts :options="pie" ref="pie"></highcharts>
                     </div>
 
                 </div>
                 <div class="col-lg-6">
                     <div class="card-box">
-                        <highcharts :options="options" ref="bar"></highcharts>
+                        <highcharts :options="sale_for_month" ref="bar"></highcharts>
                     </div>
                 </div>
             </div>

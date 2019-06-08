@@ -40,6 +40,25 @@ class GraficsController extends Controller
         $amout_sale_month = SalesNote::query()->whereMonth('moment', $month)->selectRaw('sum(advance) as total')->get();
         $amout_sale_month_last = SalesNote::query()->whereMonth('moment', $month_last)->selectRaw('sum(advance) as total')->get();
 
+        // GRAFICA DE CAD POR ETAPAS
+
+        $pie_data = CGlobal::query()
+            ->leftJoin('cglobal_status', 'cglobal_status.id', 'cglobals.status_id')
+            ->whereMonth('moment', $month)
+            ->selectRaw('count(status_id) as y, cglobal_status.name as name')
+            ->groupBy('cglobals.status_id', 'cglobal_status.name')->get();
+        $pie = [
+            'cant_cag' => $client_care_month,
+            'data' => $pie_data
+         ];
+
+        // VENTAS DEL AÑO
+        $data_sale_year = [];
+        for ($i = 1; $i <=12; $i++) {
+            $data = SalesNote::query()->whereMonth('moment', $i)
+                ->selectRaw('sum(advance) as total')->get()[0]['total'];
+            $data_sale_year[] = $data ?? 0;
+        }
 
         $data = [
             'client_care_month' => $client_care_month,
@@ -55,7 +74,11 @@ class GraficsController extends Controller
             'maintenance_month_last' => $maintenance_month_last,
 
             'amout_sale_month' => $amout_sale_month[0]->total,
-            'amout_sale_month_last' => $amout_sale_month_last[0]->total
+            'amout_sale_month_last' => $amout_sale_month_last[0]->total,
+
+            'pie_cag_status' => $pie,
+
+            'sales_for_year' => $data_sale_year
         ];
 
         return response()->json($data,  200, [], JSON_NUMERIC_CHECK);

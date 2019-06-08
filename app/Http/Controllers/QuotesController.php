@@ -147,13 +147,13 @@ class QuotesController extends Controller
 
             $quote->feedback = $request->feedback;
 
-            if ($request->clientemit === 1) {
+            if ((int) $request->clientemit === 1) {
 
                 $quote->status_id = 4; // SE ACEPTO EL PRESUPUESTO VA A NOTA DE VENTA
 
             } else {
 
-                if ($request->emit === 2) { // NO SE ACEPTO FINALMENTE SE ARCHIVA
+                if ( (int) $request->emit === 2) { // NO SE ACEPTO FINALMENTE SE ARCHIVA
 
                     $quote->status_id = 5;
 
@@ -186,7 +186,7 @@ class QuotesController extends Controller
 
             $quote->save();
 
-            if ($request->clientemit === 1) {  // GENERAR NOTA DE VENTA
+            if ((int) $request->clientemit === 1) {  // GENERAR NOTA DE VENTA
 
                 $quote->globals()->update(['status_id' => 4, 'traser' => 9]);
 
@@ -239,7 +239,7 @@ class QuotesController extends Controller
 
         $client = CGlobal::query()->with('client')->where('id',  $quote->cglobal_id)->first();
 
-        if ($quote->status_id === 2 || $quote->status_id === 10 || $quote->status_id === 11 ) {  // SE ENVIA PARA CONFIRMACION 1 VES
+        if ((int) $quote->status_id === 2 || (int) $quote->status_id === 10 || (int) $quote->status_id === 11 ) {  // SE ENVIA PARA CONFIRMACION 1 VES
 
             $quote->type_send_id = $request->type_send_id;
 
@@ -254,7 +254,7 @@ class QuotesController extends Controller
             $quote->globals()->update(['status_id' => 10, 'traser' => 5]);
 
         }
-        if ($quote->status_id === 6 ){
+        if ((int) $quote->status_id === 6 ){
 
             $quote->type_send_id = $request->type_send_id;
 
@@ -268,7 +268,7 @@ class QuotesController extends Controller
 
             $quote->globals()->update(['status_id' => 11, 'traser' => 6]);
         }
-        if ($quote->status_id === 8 ){
+        if ((int) $quote->status_id === 8 ){
 
             $quote->type_send_id = $request->type_send_id;
 
@@ -371,6 +371,8 @@ class QuotesController extends Controller
       $quote->descrip = $request->descrip;
 
       $quote->specifications = $request->specifications;
+
+      $quote->have_iva = $request->have_iva;
 
         if ($quote->status_id === 10 || $quote->status_id  === 2 || $quote->status_id  === 10) {
 

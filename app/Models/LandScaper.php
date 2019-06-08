@@ -38,11 +38,11 @@ class LandScaper extends Model
      * @var array
      */
 
-    public function getTimerAttribute($value)
+   /* public function getTimerAttribute($value)
     {
         if ($value === null) { return ''; }
         return Carbon::parse($value)->format('g:i A');
-    }
+    }*/
 
     protected $fillable = ['cglobal_id', 'moment', 'timer', 'note', 'user_uid', 'status_id'];
 
