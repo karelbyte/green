@@ -355,7 +355,7 @@ class CGlobalsController extends Controller
             }]);
         }])->where('global_id', $id)->first();
 
-       if ( $datos->type_motive === 1) {
+       if ( (int) $datos->type_motive === 1) {
            $motive = ProductOffereds::query()->find($datos->type_motive_id);
          } else {
            $motive = ServiceOffereds::query()->find($datos->type_motive_id);
@@ -378,7 +378,7 @@ class CGlobalsController extends Controller
             'quote' => $quote
         ];
 
-        return $datos;
+       // return $data;
 
         $footer = \View::make('pdf.footer')->render();
 

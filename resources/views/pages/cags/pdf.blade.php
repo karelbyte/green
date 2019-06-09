@@ -262,7 +262,7 @@
         </div>
     </div>
 @endif
-@if ($quote !== null)
+@if ($quote !== null )
     <div style="margin: 20px 0 20px 0; text-align: center">
         <h4>{{$quote['descrip']}}</h4>
     </div>
@@ -324,7 +324,7 @@
         </tbody>
     </table>
 @endif
-@if ($sale !== null)
+@if ($sale !== null &&  (int) $sale['status_id'] !== 3)
     <div style="margin: 20px 0 20px 0; text-align: center">
         <h4>NOTA DE VENTA</h4>
     </div>
