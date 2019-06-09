@@ -4,6 +4,7 @@ namespace App\Entities;
 
 
 use App\Models\LandScaper;
+use App\Models\Qualities\Quality;
 use App\Models\Quotes\Quote;
 use App\Models\SalesNotes\SalesNote;
 
@@ -113,6 +114,32 @@ class NotificationDaily
             $sale_note_not_delivered = $sale_note_not_delivered ->select('salesnotes.*')->get();
         }
 
+        // ENVIO DE RECOMENDACIONES
+        $qualities_send_info = Quality::query()->with(['global' => function($q) {
+            $q->with('client', 'user');
+        }])->leftJoin('cglobals', 'cglobals.id',   'qualities.cglobal_id')
+            ->whereRaw('DATEDIFF(now() , qualities.moment) >= 0')
+            ->where('qualities.status_id', 1);
+        if ( $this->position !== 1) {
+            $qualities_send_info = $qualities_send_info->where('cglobals.user_id', $this->id)
+                ->select('qualities.*' )->get();
+        } else {
+            $qualities_send_info = $qualities_send_info ->select('qualities.*')->get();
+        }
+
+        // CONFIRMACION  DE RECOMENDACIONES
+        $qualities_send_info_confirm = Quality::query()->with(['global' => function($q) {
+            $q->with('client', 'user');
+        }])->leftJoin('cglobals', 'cglobals.id',   'qualities.cglobal_id')
+            ->whereRaw('DATEDIFF(now() , qualities.info_send_date) >= 7')
+            ->where('qualities.status_id', 1);
+        if ( $this->position !== 2) {
+            $qualities_send_info_confirm = $qualities_send_info_confirm->where('cglobals.user_id', $this->id)
+                ->select('qualities.*' )->get();
+        } else {
+            $qualities_send_info_confirm = $qualities_send_info_confirm ->select('qualities.*')->get();
+        }
+
         $data = [
             'landscapers' => $landscapers,
 
@@ -126,7 +153,11 @@ class NotificationDaily
 
             'sale_note_not_payment' => $sale_note_not_payment,
 
-            'sale_note_not_delivered' => $sale_note_not_delivered
+            'sale_note_not_delivered' => $sale_note_not_delivered,
+
+            'qualities_send_info' => $qualities_send_info,
+
+            'qualities_send_info_confirm' => $qualities_send_info_confirm
         ];
 
         return $data;

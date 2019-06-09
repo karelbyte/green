@@ -285,7 +285,7 @@
                     <hr>
                     <div v-if="entity.details.length > 0" class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">
-                            Monto cotizado: <span class="txtblack">@{{getTotalItem(entity.details)}}</span>
+                            Monto cotizado: <span class="txtblack">@{{getTotalItem(entity)}}</span>
                         </div>
                     </div>
                     <div v-if="entity.type_send_id > 0 && entity.type_send !== null " class="row m-t-10">

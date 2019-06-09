@@ -278,6 +278,7 @@
                         <tr>
                             <th >Nota</th>
                             <th >Fecha</th>
+                            <th >Cliente</th>
                             <th >Usuario</th>
                             <th></th>
                         </tr>
@@ -286,6 +287,7 @@
                         <tr class="mouse" v-for="sale in sale_note_not_close" :key="sale.id">
                             <td >@{{sale.id}}</td>
                             <td >@{{dateToEs(sale.moment)}}</td>
+                            <td >@{{sale.globals.client.name}}</td>
                             <td >@{{sale.globals.user.name}}</td>
                             <td> <a :href="gotoUrl(sale.id, 2)" style="font-style: oblique">IR A DOCUMENTO</a></td>
                         </tr>
@@ -353,6 +355,66 @@
                     <td >@{{dateToEs(quote_local.moment)}}</td>
                     <td >@{{quote_local.globals.user.name}}</td>
                     <td> <a :href="gotoUrl(quote_local.id, 1)" style="font-style: oblique">IR A DOCUMENTO</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div v-if="qualities_send_info.length > 0" class="row m-t-20" v-cloak>
+    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
+        <div class="panel-heading text-center">
+            <h3>CLIENTES POR ENVIAR RECOMENDACIONES</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th >CAG</th>
+                    <th >Fecha</th>
+                    <th >Cliente</th>
+                    <th >Usuario</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="mouse" v-for="recomen in  qualities_send_info" :key="recomen.id">
+                    <td >@{{recomen.cglobal_id}}</td>
+                    <td >@{{dateToEs(recomen.moment)}}</td>
+                    <td >@{{recomen.global.client.name}}</td>
+                    <td >@{{recomen.global.user.name}}</td>
+                    <td> <a :href="gotoUrl(recomen.id, 3)" style="font-style: oblique">IR A DOCUMENTO</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div v-if="qualities_send_info_confirm.length > 0" class="row m-t-20" v-cloak>
+    <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
+        <div class="panel-heading text-center">
+            <h3>CLIENTES POR CONFIRMAR RECOMENDACIONES</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th >CAG</th>
+                    <th >Fecha</th>
+                    <th >Cliente</th>
+                    <th >Usuario</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="mouse" v-for="recomen_confirm in  qualities_send_info_confirm" :key="recomen_confirm.id">
+                    <td >@{{recomen_confirm.cglobal_id}}</td>
+                    <td >@{{dateToEs(recomen_confirm.info_send_date)}}</td>
+                    <td >@{{recomen_confirm.global.client.name}}</td>
+                    <td >@{{recomen_confirm.global.user.name}}</td>
+                    <td> <a :href="gotoUrl(recomen_confirm.id, 3)" style="font-style: oblique">IR A DOCUMENTO</a></td>
                 </tr>
                 </tbody>
             </table>

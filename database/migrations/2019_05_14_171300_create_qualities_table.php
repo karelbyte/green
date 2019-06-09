@@ -18,7 +18,7 @@ class CreateQualitiesTable extends Migration
             $table->bigInteger('cglobal_id')->unsigned();
             $table->foreign('cglobal_id')->references('id')->on('cglobals')->onDelete('cascade');
             $table->date('moment');
-            $table->date('info_send_date');
+            $table->date('info_send_date')->nullable();
             $table->date('confirm')->nullable();
             $table->string('url_doc', 250)->nullable();
             $table->string('client_comment', 250)->nullable();

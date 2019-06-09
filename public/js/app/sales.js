@@ -17704,7 +17704,8 @@ new Vue({
         deliberydate: '',
         emailto: '',
         generate_pdf: false,
-        details: []
+        details: [],
+        have_iva: false
       },
       itemDefault: {
         id: 0,
@@ -17715,7 +17716,8 @@ new Vue({
         deliverydate: moment__WEBPACK_IMPORTED_MODULE_1__().format('YYYY-MM-DD'),
         emailto: '',
         generate_pdf: false,
-        details: []
+        details: [],
+        have_iva: false
       },
       listfield: [{
         name: 'Codigo',
@@ -18003,14 +18005,40 @@ new Vue({
       }
     },
     getTotalItem: function getTotalItem(it) {
-      return it.reduce(function (a, b) {
-        return a + parseFloat(b.price) * parseFloat(b.cant);
-      }, 0).toFixed(2);
+      var subtotal = 0;
+
+      if (it.details) {
+        subtotal = it.details.reduce(function (a, b) {
+          return a + parseFloat(b.price) * parseFloat(b.cant);
+        }, 0);
+
+        if (it.have_iva === 1 || it.have_iva === true) {
+          subtotal = (subtotal + subtotal * .16).toFixed(2);
+        }
+      }
+
+      return subtotal;
     },
     getTotal: function getTotal() {
-      return this.item.details.reduce(function (a, b) {
+      var iva = 0;
+      var subtotal = 0;
+      subtotal = this.item.details.reduce(function (a, b) {
         return a + parseFloat(b.price) * parseFloat(b.cant);
-      }, 0).toFixed(2);
+      }, 0);
+
+      if (this.item.have_iva === 1 || this.item.have_iva === true) {
+        iva = this.item.details.reduce(function (a, b) {
+          return a + parseFloat(b.price) * parseFloat(b.cant);
+        }, 0) * 0.16;
+        subtotal = (subtotal + iva).toFixed(2);
+      }
+
+      return subtotal;
+    },
+    getIva: function getIva() {
+      return (this.item.details.reduce(function (a, b) {
+        return a + parseFloat(b.price) * parseFloat(b.cant);
+      }, 0) * 0.16).toFixed(2);
     },
     edit: function edit(it) {
       this.item = _objectSpread({}, it);
@@ -18090,7 +18118,8 @@ new Vue({
       var data = {
         id: this.item.id,
         details: this.item.details,
-        advance: this.item.advance
+        advance: this.item.advance,
+        have_iva: this.item.have_iva
       };
       axios.post(urldomine + 'api/sales/details', data).then(function (r) {
         _this9.onviews('list');

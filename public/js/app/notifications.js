@@ -24,6 +24,8 @@ var notifications = new Vue({
       quote_local_close: [],
       sale_note_not_payment: [],
       sale_note_not_delivered: [],
+      qualities_send_info: [],
+      qualities_send_info_confirm: [],
       not: 0
     };
   },
@@ -41,6 +43,11 @@ var notifications = new Vue({
         case 2:
           // NOTAS DE VENTA
           patch = document.location.origin + '/notas-de-ventas/' + id;
+          break;
+
+        case 3:
+          // RECOMENDACIONES
+          patch = document.location.origin + '/calidad/' + id;
           break;
 
         default:
@@ -63,7 +70,9 @@ var notifications = new Vue({
       _this.quote_local_close = r.data.quote_local_close;
       _this.sale_note_not_payment = r.data.sale_note_not_payment;
       _this.sale_note_not_delivered = r.data.sale_note_not_delivered;
-      _this.not = _this.landscapers.length === 0 && _this.quoteconfirm.length === 0 && _this.quotetracing.length === 0 && _this.sale_note_not_close.length === 0 && _this.quote_local_close.length === 0 && _this.sale_note_not_payment.length && _this.sale_note_not_delivered.length;
+      _this.qualities_send_info = r.data.qualities_send_info;
+      _this.qualities_send_info_confirm = r.data.qualities_send_info_confirm;
+      _this.not = _this.landscapers.length === 0 && _this.quoteconfirm.length === 0 && _this.quotetracing.length === 0 && _this.sale_note_not_close.length === 0 && _this.quote_local_close.length === 0 && _this.sale_note_not_payment.length && _this.sale_note_not_delivered.length === 0 && _this.qualities_send_info.length === 0 && _this.qualities_send_info_confirm.length === 0;
     });
   }
 });

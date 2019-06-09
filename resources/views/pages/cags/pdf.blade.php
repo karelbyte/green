@@ -14,6 +14,162 @@
         body {
             padding-top: 100px;
         }
+
+        header {
+            padding: 10px 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #AAAAAA;
+        }
+
+        #details {
+            margin-bottom: 50px;
+        }
+
+        #client {
+            padding-left: 6px;
+            border-left: 6px solid #125c27;
+        }
+
+        #client .to {
+            color: #777777;
+        }
+
+        h2.name {
+            font-size: 1.4em;
+            font-weight: normal;
+            margin: 0;
+        }
+        #invoice {
+            text-align: right;
+        }
+
+        #invoice h1 {
+            color: #125c27;
+            font-size: 2.4em;
+            line-height: 1em;
+            font-weight: normal;
+            margin: 0  0 5px 0;
+        }
+
+        #invoice .date {
+            font-size: 1.1em;
+            color: #777777;
+        }
+        /* */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin-bottom: 10px;
+        }
+
+        table th,
+        table td {
+            padding: 5px;
+            background: #EEEEEE;
+            text-align: center;
+            border-bottom: 1px solid #FFFFFF;
+        }
+
+        table th {
+            white-space: nowrap;
+            font-weight: normal;
+        }
+
+        table td {
+            text-align: right;
+        }
+
+        table td h3{
+            color: rgba(89, 219, 35, 0.34);
+            font-size: 1.1em;
+            font-weight: normal;
+            margin: 0 0 0.2em 0;
+        }
+
+        table .no {
+            color: #FFFFFF;
+            font-size: 1.1em;
+            background: #555555;
+        }
+
+        table .desc {
+            text-align: left;
+        }
+
+        table .unit {
+            background: #DDDDDD;
+        }
+
+        table .qty {
+        }
+
+        table .total {
+            background: rgba(62, 159, 100, 0.49);
+            color: black;
+        }
+
+        table td.unit,
+        table td.qty,
+        table td.total {
+            font-size: 1.1em;
+        }
+
+        table tbody tr:last-child td {
+            border: none;
+        }
+
+
+        table tfoot td {
+            padding: 10px 10px;
+            background: #FFFFFF;
+            border-bottom: none;
+            font-size: 1.2em;
+            white-space: nowrap;
+            border-top: 1px solid #AAAAAA;
+        }
+
+        table tfoot tr:first-child td {
+            border-top: none;
+        }
+
+        table tfoot tr:last-child td {
+            color: #1130b2;
+            font-size: 1.4em;
+            border-top: 1px solid #57B223;
+
+        }
+
+        table tfoot tr td:first-child {
+            border-top: 1px solid #AAAAAA;
+        }
+
+        #thanks{
+            font-size: 2em;
+            margin-bottom: 50px;
+        }
+
+        #notices{
+            padding-left: 6px;
+            border-left: 6px solid #0087C3;
+        }
+
+        #notices .notice {
+            font-size: 1.2em;
+        }
+
+        footer {
+            color: #777777;
+            width: 100%;
+            height: 30px;
+            position: absolute;
+            bottom: 0;
+            padding: 8px 0;
+            text-align: center;
+        }
+        .unit {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -53,13 +209,14 @@
     </div>
 </div>
 <div style="width: 100%; margin-bottom: 25px">
-    <div style="width: 25%;">
+    <div style="width: 33%;">
         CONTACTO: <b>{{$data['contact']['name']}}</b>
     </div>
-    <div style="width: 25%;">
-        MOTIVO: <b>{{$data['motive_products']['name']}}</b>
+    <div style="width: 33%;">
+        MOTIVO: <b>{{$motive}}</b>
+
     </div>
-    <div style="width: 25%;">
+    <div style="width: 32%;">
         COMPROMISO: <b>{{$data['compromise']['name']}}</b>
     </div>
 </div>
@@ -105,9 +262,71 @@
         </div>
     </div>
 @endif
+@if ($quote !== null)
+    <div style="margin: 20px 0 20px 0; text-align: center">
+        <h4>{{$quote['descrip']}}</h4>
+    </div>
+    <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th class="no">#</th>
+            <th class="desc">DESCRIPCION</th>
+            <th class="unit">UNIDAD MEDIDA</th>
+            <th class="unit">CANTIDAD</th>
+            <th class="unit">PRECIO</th>
+            <th class="unit">IMPORTE</th>
+        </tr>
+
+        <tbody>
+        @php
+            $total = 0;
+        @endphp
+        @foreach ($quote['details'] as $index => $det)
+            <tr>
+                <td class="no">{{$index+1}}</td>
+                <td class="desc">{{$det->descrip}}</td>
+                <td class="unit">{{$det->measure->name}}</td>
+                <td class="unit">{{$det->cant}}</td>
+                <td class="unit">{{$det->price}}</td>
+                <td class="total">{{number_format($det->price * $det->cant, 2, '.', '')}}</td>
+                @php
+                    $total += $det->price * $det->cant
+                @endphp
+            </tr>
+        @endforeach
+        @if ($quote['have_iva'] === 1)
+            <tr>
+                <td></td>
+                <td colspan="2"></td>
+                <td colspan="2">BASE IMPONIBLE</td>
+                <td class="unit">{{number_format($total, 2, '.', '')}}</td>
+            </tr>
+
+            <tr>
+                @php
+                    $iva = $total * 0.16
+                @endphp
+                <td></td>
+                <td colspan="2"></td>
+                <td colspan="2">SUBTOTAL IVA</td>
+                <td  class="unit">{{number_format($iva, 2, '.', '')}}</td>
+            </tr>
+        @endif
+        <tr>
+            <td></td>
+            <td colspan="2"></td>
+            <td colspan="2">IMPORTE TOTAL</td>
+            @if ($quote['have_iva'] === 1)
+                <td  class="total">{{number_format($total + $iva, 2, '.', '')}}</td>
+            @else
+                <td  class="total">{{number_format($total, 2, '.', '')}}</td>
+            @endif
+        </tr>
+        </tbody>
+    </table>
+@endif
 @if ($sale !== null)
-    <div style="font-size: 12px; border-bottom: 1px solid grey; margin-bottom: 10px">
-        <b><span>NOTA DE VENTA</span></b>
+    <div style="margin: 20px 0 20px 0; text-align: center">
+        <h4>NOTA DE VENTA</h4>
     </div>
     <div style="width: 25%; margin-bottom: 15px">
         NUMERO: <b>{{$sale['id']}}</b>
@@ -138,16 +357,55 @@
                 <td>{{$det['measure']['name']}}</td>
                 <td>{{$det['cant']}}</td>
                 <td>{{$det['price']}}$</td>
-                <td>{{ number_format($det['cant'] * $det['price'], 2, '.', '')}}$</td>
+                <td class="total">{{ number_format($det['cant'] * $det['price'], 2, '.', '')}}$</td>
             </tr>
         @endforeach
+        @if ($sale['have_iva'] === 1)
+            <tr>
+                <td></td>
+                <td></td>
+                <td colspan="2">BASE IMPONIBLE</td>
+                <td class="unit">{{number_format($sale->total(), 2, '.', '')}}</td>
+            </tr>
+
+            <tr>
+                @php
+                    $iva = $sale->total() * 0.16
+                @endphp
+                <td></td>
+                <td></td>
+                <td colspan="2">SUBTOTAL IVA</td>
+                <td  class="unit">{{number_format($iva, 2, '.', '')}}</td>
+            </tr>
+        @endif
         <tr>
             <td></td>
             <td></td>
             <td></td>
             <td>Total</td>
-            <td><b>{{$sale->total()}}$</b></td>
+            <td class="total"><b> {{$sale->total() +  $iva }}$</b></td>
         </tr>
+        </tbody>
+    </table>
+    <div style="margin: 20px 0 20px 0; text-align: center">
+        <h4>MATERIALES</h4>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th style="text-align: left">Descripción</th>
+            <th style="text-align: left">Unidad de Medida</th>
+            <th style="text-align: left">Cantidad</th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach($sale['delivered'] as $del)
+                <tr>
+                    <td style="text-align: left">{{$del['element']['name']}}</td>
+                    <td style="text-align: left">{{$del['element']['measure']['name']}}</td>
+                    <td style="text-align: left">{{$del['cant']}}</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 @endif

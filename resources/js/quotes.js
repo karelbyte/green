@@ -318,13 +318,16 @@ new Vue({
 
         },
         getTotalItem (it) {
-
-            return  it.reduce( (a, b) => {
-
-                return a + parseFloat(b.price) * parseFloat(b.cant)
-
-            }, 0).toFixed(2)
-
+            let subtotal = 0;
+            if (it.details) {
+                subtotal = it.details.reduce( (a, b) => {
+                    return a + parseFloat(b.price) * parseFloat(b.cant)
+                }, 0);
+                if (it.have_iva === 1 || it.have_iva === true) {
+                    subtotal = (subtotal + (subtotal * .16)).toFixed(2)
+                }
+            }
+            return subtotal;
         },
         getTotal () {
          let iva = 0;

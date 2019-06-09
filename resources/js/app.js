@@ -15,7 +15,8 @@ const app = new Vue({
            quote_confirm: 0,
            sale_note_not_close: 0,
            quote_local_close: 0,
-           sale_note_not_delivered: 0
+           sale_note_not_delivered: 0,
+           qualities_send_info: 0,
         }
     },
     mounted () {
@@ -26,6 +27,7 @@ const app = new Vue({
             this.sale_note_not_close = r.data.sale_note_not_close.length + r.data.sale_note_not_payment.length;
             this.quote_local_close = r.data.quote_local_close.length;
             this.sale_note_not_delivered = r.data.sale_note_not_delivered.length;
+            this.qualities_send_info = r.data.qualities_send_info.length + r.data.qualities_send_info_confirm.length;
         })
     }
 });

@@ -86,12 +86,30 @@
             <td>{{ number_format($det['cant'] * $det['price'], 2, '.', '')}}$</td>
         </tr>
     @endforeach
+    @if ($sale['have_iva'] === 1)
+        <tr>
+            <td></td>
+            <td></td>
+            <td colspan="2">BASE IMPONIBLE</td>
+            <td class="unit">{{number_format($sale->total(), 2, '.', '')}}</td>
+        </tr>
+
+        <tr>
+            @php
+                $iva = $sale->total() * 0.16
+            @endphp
+            <td></td>
+            <td></td>
+            <td colspan="2">SUBTOTAL IVA</td>
+            <td  class="unit">{{number_format($iva, 2, '.', '')}}</td>
+        </tr>
+    @endif
     <tr>
         <td></td>
         <td></td>
         <td></td>
         <td>Total</td>
-        <td><b>{{$sale->total()}}$</b></td>
+        <td><b>{{$sale->total() +  $iva }}$</b></td>
     </tr>
     </tbody>
 </table>

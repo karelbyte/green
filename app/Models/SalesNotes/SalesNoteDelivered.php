@@ -2,6 +2,7 @@
 
 namespace App\Models\SalesNotes;
 
+use App\Models\Element;
 use Illuminate\Database\Eloquent\Model;
 
 class SalesNoteDelivered extends Model
@@ -12,4 +13,8 @@ class SalesNoteDelivered extends Model
 
     public $timestamps = false;
 
+    public function element() {
+
+        return $this->hasOne(Element::class, 'id', 'element_id');
+    }
 }

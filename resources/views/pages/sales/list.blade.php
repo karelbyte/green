@@ -68,7 +68,7 @@
                     <hr>
                     <div v-if="entity.details.length > 0" class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">
-                            Moto: <span class="txtblack">@{{getTotalItem(entity.details)}}</span>
+                            Moto: <span class="txtblack">@{{getTotalItem(entity)}}</span>
                         </div>
                     </div>
                     <div v-if="entity.details.length > 0" class="row m-t-10">
@@ -76,9 +76,9 @@
                             Recibido: <span class="txtblack">@{{entity.advance}}</span>
                         </div>
                     </div>
-                    <div v-if="entity.details.length > 0 && getTotalItem(entity.details) - entity.advance > 0" class="row m-t-10">
+                    <div v-if="entity.details.length > 0 && getTotalItem(entity) - entity.advance > 0" class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">
-                            Restan: <span class="txtblack" style="color:red">@{{(getTotalItem(entity.details) - entity.advance).toFixed(2)}}</span>
+                            Restan: <span class="txtblack" style="color:red">@{{(getTotalItem(entity) - entity.advance).toFixed(2)}}</span>
                         </div>
                     </div>
                 </div>
@@ -112,10 +112,16 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-1">
                         <button v-if="item.status_id === 3" class="btn btn-brown btn-default" @click="showFormDet()" >Detalles +</button>
                     </div>
-                    <div class="col-lg-3">
+                    <div v-if="item.status_id === 3" class="col-lg-1 text-left">
+                        <div class="checkbox checkbox-primary">
+                            <input  type="checkbox" v-model="item.have_iva">
+                            <label for="checkbox2" class="txtblack">
+                                IVA
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -155,6 +161,14 @@
 
                             </tbody>
                             <tfoot>
+                            <tr v-if="item.have_iva === 1 || item.have_iva === true">
+                                <td></td>
+                                <td></td>
+                                <td>IVA (16 %)</td>
+                                <td class="txtblack">@{{getIva() }} </td>
+                                <td>
+                                </td>
+                            </tr>
                             <tr>
                                 <td></td>
                                 <td></td>

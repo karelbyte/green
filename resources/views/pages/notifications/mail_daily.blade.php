@@ -13,7 +13,6 @@
     <!--<![endif]-->
     <style type="text/css">
         table.comicGreen {
-            font-family: "Comic Sans MS", cursive, sans-serif;
             border: 2px solid #4F7849;
             background-color: #EEEEEE;
             width: 100%;
@@ -864,6 +863,7 @@
                                                     <tr>
                                                         <th >Nota</th>
                                                         <th >Fecha</th>
+                                                        <th >Cliente</th>
                                                         <th >Usuario</th>
                                                     </tr>
                                                     </thead>
@@ -872,6 +872,7 @@
                                                         <tr>
                                                             <td >{{$sale->id}}</td>
                                                             <td >{{\Carbon\Carbon::parse($sale->moment)->format('d-m-Y')}}</td>
+                                                            <td >{{$sale->globals->client['name']}}</td>
                                                             <td >{{$sale->globals->user['name']}}</td>
                                                         </tr>
                                                     @endforeach

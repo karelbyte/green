@@ -13,6 +13,8 @@ let notifications = new Vue({
             quote_local_close: [],
             sale_note_not_payment: [],
             sale_note_not_delivered: [],
+            qualities_send_info: [],
+            qualities_send_info_confirm: [],
             not: 0
         }
     },
@@ -27,7 +29,11 @@ let notifications = new Vue({
                 case 2: // NOTAS DE VENTA
                     patch = document.location.origin + '/notas-de-ventas/' + id;
                     break;
+                case 3: // RECOMENDACIONES
+                    patch = document.location.origin + '/calidad/' + id;
+                    break;
                 default:
+
             }
             return patch ;
         }
@@ -51,10 +57,15 @@ let notifications = new Vue({
 
           this.sale_note_not_delivered = r.data.sale_note_not_delivered;
 
+          this.qualities_send_info = r.data.qualities_send_info;
+
+          this.qualities_send_info_confirm = r.data.qualities_send_info_confirm;
+
           this.not = this.landscapers.length === 0 && this.quoteconfirm.length === 0
               && this.quotetracing.length === 0 && this.sale_note_not_close.length === 0
               && this.quote_local_close.length === 0 && this.sale_note_not_payment.length
-              &&  this.sale_note_not_delivered.length;
+              && this.sale_note_not_delivered.length === 0 && this. qualities_send_info.length === 0
+              && this.qualities_send_info_confirm.length === 0
 
       })
     }

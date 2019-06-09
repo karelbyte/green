@@ -18,11 +18,22 @@ class CalendarsController extends Controller
     public function getList(Request $request) {
 
         $sql = 'MONTH(start) = ' . $request->month . ' and ' .'YEAR(start) = ' . $request->year;
-        $datos = Calendar::query()->with('user')
-              ->whereRaw($sql)
-              ->where('user_id', $request->user_id_auth)
-              ->orWhere('for_user_id', $request->user_id_auth)
-              ->get();
+
+        $user = User::query()->find($request->user_id_auth);
+
+        if ( (int) $user->position_id === 1) {
+
+            $datos = Calendar::query()->with('user')
+                ->whereRaw($sql)
+                ->get();
+        } else {
+            $datos = Calendar::query()->with('user')
+                ->whereRaw($sql)
+                ->where('user_id', $request->user_id_auth)
+                ->orWhere('for_user_id', $request->user_id_auth)
+                ->get();
+        }
+
         return $datos;
     }
 

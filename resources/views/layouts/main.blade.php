@@ -72,6 +72,12 @@
                             <span  class="badge up bg-danger">@{{ sale_note_not_delivered }}</span>
                         </a>
                   </li>
+                    <li v-if="qualities_send_info > 0">
+                        <a href="{{route('notifications')}}" class="right-menu-item">
+                            <i class="mdi mdi-checkbox-multiple-marked-circle"></i>
+                            <span  class="badge up bg-danger">@{{ qualities_send_info }}</span>
+                        </a>
+                    </li>
 
                     <li class="dropdown user-box">
                         <a href="" class="dropdown-toggle waves-effect waves-light user-link" data-toggle="dropdown" aria-expanded="true">

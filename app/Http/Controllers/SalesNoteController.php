@@ -122,6 +122,7 @@ class SalesNoteController extends Controller
                 }
             }
             // ACTUALIZANDO NOTA DE VENTA
+            $sale->have_iva = $request->have_iva;
             $sale->advance = $request->advance;
             $sale->save();
             return response()->json('Detalles guardados con exito!');
@@ -181,6 +182,7 @@ class SalesNoteController extends Controller
                  $sale->status_id = (double) $request->advance >=  $total ? self::PAGADA : self::RECIBIDO;
             }
              /// ACTUALIZANDO NOTA DE VENTA
+            $sale->have_iva = $request->have_iva;
             $sale->advance = $request->advance;
             $sale->save();
                 // ACTUALIZANDO CICLO DE ATENCION GLOBAL

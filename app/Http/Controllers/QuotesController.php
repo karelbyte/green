@@ -204,6 +204,8 @@ class QuotesController extends Controller
 
                     'origin' => SalesNote::ORIGIN_CAG,
 
+                    'have_iva' => $quote->have_iva,
+
                     'status_id' => 3,
 
                 ]);

@@ -10,9 +10,11 @@ use App\Models\CGlobal\CGlobalInfo;
 use App\Models\Client;
 use App\Models\Company;
 use App\Models\ProductOffereds\ProductOffereds;
+use App\Models\ProductOffereds\ProductOfferedsDetails;
 use App\Models\Quotes\Quote;
 use App\Models\SalesNotes\SalesNote;
 use App\Models\ServicesOffereds\ServiceOffereds;
+use App\Models\ServicesOffereds\ServiceOfferedsDetails;
 use App\Models\TypeCompromise;
 use App\Models\TypeContact;
 use App\Models\TypeInfo;
@@ -338,18 +340,30 @@ class CGlobalsController extends Controller
 
         $pdf = \App::make('snappy.pdf.wrapper');
 
-        $datos = CGlobal::query()->with(['MotiveServices', 'MotiveProducts', 'documents', 'compromise','contact',
+        $datos = CGlobal::query()->with(['documents', 'compromise','contact',
             'attended', 'client', 'status', 'info' => function($q) {
                 $q->with('info', 'info_det');
             }, 'landscaper' => function($l) {
                 $l->with('user');
             }])->where('id', $id)->first();
 
-
-
         $sale = SalesNote::with([ 'status', 'details' => function($d) {
             $d->with('measure');
+        }, 'delivered'=> function($d) {
+            $d->with(['element'=> function($d) {
+                $d->with('measure');
+            }]);
         }])->where('global_id', $id)->first();
+
+       if ( $datos->type_motive === 1) {
+           $motive = ProductOffereds::query()->find($datos->type_motive_id);
+         } else {
+           $motive = ServiceOffereds::query()->find($datos->type_motive_id);
+        }
+
+        $quote= Quote::with([ 'status', 'details' => function($d) {
+            $d->with('measure');
+        }])->where('cglobal_id', $id)->first();
 
         $data = [
 
@@ -357,11 +371,14 @@ class CGlobalsController extends Controller
 
             'data' =>  $datos,
 
-            'sale' => $sale
+            'sale' => $sale,
 
+            'motive' => $motive->name,
+
+            'quote' => $quote
         ];
 
-        //return $data;
+        return $datos;
 
         $footer = \View::make('pdf.footer')->render();
 

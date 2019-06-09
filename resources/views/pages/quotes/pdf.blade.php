@@ -175,7 +175,6 @@
             height: 30px;
             position: absolute;
             bottom: 0;
-            /* border-top: 1px solid #AAAAAA; */
             padding: 8px 0;
             text-align: center;
         }
