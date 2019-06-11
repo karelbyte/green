@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\MailNotyNewClient;
+use App\Models\CGlobal\CGlobal;
 use App\Models\Client;
 use App\Models\Company;
+use App\Models\Quotes\Quote;
+use App\Models\SalesNotes\SalesNote;
 use App\Traits\GenerateID;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -33,6 +36,37 @@ class ClientsController extends Controller
     public function sendID () {
 
         return $this->getID('clients');
+    }
+
+    public function files($id) {
+
+        $cags = CGlobal::query()->with(['MotiveServices', 'MotiveProducts', 'compromise', 'user', 'status'])->where('cglobals.client_id', $id)
+            ->orderBy('cglobals.moment', 'desc')
+            ->get();
+
+        $quotes =  Quote::with(['status', 'details', 'globals' => function($q){
+            $q->with( 'user');
+        }])->leftJoin('cglobals', 'cglobals.id', 'quotes.cglobal_id')
+            ->where('cglobals.client_id', $id)
+            ->select('quotes.*')
+            ->orderBy('quotes.moment', 'desc')
+            ->get();
+
+        $sales =  SalesNote::with([ 'status', 'details', 'globals' => function($q){
+            $q->with('user');
+        }])->leftJoin('cglobals', 'cglobals.id', 'salesnotes.global_id')
+            ->where('cglobals.client_id', $id)
+            ->select('salesnotes.*')
+            ->orderBy('salesnotes.moment', 'desc')
+            ->get();
+
+        $result = [
+            'cags' => $cags,
+            'quotes' => $quotes,
+            'sales' => $sales
+        ];
+
+        return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
     }
 
     // OBTINE LA LISTA DE CLIENTES Y LOS ENVIA AL FRONT PAGINADO
@@ -93,18 +127,11 @@ class ClientsController extends Controller
     // ELIMINA CLIENTE
     public function destroy($id)
     {
-
         try {
-
             Client::destroy($id);
-
             return response()->json('Datos eliminados con exito!');
-
         } catch ( \Exception $e) {
-
             return response()->json('No se puede eliminar esta siendo usado este elemento!', 500);
-
         }
-
     }
 }

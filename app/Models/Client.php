@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CGlobal\CGlobal;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +27,10 @@ class Client extends Model
     public function user () {
 
         return $this->hasOne(User::class, 'id', 'register_to');
+    }
+
+    public function cags() {
+        return $this->hasMany(CGlobal::class, 'client_id', 'id');
     }
 
     public $timestamps = false;

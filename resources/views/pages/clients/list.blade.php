@@ -21,6 +21,111 @@
         </div>
     </div>
 </div>
+<div v-if="views.files" class="row" v-cloak>
+    <div class="col-lg-12">
+        <div class="panel panel-border panel-inverse">
+            <div class="panel-heading" style="border-bottom: 2px solid rgba(123,137,139,0.16) !important;">
+                <h3 class="panel-title">LISTADO DE CAGS DEL CLIENTE @{{ item.name }} </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th class="cel_fix">CAG</th>
+                        <th class="cel_fix">Fecha</th>
+                        <th class="cel_fix">Motivo</th>
+                        <th class="cel_fix">Asesor</th>
+                        <th class="cel_fix">Estado</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="mouse" v-for="ent in files.cags" :key="ent.id">
+                        <td class="cel_fix">@{{ent.id}}</td>
+                        <td class="cel_fix">@{{dateToEs(ent.moment)}}</td>
+                        <td v-if="ent.type_motive === 1" class="cel_fix">@{{ent.motive_products.name}}</td>
+                        <td  v-else class="cel_fix">@{{ent.motive_services.name}}</td>
+                        <td class="cel_fix">@{{ent.user.name}}</td>
+                        <td class="cel_fix">@{{ent.status.name}}</td>
+                        <td>
+                            <button class="btn btn-info waves-effect btn-sm" @click="showpdfCag(ent.id)"><i class="fa fa-file-pdf-o"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="panel panel-border panel-inverse">
+            <div class="panel-heading" style="border-bottom: 2px solid rgba(123,137,139,0.16) !important;">
+                <h3 class="panel-title">LISTADO DE COTIZACIONES DEL CLIENTE @{{ item.name }} </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th class="cel_fix">COTIZACION</th>
+                        <th class="cel_fix">Fecha</th>
+                        <th class="cel_fix">Monto</th>
+                        <th class="cel_fix">Asesor</th>
+                        <th class="cel_fix">Estado</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="mouse" v-for="quo in files.quotes" :key="quo.id">
+                        <td class="cel_fix">@{{quo.id}}</td>
+                        <td class="cel_fix">@{{dateToEs(quo.moment)}}</td>
+                        <td class="cel_fix">@{{  getTotalItem(quo) }}</td>
+                        <td class="cel_fix">@{{quo.globals.user.name}}</td>
+                        <td class="cel_fix">@{{quo.status.name}}</td>
+                        <td>
+                            <button class="btn btn-info waves-effect btn-sm" @click="viewpdfQuote(quo.id)"><i class="fa fa-file-pdf-o"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="panel panel-border panel-inverse">
+            <div class="panel-heading" style="border-bottom: 2px solid rgba(123,137,139,0.16) !important;">
+                <h3 class="panel-title">LISTADO DE NOTAS DE VENTA DEL CLIENTE @{{ item.name }} </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th class="cel_fix">NOTA</th>
+                        <th class="cel_fix">Fecha</th>
+                        <th class="cel_fix">Monto</th>
+                        <th class="cel_fix">Asesor</th>
+                        <th class="cel_fix">Estado</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="mouse" v-for="sl in files.sales" :key="sl.id">
+                        <td class="cel_fix">@{{sl.id}}</td>
+                        <td class="cel_fix">@{{dateToEs(sl.moment)}}</td>
+                        <td class="cel_fix">@{{getTotalItem(sl) }}</td>
+                        <td class="cel_fix">@{{sl.globals.user.name}}</td>
+                        <td class="cel_fix">@{{sl.status.name}}</td>
+                        <td>
+                            <button class="btn btn-info waves-effect btn-sm" @click="showpdfsale(sl.id)"><i class="fa fa-file-pdf-o"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-10">
+        <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
+    </div>
+</div>
 <div v-if="views.new" class="row" v-cloak>
     <div class="col-lg-10">
         <div class="panel panel-border panel-inverse">
@@ -123,7 +228,7 @@
                             @can('clients.delete')
                                 <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
                             @endcan
-                            <button class="btn btn-info  waves-effect btn-sm">EXPEDIENTE</button>
+                            <button class="btn btn-info  waves-effect btn-sm" @click="filesGet(entity)">EXPEDIENTE</button>
                         </td>
                     </tr>
                     </tbody>
@@ -185,6 +290,7 @@
     </div>
 
 </div>
+@component('com.visor_pdf') @endcomponent
 @component('com.eliminar')@endcomponent
 @component('com.spiner')@endcomponent
 @endsection

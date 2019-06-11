@@ -1,5 +1,5 @@
 import {core} from './core';
-
+import {dateEs} from './tools';
 new Vue({
     mixins: [core],
     el: '#app',
@@ -8,7 +8,9 @@ new Vue({
             views: {
                 list: true,
                 new: false,
+                files: false
             },
+            scrpdf: '',
             item: {
                 id: 0,
                 name: '',
@@ -34,6 +36,10 @@ new Vue({
                 home_number: '',
                 colony: '',
                 referen: ''
+            },
+            files: {
+                cags: [],
+                quotes: []
             },
             listfield: [{name: 'Nombre', type: 'text', field: 'clients.name'}, {name: 'Codigo', type: 'text', field: 'clients.code'}],
             filters_list: {
@@ -61,6 +67,19 @@ new Vue({
 
     },
     methods: {
+        dateToEs : dateEs,
+        getTotalItem (it) {
+            let subtotal = 0;
+            if (it.details) {
+                subtotal = it.details.reduce( (a, b) => {
+                    return a + parseFloat(b.price) * parseFloat(b.cant)
+                }, 0);
+                if (it.have_iva === 1 || it.have_iva === true) {
+                    subtotal = (subtotal + (subtotal * .16)).toFixed(2)
+                }
+            }
+            return subtotal;
+        },
         getlist (pFil, pOrder, pPager) {
 
             if (pFil !== undefined) { this.filters = pFil }
@@ -166,6 +185,41 @@ new Vue({
             let colony = this.item.colony;
 
             return name && contact && code && email && street && home_number && colony
-        }
+        },
+        filesGet (item) {
+            this.item = item;
+            axios.get(urldomine + 'api/clients/files/' + item.id).then(r => {
+                this.files = r.data;
+                if ( this.files.cags !== null) {
+                    this.onviews('files')
+                } else {
+                    this.$toasted.info('El cliente no cuenta aun con un expediente!')
+                }
+            })
+        },
+        showpdfCag(id) {
+            this.spin = true;
+            axios.get(urldomine + 'api/cags/pdf/' + id).then(response => {
+                this.spin = false;
+                this.scrpdf = response.data;
+                window.$('#pdf').modal('show')
+            })
+        },
+        showpdfsale (id) {
+            this.spin = true;
+            axios.get(urldomine + 'api/sales/pdf/' + id).then(response => {
+                this.spin = false;
+                this.scrpdf = response.data;
+                $('#pdf').modal('show')
+            })
+        },
+        viewpdfQuote (id) {
+            this.spin = true;
+            axios.get(urldomine + 'api/quotes/pdf/' + id).then(response => {
+                this.spin = false;
+                this.scrpdf = response.data;
+                $('#pdf').modal('show')
+            })
+        },
     }
 });

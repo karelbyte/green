@@ -109,7 +109,11 @@
         <td></td>
         <td></td>
         <td>Total</td>
-        <td><b>{{$sale->total() +  $iva }}$</b></td>
+        @if ($data['have_iva'] === 1)
+            <td  class="total">{{number_format($sale->total() + $iva, 2, '.', '')}}</td>
+        @else
+            <td  class="total">{{number_format($sale->total(), 2, '.', '')}}</td>
+        @endif
     </tr>
     </tbody>
 </table>

@@ -242,6 +242,7 @@ Route::prefix('clients')->group(function () {
 
     Route::get('/get/id', 'ClientsController@sendID');
 
+    Route::get('/files/{id}', 'ClientsController@files');
 });
 Route::resource('/clients', 'ClientsController');
 
