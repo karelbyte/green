@@ -90,12 +90,14 @@ new Vue({
            if (this.act === 'post') {
                axios.post( urldomine + 'api/calendars/add', this.item).then(() => {
                    $('#schedule').modal('hide');
-                   this.getList(new moment().month() + 1);
+                   let date = moment();
+                   this.getList( date.month() + 1, date.year());
                });
            } else {
                axios.post( urldomine + 'api/calendars/update', this.item).then(() => {
                    $('#scheduleedit').modal('hide');
-                   this.getList(new moment().month() + 1);
+                   let date = moment();
+                   this.getList( date.month() + 1, date.year());
                });
            }
         },
@@ -113,7 +115,8 @@ new Vue({
         },
         deleteEvent() {
             axios.post(urldomine + 'api/calendars/eraser', {id : this.item.id}).then((r) => {
-                this.getList(new moment().month() + 1);
+                let date = moment();
+                this.getList( date.month() + 1, date.year());
                 this.$toasted.success(r.data);
                 $('#scheduleedit').modal('hide');
             })

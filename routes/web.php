@@ -58,8 +58,12 @@ Route::get('/limpiar_cache', function () {
 
 Route::get('tareas', function () {
 
-    $data = \App\Models\Calendar::query()->where('user_id', 2)->whereDate('start', \Carbon\Carbon::now())->get();
-    return  $data;
+    $quote_confirm = \App\Models\Quotes\Quote::with(['globals' => function($q) {
+        $q->with('client');
+    }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
+        ->whereRaw('DATEDIFF(now(), quotes.check_date ) > 1')
+        ->where('quotes.status_id', 3)->get();
+    return  $quote_confirm ;
 });
 
 Route::get('/pruebas', function () {

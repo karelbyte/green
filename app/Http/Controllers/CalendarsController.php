@@ -34,7 +34,7 @@ class CalendarsController extends Controller
                 ->get();
         }
 
-        return $datos;
+        return response()->json($datos,  200, [], JSON_NUMERIC_CHECK);
     }
 
     public function add(Request $request) {

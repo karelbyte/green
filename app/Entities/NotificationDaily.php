@@ -48,6 +48,10 @@ class NotificationDaily
             $quote_confirm = $quote_confirm->select('quotes.*')->get();
         }
 
+        // OJOOOOOOOOOO FALTA LA ESTRATEGIA DE VENTA
+
+
+
         // SEGUIMIENTO DE COTIZACIONES
         $quote_tracing = Quote::with(['globals' => function($q) {
             $q->with('client');

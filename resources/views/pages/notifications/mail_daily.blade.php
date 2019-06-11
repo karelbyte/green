@@ -650,7 +650,7 @@
                                                     <tbody>
                                                     @foreach($data['data']['quoteconfirm'] as $con)
                                                         <tr>
-                                                            <td >{{$con.id}}</td>
+                                                            <td >{{$con->id}}</td>
                                                             <td >{{\Carbon\Carbon::parse($con->check_date)->format('d-m-Y')}}</td>
                                                             <td >{{$con->globals->client->name}}</td>
                                                             <td >{{$con->globals->client->phone}}</td>

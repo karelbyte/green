@@ -40,8 +40,7 @@
                     </li>
                 </ul>
 
-                <!-- Right(Notification) -->
-                <ul class="nav navbar-nav navbar-right" id="notify" v-cloak>
+                <ul class="nav navbar-nav" id="notify"  v-cloak>
                  <li v-if="quote_local_close > 0">
                         <a href="{{route('notifications')}}" class="right-menu-item">
                             <i class="mdi mdi-coin"></i>
@@ -54,7 +53,7 @@
                             <span class="badge up bg-danger">@{{ sale_note_not_close }}</span>
                         </a>
                     </li>
-                 <li v-if="landscapers > 0" >
+                 <li v-if="landscapers > 0">
                         <a href="{{route('notifications')}}" class="right-menu-item">
                             <i class="fa fa-home"></i>
                             <span class="badge up bg-danger">@{{ landscapers }}</span>
@@ -78,7 +77,8 @@
                             <span  class="badge up bg-danger">@{{ qualities_send_info }}</span>
                         </a>
                     </li>
-
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown user-box">
                         <a href="" class="dropdown-toggle waves-effect waves-light user-link" data-toggle="dropdown" aria-expanded="true">
                             <img src="{{asset('images/users/profile.png')}}" alt="user-img" class="img-circle user-img">

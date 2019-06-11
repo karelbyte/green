@@ -186,7 +186,7 @@
     <div v-if="lists.length === 0 && filters_list.value !== ''" class="row text-center">NO EXISTEN DATOS PARA: <span class="txtblack">@{{ filters_list.value.toUpperCase() }}</span> </div>
     <div class="row">
         <div v-for="entity in lists" :key="entity.id" class="col-lg-4 col-md-6 col-sm-6 ">
-            <div  class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
+            <div  class="panel panel-border panel-inverse m-t-5" style="font-size: 12px;">
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-lg-3 col-xs-12">
@@ -197,7 +197,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" style="height: 230px">
                     <div class="row">
                         <div class="col-lg-8 col-md-8 col-sm-8 col-sm-12">
                             <div class="row">

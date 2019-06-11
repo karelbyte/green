@@ -39116,14 +39116,16 @@ new Vue({
       if (this.act === 'post') {
         axios.post(urldomine + 'api/calendars/add', this.item).then(function () {
           $('#schedule').modal('hide');
+          var date = moment__WEBPACK_IMPORTED_MODULE_5___default()();
 
-          _this3.getList(new moment__WEBPACK_IMPORTED_MODULE_5___default.a().month() + 1);
+          _this3.getList(date.month() + 1, date.year());
         });
       } else {
         axios.post(urldomine + 'api/calendars/update', this.item).then(function () {
           $('#scheduleedit').modal('hide');
+          var date = moment__WEBPACK_IMPORTED_MODULE_5___default()();
 
-          _this3.getList(new moment__WEBPACK_IMPORTED_MODULE_5___default.a().month() + 1);
+          _this3.getList(date.month() + 1, date.year());
         });
       }
     },
@@ -39145,7 +39147,9 @@ new Vue({
       axios.post(urldomine + 'api/calendars/eraser', {
         id: this.item.id
       }).then(function (r) {
-        _this4.getList(new moment__WEBPACK_IMPORTED_MODULE_5___default.a().month() + 1);
+        var date = moment__WEBPACK_IMPORTED_MODULE_5___default()();
+
+        _this4.getList(date.month() + 1, date.year());
 
         _this4.$toasted.success(r.data);
 
