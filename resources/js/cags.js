@@ -72,7 +72,10 @@ new Vue({
                 email: '',
                 movil: '',
                 phone: '',
-                address: ''
+                street: '',
+                home_number: '',
+                colony: '',
+                referen: ''
             },
             clientDefault: {
                 id: 0,
@@ -82,7 +85,10 @@ new Vue({
                 email: '',
                 movil: '',
                 phone: '',
-                address: ''
+                street: '',
+                home_number: '',
+                colony: '',
+                referen: ''
             },
             listfield: [{name: 'CAG', type: 'text', field: 'cglobals.id'}, {name: 'Cliente', type: 'text', field: 'clients.name'}],
             filters_list: {
@@ -503,7 +509,13 @@ new Vue({
 
             let email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.client.email);
 
-            return name && contact && code && email
+            let street = this.client.street !== '';
+
+            let home_number = this.client.home_number !== '';
+
+            let colony = this.client.colony !== '';
+
+            return name && contact && code && email && street && home_number && colony
         },
         saveNewClient () {
 

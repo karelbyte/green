@@ -21,7 +21,10 @@ class CreateClientsTable extends Migration
             $table->string('email')->nullable();
             $table->string('movil', 20)->nullable();
             $table->string('phone', 20)->nullable();
-            $table->string('address')->nullable();
+            $table->string('street')->nullable();
+            $table->string('home_number', 10)->nullable();
+            $table->string('colony')->nullable();
+            $table->string('referen')->nullable();
             $table->integer('register_to')->nullable();
             $table->engine = 'InnoDB';
         });

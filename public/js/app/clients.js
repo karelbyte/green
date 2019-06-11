@@ -32,7 +32,10 @@ new Vue({
         email: '',
         movil: '',
         phone: '',
-        address: ''
+        street: '',
+        home_number: '',
+        colony: '',
+        referen: ''
       },
       itemDefault: {
         id: 0,
@@ -42,7 +45,10 @@ new Vue({
         email: '',
         movil: '',
         phone: '',
-        address: ''
+        street: '',
+        home_number: '',
+        colony: '',
+        referen: ''
       },
       listfield: [{
         name: 'Nombre',
@@ -146,7 +152,10 @@ new Vue({
       var contact = this.item.contact !== '';
       var code = this.item.code !== '';
       var email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.item.email);
-      return name && contact && code && email;
+      var street = this.item.street !== '';
+      var home_number = this.item.home_number !== '';
+      var colony = this.item.colony;
+      return name && contact && code && email && street && home_number && colony;
     }
   }
 });

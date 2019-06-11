@@ -156,7 +156,7 @@ class CGlobalsController extends Controller
                'start' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer']),
                'end' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer'])->addHours(2),
                'title' => 'Visita a cliente: ' .  $client->name ,
-               'contentFull' => 'DOMICILIO: ' . $client->address . '  /  NOTA: '.  $data['landscaper']['note'],
+               'contentFull' => 'DOMICILIO: ' . $client->street . ' '. $client->home_number . ' '. $client->colony .  '  /  NOTA: '.  $data['landscaper']['note'],
                'class' => 'domicilio'
            ]);
 
@@ -184,7 +184,7 @@ class CGlobalsController extends Controller
                 'start' => Carbon::parse($data['documents']['moment'] . ' 8:00'),
                 'end' => Carbon::parse($data['documents']['moment'] . ' 18:00'),
                 'allDay' => 1,
-                'contentFull' => ' DOMICILIO: ' . $client->address,
+                'contentFull' => ' DOMICILIO: ' . $client->street . ' '. $client->home_number . ' '. $client->colony,
                 'title' => 'Información a: ' .$client->name ,
                 'class' => 'info'
             ]);
@@ -271,7 +271,7 @@ class CGlobalsController extends Controller
                 'start' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer']),
                 'end' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer'])->addHours(2),
                 'title' => 'Visita a cliente: ' .  $client->name ,
-                'contentFull' => 'DOMICILIO: ' . $client->address . '  /  NOTA: '.  $data['landscaper']['note'],
+                'contentFull' => 'DOMICILIO: ' .$client->street . ' '. $client->home_number . ' '. $client->colony . '  /  NOTA: '.  $data['landscaper']['note'],
                 'class' => 'domicilio'
             ]);
 
@@ -301,7 +301,7 @@ class CGlobalsController extends Controller
                 'start' => Carbon::parse($data['documents']['moment'] . ' 8:00'),
                 'end' => Carbon::parse($data['documents']['moment'] . ' 18:00'),
                 'allDay' => 1,
-                'contentFull' => ' DOMICILIO: ' . $client->address,
+                'contentFull' => ' DOMICILIO: ' . $client->street . ' '. $client->home_number . ' '. $client->colony ,
                 'title' => 'Información a: ' .$client->name,
                 'class' => 'info'
             ]);

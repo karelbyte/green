@@ -576,7 +576,7 @@
                                                         <tr>
                                                             <td >{{$land->id}}</td>
                                                             <td >{{$land->global['client']['name']}}</td>
-                                                            <td >{{$land->global['client']['address']}}</td>
+                                                            <td >{{$land->global['client']['street'] . '  #'.$land->global['client']['home_number'] .' '.$land->global['client']['colony'] }}</td>
                                                             <td >{{\Carbon\Carbon::parse($land->moment)->format('d-m-Y')}}</td>
                                                             <td >{{$land->timer}}</td>
                                                             <td >{{$land->user['name']}}</td>

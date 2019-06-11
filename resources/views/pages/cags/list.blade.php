@@ -458,13 +458,25 @@
                             <span  class="txtblack">Celular <span class="require">*</span></span>
                             <input v-numeric-only class="form-control" type="text" v-model="client.movil">
                         </div>
-                        <div class="col-lg-12 m-t-20">
-                            <span class="txtblack">Dirección <span class="require">*</span></span>
-                            <input class="form-control" type="text" v-model="client.address">
+                        <div class="col-lg-10 m-t-20">
+                            <span class="txtblack">Calle <span class="require">*</span></span>
+                            <input class="form-control" type="text" v-model="client.street">
+                        </div>
+                        <div class="col-lg-2 m-t-20">
+                            <span class="txtblack">No<span class="require">*</span></span>
+                            <input v-numeric-only class="form-control" type="text" v-model="client.home_number">
+                        </div>
+                        <div class="col-lg-5 m-t-20">
+                            <span class="txtblack">Colonia<span class="require">*</span></span>
+                            <input class="form-control" type="text" v-model="client.colony">
+                        </div>
+                        <div class="col-lg-7 m-t-20">
+                            <span class="txtblack">Referencia<span class="require">*</span></span>
+                            <input class="form-control" type="text" v-model="client.referen">
                         </div>
                     </div>
                     <div class="panel-footer text-right">
-                        <button v-if="passClient()" :disabled="spin" @click="saveNewClient()" class="btn btn-danger waves-effect btn-sm">Guardar</button>
+                        <button v-if="passClient()" :disabled="spin" @click="saveNewClient()" class="btn btn-success waves-effect btn-sm">Guardar</button>
                         <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
                     </div>
                 </div>

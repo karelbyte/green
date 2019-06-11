@@ -20,7 +20,8 @@ class Client extends Model
 
     protected $keyType = 'integer';
 
-    protected $fillable = ['code', 'name', 'contact', 'email', 'movil', 'phone', 'address', 'register_to'];
+    protected $fillable = ['code', 'name', 'contact', 'email', 'movil', 'phone', 'street', 'home_number',
+        'colony', 'referen', 'register_to'];
 
     public function user () {
 

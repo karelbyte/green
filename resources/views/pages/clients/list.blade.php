@@ -54,10 +54,24 @@
                         <input v-numeric-only class="form-control" type="text" v-model="item.movil">
                     </div>
                     <div class="col-lg-12 m-t-20">
-                        <span class="txtblack">Dirección <span class="require">*</span></span>
-                        <input class="form-control" type="text" v-model="item.address">
+                        <h4 class="txtblack">DIRECCION </h4>
                     </div>
-
+                    <div class="col-lg-8 m-t-20">
+                        <span class="txtblack">Calle <span class="require">*</span></span>
+                        <input class="form-control" type="text" v-model="item.street">
+                    </div>
+                    <div class="col-lg-2 m-t-20">
+                        <span class="txtblack">No<span class="require">*</span></span>
+                        <input v-numeric-only class="form-control" type="text" v-model="item.home_number">
+                    </div>
+                    <div class="col-lg-4 m-t-20">
+                        <span class="txtblack">Colonia<span class="require">*</span></span>
+                        <input class="form-control" type="text" v-model="item.colony">
+                    </div>
+                    <div class="col-lg-6 m-t-20">
+                        <span class="txtblack">Referencia<span class="require">*</span></span>
+                        <input class="form-control" type="text" v-model="item.referen">
+                    </div>
                 </div>
             </div>
             <div class="panel-footer footer_fix">
@@ -109,6 +123,7 @@
                             @can('clients.delete')
                                 <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
                             @endcan
+                            <button class="btn btn-info  waves-effect btn-sm">EXPEDIENTE</button>
                         </td>
                     </tr>
                     </tbody>
@@ -164,7 +179,6 @@
                                 <button class="btn btn-danger  waves-effect btn-sm" @click="showdelete(entity)"><i class="fa fa-eraser"></i></button>
                             @endcan
                     <button class="btn btn-info  waves-effect btn-sm">EXPEDIENTE</button>
-
                 </div>
             </div>
         </div>

@@ -52,6 +52,7 @@
                             <th >CAG</th>
                             <th >Cliente</th>
                             <th >Dirección</th>
+                            <th >Referencia</th>
                             <th >Fecha</th>
                             <th >Hora</th>
                             <th >Paisajista</th>
@@ -62,7 +63,8 @@
                         <tr class="mouse" v-for="land in landscapers" :key="land.id">
                             <td >@{{land.cglobal_id}}</td>
                             <td >@{{land.global.client.name}}</td>
-                            <td >@{{land.global.client.address}}</td>
+                            <td >@{{land.global.client.street  + ' #' + land.global.client.home_number + ' ' + land.global.client.colony}}</td>
+                            <td >@{{land.global.client.referen}}</td>
                             <td >@{{dateToEs(land.moment)}}</td>
                             <td >@{{land.timer}}</td>
                             <td >@{{land.user.name}}</td>
@@ -95,7 +97,12 @@
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
-                                    Dirección: <span class="txtblack">@{{land.global.client.address}}</span>
+                                    Dirección: <span class="txtblack">@{{land.global.client.street  + ' #' + land.global.client.home_number + ' ' + land.global.client.colony }}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Referencia: <span class="txtblack">@{{land.global.client.referen }}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
@@ -131,7 +138,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
             <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
                 <div class="panel-heading text-center">
-                    <h3>LLAMADAS DE CONFIRMACION</h3>
+                    <h3>VERIFICACION DE RECEPCION DE COTIZACION</h3>
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
@@ -159,7 +166,7 @@
         </div>
         <div class="hidden-lg hidden-md hidden-sm col-xs-12">
             <div class="panel-heading text-center">
-                <h4>LLAMADAS DE CONFIRMACION</h4>
+                <h4>VERIFICACION DE RECEPCION DE COTIZACION</h4>
             </div>
             <div v-for="con in quoteconfirm" :key="con.id"  class="panel panel-border panel-inverse m-t-5">
                 <div class="panel-heading">

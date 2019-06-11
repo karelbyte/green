@@ -17,7 +17,10 @@ new Vue({
                 email: '',
                 movil: '',
                 phone: '',
-                address: ''
+                street: '',
+                home_number: '',
+                colony: '',
+                referen: ''
             },
             itemDefault: {
                 id: 0,
@@ -27,7 +30,10 @@ new Vue({
                 email: '',
                 movil: '',
                 phone: '',
-                address: ''
+                street: '',
+                home_number: '',
+                colony: '',
+                referen: ''
             },
             listfield: [{name: 'Nombre', type: 'text', field: 'clients.name'}, {name: 'Codigo', type: 'text', field: 'clients.code'}],
             filters_list: {
@@ -153,7 +159,13 @@ new Vue({
 
             let email = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(this.item.email);
 
-            return name && contact && code && email
+            let street = this.item.street !== '';
+
+            let home_number = this.item.home_number !== '';
+
+            let colony = this.item.colony;
+
+            return name && contact && code && email && street && home_number && colony
         }
     }
 });
