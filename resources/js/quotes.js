@@ -1,5 +1,4 @@
 import {dateEs, generateId} from './tools';
-
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
@@ -16,6 +15,7 @@ new Vue({
     el: '#app',
     data () {
         return {
+            precion: 1,
             user_id_auth: 0,
             sendM: false,
             editorOption: {

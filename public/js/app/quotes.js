@@ -14424,6 +14424,7 @@ new Vue({
     var _this = this;
 
     return {
+      precion: 1,
       user_id_auth: 0,
       sendM: false,
       editorOption: {
