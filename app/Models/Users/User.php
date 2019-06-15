@@ -40,12 +40,12 @@ class User extends Authenticatable
 
     static public function findUid($uid) {
 
-        return self::where('uid', $uid)->first();
+        return self::query()->where('uid', $uid)->first();
     }
 
     static public function ifexis($email) {
 
-        return empty(self::where('email', $email)->first());
+        return empty(self::query()->where('email', $email)->first());
     }
 
     public function status () {

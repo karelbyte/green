@@ -17,6 +17,8 @@ new Vue({
                 price: 0,
                 type: 1,
                 measure_id: '',
+                wholesale_cant: 0,
+                wholesale_price: 0
             },
             itemDefault: {
                 id: 0,
@@ -25,6 +27,8 @@ new Vue({
                 name: '',
                 type: 1,
                 measure_id: '',
+                wholesale_cant: 0,
+                wholesale_price: 0
             },
             listfield: [{name: 'Codigo', type: 'text', field: 'elements.code'}, {name: 'Nombre', type: 'text', field: 'elements.name'}],
             filters_list: {

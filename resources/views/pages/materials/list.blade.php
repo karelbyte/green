@@ -56,6 +56,18 @@
                         <input v-numeric-only class="form-control" type="text" v-model.number="item.price">
                     </div>
                 </div>
+                <div class="row m-t-5">
+                    <div class="col-lg-3 m-t-20">
+                        <span class="txtblack">Cantidad de unidades para precio al mayoreo<span class="require">*</span></span>
+                        <input v-numeric-only class="form-control" type="text" v-model.number="item.wholesale_cant">
+                    </div>
+                </div>
+                <div class="row m-t-5">
+                    <div class="col-lg-3 m-t-20">
+                        <span class="txtblack">Precio al mayoreo<span class="require">*</span></span>
+                        <input v-numeric-only class="form-control" type="text" v-model.number="item.wholesale_price">
+                    </div>
+                </div>
 
             </div>
             <div class="panel-footer footer_fix">

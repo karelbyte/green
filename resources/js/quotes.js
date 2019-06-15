@@ -3,21 +3,15 @@ import {dateEs, generateId} from './tools';
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-
 import { quillEditor } from 'vue-quill-editor'
-
 import Multiselect from "vue-multiselect";
-
 import VueProgressBar from 'vue-progressbar'
-
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
     failedColor: 'red',
     height: '2px'
 });
-
 const CLIENTE_ACEPT_QUOTE = 1;
-
 new Vue({
     el: '#app',
     data () {
@@ -119,7 +113,8 @@ new Vue({
                 patch: '',
                 message: ''
             },
-            editItem: false
+            editItem: false,
+            labelprice: 'Precio unitario'
         }
     },
     directives: {
@@ -203,6 +198,10 @@ new Vue({
         },
         'filters_list.value': function () {
             this.getlist()
+        },
+        'detail.cant': function () {
+            this.detail.price = this.detail.cant > this.detail.item.wholesale_cant ? this.detail.item.wholesale_price : this.detail.item.price;
+            this.labelprice = this.detail.cant > this.detail.item.wholesale_cant ? 'Precio mayoreo' : 'Precio Unitario'
         }
     },
     mounted () {

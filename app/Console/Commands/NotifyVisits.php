@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Mail\AlertLandscape;
 use App\Models\Company;
 use App\Models\LandScaper;
+use App\Models\Users\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
@@ -47,9 +48,14 @@ class NotifyVisits extends Command
             ->whereRaw('DATEDIFF( now(), landscapers.moment) >= 0')
             ->where('landscapers.status_id', 0)->get();
 
+
        foreach ($landscapers as $scaper) {
+
+           $generador = User::query()->where('id',  $scaper->global->user_id)->first();
+
            $data_email = [
                'user' => $scaper->user,
+               'generador' =>  $generador->name,
                'visit' => $scaper,
                'client' =>  $scaper->global->client,
                'company' => Company::query()->find(1),

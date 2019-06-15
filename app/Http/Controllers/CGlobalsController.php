@@ -99,9 +99,23 @@ class CGlobalsController extends Controller
 
     // CREANDO CICLO DE ATENCION GLOBAL
     public function store(Request $request) {
-
        $data = $request->all();
+       $status = 0;
+       switch ($data['type_compromise_id']) {
+           case TypeCompromise::QUOTE_HOME:
+               $status = 1;
+               break;
+           case TypeCompromise::QUOTE_DISTANCE:
+               $status = 2;
+               break;
+           case TypeCompromise::SALE_NOTE:
+               $status = 2;
+               break;
+           case TypeCompromise::INFO_SEND:
+               $status = Carbon::parse($data['documents']['moment'])->day === Carbon::now()->day ? 17 : 16;
+               break;
 
+       }
        $cg = CGlobal::query()->create([
            'moment' => $data['moment'],
            'emit' => Carbon::now(),
@@ -115,7 +129,7 @@ class CGlobalsController extends Controller
            'required_time' => $data['required_time'],
            'traser' => 1,
            'note' => $data['note'],
-           'status_id' => 1
+           'status_id' => $status
        ]);
 
        $this->setID('cglobals', $cg->id );
@@ -139,8 +153,11 @@ class CGlobalsController extends Controller
 
            $user_email = User::query()->where('uid', $data['landscaper']['user_uid'])->first();
 
+           $generador = User::query()->where('id', $data['user_id'])->first();
+
            $data_email = [
                'user' => $user_email,
+               'generador' =>  $generador->name,
                'visit' => $data['landscaper'],
                'client' => $client,
                'company' => Company::query()->find(1),

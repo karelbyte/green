@@ -255,12 +255,12 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-lg-4">
-                            <button v-if="parseInt(entity.status_id) === 1" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
-                            <button v-if="parseInt(entity.status_id) === 1" class="btn btn-danger waves-effect btn-sm" @click="showdelete(trait(entity))"><i class="fa fa-eraser"></i></button>
+                            <button v-if="parseInt(entity.status_id) === 1 || parseInt(entity.status_id) > 15" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
+                           <!-- <button v-if="parseInt(entity.status_id) < 2 || parseInt(entity.status_id) <= 15" class="btn btn-danger waves-effect btn-sm" @click="showdelete(trait(entity))"><i class="fa fa-eraser"></i></button> -->
                             <button class="btn btn-info waves-effect btn-sm" @click="showpdf(entity.id)"><i class="fa fa-file-pdf-o"></i></button>
                         </div>
                         <div class="col-lg-8 text-right" style="font-style: italic; font-size: 11px">
-                            <span class="txtblack">@{{entity.status.name  }}</span>
+                            <span style="color: red">@{{entity.status.name  }}</span>
                         </div>
                     </div>
                 </div>

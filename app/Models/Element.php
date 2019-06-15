@@ -18,7 +18,11 @@ class Element extends Model
 
         'price',
 
-        'measure_id'
+        'measure_id',
+
+        'wholesale_cant',
+
+       'wholesale_price'
     ];
 
     public $timestamps = false;

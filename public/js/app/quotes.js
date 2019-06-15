@@ -14529,7 +14529,8 @@ new Vue({
         patch: '',
         message: ''
       },
-      editItem: false
+      editItem: false,
+      labelprice: 'Precio unitario'
     };
   },
   directives: {
@@ -14598,6 +14599,10 @@ new Vue({
     },
     'filters_list.value': function filters_listValue() {
       this.getlist();
+    },
+    'detail.cant': function detailCant() {
+      this.detail.price = this.detail.cant > this.detail.item.wholesale_cant ? this.detail.item.wholesale_price : this.detail.item.price;
+      this.labelprice = this.detail.cant > this.detail.item.wholesale_cant ? 'Precio mayoreo' : 'Precio Unitario';
     }
   },
   mounted: function mounted() {

@@ -16,11 +16,10 @@ class AppSeeder extends Seeder
         $role = \Spatie\Permission\Models\Role::create([
 
             'name' => 'administrador',
-
             'guard_name' => 'web'
         ]);
 
-        $permission = \Spatie\Permission\Models\Permission::select('name')->get();
+        $permission = \Spatie\Permission\Models\Permission::query()->select('name')->get();
 
         $role->givePermissionTo($permission->pluck('name'));
 
@@ -122,7 +121,7 @@ class AppSeeder extends Seeder
 
         // ESTADO DE COTIZACION
         $QuoteStatus = [
-            ['id' => 1, 'name' => 'EN ESPERA'],
+            ['id' => 1, 'name' => 'VISITA POR REALIZAR'],
             ['id' => 2, 'name' => 'EN PROCESO'],
             ['id' => 3, 'name' => 'EN ESPERA DE VERIFICACION'],
             ['id' => 4, 'name' => 'CONFIMADA - ACEPTADA'],
@@ -139,7 +138,7 @@ class AppSeeder extends Seeder
 
         // CICLO DE ATENCION GLOBAL ESTADOS
         $CAGSt = [
-            ['id' => 1, 'name' => 'EN ESPERA'],
+            ['id' => 1, 'name' => 'VISITA POR REALIZAR'],
             ['id' => 2, 'name' => 'EN CURSO'],
             ['id' => 3, 'name' => 'EN PROCESO DE VENTA'],
             ['id' => 4, 'name' => 'VENTA'],
@@ -154,6 +153,9 @@ class AppSeeder extends Seeder
             ['id' => 13, 'name' => 'CONFIRMAR E.VENTA'],
             ['id' => 14, 'name' => 'SE ENVIO RECOMENDACIONES'],
             ['id' => 15, 'name' => 'CONCLUIDO'],
+            ['id' => 16, 'name' => 'SE ENVIARA INFORMACION'],
+            ['id' => 17, 'name' => 'SE ENVIO INFORMACION'],
+            ['id' => 18, 'name' => 'INFORMACION CONFIRMADA'],
         ];
         \App\Models\CGlobal\CGlobalStatus::query()->insert($CAGSt);
 

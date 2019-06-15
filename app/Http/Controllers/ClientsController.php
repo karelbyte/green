@@ -103,7 +103,7 @@ class ClientsController extends Controller
     // CREA CLIENTES
     public function store(Request $request)
     {
-        try {
+
             $this->setID('clients', $request->code);
             $client = Client::query()->create($request->except(['id', 'user']));
             $data = [
@@ -112,9 +112,7 @@ class ClientsController extends Controller
             ];
             Mail::to($request->email)->send(new MailNotyNewClient($data));
             return response()->json('Cliente añadido con exito!');
-        } catch ( \Exception $e) {
-            return response()->json('Ya existe un cliente con ese codigo!', 500);
-        }
+
     }
 
     // MODFICA CLIENTE

@@ -61,7 +61,7 @@ class MaterialsController extends Controller
 
         try {
 
-            Element::create($request->all());
+            Element::query()->create($request->all());
 
             return response()->json('Datos creado con exito!', 200);
 
@@ -77,9 +77,9 @@ class MaterialsController extends Controller
 
         try {
 
-            Element::where('id', $id)->update($request->except(['id', 'measure']));
+            Element::query()->where('id', $id)->update($request->except(['id', 'measure', 'code']));
 
-            return response()->json('Datos actualizados con exito!', 200);
+            return response()->json('Datos actualizados con exito!');
 
         } catch ( \Exception $e) {
 

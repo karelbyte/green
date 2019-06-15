@@ -417,7 +417,7 @@
                             <input v-numeric-only class="form-control" type="text" v-model.number="detail.cant">
                         </div>
                         <div class="col-lg-6 m-t-20">
-                            <span class="txtblack">Precio Unitario <span class="require">*</span></span>
+                            <span class="txtblack">@{{ labelprice}} <span class="require">*</span></span>
                             <input v-numeric-only class="form-control" type="text" v-model.number="detail.price">
                         </div>
                     </div>

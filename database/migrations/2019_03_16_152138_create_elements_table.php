@@ -20,7 +20,9 @@ class CreateElementsTable extends Migration
             $table->string('name');
             $table->bigInteger('measure_id')->unsigned()->default(1);
             $table->foreign('measure_id')->references('id')->on('measures');
-            $table->decimal('price', 8, 2)->default(0);
+            $table->decimal('price')->default(0);
+            $table->smallInteger('wholesale_cant');
+            $table->decimal('wholesale_price')->default(0);
             $table->engine = 'InnoDB';
         });
     }

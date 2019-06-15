@@ -428,7 +428,7 @@
                                     <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 15px; padding-top: 20px; padding-bottom: 0px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
                                     <div style="color:#052d3d;font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif;line-height:150%;padding-top:20px;padding-right:10px;padding-bottom:0px;padding-left:15px;">
                                         <div style="font-size: 12px; line-height: 18px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; color: #052d3d;">
-                                            <p>Estimado: <strong>{{$data['user']['name']}}</strong> tienes programada una vista a domicilio.</p>
+                                            <p>Hola soy <strong>{{$data['generador']}} </strong> mi estimado <strong>{{$data['user']['name']}}</strong> tienes programada una vista a domicilio.</p>
 
                                             <p>Cliente: <strong>{{$data['client']['name']}}</strong></p>
 

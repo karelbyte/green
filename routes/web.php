@@ -171,6 +171,9 @@ Route::middleware('auth')->group(function () {
     // CALIDAD
     Route::get('/calidad/{id?}', 'QualityController@index')->name('quality');
 
+    // REPORTES
+    Route::get('/informes-cotizaciones', 'ReportsController@quotesIndex')->name('reports.quotes');
+
 });
 
 

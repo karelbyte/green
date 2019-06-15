@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Users\User;
 use App\Models\Users\UserPosition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -28,7 +29,8 @@ class UsersController extends Controller
 
     public function getUsers()
     {
-        return User::query()->select('id', 'name')->get();
+      //  return User::query()->select('id', 'name')->get();
+        return DB::table('users')->select('id', 'name')->get();
     }
 
     public function getlanscapers()

@@ -81,16 +81,19 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown user-box">
                         <a href="" class="dropdown-toggle waves-effect waves-light user-link" data-toggle="dropdown" aria-expanded="true">
-                            <img src="{{asset('images/users/profile.png')}}" alt="user-img" class="img-circle user-img">
+                            <img src="{{asset('images/users/user1.png')}}" alt="user-img" class="img-circle user-img">
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
                             <li>
                                 <h5> {{ Auth::user()->name }}</h5>
                             </li>
-                            <li><a href="javascript:void(0)"><i class="ti-user m-r-5"></i> Perfil</a></li>
-                            <li><a href="javascript:void(0)"><i class="ti-settings m-r-5"></i> Ajustes</a></li>
-                            <li><a href="javascript:void(0)"><i class="ti-lock m-r-5"></i> Bloquear pantalla</a></li>
+                            @can('user')
+                                <li><a href="{{route('users')}}"><i class="ti-user m-r-5"></i> Perfil</a></li>
+                            @endcan
+                            @if (auth()->user()->position_id == 1 )
+                                <li><a href="{{route('company')}}"><i class="ti-settings m-r-5"></i> Ajustes</a></li>
+                            @endif
                             <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
@@ -161,7 +164,7 @@
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-paste "></i><span> Informes</span><span class="menu-arrow"></span> </a>
                          <ul class="list-unstyled">
-                            <li><a href="{{route('info')}}">Cotizaciones</a></li>
+                            <li><a href="{{route('reports.quotes')}}">Cotizaciones</a></li>
                          </ul>
                     </li>
                     @can('clients')

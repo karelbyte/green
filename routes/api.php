@@ -259,5 +259,9 @@ Route::prefix('qualities')->group(function () {
 });
 Route::resource('/qualities', 'QualityController');
 
+// REPORTES
+Route::prefix('reports')->group(function () {
 
+    Route::post('quotes', 'ReportsController@dataQuotes');
 
+});
