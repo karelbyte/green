@@ -29,9 +29,9 @@ class CGlobalsController extends Controller
 {
     use GenerateID;
 
-    public function index()
+    public function index($status=0, $id=0)
     {
-        return view('pages.cags.list');
+        return view('pages.cags.list', ['status' => $status, 'user_id' => $id]);
     }
 
     public function getCglobals() {
@@ -65,7 +65,22 @@ class CGlobalsController extends Controller
             $datos->where('user_id', $request->user_id_auth);
         }
 
-        if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
+        if ( $filters['value'] !== null) {
+
+            if  ($filters['type'] === 'int') {
+
+                $datos->where( $filters['field'], $filters['value']);
+
+            } else {
+                $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
+            }
+        }
+
+        if ( array_key_exists('user_id', $filters)) {
+         if  ($filters['user_id'] !== 0) {
+             $datos->where( 'user_id',  $filters['user_id'] );
+         }
+        }
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
 
@@ -109,7 +124,7 @@ class CGlobalsController extends Controller
                $status = 2;
                break;
            case TypeCompromise::SALE_NOTE:
-               $status = 2;
+               $status = 3;
                break;
            case TypeCompromise::INFO_SEND:
                $status = Carbon::parse($data['documents']['moment'])->day === Carbon::now()->day ? 17 : 16;

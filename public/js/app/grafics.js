@@ -64,6 +64,12 @@ new Vue({
       maintenance_month_last: 0,
       amout_sale_month: 0,
       amout_sale_month_last: 0,
+      // CANTIDADES
+      home_visit_cant: 0,
+      VERIFICATION_RECEIPT_QUOTATION_CANT: 0,
+      STRATEGY_SALE_CANT: 0,
+      STRATEGY_SALE_CONFIRM_CANT: 0,
+      INQUOTE_CANT: 0,
       pie: {
         chart: {
           plotBackgroundColor: null,
@@ -84,6 +90,7 @@ new Vue({
           pie: {
             allowPointSelect: true,
             cursor: 'pointer',
+            point: {},
             dataLabels: {
               enabled: true,
               format: '<b>{point.name}</b>: {point.y}',
@@ -122,6 +129,206 @@ new Vue({
           }
         },
         series: []
+      },
+      home_visit_month: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          style: {
+            fontSize: '14px'
+          },
+          text: 'CAGS EN ESTADO DE VISITA A DOMICILIO'
+        },
+        subtitle: {
+          text: 'TOTAL DE:'
+        },
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de Cags'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            borderWidth: 0,
+            dataLabels: {
+              enabled: true,
+              format: '{point.y}'
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+        },
+        series: []
+      },
+      VERIFICATION_RECEIPT_QUOTATION: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          style: {
+            fontSize: '14px'
+          },
+          text: 'CAGS EN ESTADO DE VERIFICACION DE RECEPCION DE COTIZACION'
+        },
+        subtitle: {
+          text: 'TOTAL DE:'
+        },
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de Cags'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            borderWidth: 0,
+            dataLabels: {
+              enabled: true,
+              format: '{point.y}'
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+        },
+        series: []
+      },
+      STRATEGY_SALE: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          style: {
+            fontSize: '14px'
+          },
+          text: 'CAGS EN ESTADO DE ESTRATEGIA DE VENTA'
+        },
+        subtitle: {
+          text: 'TOTAL DE:'
+        },
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de Cags'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            borderWidth: 0,
+            dataLabels: {
+              enabled: true,
+              format: '{point.y}'
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+        },
+        series: []
+      },
+      STRATEGY_SALE_CONFIRM: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          style: {
+            fontSize: '14px'
+          },
+          text: 'CAGS EN ESTADO CONFIRMANDO ESTRATEGIA DE VENTA'
+        },
+        subtitle: {
+          text: 'TOTAL DE:'
+        },
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de Cags'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            borderWidth: 0,
+            dataLabels: {
+              enabled: true,
+              format: '{point.y}'
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+        },
+        series: []
+      },
+      INQUOTE: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          style: {
+            fontSize: '14px'
+          },
+          text: 'CAGS EN EN PROCESO DE COTIZACION'
+        },
+        subtitle: {
+          text: 'TOTAL DE:'
+        },
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de Cags'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            borderWidth: 0,
+            dataLabels: {
+              enabled: true,
+              format: '{point.y}'
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+        },
+        series: []
       }
     };
   },
@@ -156,16 +363,110 @@ new Vue({
       _this.pie.subtitle.text = 'CANTIDAD EN EL MES ' + r.data.pie_cag_status.cant_cag;
 
       _this.pie.series.push({
-        name: 'Brands',
+        name: 'Cags',
         colorByPoint: true,
         data: r.data.pie_cag_status.data
       });
+
+      _this.pie.plotOptions.pie.point = {
+        events: {
+          click: function click(e) {
+            window.location.href = r.data.url + e.point.status;
+          }
+        }
+      }; // VENTAS POR MESES
 
       _this.sale_for_month.series.push({
         name: 'Venta',
         color: "#257f4d",
         data: r.data.sales_for_year
+      }); // CAGS EN ESTADO DE VISITA
+
+
+      _this.home_visit_cant = r.data.home_visit_month.cant;
+      _this.home_visit_month.subtitle.text = 'TOTAL DE ' + r.data.home_visit_month.cant;
+
+      _this.home_visit_month.series.push({
+        name: 'Cags por asesor',
+        colorByPoint: true,
+        data: r.data.home_visit_month.data
       });
+
+      _this.home_visit_month.plotOptions.column = {
+        events: {
+          click: function click(e) {
+            window.location.href = r.data.url + e.point.status + '/' + e.point.id;
+          }
+        }
+      }; // VERIFICACION RECEPCION DE COTIZACION
+
+      _this.VERIFICATION_RECEIPT_QUOTATION_CANT = r.data.VERIFICATION_RECEIPT_QUOTATION.cant;
+      _this.VERIFICATION_RECEIPT_QUOTATION.subtitle.text = 'TOTAL DE ' + r.data.VERIFICATION_RECEIPT_QUOTATION.cant;
+
+      _this.VERIFICATION_RECEIPT_QUOTATION.series.push({
+        name: 'Cags por asesor',
+        colorByPoint: true,
+        data: r.data.VERIFICATION_RECEIPT_QUOTATION.data
+      });
+
+      _this.VERIFICATION_RECEIPT_QUOTATION.plotOptions.column = {
+        events: {
+          click: function click(e) {
+            window.location.href = r.data.url + e.point.status + '/' + e.point.id;
+          }
+        }
+      }; // ESTRATEGIA DE VENTA
+
+      _this.STRATEGY_SALE_CANT = r.data.STRATEGY_SALE.cant;
+      _this.STRATEGY_SALE.subtitle.text = 'TOTAL DE ' + r.data.STRATEGY_SALE.cant;
+
+      _this.STRATEGY_SALE.series.push({
+        name: 'Cags por asesor',
+        colorByPoint: true,
+        data: r.data.STRATEGY_SALE.data
+      });
+
+      _this.STRATEGY_SALE.plotOptions.column = {
+        events: {
+          click: function click(e) {
+            window.location.href = r.data.url + e.point.status + '/' + e.point.id;
+          }
+        }
+      }; // CONFIRMANDO ESTRATEGIA DE VENTA
+
+      _this.STRATEGY_SALE_CONFIRM_CANT = r.data.STRATEGY_SALE_CONFIRM.cant;
+      _this.STRATEGY_SALE_CONFIRM.subtitle.text = 'TOTAL DE ' + r.data.STRATEGY_SALE_CONFIRM.cant;
+
+      _this.STRATEGY_SALE_CONFIRM.series.push({
+        name: 'Cags por asesor',
+        colorByPoint: true,
+        data: r.data.STRATEGY_SALE_CONFIRM.data
+      });
+
+      _this.STRATEGY_SALE_CONFIRM.plotOptions.column = {
+        events: {
+          click: function click(e) {
+            window.location.href = r.data.url + e.point.status + '/' + e.point.id;
+          }
+        }
+      }; // CONFIRMANDO ESTRATEGIA DE VENTA
+
+      _this.INQUOTE_CANT = r.data.INQUOTE.cant;
+      _this.INQUOTE.subtitle.text = 'TOTAL DE ' + r.data.INQUOTE.cant;
+
+      _this.INQUOTE.series.push({
+        name: 'Cags por asesor',
+        colorByPoint: true,
+        data: r.data.INQUOTE.data
+      });
+
+      _this.INQUOTE.plotOptions.column = {
+        events: {
+          click: function click(e) {
+            window.location.href = r.data.url + e.point.status + '/' + e.point.id;
+          }
+        }
+      };
     });
   }
 });

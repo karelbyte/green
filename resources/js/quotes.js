@@ -106,7 +106,7 @@ new Vue({
             fieldtype: 'text',
             pager_list: {
                 page: 1,
-                recordpage: 10,
+                recordpage: 12,
                 totalpage: 0
             },
             redirect: {

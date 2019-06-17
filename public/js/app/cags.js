@@ -17774,7 +17774,7 @@ new Vue({
       },
       listfield: [{
         name: 'CAG',
-        type: 'text',
+        type: 'int',
         field: 'cglobals.id'
       }, {
         name: 'Cliente',
@@ -17784,6 +17784,7 @@ new Vue({
       filters_list: {
         descrip: 'CAG',
         field: 'cglobals.id',
+        type: 'int',
         value: ''
       },
       orders_list: {
@@ -17803,7 +17804,9 @@ new Vue({
       redirect: {
         patch: '',
         message: ''
-      }
+      },
+      find: 0,
+      user_id: 0
     };
   },
   components: {
@@ -17816,11 +17819,25 @@ new Vue({
     }
   },
   mounted: function mounted() {
+    this.find = $('#find').val();
+    this.user_id = $('#user_id').val();
     this.propertyShowDelObj = 'id';
     this.labeledit = 'Actualizar atencion a cliente';
     this.labelnew = 'Añadir atencion a cliente';
     this.patchDelete = 'api/cags/';
     this.keyObjDelete = 'id';
+
+    if (this.find > 0) {
+      this.filters_list.field = 'cglobals.status_id';
+      this.filters_list.type = 'int';
+      this.filters_list.value = this.find;
+
+      if (this.user_id > 0) {
+        this.filters_list.user_id = this.user_id;
+      }
+    } else {
+      this.getlist();
+    }
   },
   methods: {
     toWord: function toWord(val) {
@@ -18180,10 +18197,16 @@ var core = {
       fieldtype: 'text',
       pager_list: {
         page: 1,
-        recordpage: 10,
+        recordpage: 9,
         totalpage: 0
       },
-      user_id_auth: 0
+      user_id_auth: 0,
+      filters_list_aux: {
+        descrip: '',
+        field: '',
+        type: '',
+        value: ''
+      }
     };
   },
   directives: {
@@ -18223,9 +18246,11 @@ var core = {
   },
   methods: {
     setfield: function setfield(f) {
+      this.filters_list = _objectSpread({}, this.filters_list_aux);
       this.filters_list.value = '';
       this.filters_list.descrip = f.name;
       this.filters_list.field = f.field;
+      this.filters_list.type = f.type;
       if (f.type === 'select') this.filters_list.options = f.options;
       this.fieldtype = f.type;
     },

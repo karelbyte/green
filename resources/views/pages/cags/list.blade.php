@@ -22,6 +22,8 @@
         </div>
     </div>
 </div>
+<input type="text" id="find" value="{{$status}}" hidden>
+<input type="text" id="user_id" value="{{$user_id}}" hidden>
 <div v-if="views.new" class="row" v-cloak>
     <div class="col-lg-12">
         <div class="panel panel-border panel-inverse">

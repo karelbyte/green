@@ -45,7 +45,7 @@ class GraficsController extends Controller
         $pie_data = CGlobal::query()
             ->leftJoin('cglobal_status', 'cglobal_status.id', 'cglobals.status_id')
             ->whereMonth('moment', $month)
-            ->selectRaw('count(status_id) as y, cglobal_status.name as name')
+            ->selectRaw('count(status_id) as y, cglobal_status.name as name, status_id as status')
             ->groupBy('cglobals.status_id', 'cglobal_status.name')->get();
         $pie = [
             'cant_cag' => $client_care_month,
@@ -60,7 +60,49 @@ class GraficsController extends Controller
             $data_sale_year[] = $data ?? 0;
         }
 
+        // VISTIA A DOMICILIO POR ASESOR
+        $home_visit_month = CGlobal::query()
+            ->leftJoin('users', 'cglobals.user_id', 'users.id')
+            ->whereMonth('cglobals.moment', $month)
+            ->where('cglobals.status_id', 1)
+            ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
+            ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
+
+        // VERIFICACION DE RECEPCION DE COTIZACION
+        $VERIFICATION_RECEIPT_QUOTATION = CGlobal::query()
+            ->leftJoin('users', 'cglobals.user_id', 'users.id')
+            ->whereMonth('cglobals.moment', $month)
+            ->where('cglobals.status_id', 10)
+            ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
+            ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
+
+        // EN ESTRATEGIA DE VENTA
+        $STRATEGY_SALE = CGlobal::query()
+            ->leftJoin('users', 'cglobals.user_id', 'users.id')
+            ->whereMonth('cglobals.moment', $month)
+            ->where('cglobals.status_id', 12)
+            ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
+            ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
+
+        // VERIFICACION DE ESTRATEGIA DE VENTA
+        $STRATEGY_SALE_CONFIRM = CGlobal::query()
+            ->leftJoin('users', 'cglobals.user_id', 'users.id')
+            ->whereMonth('cglobals.moment', $month)
+            ->where('cglobals.status_id', 13)
+            ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
+            ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
+
+        // VERIFICACION DE ESTRATEGIA DE VENTA
+        $INQUOTE = CGlobal::query()
+            ->leftJoin('users', 'cglobals.user_id', 'users.id')
+            ->whereMonth('cglobals.moment', $month)
+            ->where('cglobals.status_id', 9)
+            ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
+            ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
+
         $data = [
+            'url' => url('/') . '/atencion/',
+
             'client_care_month' => $client_care_month,
             'client_care_month_last' => $client_care_month_last,
 
@@ -78,7 +120,33 @@ class GraficsController extends Controller
 
             'pie_cag_status' => $pie,
 
-            'sales_for_year' => $data_sale_year
+            'sales_for_year' => $data_sale_year,
+
+            'home_visit_month' => [
+                'data' => $home_visit_month,
+                'cant' =>$home_visit_month->sum('y')
+            ],
+
+            'VERIFICATION_RECEIPT_QUOTATION' => [
+                'data' => $VERIFICATION_RECEIPT_QUOTATION,
+                'cant' => $VERIFICATION_RECEIPT_QUOTATION->sum('y')
+            ],
+
+            'STRATEGY_SALE' => [
+                'data' => $STRATEGY_SALE,
+                'cant' => $STRATEGY_SALE->sum('y')
+            ],
+
+            'STRATEGY_SALE_CONFIRM' => [
+                'data' => $STRATEGY_SALE_CONFIRM,
+                'cant' => $STRATEGY_SALE_CONFIRM->sum('y')
+            ],
+
+            'INQUOTE' => [
+                'data' => $INQUOTE,
+                'cant' => $INQUOTE->sum('y')
+            ]
+
         ];
 
         return response()->json($data,  200, [], JSON_NUMERIC_CHECK);

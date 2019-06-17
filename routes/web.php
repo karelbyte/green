@@ -148,7 +148,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/catalogo-servicios', 'ServicesOfferedsController@index')->name('servicesoffereds');
 
     // CICLO DE ATENCION GLOBAL
-    Route::get('/atencion', 'CGlobalsController@index')->name('cags');
+    Route::get('/atencion/{status?}/{id?}', 'CGlobalsController@index')->name('cags');
 
     // MANTENIMIENTOS
     Route::get('/mantenimientos', 'MaintenancesController@index')->name('maintenance');

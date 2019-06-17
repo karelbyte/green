@@ -337,30 +337,21 @@ class QuotesController extends Controller
     // GUARDAR COTIZACION
 
     public function saveInfo(Request $request) {
-
-
         $data = $request->all();
-
         $quote = Quote::query()->find($request->id);
-
         if ($request->status_id === true || $request->status_id === 1) {
-
             $quote->status_id = 10;
-
+            $quote->check_date = Carbon::now();
             $quote->save();
-
             $quote->globals()->update(['status_id' => 8, 'traser' => 3]);
         }
-
         $data['timer'] = Carbon::parse($data['timer'])->format('H:i');
-
         LandScaper::query()->where('cglobal_id',  $quote->globals->id)
             ->update([
                 'moment' => $data['moment'],
                 'timer' => $data['timer'],
                 'status_id' => $request->status_id === true || $request->status_id === 1 ? 1 : 0
             ]);
-
         return response()->json('Detalles guardados con exito!');
     }
 

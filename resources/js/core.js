@@ -1,4 +1,3 @@
-
 export const core = {
 
     data () {
@@ -29,12 +28,18 @@ export const core = {
 
                 page: 1,
 
-                recordpage: 10,
+                recordpage: 9,
 
                 totalpage: 0
 
             },
-            user_id_auth: 0
+            user_id_auth: 0,
+            filters_list_aux: {
+                descrip: '',
+                field: '',
+                type: '',
+                value: ''
+            },
         }
     },
     directives: {
@@ -79,11 +84,15 @@ export const core = {
 
         setfield (f){
 
+            this.filters_list = {...this.filters_list_aux};
+
             this.filters_list.value = '';
 
             this.filters_list.descrip = f.name;
 
             this.filters_list.field = f.field;
+
+            this.filters_list.type = f.type;
 
             if (f.type === 'select') this.filters_list.options = f.options;
 

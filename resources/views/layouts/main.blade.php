@@ -77,6 +77,12 @@
                             <span  class="badge up bg-danger">@{{ qualities_send_info }}</span>
                         </a>
                     </li>
+                    <li v-if="visit_home_end > 0">
+                        <a href="{{route('notifications')}}" class="right-menu-item">
+                            <i class="fa fa-file-text-o"></i>
+                            <span  class="badge up bg-danger">@{{ visit_home_end }}</span>
+                        </a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown user-box">
@@ -91,7 +97,7 @@
                             @can('user')
                                 <li><a href="{{route('users')}}"><i class="ti-user m-r-5"></i> Perfil</a></li>
                             @endcan
-                            @if (auth()->user()->position_id == 1 )
+                            @if ((int) auth()->user()->position_id === 1 )
                                 <li><a href="{{route('company')}}"><i class="ti-settings m-r-5"></i> Ajustes</a></li>
                             @endif
                             <li>

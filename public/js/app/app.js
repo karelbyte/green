@@ -2725,7 +2725,8 @@ var app = new Vue({
       sale_note_not_close: 0,
       quote_local_close: 0,
       sale_note_not_delivered: 0,
-      qualities_send_info: 0
+      qualities_send_info: 0,
+      visit_home_end: 0
     };
   },
   mounted: function mounted() {
@@ -2741,6 +2742,7 @@ var app = new Vue({
       _this.quote_local_close = r.data.quote_local_close.length;
       _this.sale_note_not_delivered = r.data.sale_note_not_delivered.length;
       _this.qualities_send_info = r.data.qualities_send_info.length + r.data.qualities_send_info_confirm.length;
+      _this.visit_home_end = r.data.visit_home_end.length;
     });
   }
 });

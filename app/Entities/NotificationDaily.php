@@ -144,6 +144,20 @@ class NotificationDaily
             $qualities_send_info_confirm = $qualities_send_info_confirm ->select('qualities.*')->get();
         }
 
+        // COTIZACION  A DOMICIOLIO TERMINADA
+        $quote_home_end = Quote::query()->with(['globals' => function($q) {
+            $q->with('client', 'user');
+        }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
+            ->whereRaw('DATEDIFF(now(), quotes.check_date) >= 0')
+            ->where('quotes.status_id', 10)
+            ->where('quotes.type_quote_id', 1);
+        if ( $this->position !== 1) {
+            $quote_home_end =  $quote_home_end->where('cglobals.user_id', $this->id)
+                ->select('quotes.*' )->get();
+        } else {
+            $quote_home_end = $quote_home_end->select('quotes.*')->get();
+        }
+
         $data = [
             'landscapers' => $landscapers,
 
@@ -152,6 +166,8 @@ class NotificationDaily
             'quotetracing' => $quote_tracing,
 
             'sale_note_not_close' => $salen_note_not_close,
+
+            'visit_home_end' => $quote_home_end,
 
             'quote_local_close' => $quote_local_close,
 

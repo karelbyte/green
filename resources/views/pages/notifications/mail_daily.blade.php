@@ -935,6 +935,7 @@
                                                     <thead>
                                                     <tr>
                                                         <th>Cotizacion</th>
+                                                        <th>Cliente</th>
                                                         <th >Fecha</th>
                                                         <th >Usuario</th>
                                                     </tr>
@@ -943,8 +944,84 @@
                                                     @foreach($data['data']['quote_local_close'] as $q)
                                                         <tr>
                                                             <td >{{$q->id}}</td>
+                                                            <td >{{$q->globals->client['name']}}</td>
                                                             <td >{{\Carbon\Carbon::parse($q->moment)->format('d-m-Y')}}</td>
                                                             <td >{{$q->globals->user['name']}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                    </div>
+                                    <!--<![endif]-->
+                                </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                        </div>
+                    </div>
+                </div>
+                @endif
+            @if (count($data['data']['visit_home_end']) > 0)
+                <div style="background-color:transparent;">
+                    <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE;;">
+                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#AEAEAE;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:#AEAEAE"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:#AEAEAE;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num12" style="min-width: 320px; max-width: 900px; display: table-cell; vertical-align: top;;">
+                                <div style="width:100% !important;">
+                                    <!--[if (!mso)&(!IE)]><!-->
+                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                        <!--<![endif]-->
+                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                        <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="">
+                                                <p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;">VISITA A DOMICILIO CONCLUIDA SIN COTIZACION</p>
+                                            </div>
+                                        </div>
+                                        <!--[if mso]></td></tr></table><![endif]-->
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                    </div>
+                                    <!--<![endif]-->
+                                </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                        </div>
+                    </div>
+                </div>
+                <div style="background-color:transparent;">
+                    <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;;">
+                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:transparent;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num12" style="min-width: 320px; max-width: 900px; display: table-cell; vertical-align: top;;">
+                                <div style="width:100% !important;">
+                                    <!--[if (!mso)&(!IE)]><!-->
+                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                        <!--<![endif]-->
+                                        <div style="font-size:16px;text-align:center;">
+                                            <div class="our-class">
+                                                <table class="comicGreen">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>CAG</th>
+                                                        <th>Cotizacion</th>
+                                                        <th>Cliente</th>
+                                                        <th >Fecha</th>
+                                                        <th >Usuario</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($data['data']['visit_home_end'] as $qd)
+                                                        <tr>
+                                                            <td >{{$qd->cglobal_id}}</td>
+                                                            <td >{{$qd->id}}</td>
+                                                            <td >{{$qd->globals->client['name']}}</td>
+                                                            <td >{{\Carbon\Carbon::parse($qd->check_date)->format('d-m-Y')}}</td>
+                                                            <td >{{$qd->globals->user['name']}}</td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>

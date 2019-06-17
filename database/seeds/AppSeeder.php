@@ -139,7 +139,7 @@ class AppSeeder extends Seeder
         // CICLO DE ATENCION GLOBAL ESTADOS
         $CAGSt = [
             ['id' => 1, 'name' => 'VISITA POR REALIZAR'],
-            ['id' => 2, 'name' => 'EN CURSO'],
+            ['id' => 2, 'name' => 'ELABORANDO NOTA'],
             ['id' => 3, 'name' => 'EN PROCESO DE VENTA'],
             ['id' => 4, 'name' => 'VENTA'],
             ['id' => 5, 'name' => 'FINALIZADA - NO VENTA'],

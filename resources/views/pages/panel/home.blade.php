@@ -85,6 +85,31 @@
                         <highcharts :options="sale_for_month" ref="bar"></highcharts>
                     </div>
                 </div>
+                <div class="col-lg-4" v-if="home_visit_cant > 0">
+                    <div class="card-box">
+                        <highcharts :options="home_visit_month"></highcharts>
+                    </div>
+                </div>
+                <div class="col-lg-4" v-if="VERIFICATION_RECEIPT_QUOTATION_CANT > 0">
+                    <div class="card-box">
+                        <highcharts :options="VERIFICATION_RECEIPT_QUOTATION"></highcharts>
+                    </div>
+                </div>
+                <div class="col-lg-4" v-if="STRATEGY_SALE_CANT > 0">
+                    <div class="card-box">
+                        <highcharts :options="STRATEGY_SALE"></highcharts>
+                    </div>
+                </div>
+                <div class="col-lg-4" v-if="STRATEGY_SALE_CONFIRM_CANT > 0">
+                    <div class="card-box">
+                        <highcharts :options="STRATEGY_SALE_CONFIRM"></highcharts>
+                    </div>
+                </div>
+                <div class="col-lg-4" v-if="INQUOTE_CANT > 0">
+                    <div class="card-box">
+                        <highcharts :options="INQUOTE"></highcharts>
+                    </div>
+                </div>
             </div>
         </div>
 

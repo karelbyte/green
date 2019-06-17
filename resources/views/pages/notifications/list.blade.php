@@ -133,6 +133,81 @@
       </div>
 </div>
 
+<!-- VISITA CONCLUIDA EN FACE DE ELAVORACION DE COTIZACION -->
+<div v-if="visit_home_end.length > 0" class="row m-t-20" v-cloak>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
+            <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
+                <div class="panel-heading text-center">
+                    <h3>VISITA A DOMICILIO CONCLUIDA SIN COTIZACION</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th >CAG</th>
+                            <th >Cliente</th>
+                            <th >Fecha</th>
+                            <th >Usuario</th>
+                            <th ></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="mouse" v-for="visit_home in visit_home_end" :key="visit_home.id">
+                            <td >@{{visit_home.cglobal_id}}</td>
+                            <td >@{{visit_home.globals.client.name}}</td>
+                            <td >@{{dateToEs(visit_home.check_date)}}</td>
+                            <td >@{{visit_home.globals.user.name}}</td>
+                            <td ><a :href="gotoUrl(visit_home.id, 1)" style="font-style: oblique">IR A DOCUMENTO</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      <div class="hidden-lg hidden-md hidden-sm col-xs-12">
+            <div class="panel-heading text-center">
+                <h4>VISITA A DOMICILIO CONCLUIDA SIN COTIZACION</h4>
+            </div>
+            <div v-for="visit_home in visit_home_end" :key="visit_home.id"  class="panel panel-border panel-inverse m-t-5">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-xs-12">
+                                    CAG: <span class="txtblack">@{{visit_home.cglobal_id}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Cliente: <span class="txtblack">@{{visit_home.globals.client.name}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Fecha: <span class="txtblack">@{{dateToEs(visit_home.check_date)}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Paisajista: <span class="txtblack">@{{visit_home.globals.user.name}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    <a :href="gotoUrl(visit_home.id, 1)" style="font-style: oblique">IR A DOCUMENTO</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div v-if="quoteconfirm.length > 0" class="row m-t-20" v-cloak>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">

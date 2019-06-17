@@ -15,6 +15,7 @@ let notifications = new Vue({
             sale_note_not_delivered: [],
             qualities_send_info: [],
             qualities_send_info_confirm: [],
+            visit_home_end: [],
             not: 0
         }
     },
@@ -61,11 +62,13 @@ let notifications = new Vue({
 
           this.qualities_send_info_confirm = r.data.qualities_send_info_confirm;
 
+          this.visit_home_end = r.data.visit_home_end;
+
           this.not = this.landscapers.length === 0 && this.quoteconfirm.length === 0
               && this.quotetracing.length === 0 && this.sale_note_not_close.length === 0
               && this.quote_local_close.length === 0 && this.sale_note_not_payment.length
               && this.sale_note_not_delivered.length === 0 && this. qualities_send_info.length === 0
-              && this.qualities_send_info_confirm.length === 0
+              && this.qualities_send_info_confirm.length === 0 &&  this.visit_home_end.length === 0
 
       })
     }
