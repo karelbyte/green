@@ -17954,7 +17954,7 @@ new Vue({
         url: urldomine + 'api/cags/list',
         data: {
           start: this.pager_list.page - 1,
-          take: 9,
+          take: this.pager_list.recordpage,
           filters: this.filters_list,
           orders: this.orders_list,
           user_id_auth: this.user_id_auth
@@ -17971,7 +17971,7 @@ new Vue({
         _this3.landscapers = res.data.landscapers;
         _this3.productsOffereds = res.data.productsOffereds;
         _this3.servicesOffereds = res.data.servicesOffereds;
-        _this3.pager_list.totalpage = Math.ceil(res.data.total / 9);
+        _this3.pager_list.totalpage = Math.ceil(res.data.total / _this3.pager_list.recordpage);
       })["catch"](function (e) {
         _this3.spin = false;
 
@@ -18197,7 +18197,7 @@ var core = {
       fieldtype: 'text',
       pager_list: {
         page: 1,
-        recordpage: 9,
+        recordpage: 39,
         totalpage: 0
       },
       user_id_auth: 0,

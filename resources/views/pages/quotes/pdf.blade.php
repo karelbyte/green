@@ -251,11 +251,17 @@
     <tr>
         <td></td>
         <td colspan="2"></td>
+        <td colspan="2">DESCUENTO</td>
+        <td  class="unit">{{number_format($data['discount'], 2, '.', '')}}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="2"></td>
         <td colspan="2">IMPORTE TOTAL</td>
         @if ($data['have_iva'] === 1)
-        <td  class="total">{{number_format($total + $iva, 2, '.', '')}}</td>
+        <td  class="total">{{number_format($total + $iva - $data['discount'] , 2, '.', '')}}</td>
             @else
-            <td  class="total">{{number_format($total, 2, '.', '')}}</td>
+            <td  class="total">{{number_format($total - $data['discount'], 2, '.', '')}}</td>
         @endif
     </tr>
     </tbody>

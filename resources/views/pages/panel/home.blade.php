@@ -72,6 +72,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 txtblack">
+                    <div class="card-box widget-box-two widget-two-purple">
+                        <i class="mdi mdi-chart-line widget-two-icon"></i>
+                        <div class="wigdet-two-content">
+                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">CAG SIN ENTREGAR @{{getMonth()}}</p>
+                            <h2 class="text-success"><span>@{{  amout_sale_month }} $</span></h2>
+                            <p class="m-0"><b>Anterior:</b> @{{  amout_sale_month_last }} $</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row" >
                 <div class="col-lg-6">

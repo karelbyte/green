@@ -38,7 +38,8 @@ new Vue({
                 feedback: '',
                 notes: [],
                 clientemit: 0,
-                have_iva: false
+                have_iva: false,
+                discount: 0
             },
             itemDefault: {
                 id: 0,
@@ -52,7 +53,8 @@ new Vue({
                 feedback: '',
                 notes: [],
                 clientemit: 0,
-                have_iva: false
+                have_iva: false,
+                discount: 0
             },
             listfield: [{name: 'Codigo', type: 'text', field: 'quotes.id'}, {name: 'Cliente', type: 'text', field: 'clients.name'}],
             filters_list: {
@@ -106,7 +108,7 @@ new Vue({
             fieldtype: 'text',
             pager_list: {
                 page: 1,
-                recordpage: 12,
+                recordpage: 39,
                 totalpage: 0
             },
             redirect: {
@@ -114,7 +116,7 @@ new Vue({
                 message: ''
             },
             editItem: false,
-            labelprice: 'Precio unitario'
+            labelprice: 'Precio unitario',
         }
     },
     directives: {
@@ -323,10 +325,10 @@ new Vue({
                     return a + parseFloat(b.price) * parseFloat(b.cant)
                 }, 0);
                 if (it.have_iva === 1 || it.have_iva === true) {
-                    subtotal = (subtotal + (subtotal * .16)).toFixed(2)
+                    subtotal = (subtotal + (subtotal * .16))
                 }
             }
-            return subtotal;
+            return (subtotal - it.discount).toFixed(2);
         },
         getTotal () {
          let iva = 0;
@@ -340,7 +342,7 @@ new Vue({
                 }, 0) * 0.16;
                subtotal = (subtotal + iva).toFixed(2)
             }
-           return subtotal;
+           return subtotal - this.item.discount;
         },
         getIva () {
             return  (this.item.details.reduce( (a, b) => {
@@ -450,6 +452,8 @@ new Vue({
               descrip: this.item.descrip,
 
               specifications: this.item.specifications,
+
+              discount: this.item.discount
             };
 
             axios.post(urldomine + 'api/quotes/details', data ).then(r => {

@@ -19,7 +19,7 @@ class SalesNote extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['global_id', 'moment', 'emit', 'advance', 'status_id', 'strategy', 'status_id', 'origin', 'have_iva'];
+    protected $fillable = ['global_id', 'moment', 'emit', 'advance', 'status_id', 'strategy', 'status_id', 'origin', 'have_iva', 'discount'];
 
     public function getEmitAttribute($value): string
     {

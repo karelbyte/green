@@ -77,6 +77,9 @@
     </tr>
     </thead>
     <tbody>
+    @php
+        $total = 0;
+    @endphp
     @foreach($sale['details'] as $det)
         <tr>
             <td>{{$det['descrip']}}</td>
@@ -84,19 +87,22 @@
             <td>{{$det['cant']}}</td>
             <td>{{$det['price']}}$</td>
             <td>{{ number_format($det['cant'] * $det['price'], 2, '.', '')}}$</td>
+            @php
+                $total += $det['cant'] * $det['price']
+            @endphp
         </tr>
     @endforeach
+
     @if ($sale['have_iva'] === 1)
         <tr>
             <td></td>
             <td></td>
             <td colspan="2">BASE IMPONIBLE</td>
-            <td class="unit">{{number_format($sale->total(), 2, '.', '')}}</td>
+            <td class="unit">{{number_format($total, 2, '.', '')}}</td>
         </tr>
-
         <tr>
             @php
-                $iva = $sale->total() * 0.16
+                $iva = $total * 0.16
             @endphp
             <td></td>
             <td></td>
@@ -105,14 +111,19 @@
         </tr>
     @endif
     <tr>
+        <td colspan="2"></td>
+        <td colspan="2">DESCUENTO</td>
+        <td  class="unit">{{number_format($sale->discount, 2, '.', '')}}</td>
+    </tr>
+    <tr>
         <td></td>
         <td></td>
         <td></td>
         <td>Total</td>
-        @if ($data['have_iva'] === 1)
-            <td  class="total">{{number_format($sale->total() + $iva, 2, '.', '')}}</td>
+        @if ((int) $sale->have_iva === 1)
+            <td>  {{number_format($total + $iva - $sale->discount, 2, '.', '')}}</td>
         @else
-            <td  class="total">{{number_format($sale->total(), 2, '.', '')}}</td>
+            <td  class="total">  {{number_format($total +  $sale->discount, 2, '.', '')}}</td>
         @endif
     </tr>
     </tbody>

@@ -17751,7 +17751,8 @@ new Vue({
         start: '',
         measure_id: 0,
         measure: {},
-        timer: ''
+        timer: '',
+        discount: 0
       },
       detailDefault: {
         id: 0,
@@ -17765,7 +17766,8 @@ new Vue({
         start: '',
         measure_id: 0,
         measure: {},
-        timer: ''
+        timer: '',
+        discount: 0
       },
       scrpdf: 0,
       find: 0,
@@ -18013,11 +18015,11 @@ new Vue({
         }, 0);
 
         if (it.have_iva === 1 || it.have_iva === true) {
-          subtotal = (subtotal + subtotal * .16).toFixed(2);
+          subtotal = subtotal + subtotal * .16;
         }
       }
 
-      return subtotal;
+      return (subtotal - it.discount).toFixed(2);
     },
     getTotal: function getTotal() {
       var iva = 0;
@@ -18030,10 +18032,10 @@ new Vue({
         iva = this.item.details.reduce(function (a, b) {
           return a + parseFloat(b.price) * parseFloat(b.cant);
         }, 0) * 0.16;
-        subtotal = (subtotal + iva).toFixed(2);
+        subtotal = subtotal + iva;
       }
 
-      return subtotal;
+      return (subtotal - this.item.discount).toFixed(2);
     },
     getIva: function getIva() {
       return (this.item.details.reduce(function (a, b) {

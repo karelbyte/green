@@ -100,6 +100,13 @@ class GraficsController extends Controller
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
 
+        // CAGAS EN ESTADO PAGADO SIN ENTREGAR
+        $PAY_NOT_DELIVERI =  CGlobal::query()
+            ->leftJoin('salesnotes', 'salesnotes.global_id', 'cglobals.id')
+            ->whereMonth('salesnotes.moment', $month)
+            ->where('salesnotes.status_id', 2)
+            ->select('cglobals.id')->get();
+
         $data = [
             'url' => url('/') . '/atencion/',
 
@@ -145,6 +152,12 @@ class GraficsController extends Controller
             'INQUOTE' => [
                 'data' => $INQUOTE,
                 'cant' => $INQUOTE->sum('y')
+            ],
+
+            // CAGAS EN ESTADO PAGADO SIN ENTREGAR
+            'PAY_NOT_DELIVERI' => [
+              'cant' => $PAY_NOT_DELIVERI->count(),
+              'data' => $PAY_NOT_DELIVERI->pluck('id')
             ]
 
         ];

@@ -206,6 +206,8 @@ class QuotesController extends Controller
 
                     'have_iva' => $quote->have_iva,
 
+                    'discount' => $quote->discount,
+
                     'status_id' => 3,
 
                 ]);
@@ -366,6 +368,8 @@ class QuotesController extends Controller
       $quote->specifications = $request->specifications;
 
       $quote->have_iva = $request->have_iva;
+
+      $quote->discount = $request->discount;
 
         if ($quote->status_id === 10 || $quote->status_id  === 2 || $quote->status_id  === 10) {
 

@@ -161,6 +161,14 @@
 
                             </tbody>
                             <tfoot>
+                            <tr >
+                                <td></td>
+                                <td></td>
+                                <td>DESCUENTO</td>
+                                <td class="txtblack"><input type="text" v-model="item.discount" class="form-control"> </td>
+                                <td>
+                                </td>
+                            </tr>
                             <tr v-if="item.have_iva === 1 || item.have_iva === true">
                                 <td></td>
                                 <td></td>

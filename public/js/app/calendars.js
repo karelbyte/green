@@ -31,7 +31,7 @@ exports = module.exports = __webpack_require__(/*! ../../css-loader/lib/css-base
 
 
 // module
-exports.push([module.i, ".vuecal__weekdays-headings{border-bottom:1px solid #ddd;margin-bottom:-1px}.vuecal--view-with-time .vuecal__weekdays-headings{padding-left:3em}.vuecal--view-with-time.vuecal--time-12-hour .vuecal__weekdays-headings{font-size:.9em;padding-left:4em}.vuecal--overflow-x.vuecal--view-with-time .vuecal__weekdays-headings{padding-left:0}.vuecal__heading{width:100%;height:2.8em;font-weight:400;justify-content:center;text-align:center;align-items:center;position:relative;overflow:hidden}.vuecal--day-view .vuecal__heading,.vuecal--month-view .vuecal__heading,.vuecal--week-view .vuecal__heading{width:14.2857%}.vuecal--hide-weekends.vuecal--day-view .vuecal__heading,.vuecal--hide-weekends.vuecal--month-view .vuecal__heading,.vuecal--hide-weekends.vuecal--week-view .vuecal__heading,.vuecal--years-view .vuecal__heading{width:20%}.vuecal--year-view .vuecal__heading{width:33.33%}.vuecal__heading>span{flex-shrink:0;display:flex}.vuecal--small .vuecal__heading .small,.vuecal--xsmall .vuecal__heading .xsmall{display:block}.vuecal--small .vuecal__heading .full,.vuecal--small .vuecal__heading .xsmall,.vuecal--xsmall .vuecal__heading .full,.vuecal--xsmall .vuecal__heading .small,.vuecal__heading .small,.vuecal__heading .xsmall{display:none}@media screen and (max-width:550px){.vuecal__heading{line-height:1.2}.vuecal--small .vuecal__heading .small,.vuecal--xsmall .vuecal__heading .xsmall,.vuecal__heading .small{display:block}.vuecal--small .vuecal__heading .full,.vuecal--small .vuecal__heading .xsmall,.vuecal--xsmall .vuecal__heading .full,.vuecal--xsmall .vuecal__heading .small,.vuecal__heading .full,.vuecal__heading .xsmall{display:none}.vuecal--overflow-x .vuecal__heading .full,.vuecal--small.vuecal--overflow-x .vuecal__heading .small,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .xsmall{display:block}.vuecal--overflow-x .vuecal__heading .small,.vuecal--overflow-x .vuecal__heading .xsmall,.vuecal--small.vuecal--overflow-x .vuecal__heading .full,.vuecal--small.vuecal--overflow-x .vuecal__heading .xsmall,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .full,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .small{display:none}}@media screen and (max-width:450px){.vuecal--small .vuecal__heading .xsmall,.vuecal--xsmall .vuecal__heading .xsmall,.vuecal__heading .xsmall{display:block}.vuecal--small .vuecal__heading .full,.vuecal--small .vuecal__heading .small,.vuecal--xsmall .vuecal__heading .full,.vuecal--xsmall .vuecal__heading .small,.vuecal__heading .full,.vuecal__heading .small{display:none}.vuecal--small.vuecal--overflow-x .vuecal__heading .small,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .xsmall{display:block}.vuecal--small.vuecal--overflow-x .vuecal__heading .full,.vuecal--small.vuecal--overflow-x .vuecal__heading .xsmall,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .full,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .small{display:none}}.vuecal__menu{padding:0;list-style-type:none;justify-content:center;background-color:rgba(0,0,0,.02)}.vuecal__menu li{padding:.3em 1em;height:2.2em;font-size:1.3em;border-bottom:0 solid currentColor;cursor:pointer;box-sizing:border-box;transition:.2s}.vuecal__menu li.active{border-bottom-width:2px;background:hsla(0,0%,100%,.15)}.vuecal__title-bar{background-color:rgba(0,0,0,.1);display:flex;align-items:center;text-align:center;justify-content:space-between;font-size:1.4em;line-height:1.3;min-height:2em}.vuecal--xsmall .vuecal__title-bar{font-size:1.3em}.vuecal__title{position:relative;justify-content:center}.vuecal__today-btn{position:relative;align-items:center;display:flex;font-size:.8em}.vuecal__today-btn span.default{font-size:.8em;padding:3px 6px;text-transform:uppercase;cursor:pointer}.vuecal__arrow{cursor:pointer;position:relative;z-index:1}.vuecal__arrow--prev{padding-left:.6em}.vuecal__arrow--next{padding-right:.6em}.vuecal__arrow i.angle{display:inline-block;border:solid currentColor;border-width:0 2px 2px 0;padding:.25em;-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}.vuecal__arrow--prev i.angle{border-width:2px 0 0 2px}@media screen and (max-width:450px){.vuecal__menu li{padding-left:.3em;padding-right:.3em}}@media screen and (max-width:350px){.vuecal__menu li{font-size:1.1em}}.vuecal__event{color:#666;background-color:#f8f8f8;position:relative;left:0;right:0;z-index:1;transition:box-shadow .3s,left .3s,right .3s;overflow:hidden}.vuecal:not(.vuecal--dragging-event) .vuecal__event:hover{z-index:2}.vuecal__cell .vuecal__event *{-webkit-user-select:auto;-moz-user-select:auto;-ms-user-select:auto;user-select:auto}.vuecal--view-with-time .vuecal__event:not(.vuecal__event--all-day){position:absolute}.vuecal--view-with-time .vuecal__bg .vuecal__event--all-day{position:absolute;top:0;bottom:0;z-index:0;opacity:.6}.vuecal--view-with-time .vuecal__all-day .vuecal__event--all-day{position:relative;left:0;right:0}.vuecal__event--overlapped{right:20%}.vuecal__event--overlapping:not(.vuecal__event--split2):not(.vuecal__event--split3){left:30%;box-shadow:0 0 5px rgba(0,0,0,.2)}.vuecal__event--overlapped.vuecal__event--split2{right:25%}.vuecal__event--overlapping.vuecal__event--split2{left:25%}.vuecal__event--overlapping.vuecal__event--split2.vuecal__event--split-left{left:0;right:25%}.vuecal__event--overlapped.vuecal__event--overlapping.vuecal__event--split2{left:25%;right:0}.vuecal__event--overlapped.vuecal__event--split3{right:40%}.vuecal__event--overlapping.vuecal__event--split3{left:40%}.vuecal__event--overlapping.vuecal__event--split3.vuecal__event--split-middle{left:20%;right:20%}.vuecal--no-event-overlaps .vuecal__event--overlapping:not(.vuecal__event--split2):not(.vuecal__event--split3){left:30%;box-shadow:0 0 5px rgba(0,0,0,.2)}.vuecal--no-event-overlaps .vuecal__event--overlapped.vuecal__event--split2{right:50%}.vuecal--no-event-overlaps .vuecal__event--overlapping.vuecal__event--split2{left:50%}.vuecal--no-event-overlaps .vuecal__event--overlapping.vuecal__event--split2.vuecal__event--split-left{left:0;right:50%}.vuecal--no-event-overlaps .vuecal__event--overlapped.vuecal__event--overlapping.vuecal__event--split2{left:50%;right:0}.vuecal--no-event-overlaps .vuecal__event--overlapped.vuecal__event--split3{right:66.66%}.vuecal--no-event-overlaps .vuecal__event--overlapping.vuecal__event--split3{left:66.66%}.vuecal--no-event-overlaps .vuecal__event--overlapping.vuecal__event--split3.vuecal__event--split-middle{left:33.33%;right:33.33%}.vuecal__event--background{z-index:0}.vuecal__event--focus{box-shadow:1px 1px 6px rgba(0,0,0,.2);z-index:3}.vuecal__event-resize-handle{position:absolute;bottom:0;left:0;right:0;height:1em;background-color:hsla(0,0%,100%,.3);opacity:0;-webkit-transform:translateY(110%);transform:translateY(110%);transition:.3s;cursor:ns-resize}.vuecal__event--focus .vuecal__event-resize-handle,.vuecal__event:hover .vuecal__event-resize-handle{opacity:1;-webkit-transform:translateY(0);transform:translateY(0)}.vuecal__event-delete{position:absolute;top:0;left:0;right:0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:1.4em;line-height:1.4em;background-color:rgba(221,51,51,.85);color:#fff;z-index:0;cursor:pointer;-webkit-transform:translateY(-110%);transform:translateY(-110%);transition:.3s}.vuecal--full-height-delete .vuecal__event-delete{height:auto;bottom:0}.vuecal--full-height-delete .vuecal__event-delete:before{content:\"\";width:1.7em;height:1.8em;display:block;background-image:url('data:image/svg+xml;utf8,<svg width=\"512\" height=\"512\" viewBox=\"0 0 512 512\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><path d=\"m256 33c-124 0-224 100-224 224 0 124 100 224 224 224 124 0 224-100 224-224 0-124-100-224-224-224z m108 300c2 1 3 3 3 5 0 2-1 4-3 6l-21 21c-2 2-4 3-6 3-2 0-4-1-5-3l-76-75-75 76c-2 1-4 2-6 2-2 0-4-1-6-2l-21-22c-2-2-2-4-2-6 0-2 0-4 2-5l76-76-76-75c-3-3-3-9 0-12l21-21c2-2 4-3 6-3 2 0 4 1 5 3l76 74 76-74c1-2 3-3 5-3 3 0 5 1 6 3l22 21c3 3 3 9 0 12l-76 75z\" transform=\"scale(0.046875 0.046875)\" fill=\"%23fff\" opacity=\"0.9\"/></svg>')}.vuecal__event--deletable .vuecal__event-delete{-webkit-transform:translateY(0);transform:translateY(0);z-index:1}.vuecal--month-view .vuecal__event-title{font-size:.85em}.vuecal--short-events .vuecal__event-title{text-align:left;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 3px}.vuecal__event-content,.vuecal__event-title{-webkit-hyphens:auto;-ms-hyphens:auto;hyphens:auto}.vuecal__event-title--edit{border-bottom:1px solid transparent;text-align:center;transition:.3s;color:inherit;background-image:url('data:image/svg+xml;utf8,<svg width=\"512\" height=\"512\" viewBox=\"0 0 512 512\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><path d=\"m163 440l-91-91 251-250 90 90z m309-352l-48-48c-12-11-32-11-45 2l-45 45 91 91 45-45c13-13 13-33 2-45z m-408 275l-32 117 117-32z\" fill=\"%23000\" opacity=\"0.4\"/></svg>');background-repeat:no-repeat;background-position:120% .15em;background-size:.4em;outline:none;width:100%}.vuecal__event-title--edit:focus,.vuecal__event-title--edit:hover{border-color:rgba(0,0,0,.4);background-position:99% .15em;background-size:1.2em}.vuecal__cell{position:relative;width:100%;display:flex;justify-content:center;align-items:center;text-align:center}.vuecal__cells.day-view .vuecal__cell,.vuecal__cells.month-view .vuecal__cell,.vuecal__cells.week-view .vuecal__cell{width:14.2857%}.vuecal--hide-weekends .vuecal__cells.day-view .vuecal__cell,.vuecal--hide-weekends .vuecal__cells.month-view .vuecal__cell,.vuecal--hide-weekends .vuecal__cells.week-view .vuecal__cell,.vuecal__cells.years-view .vuecal__cell{width:20%}.vuecal__cells.year-view .vuecal__cell{width:33.33%}.vuecal__cells.day-view .vuecal__cell{flex:1}.vuecal--click-to-navigate .vuecal__cell{cursor:pointer}.vuecal--day-view.vuecal--no-time .vuecal__cell,.vuecal--view-with-time .vuecal__cell,.vuecal--week-view.vuecal--no-time .vuecal__cell{display:block}.vuecal__cell.vuecal__cell--has-splits{flex-direction:row;display:flex}.vuecal__cell-content,.vuecal__cell-split{position:relative;height:100%}.vuecal__cell-split{display:flex;flex-grow:1;flex-direction:column}.vuecal__cell:before{content:\"\";position:absolute;z-index:0;top:0;left:0;right:-1px;bottom:-1px;border:1px solid #ddd}.vuecal__cell.current,.vuecal__cell.today{background-color:rgba(240,240,255,.4);z-index:1}.vuecal__cell.selected{background-color:rgba(235,255,245,.4);z-index:2}.vuecal--day-view .vuecal__cell.selected{background:none}.vuecal__cell.out-of-scope{color:#ccc}.vuecal__cell.disabled{color:#ccc;cursor:not-allowed}.vuecal__cell-events-count{background:#999;color:#fff;position:absolute;border-radius:12px;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);min-width:12px;padding:0 3px;height:12px;margin-top:-1px;line-height:12px;font-size:10px;box-sizing:border-box}.vuecal__cell-content{width:100%}.vuecal--month-view .vuecal__cell-content,.vuecal--year-view .vuecal__cell-content,.vuecal--years-view .vuecal__cell-content{justify-content:center}.vuecal__cell-events{width:100%}.vuecal--overflow-x.vuecal--week-view .vuecal__cell,.vuecal__cell-split{overflow:hidden}.vuecal__no-event{padding-top:1em;color:#aaa;justify-self:flex-start;margin-bottom:auto}.vuecal__all-day .vuecal__no-event{display:none}.vuecal__now-line{position:absolute;left:0;width:100%;height:0;color:red;border-top:1px solid currentColor;opacity:.6}.vuecal__now-line:before{content:\"\";position:absolute;top:-6px;left:0;border:5px solid transparent;border-left-color:currentColor}.vuecal{height:100%;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}.vuecal *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.vuecal .clickable{cursor:pointer}.vuecal--xsmall{font-size:.9em}.vuecal__flex{display:flex;flex-direction:row}.vuecal__flex[column]{flex-direction:column}.vuecal__flex[column],.vuecal__flex[grow]{flex:1 1 auto}.vuecal__flex[wrap]{flex-wrap:wrap}.vuecal__body{position:relative;overflow:auto}.vuecal__all-day{min-height:1.7em;margin-bottom:-1px;flex-shrink:0}.vuecal__all-day>span{width:3em;min-width:3em;color:#999;padding-right:2px;display:flex;align-items:center;justify-content:flex-end;border-bottom:1px solid #ddd;-webkit-hyphens:auto;-ms-hyphens:auto;hyphens:auto}.vuecal__all-day>span span{font-size:.85em;text-align:right;line-height:1.1}.vuecal--time-12-hour .vuecal__all-day>span{width:4em;min-width:4em}.vuecal__bg{overflow:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;min-height:60px;position:relative;width:100%;margin-bottom:1px}.vuecal--no-time .vuecal__bg{display:flex;flex:1 1 auto;overflow:visible}.vuecal__time-column{width:3em;height:100%;flex-shrink:0}.vuecal--time-12-hour .vuecal__time-column{width:4em;font-size:.9em}.vuecal--overflow-x.vuecal--week-view .vuecal__time-column{margin-top:2.8em;box-shadow:0 1px 1px rgba(0,0,0,.3)}.vuecal__time-column .vuecal__time-cell{color:#999;text-align:right;padding-right:2px;font-size:.9em}.vuecal__time-column .vuecal__time-cell .line:before{content:\"\";position:absolute;left:0;right:0;border-top:1px solid #eee}.vuecal__cells{margin:0 1px 1px 0}.vuecal--overflow-x.vuecal--week-view .vuecal__cells{flex-wrap:nowrap;overflow:auto}.slide-fade--left-enter-active,.slide-fade--left-leave-active,.slide-fade--right-enter-active,.slide-fade--right-leave-active{transition:.25s ease-out}.slide-fade--left-enter,.slide-fade--right-leave-to{-webkit-transform:translateX(-15px);transform:translateX(-15px);opacity:0}.slide-fade--left-leave-to,.slide-fade--right-enter{-webkit-transform:translateX(15px);transform:translateX(15px);opacity:0}.slide-fade--left-leave-active,.slide-fade--right-leave-active{position:absolute!important;height:100%}.vuecal__title-bar .slide-fade--left-leave-active,.vuecal__title-bar .slide-fade--right-leave-active{left:0;right:0;height:auto}.vuecal__heading .slide-fade--left-leave-active,.vuecal__heading .slide-fade--right-leave-active{display:flex;align-items:center}.vuecal--green-theme .vuecal__cell-events-count,.vuecal--green-theme .vuecal__menu{background-color:#42b983;color:#fff}.vuecal--green-theme .vuecal__menu li{border-bottom-color:#fff}.vuecal--green-theme .vuecal__menu li.active{background-color:hsla(0,0%,100%,.15)}.vuecal--green-theme .vuecal__title-bar{background-color:#e4f5ef}.vuecal--green-theme .vuecal__cell.current,.vuecal--green-theme .vuecal__cell.today{background-color:rgba(240,240,255,.4)}.vuecal--green-theme:not(.vuecal--day-view) .vuecal__cell.selected{background-color:rgba(235,255,245,.4)}.vuecal--green-theme .vuecal__cell.selected:before{border-color:rgba(66,185,131,.5)}.vuecal--blue-theme .vuecal__cell-events-count,.vuecal--blue-theme .vuecal__menu{background-color:rgba(66,163,185,.8);color:#fff}.vuecal--blue-theme .vuecal__menu li{border-bottom-color:#fff}.vuecal--blue-theme .vuecal__menu li.active{background-color:hsla(0,0%,100%,.15)}.vuecal--blue-theme .vuecal__title-bar{background-color:rgba(0,165,188,.3)}.vuecal--blue-theme .vuecal__cell.current,.vuecal--blue-theme .vuecal__cell.today{background-color:rgba(240,240,255,.4)}.vuecal--blue-theme:not(.vuecal--day-view) .vuecal__cell.selected{background-color:rgba(235,253,255,.4)}.vuecal--blue-theme .vuecal__cell.selected:before{border-color:rgba(115,191,204,.5)}.vuecal--rounded-theme .vuecal__weekdays-headings{border:none}.vuecal--rounded-theme .vuecal__cell,.vuecal--rounded-theme:not(.vuecal--day-view) .vuecal__cell:before{background:none;border:none}.vuecal--rounded-theme .vuecal__cell.out-of-scope{opacity:.4}.vuecal--rounded-theme .vuecal__cell-content{width:30px;height:30px;flex-grow:0;border:1px solid transparent;border-radius:30px;color:#333}.vuecal--rounded-theme.vuecal--day-view .vuecal__cell-content{width:auto;background:none}.vuecal--rounded-theme.vuecal--year-view .vuecal__cell{width:33.33%}.vuecal--rounded-theme.vuecal--year-view .vuecal__cell-content{width:85px}.vuecal--rounded-theme.vuecal--years-view .vuecal__cell-content{width:52px}.vuecal--rounded-theme .vuecal__cell{background-color:transparent!important}.vuecal--rounded-theme.vuecal--green-theme:not(.vuecal--day-view) .vuecal__cell-content{background-color:#f1faf7}.vuecal--rounded-theme.vuecal--green-theme:not(.vuecal--day-view) .vuecal__cell.today .vuecal__cell-content{background-color:#42b983;color:#fff}.vuecal--rounded-theme.vuecal--green-theme .vuecal--day-view .vuecal__cell.today:before{background-color:rgba(66,185,131,.05)}.vuecal--rounded-theme.vuecal--green-theme:not(.vuecal--day-view) .selected .vuecal__cell-content{border-color:#42b983}.vuecal--rounded-theme.vuecal--blue-theme:not(.vuecal--day-view) .vuecal__cell-content{background-color:rgba(100,182,255,.2)}.vuecal--rounded-theme.vuecal--blue-theme:not(.vuecal--day-view) .vuecal__cell.today .vuecal__cell-content{background-color:#8fb7e4;color:#fff}.vuecal--rounded-theme.vuecal--blue-theme .vuecal--day-view .vuecal__cell.today:before{background-color:rgba(143,183,228,.1)}.vuecal--rounded-theme.vuecal--blue-theme:not(.vuecal--day-view) .selected .vuecal__cell-content{border-color:#61a9e0}", ""]);
+exports.push([module.i, ".vuecal__weekdays-headings{border-bottom:1px solid #ddd;margin-bottom:-1px}.vuecal--view-with-time .vuecal__weekdays-headings{padding-left:3em}.vuecal--view-with-time.vuecal--time-12-hour .vuecal__weekdays-headings{font-size:.9em;padding-left:4em}.vuecal--overflow-x.vuecal--view-with-time .vuecal__weekdays-headings{padding-left:0}.vuecal__heading{width:100%;height:2.8em;font-weight:400;justify-content:center;text-align:center;align-items:center;position:relative;overflow:hidden}.vuecal--day-view .vuecal__heading,.vuecal--month-view .vuecal__heading,.vuecal--week-view .vuecal__heading{width:14.2857%}.vuecal--hide-weekends.vuecal--day-view .vuecal__heading,.vuecal--hide-weekends.vuecal--month-view .vuecal__heading,.vuecal--hide-weekends.vuecal--week-view .vuecal__heading,.vuecal--years-view .vuecal__heading{width:20%}.vuecal--year-view .vuecal__heading{width:33.33%}.vuecal__heading>span{flex-shrink:0;display:flex}.vuecal--small .vuecal__heading .small,.vuecal--xsmall .vuecal__heading .xsmall{display:block}.vuecal--small .vuecal__heading .full,.vuecal--small .vuecal__heading .xsmall,.vuecal--xsmall .vuecal__heading .full,.vuecal--xsmall .vuecal__heading .small,.vuecal__heading .small,.vuecal__heading .xsmall{display:none}@media screen and (max-width:550px){.vuecal__heading{line-height:1.2}.vuecal--small .vuecal__heading .small,.vuecal--xsmall .vuecal__heading .xsmall,.vuecal__heading .small{display:block}.vuecal--small .vuecal__heading .full,.vuecal--small .vuecal__heading .xsmall,.vuecal--xsmall .vuecal__heading .full,.vuecal--xsmall .vuecal__heading .small,.vuecal__heading .full,.vuecal__heading .xsmall{display:none}.vuecal--overflow-x .vuecal__heading .full,.vuecal--small.vuecal--overflow-x .vuecal__heading .small,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .xsmall{display:block}.vuecal--overflow-x .vuecal__heading .small,.vuecal--overflow-x .vuecal__heading .xsmall,.vuecal--small.vuecal--overflow-x .vuecal__heading .full,.vuecal--small.vuecal--overflow-x .vuecal__heading .xsmall,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .full,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .small{display:none}}@media screen and (max-width:450px){.vuecal--small .vuecal__heading .xsmall,.vuecal--xsmall .vuecal__heading .xsmall,.vuecal__heading .xsmall{display:block}.vuecal--small .vuecal__heading .full,.vuecal--small .vuecal__heading .small,.vuecal--xsmall .vuecal__heading .full,.vuecal--xsmall .vuecal__heading .small,.vuecal__heading .full,.vuecal__heading .small{display:none}.vuecal--small.vuecal--overflow-x .vuecal__heading .small,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .xsmall{display:block}.vuecal--small.vuecal--overflow-x .vuecal__heading .full,.vuecal--small.vuecal--overflow-x .vuecal__heading .xsmall,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .full,.vuecal--xsmall.vuecal--overflow-x .vuecal__heading .small{display:none}}.vuecal__menu{padding:0;list-style-type:none;justify-content:center;background-color:rgba(0,0,0,.02)}.vuecal__menu li{padding:.3em 1em;height:2.2em;font-size:1.3em;border-bottom:0 solid currentColor;cursor:pointer;box-sizing:border-box;transition:.2s}.vuecal__menu li.active{border-bottom-width:2px;background:hsla(0,0%,100%,.15)}.vuecal__title-bar{background-color:rgba(0,0,0,.1);display:flex;align-items:center;text-align:center;justify-content:space-between;font-size:1.4em;line-height:1.3;min-height:2em}.vuecal--xsmall .vuecal__title-bar{font-size:1.3em}.vuecal__title{position:relative;justify-content:center}.vuecal__today-btn{position:relative;align-items:center;display:flex;font-size:.8em}.vuecal__today-btn span.default{font-size:.8em;padding:3px 6px;text-transform:uppercase;cursor:pointer}.vuecal__arrow{cursor:pointer;position:relative;z-index:1}.vuecal__arrow--prev{padding-left:.6em}.vuecal__arrow--next{padding-right:.6em}.vuecal__arrow i.angle{display:inline-block;border:solid currentColor;border-width:0 2px 2px 0;padding:.25em;transform:rotate(-45deg)}.vuecal__arrow--prev i.angle{border-width:2px 0 0 2px}@media screen and (max-width:450px){.vuecal__menu li{padding-left:.3em;padding-right:.3em}}@media screen and (max-width:350px){.vuecal__menu li{font-size:1.1em}}.vuecal__event{color:#666;background-color:#f8f8f8;position:relative;left:0;right:0;z-index:1;transition:box-shadow .3s,left .3s,right .3s;overflow:hidden}.vuecal:not(.vuecal--dragging-event) .vuecal__event:hover{z-index:2}.vuecal__cell .vuecal__event *{-webkit-user-select:auto;-moz-user-select:auto;-ms-user-select:auto;user-select:auto}.vuecal--view-with-time .vuecal__event:not(.vuecal__event--all-day){position:absolute}.vuecal--view-with-time .vuecal__bg .vuecal__event--all-day{position:absolute;top:0;bottom:0;z-index:0;opacity:.6}.vuecal--view-with-time .vuecal__all-day .vuecal__event--all-day{position:relative;left:0;right:0}.vuecal__event--overlapped{right:20%}.vuecal__event--overlapping:not(.vuecal__event--split2):not(.vuecal__event--split3){left:30%;box-shadow:0 0 5px rgba(0,0,0,.2)}.vuecal__event--overlapped.vuecal__event--split2{right:25%}.vuecal__event--overlapping.vuecal__event--split2{left:25%}.vuecal__event--overlapping.vuecal__event--split2.vuecal__event--split-left{left:0;right:25%}.vuecal__event--overlapped.vuecal__event--overlapping.vuecal__event--split2{left:25%;right:0}.vuecal__event--overlapped.vuecal__event--split3{right:40%}.vuecal__event--overlapping.vuecal__event--split3{left:40%}.vuecal__event--overlapping.vuecal__event--split3.vuecal__event--split-middle{left:20%;right:20%}.vuecal--no-event-overlaps .vuecal__event--overlapping:not(.vuecal__event--split2):not(.vuecal__event--split3){left:30%;box-shadow:0 0 5px rgba(0,0,0,.2)}.vuecal--no-event-overlaps .vuecal__event--overlapped.vuecal__event--split2{right:50%}.vuecal--no-event-overlaps .vuecal__event--overlapping.vuecal__event--split2{left:50%}.vuecal--no-event-overlaps .vuecal__event--overlapping.vuecal__event--split2.vuecal__event--split-left{left:0;right:50%}.vuecal--no-event-overlaps .vuecal__event--overlapped.vuecal__event--overlapping.vuecal__event--split2{left:50%;right:0}.vuecal--no-event-overlaps .vuecal__event--overlapped.vuecal__event--split3{right:66.66%}.vuecal--no-event-overlaps .vuecal__event--overlapping.vuecal__event--split3{left:66.66%}.vuecal--no-event-overlaps .vuecal__event--overlapping.vuecal__event--split3.vuecal__event--split-middle{left:33.33%;right:33.33%}.vuecal__event--background{z-index:0}.vuecal__event--focus{box-shadow:1px 1px 6px rgba(0,0,0,.2);z-index:3}.vuecal__event-resize-handle{position:absolute;bottom:0;left:0;right:0;height:1em;background-color:hsla(0,0%,100%,.3);opacity:0;transform:translateY(110%);transition:.3s;cursor:ns-resize}.vuecal__event--focus .vuecal__event-resize-handle,.vuecal__event:hover .vuecal__event-resize-handle{opacity:1;transform:translateY(0)}.vuecal__event-delete{position:absolute;top:0;left:0;right:0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:1.4em;line-height:1.4em;background-color:rgba(221,51,51,.85);color:#fff;z-index:0;cursor:pointer;transform:translateY(-110%);transition:.3s}.vuecal--full-height-delete .vuecal__event-delete{height:auto;bottom:0}.vuecal--full-height-delete .vuecal__event-delete:before{content:\"\";width:1.7em;height:1.8em;display:block;background-image:url('data:image/svg+xml;utf8,<svg width=\"512\" height=\"512\" viewBox=\"0 0 512 512\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><path d=\"m256 33c-124 0-224 100-224 224 0 124 100 224 224 224 124 0 224-100 224-224 0-124-100-224-224-224z m108 300c2 1 3 3 3 5 0 2-1 4-3 6l-21 21c-2 2-4 3-6 3-2 0-4-1-5-3l-76-75-75 76c-2 1-4 2-6 2-2 0-4-1-6-2l-21-22c-2-2-2-4-2-6 0-2 0-4 2-5l76-76-76-75c-3-3-3-9 0-12l21-21c2-2 4-3 6-3 2 0 4 1 5 3l76 74 76-74c1-2 3-3 5-3 3 0 5 1 6 3l22 21c3 3 3 9 0 12l-76 75z\" transform=\"scale(0.046875 0.046875)\" fill=\"%23fff\" opacity=\"0.9\"/></svg>')}.vuecal__event--deletable .vuecal__event-delete{transform:translateY(0);z-index:1}.vuecal--month-view .vuecal__event-title{font-size:.85em}.vuecal--short-events .vuecal__event-title{text-align:left;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 3px}.vuecal__event-content,.vuecal__event-title{-webkit-hyphens:auto;-ms-hyphens:auto;hyphens:auto}.vuecal__event-title--edit{border-bottom:1px solid transparent;text-align:center;transition:.3s;color:inherit;background-image:url('data:image/svg+xml;utf8,<svg width=\"512\" height=\"512\" viewBox=\"0 0 512 512\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><path d=\"m163 440l-91-91 251-250 90 90z m309-352l-48-48c-12-11-32-11-45 2l-45 45 91 91 45-45c13-13 13-33 2-45z m-408 275l-32 117 117-32z\" fill=\"%23000\" opacity=\"0.4\"/></svg>');background-repeat:no-repeat;background-position:120% .15em;background-size:.4em;outline:none;width:100%}.vuecal__event-title--edit:focus,.vuecal__event-title--edit:hover{border-color:rgba(0,0,0,.4);background-position:99% .15em;background-size:1.2em}.vuecal__cell{position:relative;width:100%;display:flex;justify-content:center;align-items:center;text-align:center}.vuecal__cells.day-view .vuecal__cell,.vuecal__cells.month-view .vuecal__cell,.vuecal__cells.week-view .vuecal__cell{width:14.2857%}.vuecal--hide-weekends .vuecal__cells.day-view .vuecal__cell,.vuecal--hide-weekends .vuecal__cells.month-view .vuecal__cell,.vuecal--hide-weekends .vuecal__cells.week-view .vuecal__cell,.vuecal__cells.years-view .vuecal__cell{width:20%}.vuecal__cells.year-view .vuecal__cell{width:33.33%}.vuecal__cells.day-view .vuecal__cell{flex:1}.vuecal--click-to-navigate .vuecal__cell{cursor:pointer}.vuecal--day-view.vuecal--no-time .vuecal__cell,.vuecal--view-with-time .vuecal__cell,.vuecal--week-view.vuecal--no-time .vuecal__cell{display:block}.vuecal__cell.vuecal__cell--has-splits{flex-direction:row;display:flex}.vuecal__cell-content,.vuecal__cell-split{position:relative;height:100%}.vuecal__cell-split{display:flex;flex-grow:1;flex-direction:column}.vuecal__cell:before{content:\"\";position:absolute;z-index:0;top:0;left:0;right:-1px;bottom:-1px;border:1px solid #ddd}.vuecal__cell.current,.vuecal__cell.today{background-color:rgba(240,240,255,.4);z-index:1}.vuecal__cell.selected{background-color:rgba(235,255,245,.4);z-index:2}.vuecal--day-view .vuecal__cell.selected{background:none}.vuecal__cell.out-of-scope{color:#ccc}.vuecal__cell.disabled{color:#ccc;cursor:not-allowed}.vuecal__cell-events-count{background:#999;color:#fff;position:absolute;border-radius:12px;left:50%;transform:translateX(-50%);min-width:12px;padding:0 3px;height:12px;margin-top:-1px;line-height:12px;font-size:10px;box-sizing:border-box}.vuecal__cell-content{width:100%}.vuecal--month-view .vuecal__cell-content,.vuecal--year-view .vuecal__cell-content,.vuecal--years-view .vuecal__cell-content{justify-content:center}.vuecal__cell-events{width:100%}.vuecal--overflow-x.vuecal--week-view .vuecal__cell,.vuecal__cell-split{overflow:hidden}.vuecal__no-event{padding-top:1em;color:#aaa;justify-self:flex-start;margin-bottom:auto}.vuecal__all-day .vuecal__no-event{display:none}.vuecal__now-line{position:absolute;left:0;width:100%;height:0;color:red;border-top:1px solid currentColor;opacity:.6}.vuecal__now-line:before{content:\"\";position:absolute;top:-6px;left:0;border:5px solid transparent;border-left-color:currentColor}.vuecal{height:100%;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}.vuecal *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.vuecal .clickable{cursor:pointer}.vuecal--xsmall{font-size:.9em}.vuecal__flex{display:flex;flex-direction:row}.vuecal__flex[column]{flex-direction:column}.vuecal__flex[column],.vuecal__flex[grow]{flex:1 1 auto}.vuecal__flex[wrap]{flex-wrap:wrap}.vuecal__body{position:relative;overflow:auto}.vuecal__all-day{min-height:1.7em;margin-bottom:-1px;flex-shrink:0}.vuecal__all-day>span{width:3em;min-width:3em;color:#999;padding-right:2px;display:flex;align-items:center;justify-content:flex-end;border-bottom:1px solid #ddd;-webkit-hyphens:auto;-ms-hyphens:auto;hyphens:auto}.vuecal__all-day>span span{font-size:.85em;text-align:right;line-height:1.1}.vuecal--time-12-hour .vuecal__all-day>span{width:4em;min-width:4em}.vuecal__bg{overflow:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;min-height:60px;position:relative;width:100%;margin-bottom:1px}.vuecal--no-time .vuecal__bg{display:flex;flex:1 1 auto;overflow:visible}.vuecal__time-column{width:3em;height:100%;flex-shrink:0}.vuecal--time-12-hour .vuecal__time-column{width:4em;font-size:.9em}.vuecal--overflow-x.vuecal--week-view .vuecal__time-column{margin-top:2.8em;box-shadow:0 1px 1px rgba(0,0,0,.3)}.vuecal__time-column .vuecal__time-cell{color:#999;text-align:right;padding-right:2px;font-size:.9em}.vuecal__time-column .vuecal__time-cell .line:before{content:\"\";position:absolute;left:0;right:0;border-top:1px solid #eee}.vuecal__cells{margin:0 1px 1px 0}.vuecal--overflow-x.vuecal--week-view .vuecal__cells{flex-wrap:nowrap;overflow:auto}.slide-fade--left-enter-active,.slide-fade--left-leave-active,.slide-fade--right-enter-active,.slide-fade--right-leave-active{transition:.25s ease-out}.slide-fade--left-enter,.slide-fade--right-leave-to{transform:translateX(-15px);opacity:0}.slide-fade--left-leave-to,.slide-fade--right-enter{transform:translateX(15px);opacity:0}.slide-fade--left-leave-active,.slide-fade--right-leave-active{position:absolute!important;height:100%}.vuecal__title-bar .slide-fade--left-leave-active,.vuecal__title-bar .slide-fade--right-leave-active{left:0;right:0;height:auto}.vuecal__heading .slide-fade--left-leave-active,.vuecal__heading .slide-fade--right-leave-active{display:flex;align-items:center}.vuecal--green-theme .vuecal__cell-events-count,.vuecal--green-theme .vuecal__menu{background-color:#42b983;color:#fff}.vuecal--green-theme .vuecal__menu li{border-bottom-color:#fff}.vuecal--green-theme .vuecal__menu li.active{background-color:hsla(0,0%,100%,.15)}.vuecal--green-theme .vuecal__title-bar{background-color:#e4f5ef}.vuecal--green-theme .vuecal__cell.current,.vuecal--green-theme .vuecal__cell.today{background-color:rgba(240,240,255,.4)}.vuecal--green-theme:not(.vuecal--day-view) .vuecal__cell.selected{background-color:rgba(235,255,245,.4)}.vuecal--green-theme .vuecal__cell.selected:before{border-color:rgba(66,185,131,.5)}.vuecal--blue-theme .vuecal__cell-events-count,.vuecal--blue-theme .vuecal__menu{background-color:rgba(66,163,185,.8);color:#fff}.vuecal--blue-theme .vuecal__menu li{border-bottom-color:#fff}.vuecal--blue-theme .vuecal__menu li.active{background-color:hsla(0,0%,100%,.15)}.vuecal--blue-theme .vuecal__title-bar{background-color:rgba(0,165,188,.3)}.vuecal--blue-theme .vuecal__cell.current,.vuecal--blue-theme .vuecal__cell.today{background-color:rgba(240,240,255,.4)}.vuecal--blue-theme:not(.vuecal--day-view) .vuecal__cell.selected{background-color:rgba(235,253,255,.4)}.vuecal--blue-theme .vuecal__cell.selected:before{border-color:rgba(115,191,204,.5)}.vuecal--rounded-theme .vuecal__weekdays-headings{border:none}.vuecal--rounded-theme .vuecal__cell,.vuecal--rounded-theme:not(.vuecal--day-view) .vuecal__cell:before{background:none;border:none}.vuecal--rounded-theme .vuecal__cell.out-of-scope{opacity:.4}.vuecal--rounded-theme .vuecal__cell-content{width:30px;height:30px;flex-grow:0;border:1px solid transparent;border-radius:30px;color:#333}.vuecal--rounded-theme.vuecal--day-view .vuecal__cell-content{width:auto;background:none}.vuecal--rounded-theme.vuecal--year-view .vuecal__cell{width:33.33%}.vuecal--rounded-theme.vuecal--year-view .vuecal__cell-content{width:85px}.vuecal--rounded-theme.vuecal--years-view .vuecal__cell-content{width:52px}.vuecal--rounded-theme .vuecal__cell{background-color:transparent!important}.vuecal--rounded-theme.vuecal--green-theme:not(.vuecal--day-view) .vuecal__cell-content{background-color:#f1faf7}.vuecal--rounded-theme.vuecal--green-theme:not(.vuecal--day-view) .vuecal__cell.today .vuecal__cell-content{background-color:#42b983;color:#fff}.vuecal--rounded-theme.vuecal--green-theme .vuecal--day-view .vuecal__cell.today:before{background-color:rgba(66,185,131,.05)}.vuecal--rounded-theme.vuecal--green-theme:not(.vuecal--day-view) .selected .vuecal__cell-content{border-color:#42b983}.vuecal--rounded-theme.vuecal--blue-theme:not(.vuecal--day-view) .vuecal__cell-content{background-color:rgba(100,182,255,.2)}.vuecal--rounded-theme.vuecal--blue-theme:not(.vuecal--day-view) .vuecal__cell.today .vuecal__cell-content{background-color:#8fb7e4;color:#fff}.vuecal--rounded-theme.vuecal--blue-theme .vuecal--day-view .vuecal__cell.today:before{background-color:rgba(143,183,228,.1)}.vuecal--rounded-theme.vuecal--blue-theme:not(.vuecal--day-view) .selected .vuecal__cell-content{border-color:#61a9e0}", ""]);
 
 // exports
 
@@ -133,7 +133,7 @@ function toComment(sourceMap) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery JavaScript Library v3.3.1
+ * jQuery JavaScript Library v3.4.1
  * https://jquery.com/
  *
  * Includes Sizzle.js
@@ -143,7 +143,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2018-01-20T17:24Z
+ * Date: 2019-05-01T21:04Z
  */
 ( function( global, factory ) {
 
@@ -225,20 +225,33 @@ var isWindow = function isWindow( obj ) {
 	var preservedScriptAttributes = {
 		type: true,
 		src: true,
+		nonce: true,
 		noModule: true
 	};
 
-	function DOMEval( code, doc, node ) {
+	function DOMEval( code, node, doc ) {
 		doc = doc || document;
 
-		var i,
+		var i, val,
 			script = doc.createElement( "script" );
 
 		script.text = code;
 		if ( node ) {
 			for ( i in preservedScriptAttributes ) {
-				if ( node[ i ] ) {
-					script[ i ] = node[ i ];
+
+				// Support: Firefox 64+, Edge 18+
+				// Some browsers don't support the "nonce" property on scripts.
+				// On the other hand, just using `getAttribute` is not enough as
+				// the `nonce` attribute is reset to an empty string whenever it
+				// becomes browsing-context connected.
+				// See https://github.com/whatwg/html/issues/2369
+				// See https://html.spec.whatwg.org/#nonce-attributes
+				// The `node.getAttribute` check was added for the sake of
+				// `jQuery.globalEval` so that it can fake a nonce-containing node
+				// via an object.
+				val = node[ i ] || node.getAttribute && node.getAttribute( i );
+				if ( val ) {
+					script.setAttribute( i, val );
 				}
 			}
 		}
@@ -263,7 +276,7 @@ function toType( obj ) {
 
 
 var
-	version = "3.3.1",
+	version = "3.4.1",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -392,25 +405,28 @@ jQuery.extend = jQuery.fn.extend = function() {
 
 			// Extend the base object
 			for ( name in options ) {
-				src = target[ name ];
 				copy = options[ name ];
 
+				// Prevent Object.prototype pollution
 				// Prevent never-ending loop
-				if ( target === copy ) {
+				if ( name === "__proto__" || target === copy ) {
 					continue;
 				}
 
 				// Recurse if we're merging plain objects or arrays
 				if ( deep && copy && ( jQuery.isPlainObject( copy ) ||
 					( copyIsArray = Array.isArray( copy ) ) ) ) {
+					src = target[ name ];
 
-					if ( copyIsArray ) {
-						copyIsArray = false;
-						clone = src && Array.isArray( src ) ? src : [];
-
+					// Ensure proper type for the source value
+					if ( copyIsArray && !Array.isArray( src ) ) {
+						clone = [];
+					} else if ( !copyIsArray && !jQuery.isPlainObject( src ) ) {
+						clone = {};
 					} else {
-						clone = src && jQuery.isPlainObject( src ) ? src : {};
+						clone = src;
 					}
+					copyIsArray = false;
 
 					// Never move original objects, clone them
 					target[ name ] = jQuery.extend( deep, clone, copy );
@@ -463,9 +479,6 @@ jQuery.extend( {
 	},
 
 	isEmptyObject: function( obj ) {
-
-		/* eslint-disable no-unused-vars */
-		// See https://github.com/eslint/eslint/issues/6125
 		var name;
 
 		for ( name in obj ) {
@@ -475,8 +488,8 @@ jQuery.extend( {
 	},
 
 	// Evaluates a script in a global context
-	globalEval: function( code ) {
-		DOMEval( code );
+	globalEval: function( code, options ) {
+		DOMEval( code, { nonce: options && options.nonce } );
 	},
 
 	each: function( obj, callback ) {
@@ -632,14 +645,14 @@ function isArrayLike( obj ) {
 }
 var Sizzle =
 /*!
- * Sizzle CSS Selector Engine v2.3.3
+ * Sizzle CSS Selector Engine v2.3.4
  * https://sizzlejs.com/
  *
- * Copyright jQuery Foundation and other contributors
+ * Copyright JS Foundation and other contributors
  * Released under the MIT license
- * http://jquery.org/license
+ * https://js.foundation/
  *
- * Date: 2016-08-08
+ * Date: 2019-04-08
  */
 (function( window ) {
 
@@ -673,6 +686,7 @@ var i,
 	classCache = createCache(),
 	tokenCache = createCache(),
 	compilerCache = createCache(),
+	nonnativeSelectorCache = createCache(),
 	sortOrder = function( a, b ) {
 		if ( a === b ) {
 			hasDuplicate = true;
@@ -734,8 +748,7 @@ var i,
 
 	rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
 	rcombinators = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*" ),
-
-	rattributeQuotes = new RegExp( "=" + whitespace + "*([^\\]'\"]*?)" + whitespace + "*\\]", "g" ),
+	rdescend = new RegExp( whitespace + "|>" ),
 
 	rpseudo = new RegExp( pseudos ),
 	ridentifier = new RegExp( "^" + identifier + "$" ),
@@ -756,6 +769,7 @@ var i,
 			whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
 	},
 
+	rhtml = /HTML$/i,
 	rinputs = /^(?:input|select|textarea|button)$/i,
 	rheader = /^h\d$/i,
 
@@ -810,9 +824,9 @@ var i,
 		setDocument();
 	},
 
-	disabledAncestor = addCombinator(
+	inDisabledFieldset = addCombinator(
 		function( elem ) {
-			return elem.disabled === true && ("form" in elem || "label" in elem);
+			return elem.disabled === true && elem.nodeName.toLowerCase() === "fieldset";
 		},
 		{ dir: "parentNode", next: "legend" }
 	);
@@ -925,18 +939,22 @@ function Sizzle( selector, context, results, seed ) {
 
 			// Take advantage of querySelectorAll
 			if ( support.qsa &&
-				!compilerCache[ selector + " " ] &&
-				(!rbuggyQSA || !rbuggyQSA.test( selector )) ) {
+				!nonnativeSelectorCache[ selector + " " ] &&
+				(!rbuggyQSA || !rbuggyQSA.test( selector )) &&
 
-				if ( nodeType !== 1 ) {
-					newContext = context;
-					newSelector = selector;
-
-				// qSA looks outside Element context, which is not what we want
-				// Thanks to Andrew Dupont for this workaround technique
-				// Support: IE <=8
+				// Support: IE 8 only
 				// Exclude object elements
-				} else if ( context.nodeName.toLowerCase() !== "object" ) {
+				(nodeType !== 1 || context.nodeName.toLowerCase() !== "object") ) {
+
+				newSelector = selector;
+				newContext = context;
+
+				// qSA considers elements outside a scoping root when evaluating child or
+				// descendant combinators, which is not what we want.
+				// In such cases, we work around the behavior by prefixing every selector in the
+				// list with an ID selector referencing the scope context.
+				// Thanks to Andrew Dupont for this technique.
+				if ( nodeType === 1 && rdescend.test( selector ) ) {
 
 					// Capture the context ID, setting it first if necessary
 					if ( (nid = context.getAttribute( "id" )) ) {
@@ -958,17 +976,16 @@ function Sizzle( selector, context, results, seed ) {
 						context;
 				}
 
-				if ( newSelector ) {
-					try {
-						push.apply( results,
-							newContext.querySelectorAll( newSelector )
-						);
-						return results;
-					} catch ( qsaError ) {
-					} finally {
-						if ( nid === expando ) {
-							context.removeAttribute( "id" );
-						}
+				try {
+					push.apply( results,
+						newContext.querySelectorAll( newSelector )
+					);
+					return results;
+				} catch ( qsaError ) {
+					nonnativeSelectorCache( selector, true );
+				} finally {
+					if ( nid === expando ) {
+						context.removeAttribute( "id" );
 					}
 				}
 			}
@@ -1132,7 +1149,7 @@ function createDisabledPseudo( disabled ) {
 					// Where there is no isDisabled, check manually
 					/* jshint -W018 */
 					elem.isDisabled !== !disabled &&
-						disabledAncestor( elem ) === disabled;
+						inDisabledFieldset( elem ) === disabled;
 			}
 
 			return elem.disabled === disabled;
@@ -1189,10 +1206,13 @@ support = Sizzle.support = {};
  * @returns {Boolean} True iff elem is a non-HTML XML node
  */
 isXML = Sizzle.isXML = function( elem ) {
-	// documentElement is verified for cases where it doesn't yet exist
-	// (such as loading iframes in IE - #4833)
-	var documentElement = elem && (elem.ownerDocument || elem).documentElement;
-	return documentElement ? documentElement.nodeName !== "HTML" : false;
+	var namespace = elem.namespaceURI,
+		docElem = (elem.ownerDocument || elem).documentElement;
+
+	// Support: IE <=8
+	// Assume HTML when documentElement doesn't yet exist, such as inside loading iframes
+	// https://bugs.jquery.com/ticket/4833
+	return !rhtml.test( namespace || docElem && docElem.nodeName || "HTML" );
 };
 
 /**
@@ -1614,11 +1634,8 @@ Sizzle.matchesSelector = function( elem, expr ) {
 		setDocument( elem );
 	}
 
-	// Make sure that attribute selectors are quoted
-	expr = expr.replace( rattributeQuotes, "='$1']" );
-
 	if ( support.matchesSelector && documentIsHTML &&
-		!compilerCache[ expr + " " ] &&
+		!nonnativeSelectorCache[ expr + " " ] &&
 		( !rbuggyMatches || !rbuggyMatches.test( expr ) ) &&
 		( !rbuggyQSA     || !rbuggyQSA.test( expr ) ) ) {
 
@@ -1632,7 +1649,9 @@ Sizzle.matchesSelector = function( elem, expr ) {
 					elem.document && elem.document.nodeType !== 11 ) {
 				return ret;
 			}
-		} catch (e) {}
+		} catch (e) {
+			nonnativeSelectorCache( expr, true );
+		}
 	}
 
 	return Sizzle( expr, document, null, [ elem ] ).length > 0;
@@ -2091,7 +2110,7 @@ Expr = Sizzle.selectors = {
 		"contains": markFunction(function( text ) {
 			text = text.replace( runescape, funescape );
 			return function( elem ) {
-				return ( elem.textContent || elem.innerText || getText( elem ) ).indexOf( text ) > -1;
+				return ( elem.textContent || getText( elem ) ).indexOf( text ) > -1;
 			};
 		}),
 
@@ -2230,7 +2249,11 @@ Expr = Sizzle.selectors = {
 		}),
 
 		"lt": createPositionalPseudo(function( matchIndexes, length, argument ) {
-			var i = argument < 0 ? argument + length : argument;
+			var i = argument < 0 ?
+				argument + length :
+				argument > length ?
+					length :
+					argument;
 			for ( ; --i >= 0; ) {
 				matchIndexes.push( i );
 			}
@@ -3280,18 +3303,18 @@ jQuery.each( {
 		return siblings( elem.firstChild );
 	},
 	contents: function( elem ) {
-        if ( nodeName( elem, "iframe" ) ) {
-            return elem.contentDocument;
-        }
+		if ( typeof elem.contentDocument !== "undefined" ) {
+			return elem.contentDocument;
+		}
 
-        // Support: IE 9 - 11 only, iOS 7 only, Android Browser <=4.3 only
-        // Treat the template element as a regular one in browsers that
-        // don't support it.
-        if ( nodeName( elem, "template" ) ) {
-            elem = elem.content || elem;
-        }
+		// Support: IE 9 - 11 only, iOS 7 only, Android Browser <=4.3 only
+		// Treat the template element as a regular one in browsers that
+		// don't support it.
+		if ( nodeName( elem, "template" ) ) {
+			elem = elem.content || elem;
+		}
 
-        return jQuery.merge( [], elem.childNodes );
+		return jQuery.merge( [], elem.childNodes );
 	}
 }, function( name, fn ) {
 	jQuery.fn[ name ] = function( until, selector ) {
@@ -4600,6 +4623,26 @@ var rcssNum = new RegExp( "^(?:([+-])=|)(" + pnum + ")([a-z%]*)$", "i" );
 
 var cssExpand = [ "Top", "Right", "Bottom", "Left" ];
 
+var documentElement = document.documentElement;
+
+
+
+	var isAttached = function( elem ) {
+			return jQuery.contains( elem.ownerDocument, elem );
+		},
+		composed = { composed: true };
+
+	// Support: IE 9 - 11+, Edge 12 - 18+, iOS 10.0 - 10.2 only
+	// Check attachment across shadow DOM boundaries when possible (gh-3504)
+	// Support: iOS 10.0-10.2 only
+	// Early iOS 10 versions support `attachShadow` but not `getRootNode`,
+	// leading to errors. We need to check for `getRootNode`.
+	if ( documentElement.getRootNode ) {
+		isAttached = function( elem ) {
+			return jQuery.contains( elem.ownerDocument, elem ) ||
+				elem.getRootNode( composed ) === elem.ownerDocument;
+		};
+	}
 var isHiddenWithinTree = function( elem, el ) {
 
 		// isHiddenWithinTree might be called from jQuery#filter function;
@@ -4614,7 +4657,7 @@ var isHiddenWithinTree = function( elem, el ) {
 			// Support: Firefox <=43 - 45
 			// Disconnected elements can have computed display: none, so first confirm that elem is
 			// in the document.
-			jQuery.contains( elem.ownerDocument, elem ) &&
+			isAttached( elem ) &&
 
 			jQuery.css( elem, "display" ) === "none";
 	};
@@ -4656,7 +4699,8 @@ function adjustCSS( elem, prop, valueParts, tween ) {
 		unit = valueParts && valueParts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
 
 		// Starting value computation is required for potential unit mismatches
-		initialInUnit = ( jQuery.cssNumber[ prop ] || unit !== "px" && +initial ) &&
+		initialInUnit = elem.nodeType &&
+			( jQuery.cssNumber[ prop ] || unit !== "px" && +initial ) &&
 			rcssNum.exec( jQuery.css( elem, prop ) );
 
 	if ( initialInUnit && initialInUnit[ 3 ] !== unit ) {
@@ -4803,7 +4847,7 @@ jQuery.fn.extend( {
 } );
 var rcheckableType = ( /^(?:checkbox|radio)$/i );
 
-var rtagName = ( /<([a-z][^\/\0>\x20\t\r\n\f]+)/i );
+var rtagName = ( /<([a-z][^\/\0>\x20\t\r\n\f]*)/i );
 
 var rscriptType = ( /^$|^module$|\/(?:java|ecma)script/i );
 
@@ -4875,7 +4919,7 @@ function setGlobalEval( elems, refElements ) {
 var rhtml = /<|&#?\w+;/;
 
 function buildFragment( elems, context, scripts, selection, ignored ) {
-	var elem, tmp, tag, wrap, contains, j,
+	var elem, tmp, tag, wrap, attached, j,
 		fragment = context.createDocumentFragment(),
 		nodes = [],
 		i = 0,
@@ -4939,13 +4983,13 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 			continue;
 		}
 
-		contains = jQuery.contains( elem.ownerDocument, elem );
+		attached = isAttached( elem );
 
 		// Append to fragment
 		tmp = getAll( fragment.appendChild( elem ), "script" );
 
 		// Preserve script evaluation history
-		if ( contains ) {
+		if ( attached ) {
 			setGlobalEval( tmp );
 		}
 
@@ -4988,8 +5032,6 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 	div.innerHTML = "<textarea>x</textarea>";
 	support.noCloneChecked = !!div.cloneNode( true ).lastChild.defaultValue;
 } )();
-var documentElement = document.documentElement;
-
 
 
 var
@@ -5005,8 +5047,19 @@ function returnFalse() {
 	return false;
 }
 
+// Support: IE <=9 - 11+
+// focus() and blur() are asynchronous, except when they are no-op.
+// So expect focus to be synchronous when the element is already active,
+// and blur to be synchronous when the element is not already active.
+// (focus and blur are always synchronous in other supported browsers,
+// this just defines when we can count on it).
+function expectSync( elem, type ) {
+	return ( elem === safeActiveElement() ) === ( type === "focus" );
+}
+
 // Support: IE <=9 only
-// See #13393 for more info
+// Accessing document.activeElement can throw unexpectedly
+// https://bugs.jquery.com/ticket/13393
 function safeActiveElement() {
 	try {
 		return document.activeElement;
@@ -5306,9 +5359,10 @@ jQuery.event = {
 			while ( ( handleObj = matched.handlers[ j++ ] ) &&
 				!event.isImmediatePropagationStopped() ) {
 
-				// Triggered event must either 1) have no namespace, or 2) have namespace(s)
-				// a subset or equal to those in the bound event (both can have no namespace).
-				if ( !event.rnamespace || event.rnamespace.test( handleObj.namespace ) ) {
+				// If the event is namespaced, then each handler is only invoked if it is
+				// specially universal or its namespaces are a superset of the event's.
+				if ( !event.rnamespace || handleObj.namespace === false ||
+					event.rnamespace.test( handleObj.namespace ) ) {
 
 					event.handleObj = handleObj;
 					event.data = handleObj.data;
@@ -5432,39 +5486,51 @@ jQuery.event = {
 			// Prevent triggered image.load events from bubbling to window.load
 			noBubble: true
 		},
-		focus: {
-
-			// Fire native event if possible so blur/focus sequence is correct
-			trigger: function() {
-				if ( this !== safeActiveElement() && this.focus ) {
-					this.focus();
-					return false;
-				}
-			},
-			delegateType: "focusin"
-		},
-		blur: {
-			trigger: function() {
-				if ( this === safeActiveElement() && this.blur ) {
-					this.blur();
-					return false;
-				}
-			},
-			delegateType: "focusout"
-		},
 		click: {
 
-			// For checkbox, fire native event so checked state will be right
-			trigger: function() {
-				if ( this.type === "checkbox" && this.click && nodeName( this, "input" ) ) {
-					this.click();
-					return false;
+			// Utilize native event to ensure correct state for checkable inputs
+			setup: function( data ) {
+
+				// For mutual compressibility with _default, replace `this` access with a local var.
+				// `|| data` is dead code meant only to preserve the variable through minification.
+				var el = this || data;
+
+				// Claim the first handler
+				if ( rcheckableType.test( el.type ) &&
+					el.click && nodeName( el, "input" ) ) {
+
+					// dataPriv.set( el, "click", ... )
+					leverageNative( el, "click", returnTrue );
 				}
+
+				// Return false to allow normal processing in the caller
+				return false;
+			},
+			trigger: function( data ) {
+
+				// For mutual compressibility with _default, replace `this` access with a local var.
+				// `|| data` is dead code meant only to preserve the variable through minification.
+				var el = this || data;
+
+				// Force setup before triggering a click
+				if ( rcheckableType.test( el.type ) &&
+					el.click && nodeName( el, "input" ) ) {
+
+					leverageNative( el, "click" );
+				}
+
+				// Return non-false to allow normal event-path propagation
+				return true;
 			},
 
-			// For cross-browser consistency, don't fire native .click() on links
+			// For cross-browser consistency, suppress native .click() on links
+			// Also prevent it if we're currently inside a leveraged native-event stack
 			_default: function( event ) {
-				return nodeName( event.target, "a" );
+				var target = event.target;
+				return rcheckableType.test( target.type ) &&
+					target.click && nodeName( target, "input" ) &&
+					dataPriv.get( target, "click" ) ||
+					nodeName( target, "a" );
 			}
 		},
 
@@ -5480,6 +5546,93 @@ jQuery.event = {
 		}
 	}
 };
+
+// Ensure the presence of an event listener that handles manually-triggered
+// synthetic events by interrupting progress until reinvoked in response to
+// *native* events that it fires directly, ensuring that state changes have
+// already occurred before other listeners are invoked.
+function leverageNative( el, type, expectSync ) {
+
+	// Missing expectSync indicates a trigger call, which must force setup through jQuery.event.add
+	if ( !expectSync ) {
+		if ( dataPriv.get( el, type ) === undefined ) {
+			jQuery.event.add( el, type, returnTrue );
+		}
+		return;
+	}
+
+	// Register the controller as a special universal handler for all event namespaces
+	dataPriv.set( el, type, false );
+	jQuery.event.add( el, type, {
+		namespace: false,
+		handler: function( event ) {
+			var notAsync, result,
+				saved = dataPriv.get( this, type );
+
+			if ( ( event.isTrigger & 1 ) && this[ type ] ) {
+
+				// Interrupt processing of the outer synthetic .trigger()ed event
+				// Saved data should be false in such cases, but might be a leftover capture object
+				// from an async native handler (gh-4350)
+				if ( !saved.length ) {
+
+					// Store arguments for use when handling the inner native event
+					// There will always be at least one argument (an event object), so this array
+					// will not be confused with a leftover capture object.
+					saved = slice.call( arguments );
+					dataPriv.set( this, type, saved );
+
+					// Trigger the native event and capture its result
+					// Support: IE <=9 - 11+
+					// focus() and blur() are asynchronous
+					notAsync = expectSync( this, type );
+					this[ type ]();
+					result = dataPriv.get( this, type );
+					if ( saved !== result || notAsync ) {
+						dataPriv.set( this, type, false );
+					} else {
+						result = {};
+					}
+					if ( saved !== result ) {
+
+						// Cancel the outer synthetic event
+						event.stopImmediatePropagation();
+						event.preventDefault();
+						return result.value;
+					}
+
+				// If this is an inner synthetic event for an event with a bubbling surrogate
+				// (focus or blur), assume that the surrogate already propagated from triggering the
+				// native event and prevent that from happening again here.
+				// This technically gets the ordering wrong w.r.t. to `.trigger()` (in which the
+				// bubbling surrogate propagates *after* the non-bubbling base), but that seems
+				// less bad than duplication.
+				} else if ( ( jQuery.event.special[ type ] || {} ).delegateType ) {
+					event.stopPropagation();
+				}
+
+			// If this is a native event triggered above, everything is now in order
+			// Fire an inner synthetic event with the original arguments
+			} else if ( saved.length ) {
+
+				// ...and capture the result
+				dataPriv.set( this, type, {
+					value: jQuery.event.trigger(
+
+						// Support: IE <=9 - 11+
+						// Extend with the prototype to reset the above stopImmediatePropagation()
+						jQuery.extend( saved[ 0 ], jQuery.Event.prototype ),
+						saved.slice( 1 ),
+						this
+					)
+				} );
+
+				// Abort handling of the native event
+				event.stopImmediatePropagation();
+			}
+		}
+	} );
+}
 
 jQuery.removeEvent = function( elem, type, handle ) {
 
@@ -5593,6 +5746,7 @@ jQuery.each( {
 	shiftKey: true,
 	view: true,
 	"char": true,
+	code: true,
 	charCode: true,
 	key: true,
 	keyCode: true,
@@ -5638,6 +5792,33 @@ jQuery.each( {
 		return event.which;
 	}
 }, jQuery.event.addProp );
+
+jQuery.each( { focus: "focusin", blur: "focusout" }, function( type, delegateType ) {
+	jQuery.event.special[ type ] = {
+
+		// Utilize native event if possible so blur/focus sequence is correct
+		setup: function() {
+
+			// Claim the first handler
+			// dataPriv.set( this, "focus", ... )
+			// dataPriv.set( this, "blur", ... )
+			leverageNative( this, type, expectSync );
+
+			// Return false to allow normal processing in the caller
+			return false;
+		},
+		trigger: function() {
+
+			// Force setup before trigger
+			leverageNative( this, type );
+
+			// Return non-false to allow normal event-path propagation
+			return true;
+		},
+
+		delegateType: delegateType
+	};
+} );
 
 // Create mouseenter/leave events using mouseover/out and event-time checks
 // so that event delegation works in jQuery.
@@ -5889,11 +6070,13 @@ function domManip( collection, args, callback, ignored ) {
 						if ( node.src && ( node.type || "" ).toLowerCase()  !== "module" ) {
 
 							// Optional AJAX dependency, but won't run scripts if not present
-							if ( jQuery._evalUrl ) {
-								jQuery._evalUrl( node.src );
+							if ( jQuery._evalUrl && !node.noModule ) {
+								jQuery._evalUrl( node.src, {
+									nonce: node.nonce || node.getAttribute( "nonce" )
+								} );
 							}
 						} else {
-							DOMEval( node.textContent.replace( rcleanScript, "" ), doc, node );
+							DOMEval( node.textContent.replace( rcleanScript, "" ), node, doc );
 						}
 					}
 				}
@@ -5915,7 +6098,7 @@ function remove( elem, selector, keepData ) {
 		}
 
 		if ( node.parentNode ) {
-			if ( keepData && jQuery.contains( node.ownerDocument, node ) ) {
+			if ( keepData && isAttached( node ) ) {
 				setGlobalEval( getAll( node, "script" ) );
 			}
 			node.parentNode.removeChild( node );
@@ -5933,7 +6116,7 @@ jQuery.extend( {
 	clone: function( elem, dataAndEvents, deepDataAndEvents ) {
 		var i, l, srcElements, destElements,
 			clone = elem.cloneNode( true ),
-			inPage = jQuery.contains( elem.ownerDocument, elem );
+			inPage = isAttached( elem );
 
 		// Fix IE cloning issues
 		if ( !support.noCloneChecked && ( elem.nodeType === 1 || elem.nodeType === 11 ) &&
@@ -6229,8 +6412,10 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 
 		// Support: IE 9 only
 		// Detect overflow:scroll screwiness (gh-3699)
+		// Support: Chrome <=64
+		// Don't get tricked when zoom affects offsetWidth (gh-4029)
 		div.style.position = "absolute";
-		scrollboxSizeVal = div.offsetWidth === 36 || "absolute";
+		scrollboxSizeVal = roundPixelMeasures( div.offsetWidth / 3 ) === 12;
 
 		documentElement.removeChild( container );
 
@@ -6301,7 +6486,7 @@ function curCSS( elem, name, computed ) {
 	if ( computed ) {
 		ret = computed.getPropertyValue( name ) || computed[ name ];
 
-		if ( ret === "" && !jQuery.contains( elem.ownerDocument, elem ) ) {
+		if ( ret === "" && !isAttached( elem ) ) {
 			ret = jQuery.style( elem, name );
 		}
 
@@ -6357,29 +6542,12 @@ function addGetHookIf( conditionFn, hookFn ) {
 }
 
 
-var
+var cssPrefixes = [ "Webkit", "Moz", "ms" ],
+	emptyStyle = document.createElement( "div" ).style,
+	vendorProps = {};
 
-	// Swappable if display is none or starts with table
-	// except "table", "table-cell", or "table-caption"
-	// See here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
-	rdisplayswap = /^(none|table(?!-c[ea]).+)/,
-	rcustomProp = /^--/,
-	cssShow = { position: "absolute", visibility: "hidden", display: "block" },
-	cssNormalTransform = {
-		letterSpacing: "0",
-		fontWeight: "400"
-	},
-
-	cssPrefixes = [ "Webkit", "Moz", "ms" ],
-	emptyStyle = document.createElement( "div" ).style;
-
-// Return a css property mapped to a potentially vendor prefixed property
+// Return a vendor-prefixed property or undefined
 function vendorPropName( name ) {
-
-	// Shortcut for names that are not vendor prefixed
-	if ( name in emptyStyle ) {
-		return name;
-	}
 
 	// Check for vendor prefixed names
 	var capName = name[ 0 ].toUpperCase() + name.slice( 1 ),
@@ -6393,15 +6561,32 @@ function vendorPropName( name ) {
 	}
 }
 
-// Return a property mapped along what jQuery.cssProps suggests or to
-// a vendor prefixed property.
+// Return a potentially-mapped jQuery.cssProps or vendor prefixed property
 function finalPropName( name ) {
-	var ret = jQuery.cssProps[ name ];
-	if ( !ret ) {
-		ret = jQuery.cssProps[ name ] = vendorPropName( name ) || name;
+	var final = jQuery.cssProps[ name ] || vendorProps[ name ];
+
+	if ( final ) {
+		return final;
 	}
-	return ret;
+	if ( name in emptyStyle ) {
+		return name;
+	}
+	return vendorProps[ name ] = vendorPropName( name ) || name;
 }
+
+
+var
+
+	// Swappable if display is none or starts with table
+	// except "table", "table-cell", or "table-caption"
+	// See here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
+	rdisplayswap = /^(none|table(?!-c[ea]).+)/,
+	rcustomProp = /^--/,
+	cssShow = { position: "absolute", visibility: "hidden", display: "block" },
+	cssNormalTransform = {
+		letterSpacing: "0",
+		fontWeight: "400"
+	};
 
 function setPositiveNumber( elem, value, subtract ) {
 
@@ -6474,7 +6659,10 @@ function boxModelAdjustment( elem, dimension, box, isBorderBox, styles, computed
 			delta -
 			extra -
 			0.5
-		) );
+
+		// If offsetWidth/offsetHeight is unknown, then we can't determine content-box scroll gutter
+		// Use an explicit zero to avoid NaN (gh-3964)
+		) ) || 0;
 	}
 
 	return delta;
@@ -6484,9 +6672,16 @@ function getWidthOrHeight( elem, dimension, extra ) {
 
 	// Start with computed style
 	var styles = getStyles( elem ),
+
+		// To avoid forcing a reflow, only fetch boxSizing if we need it (gh-4322).
+		// Fake content-box until we know it's needed to know the true value.
+		boxSizingNeeded = !support.boxSizingReliable() || extra,
+		isBorderBox = boxSizingNeeded &&
+			jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
+		valueIsBorderBox = isBorderBox,
+
 		val = curCSS( elem, dimension, styles ),
-		isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
-		valueIsBorderBox = isBorderBox;
+		offsetProp = "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 );
 
 	// Support: Firefox <=54
 	// Return a confounding non-pixel value or feign ignorance, as appropriate.
@@ -6497,22 +6692,29 @@ function getWidthOrHeight( elem, dimension, extra ) {
 		val = "auto";
 	}
 
-	// Check for style in case a browser which returns unreliable values
-	// for getComputedStyle silently falls back to the reliable elem.style
-	valueIsBorderBox = valueIsBorderBox &&
-		( support.boxSizingReliable() || val === elem.style[ dimension ] );
 
 	// Fall back to offsetWidth/offsetHeight when value is "auto"
 	// This happens for inline elements with no explicit setting (gh-3571)
 	// Support: Android <=4.1 - 4.3 only
 	// Also use offsetWidth/offsetHeight for misreported inline dimensions (gh-3602)
-	if ( val === "auto" ||
-		!parseFloat( val ) && jQuery.css( elem, "display", false, styles ) === "inline" ) {
+	// Support: IE 9-11 only
+	// Also use offsetWidth/offsetHeight for when box sizing is unreliable
+	// We use getClientRects() to check for hidden/disconnected.
+	// In those cases, the computed value can be trusted to be border-box
+	if ( ( !support.boxSizingReliable() && isBorderBox ||
+		val === "auto" ||
+		!parseFloat( val ) && jQuery.css( elem, "display", false, styles ) === "inline" ) &&
+		elem.getClientRects().length ) {
 
-		val = elem[ "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 ) ];
+		isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
 
-		// offsetWidth/offsetHeight provide border-box values
-		valueIsBorderBox = true;
+		// Where available, offsetWidth/offsetHeight approximate border box dimensions.
+		// Where not available (e.g., SVG), assume unreliable box-sizing and interpret the
+		// retrieved value as a content box dimension.
+		valueIsBorderBox = offsetProp in elem;
+		if ( valueIsBorderBox ) {
+			val = elem[ offsetProp ];
+		}
 	}
 
 	// Normalize "" and auto
@@ -6558,6 +6760,13 @@ jQuery.extend( {
 		"flexGrow": true,
 		"flexShrink": true,
 		"fontWeight": true,
+		"gridArea": true,
+		"gridColumn": true,
+		"gridColumnEnd": true,
+		"gridColumnStart": true,
+		"gridRow": true,
+		"gridRowEnd": true,
+		"gridRowStart": true,
 		"lineHeight": true,
 		"opacity": true,
 		"order": true,
@@ -6613,7 +6822,9 @@ jQuery.extend( {
 			}
 
 			// If a number was passed in, add the unit (except for certain CSS properties)
-			if ( type === "number" ) {
+			// The isCustomProp check can be removed in jQuery 4.0 when we only auto-append
+			// "px" to a few hardcoded values.
+			if ( type === "number" && !isCustomProp ) {
 				value += ret && ret[ 3 ] || ( jQuery.cssNumber[ origName ] ? "" : "px" );
 			}
 
@@ -6713,18 +6924,29 @@ jQuery.each( [ "height", "width" ], function( i, dimension ) {
 		set: function( elem, value, extra ) {
 			var matches,
 				styles = getStyles( elem ),
-				isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
-				subtract = extra && boxModelAdjustment(
-					elem,
-					dimension,
-					extra,
-					isBorderBox,
-					styles
-				);
+
+				// Only read styles.position if the test has a chance to fail
+				// to avoid forcing a reflow.
+				scrollboxSizeBuggy = !support.scrollboxSize() &&
+					styles.position === "absolute",
+
+				// To avoid forcing a reflow, only fetch boxSizing if we need it (gh-3991)
+				boxSizingNeeded = scrollboxSizeBuggy || extra,
+				isBorderBox = boxSizingNeeded &&
+					jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
+				subtract = extra ?
+					boxModelAdjustment(
+						elem,
+						dimension,
+						extra,
+						isBorderBox,
+						styles
+					) :
+					0;
 
 			// Account for unreliable border-box dimensions by comparing offset* to computed and
 			// faking a content-box to get border and padding (gh-3699)
-			if ( isBorderBox && support.scrollboxSize() === styles.position ) {
+			if ( isBorderBox && scrollboxSizeBuggy ) {
 				subtract -= Math.ceil(
 					elem[ "offset" + dimension[ 0 ].toUpperCase() + dimension.slice( 1 ) ] -
 					parseFloat( styles[ dimension ] ) -
@@ -6892,9 +7114,9 @@ Tween.propHooks = {
 			// Use .style if available and use plain properties where available.
 			if ( jQuery.fx.step[ tween.prop ] ) {
 				jQuery.fx.step[ tween.prop ]( tween );
-			} else if ( tween.elem.nodeType === 1 &&
-				( tween.elem.style[ jQuery.cssProps[ tween.prop ] ] != null ||
-					jQuery.cssHooks[ tween.prop ] ) ) {
+			} else if ( tween.elem.nodeType === 1 && (
+					jQuery.cssHooks[ tween.prop ] ||
+					tween.elem.style[ finalPropName( tween.prop ) ] != null ) ) {
 				jQuery.style( tween.elem, tween.prop, tween.now + tween.unit );
 			} else {
 				tween.elem[ tween.prop ] = tween.now;
@@ -8601,6 +8823,10 @@ jQuery.param = function( a, traditional ) {
 				encodeURIComponent( value == null ? "" : value );
 		};
 
+	if ( a == null ) {
+		return "";
+	}
+
 	// If an array was passed in, assume that it is an array of form elements.
 	if ( Array.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
 
@@ -9103,12 +9329,14 @@ jQuery.extend( {
 						if ( !responseHeaders ) {
 							responseHeaders = {};
 							while ( ( match = rheaders.exec( responseHeadersString ) ) ) {
-								responseHeaders[ match[ 1 ].toLowerCase() ] = match[ 2 ];
+								responseHeaders[ match[ 1 ].toLowerCase() + " " ] =
+									( responseHeaders[ match[ 1 ].toLowerCase() + " " ] || [] )
+										.concat( match[ 2 ] );
 							}
 						}
-						match = responseHeaders[ key.toLowerCase() ];
+						match = responseHeaders[ key.toLowerCase() + " " ];
 					}
-					return match == null ? null : match;
+					return match == null ? null : match.join( ", " );
 				},
 
 				// Raw string
@@ -9497,7 +9725,7 @@ jQuery.each( [ "get", "post" ], function( i, method ) {
 } );
 
 
-jQuery._evalUrl = function( url ) {
+jQuery._evalUrl = function( url, options ) {
 	return jQuery.ajax( {
 		url: url,
 
@@ -9507,7 +9735,16 @@ jQuery._evalUrl = function( url ) {
 		cache: true,
 		async: false,
 		global: false,
-		"throws": true
+
+		// Only evaluate the response if it is successful (gh-4126)
+		// dataFilter is not invoked for failure responses, so using it instead
+		// of the default converter is kludgy but it works.
+		converters: {
+			"text script": function() {}
+		},
+		dataFilter: function( response ) {
+			jQuery.globalEval( response, options );
+		}
 	} );
 };
 
@@ -9790,24 +10027,21 @@ jQuery.ajaxPrefilter( "script", function( s ) {
 // Bind script tag hack transport
 jQuery.ajaxTransport( "script", function( s ) {
 
-	// This transport only deals with cross domain requests
-	if ( s.crossDomain ) {
+	// This transport only deals with cross domain or forced-by-attrs requests
+	if ( s.crossDomain || s.scriptAttrs ) {
 		var script, callback;
 		return {
 			send: function( _, complete ) {
-				script = jQuery( "<script>" ).prop( {
-					charset: s.scriptCharset,
-					src: s.url
-				} ).on(
-					"load error",
-					callback = function( evt ) {
+				script = jQuery( "<script>" )
+					.attr( s.scriptAttrs || {} )
+					.prop( { charset: s.scriptCharset, src: s.url } )
+					.on( "load error", callback = function( evt ) {
 						script.remove();
 						callback = null;
 						if ( evt ) {
 							complete( evt.type === "error" ? 404 : 200, evt.type );
 						}
-					}
-				);
+					} );
 
 				// Use native DOM manipulation to avoid our domManip AJAX trickery
 				document.head.appendChild( script[ 0 ] );

@@ -251,7 +251,7 @@ new Vue({
                 url: urldomine + 'api/cags/list',
                 data: {
                     start: this.pager_list.page - 1,
-                    take: 9,
+                    take: this.pager_list.recordpage,
                     filters: this.filters_list,
                     orders: this.orders_list,
                     user_id_auth : this.user_id_auth
@@ -268,7 +268,7 @@ new Vue({
                 this.landscapers = res.data.landscapers;
                 this.productsOffereds = res.data.productsOffereds;
                 this.servicesOffereds = res.data.servicesOffereds;
-                this.pager_list.totalpage = Math.ceil(res.data.total / 9)
+                this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
 
             }).catch(e => {
                 this.spin = false;

@@ -28,7 +28,7 @@ export const core = {
 
                 page: 1,
 
-                recordpage: 9,
+                recordpage: 39,
 
                 totalpage: 0
 

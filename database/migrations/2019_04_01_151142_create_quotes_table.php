@@ -30,6 +30,7 @@ class CreateQuotesTable extends Migration
             $table->smallInteger('type_send_id')->nullable();
             $table->smallInteger('type_check_id')->nullable();
             $table->tinyInteger('have_iva')->default(0);
+            $table->decimal('discount')->default(0);
             $table->mediumText('feedback')->nullable();
             $table->string('strategy', 500)->nullable();
             $table->engine = 'InnoDB';

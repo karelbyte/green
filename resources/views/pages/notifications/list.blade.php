@@ -352,7 +352,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
             <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
                 <div class="panel-heading text-center">
-                    <h3>NOTAS DE VENTAS SIN APLICAR</h3>
+                    <h3>PEDIDOS PARA HABILITAR</h3>
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover">
@@ -380,7 +380,7 @@
         </div>
         <div class="hidden-lg hidden-md hidden-sm col-xs-12">
             <div class="panel-heading text-center">
-                <h4>NOTAS DE VENTAS SIN APLICAR</h4>
+                <h4>PEDIDOS PARA HABILITAR</h4>
             </div>
             <div v-for="sale in sale_note_not_close" :key="sale.id"  class="panel panel-border panel-inverse m-t-5">
                 <div class="panel-heading">

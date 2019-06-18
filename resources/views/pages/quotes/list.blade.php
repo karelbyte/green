@@ -158,7 +158,7 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-lg-10">
+                    <div class="col-lg-9">
                         <input type="text" class="form-control" v-model="item.descrip" placeholder="Titulo de la cotización">
                     </div>
                     <div class="col-lg-1">
@@ -203,6 +203,14 @@
                                </tr>
 
                             </tbody>
+                            <tr >
+                                <td></td>
+                                <td></td>
+                                <td>DESCUENTO</td>
+                                <td class="txtblack"><input type="text" v-model="item.discount" class="form-control"> </td>
+                                <td>
+                                </td>
+                            </tr>
                             <tfoot>
                             <tr v-if="item.have_iva === 1 || item.have_iva === true">
                                 <td></td>
@@ -226,8 +234,8 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-                     <!--  <textarea class="form-control" v-model="item.specifications" placeholder="Especificaciones"></textarea> -->
-                        <quill-editor v-model="item.specifications" :options="editorOption"></quill-editor>
+                       <quill-editor v-model="item.specifications" :options="editorOption"></quill-editor>
+
                     </div>
 
                 </div>

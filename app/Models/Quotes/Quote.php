@@ -25,7 +25,7 @@ class Quote extends Model
 
     protected $fillable = ['uid', 'cglobal_id', 'descrip', 'token', 'type_send_id', 'type_check_id', 'check_date',
 
-        'specifications', 'type_quote_id', 'sends', 'moment', 'emit', 'have_iva', 'ext', 'status_id'];
+        'specifications', 'type_quote_id', 'sends', 'moment', 'emit', 'have_iva', 'ext', 'status_id', 'discount'];
 
 
     public function getEmitAttribute($value)

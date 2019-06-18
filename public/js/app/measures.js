@@ -30,7 +30,7 @@ var core = {
       fieldtype: 'text',
       pager_list: {
         page: 1,
-        recordpage: 9,
+        recordpage: 39,
         totalpage: 0
       },
       user_id_auth: 0,
