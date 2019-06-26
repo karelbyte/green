@@ -186,7 +186,8 @@ class AppSeeder extends Seeder
             ['id' => 5, 'name' => 'PAGADA - EN EJECUCION'],
             ['id' => 6, 'name' => 'EN EJECUCION'],
             ['id' => 7, 'name' => 'PAGADA - TERMINADA'],
-            ['id' => 8, 'name' => 'RECIBIDO - TERMINADA '],
+            ['id' => 8, 'name' => 'RECIBIDO - TERMINADA'],
+            ['id' => 9, 'name' => 'TERMINADA'],
         ];
         \App\Models\SalesNotes\SalesNoteStatus::insert($statusSalesList);
 

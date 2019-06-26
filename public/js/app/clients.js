@@ -87,6 +87,28 @@ new Vue({
   },
   methods: {
     dateToEs: _tools__WEBPACK_IMPORTED_MODULE_1__["dateEs"],
+    gotoUrl: function gotoUrl(id, type) {
+      switch (type) {
+        case 1:
+          // CAGS
+          var dat = [id];
+          localStorage.setItem('data', JSON.stringify(dat));
+          window.location.href = document.location.origin + '/atencion';
+          break;
+
+        case 2:
+          // COTIZACIONES
+          window.location.href = document.location.origin + '/cotizaciones/' + id;
+          break;
+
+        case 3:
+          // NOTAS DE VENTA
+          window.location.href = document.location.origin + '/notas-de-ventas/' + id;
+          break;
+
+        default:
+      }
+    },
     getTotalItem: function getTotalItem(it) {
       var subtotal = 0;
 
@@ -264,6 +286,7 @@ var core = {
         totalpage: 0
       },
       user_id_auth: 0,
+      off: false,
       filters_list_aux: {
         descrip: '',
         field: '',
@@ -305,7 +328,10 @@ var core = {
   },
   mounted: function mounted() {
     this.user_id_auth = parseInt($('#user_id_auth').val());
-    this.getlist();
+
+    if (!this.off) {
+      this.getlist();
+    }
   },
   methods: {
     setfield: function setfield(f) {

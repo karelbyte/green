@@ -48,7 +48,7 @@
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                         @endif
-                        <input type="checkbox" id="chk1" {{ old('remember') ? 'checked' : '' }}><label for="chk1">Recordarme</label>
+                        <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}><label for="remember">Recordarme</label>
                         <div class="form-button">
                             <button id="submit" type="submit" class="ibtn">Acceder</button>
                         </div>

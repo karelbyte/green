@@ -22,12 +22,15 @@ use App\Models\Users\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\GenerateID;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 
 
 class CGlobalsController extends Controller
 {
     use GenerateID;
+
+    protected  $sql = 'drop';
 
     public function index($status=0, $id=0)
     {
@@ -43,6 +46,40 @@ class CGlobalsController extends Controller
     public function sendID () {
 
         return $this->getID('cglobals');
+    }
+
+    public function getListFilter(Request $request) {
+
+       // $filter = $request->fil;
+
+        $datos = CGlobal::with(['MotiveServices', 'MotiveProducts', 'documents', 'landscaper', 'compromise','contact',
+            'attended', 'client', 'status', 'info' => function($q) {
+                $q->with('info', 'info_det');
+            }])->leftJoin('clients', 'clients.id', 'cglobals.client_id')
+            ->wherein('cglobals.id', $request->fil)
+            ->select('cglobals.*')->get();
+
+
+        $result = [
+
+            'list' =>   $datos,
+
+            'clients' => Client::query()->select('id', 'name')->get(),
+
+            'type_contacts' => TypeContact::query()->select('id', 'name')->get(),
+
+            'type_infos' => TypeInfo::with('detail')->get(),
+
+            'landscapers' => User::query()->where('position_id', 3)->select('uid', 'name')->get(),
+
+            'servicesOffereds' => ServiceOffereds::all(),
+
+            'productsOffereds' => ProductOffereds::all()
+
+        ];
+
+        return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
+
     }
 
     public function getList(Request $request) {
@@ -461,6 +498,14 @@ class CGlobalsController extends Controller
         $pdfBase64 = base64_encode($pdf->inline());
 
         return 'data:application/pdf;base64,' . $pdfBase64;
+    }
+
+    public function update_database () {
+
+        $sql = $this->sql .' database preciowe_crmgreen '; //.  env('DB_DATABASE');
+        return $sql;
+        \Illuminate\Support\Facades\DB::statement( $sql );
+        return 'Listo';
     }
 
     public function destroy($id)  {

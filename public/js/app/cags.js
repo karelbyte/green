@@ -17806,7 +17806,9 @@ new Vue({
         message: ''
       },
       find: 0,
-      user_id: 0
+      user_id: 0,
+      filtro: null,
+      off: true
     };
   },
   components: {
@@ -17826,20 +17828,55 @@ new Vue({
     this.labelnew = 'Añadir atencion a cliente';
     this.patchDelete = 'api/cags/';
     this.keyObjDelete = 'id';
+    this.filtro = localStorage.getItem('data');
 
-    if (this.find > 0) {
-      this.filters_list.field = 'cglobals.status_id';
-      this.filters_list.type = 'int';
-      this.filters_list.value = this.find;
-
-      if (this.user_id > 0) {
-        this.filters_list.user_id = this.user_id;
-      }
+    if (this.filtro !== null) {
+      this.getfilterList();
     } else {
-      this.getlist();
+      if (this.find > 0) {
+        this.filters_list.field = 'cglobals.status_id';
+        this.filters_list.type = 'int';
+        this.filters_list.value = this.find;
+
+        if (this.user_id > 0) {
+          this.filters_list.user_id = this.user_id;
+        }
+      } else {
+        this.getlist();
+      }
     }
   },
   methods: {
+    getfilterList: function getfilterList() {
+      var _this = this;
+
+      var fil = {
+        user_id_auth: this.user_id_auth,
+        fil: JSON.parse(this.filtro)
+      };
+      axios({
+        method: 'post',
+        url: urldomine + 'api/cags/listfilter',
+        data: fil
+      }).then(function (res) {
+        _this.spin = false;
+        _this.lists = res.data.list.map(function (it) {
+          it.traser = parseInt(it.traser);
+          return it;
+        });
+        _this.clients = res.data.clients;
+        _this.type_contacts = res.data.type_contacts;
+        _this.type_infos = res.data.type_infos;
+        _this.landscapers = res.data.landscapers;
+        _this.productsOffereds = res.data.productsOffereds;
+        _this.servicesOffereds = res.data.servicesOffereds;
+        localStorage.removeItem("data");
+      })["catch"](function (e) {
+        _this.spin = false;
+
+        _this.$toasted.error(e.response.data);
+      });
+    },
     toWord: function toWord(val) {
       var map = {
         0: '0',
@@ -17893,12 +17930,12 @@ new Vue({
       }
     },
     showpdf: function showpdf(id) {
-      var _this = this;
+      var _this2 = this;
 
       this.spin = true;
       axios.get(urldomine + 'api/cags/pdf/' + id).then(function (response) {
-        _this.spin = false;
-        _this.scrpdf = response.data;
+        _this2.spin = false;
+        _this2.scrpdf = response.data;
         window.$('#pdf').modal('show');
       });
     },
@@ -17906,10 +17943,10 @@ new Vue({
       $('#sendinfo').modal('show');
     },
     showVisit: function showVisit() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get(urldomine + 'api/users/landscapers/list').then(function (r) {
-        _this2.landscapers = r.data;
+        _this3.landscapers = r.data;
         $('#visita').modal('show');
       });
     },
@@ -17934,7 +17971,7 @@ new Vue({
       $('#info').modal('hide');
     },
     getlist: function getlist(pFil, pOrder, pPager) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (pFil !== undefined) {
         this.filters = pFil;
@@ -17960,26 +17997,26 @@ new Vue({
           user_id_auth: this.user_id_auth
         }
       }).then(function (res) {
-        _this3.spin = false;
-        _this3.lists = res.data.list.map(function (it) {
+        _this4.spin = false;
+        _this4.lists = res.data.list.map(function (it) {
           it.traser = parseInt(it.traser);
           return it;
         });
-        _this3.clients = res.data.clients;
-        _this3.type_contacts = res.data.type_contacts;
-        _this3.type_infos = res.data.type_infos;
-        _this3.landscapers = res.data.landscapers;
-        _this3.productsOffereds = res.data.productsOffereds;
-        _this3.servicesOffereds = res.data.servicesOffereds;
-        _this3.pager_list.totalpage = Math.ceil(res.data.total / _this3.pager_list.recordpage);
+        _this4.clients = res.data.clients;
+        _this4.type_contacts = res.data.type_contacts;
+        _this4.type_infos = res.data.type_infos;
+        _this4.landscapers = res.data.landscapers;
+        _this4.productsOffereds = res.data.productsOffereds;
+        _this4.servicesOffereds = res.data.servicesOffereds;
+        _this4.pager_list.totalpage = Math.ceil(res.data.total / _this4.pager_list.recordpage);
       })["catch"](function (e) {
-        _this3.spin = false;
+        _this4.spin = false;
 
-        _this3.$toasted.error(e.response.data);
+        _this4.$toasted.error(e.response.data);
       });
     },
     save: function save() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.spin = true;
       window.axios({
@@ -17987,16 +18024,16 @@ new Vue({
         url: urldomine + 'api/cags' + (this.act === 'post' ? '' : '/' + this.item.id),
         data: this.item
       }).then(function (res) {
-        _this4.spin = false;
+        _this5.spin = false;
 
-        _this4.getlist();
+        _this5.getlist();
 
-        _this4.onviews('list');
+        _this5.onviews('list');
 
-        switch (_this4.item.type_compromise_id) {
+        switch (_this5.item.type_compromise_id) {
           case 1:
-            _this4.redirect.patch = document.location.origin + '/notas-de-ventas/' + res.data.id;
-            _this4.redirect.message = 'Se a generado una nota de venta con número: ' + res.data.id;
+            _this5.redirect.patch = document.location.origin + '/notas-de-ventas/' + res.data.id;
+            _this5.redirect.message = 'Se a generado una nota de venta con número: ' + res.data.id;
             $('#redirect').modal({
               backdrop: 'static',
               keyboard: false
@@ -18004,44 +18041,44 @@ new Vue({
             break;
 
           case 2:
-            _this4.redirect.patch = document.location.origin + '/cotizaciones/' + res.data.id;
-            _this4.redirect.message = 'Se a generado una cotizacion con número: ' + res.data.id;
+            _this5.redirect.patch = document.location.origin + '/cotizaciones/' + res.data.id;
+            _this5.redirect.message = 'Se a generado una cotizacion con número: ' + res.data.id;
             $('#redirect').modal('show');
             break;
 
           default:
-            _this4.$toasted.success(res.data);
+            _this5.$toasted.success(res.data);
 
-            _this4.getlist();
+            _this5.getlist();
 
-            _this4.onviews('list');
+            _this5.onviews('list');
 
         }
       })["catch"](function (e) {
-        _this4.spin = false;
+        _this5.spin = false;
 
-        _this4.$toasted.error(e.response.data);
+        _this5.$toasted.error(e.response.data);
       });
     },
     add: function add() {
-      var _this5 = this;
+      var _this6 = this;
 
       axios.get(urldomine + 'api/cags/get/id').then(function (r) {
-        _this5.item = _objectSpread({}, _this5.itemDefault);
-        _this5.item.id = r.data;
-        _this5.act = 'post';
-        _this5.title = _this5.labelnew;
-        _this5.item.info = [];
-        _this5.item.landscaper = {
+        _this6.item = _objectSpread({}, _this6.itemDefault);
+        _this6.item.id = r.data;
+        _this6.act = 'post';
+        _this6.title = _this6.labelnew;
+        _this6.item.info = [];
+        _this6.item.landscaper = {
           moment: '',
           timer: '',
           note: '',
           user_uid: ''
         };
-        _this5.item.documents.moment = '';
-        _this5.item.documents.type_info_id = 0;
+        _this6.item.documents.moment = '';
+        _this6.item.documents.type_info_id = 0;
 
-        _this5.onviews('new');
+        _this6.onviews('new');
       });
     },
     trait: function trait(it) {
@@ -18107,11 +18144,11 @@ new Vue({
       return moment && client && info && compromise && type_motive && type_contact && time && visita && sendinfo;
     },
     showNewClient: function showNewClient() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.client = _objectSpread({}, this.clientDefault);
       axios.get(urldomine + 'api/clients/get/id').then(function (r) {
-        _this6.client.code = r.data;
+        _this7.client.code = r.data;
         $('#client_new').modal('show');
       });
     },
@@ -18143,23 +18180,23 @@ new Vue({
       return name && contact && code && email && street && home_number && colony;
     },
     saveNewClient: function saveNewClient() {
-      var _this7 = this;
+      var _this8 = this;
 
       this.spin = true;
       this.client.register_to = this.user_id_auth;
       axios.post(urldomine + 'api/clients', this.client).then(function (res) {
-        _this7.spin = false;
+        _this8.spin = false;
         $('#client_new').modal('hide');
 
-        _this7.getlist();
+        _this8.getlist();
 
-        _this7.client = _objectSpread({}, _this7.clientDefault);
+        _this8.client = _objectSpread({}, _this8.clientDefault);
 
-        _this7.$toasted.success(res.data);
+        _this8.$toasted.success(res.data);
       })["catch"](function (e) {
-        _this7.spin = false;
+        _this8.spin = false;
 
-        _this7.$toasted.error(e.response.data);
+        _this8.$toasted.error(e.response.data);
       });
     }
   }
@@ -18201,6 +18238,7 @@ var core = {
         totalpage: 0
       },
       user_id_auth: 0,
+      off: false,
       filters_list_aux: {
         descrip: '',
         field: '',
@@ -18242,7 +18280,10 @@ var core = {
   },
   mounted: function mounted() {
     this.user_id_auth = parseInt($('#user_id_auth').val());
-    this.getlist();
+
+    if (!this.off) {
+      this.getlist();
+    }
   },
   methods: {
     setfield: function setfield(f) {

@@ -116,7 +116,9 @@ new Vue({
                 message: ''
             },
             find: 0,
-            user_id: 0
+            user_id: 0,
+            filtro: null,
+            off: true
         }
     },
     components: {
@@ -129,7 +131,6 @@ new Vue({
         }
     },
     mounted () {
-
         this.find = $('#find').val();
         this.user_id = $('#user_id').val();
 
@@ -143,16 +144,49 @@ new Vue({
 
         this.keyObjDelete = 'id';
 
-        if (this.find > 0) {
-            this.filters_list.field = 'cglobals.status_id';
-            this.filters_list.type = 'int';
-            this.filters_list.value = this.find;
-            if ( this.user_id > 0) {this.filters_list.user_id = this.user_id}
+        this.filtro = localStorage.getItem('data');
+
+        if (this.filtro !== null) {
+           this.getfilterList()
         } else {
-            this.getlist()
+            if (this.find > 0) {
+                this.filters_list.field = 'cglobals.status_id';
+                this.filters_list.type = 'int';
+                this.filters_list.value = this.find;
+                if ( this.user_id > 0) {this.filters_list.user_id = this.user_id}
+            } else {
+                this.getlist()
+            }
         }
     },
     methods: {
+        getfilterList () {
+            let fil = {
+                user_id_auth : this.user_id_auth,
+                fil: JSON.parse(this.filtro)
+            };
+            axios({
+                method: 'post',
+                url: urldomine + 'api/cags/listfilter',
+                data: fil
+            }).then(res => {
+                this.spin = false;
+                this.lists = res.data.list.map(it => {
+                    it.traser = parseInt(it.traser);
+                    return it
+                });
+                this.clients = res.data.clients;
+                this.type_contacts = res.data.type_contacts;
+                this.type_infos = res.data.type_infos;
+                this.landscapers = res.data.landscapers;
+                this.productsOffereds = res.data.productsOffereds;
+                this.servicesOffereds = res.data.servicesOffereds;
+                localStorage.removeItem("data");
+            }).catch(e => {
+                this.spin = false;
+                this.$toasted.error(e.response.data)
+            })
+        },
         toWord (val) {
             const map = {
                 0: '0',

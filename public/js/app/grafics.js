@@ -17,6 +17,7 @@ new Vue({
   data: function data() {
     return {
       spin: false,
+      url: '',
       meses: [{
         id: 0,
         month: 'Enero'
@@ -69,7 +70,10 @@ new Vue({
       VERIFICATION_RECEIPT_QUOTATION_CANT: 0,
       STRATEGY_SALE_CANT: 0,
       STRATEGY_SALE_CONFIRM_CANT: 0,
+      CAG_ON_HOLD_CANT: 0,
       INQUOTE_CANT: 0,
+      CAG_ON_Q_CANT: 0,
+      CAG_ON_RECOMEN_CANT: 0,
       pie: {
         chart: {
           plotBackgroundColor: null,
@@ -298,7 +302,7 @@ new Vue({
           style: {
             fontSize: '14px'
           },
-          text: 'CAGS EN EN PROCESO DE COTIZACION'
+          text: 'CAGS EN PROCESO DE COTIZACION'
         },
         subtitle: {
           text: 'TOTAL DE:'
@@ -329,7 +333,141 @@ new Vue({
           pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
         },
         series: []
-      }
+      },
+      RECEIVED_NOT_DELIVERI: {},
+      PAY_NOT_DELIVERI: {},
+      RECEIVED_TRUE_DELIVERI: {},
+      NOTPAY_TRUE_DELIVERI: {},
+      CAG_ON_HOLD: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          style: {
+            fontSize: '14px'
+          },
+          text: 'CAGS EN ESTADO DE EJECUCION'
+        },
+        subtitle: {
+          text: 'TOTAL DE:'
+        },
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de Cags'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            borderWidth: 0,
+            dataLabels: {
+              enabled: true,
+              format: '{point.y}'
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+        },
+        series: []
+      },
+      CAG_ON_Q: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          style: {
+            fontSize: '14px'
+          },
+          text: 'CAGS PARA LLAMADA DE CALIDAD'
+        },
+        subtitle: {
+          text: 'TOTAL DE:'
+        },
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de Cags'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            borderWidth: 0,
+            dataLabels: {
+              enabled: true,
+              format: '{point.y}'
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+        },
+        series: []
+      },
+      CAG_ON_RECOMEN: {
+        chart: {
+          type: 'column'
+        },
+        title: {
+          style: {
+            fontSize: '14px'
+          },
+          text: 'CAGS PARA ENVIO DE RECOMENDACIONES'
+        },
+        subtitle: {
+          text: 'TOTAL DE:'
+        },
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de Cags'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            borderWidth: 0,
+            dataLabels: {
+              enabled: true,
+              format: '{point.y}'
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+        },
+        series: []
+      },
+      // FUERA DE TERMINO
+      VISIT_HOME: {},
+      QUOTE_OUT: {},
+      QUOTE_OUT_CONFIRM: {},
+      QUOTE_OUT_TRACING: {},
+      quote_out_strateg: {},
+      quote_out_strateg_confirm: {},
+      sale_note_not_delivered: {},
+      qualities_send_info: {},
+      qualities_send_info_confirm: {}
     };
   },
   methods: {
@@ -338,13 +476,18 @@ new Vue({
       return this.meses.find(function (it) {
         return it.id === new Date().getMonth();
       }).month;
+    },
+    goCags: function goCags(dat) {
+      localStorage.setItem('data', JSON.stringify(dat));
+      window.location.href = this.url;
     }
   },
   mounted: function mounted() {
     var _this = this;
 
     axios.get(urldomine + 'api/grafics/data_month').then(function (r) {
-      //CLIENTES ATENDIDOS MES
+      _this.url = r.data.url; //CLIENTES ATENDIDOS MES
+
       _this.client_care_month = r.data.client_care_month;
       _this.client_care_month_last = r.data.client_care_month_last; // VENTAS EN EL MES
 
@@ -466,7 +609,75 @@ new Vue({
             window.location.href = r.data.url + e.point.status + '/' + e.point.id;
           }
         }
-      };
+      }; // EN ESTADO DE EJECUCION
+
+      _this.CAG_ON_HOLD_CANT = r.data.CAG_ON_HOLD.cant;
+      _this.CAG_ON_HOLD.subtitle.text = 'TOTAL DE ' + r.data.CAG_ON_HOLD.cant;
+
+      _this.CAG_ON_HOLD.series.push({
+        name: 'Cags por asesor',
+        colorByPoint: true,
+        data: r.data.CAG_ON_HOLD.data
+      });
+
+      _this.CAG_ON_HOLD.plotOptions.column = {
+        events: {
+          click: function click(e) {
+            window.location.href = r.data.url + e.point.status + '/' + e.point.id;
+          }
+        }
+      }; // EN ESTADO DE ENVIO DE RECOMENDACIONES
+
+      _this.CAG_ON_RECOMEN_CANT = r.data.CAG_ON_RECOMEN.cant;
+      _this.CAG_ON_RECOMEN.subtitle.text = 'TOTAL DE ' + r.data.CAG_ON_RECOMEN.cant;
+
+      _this.CAG_ON_RECOMEN.series.push({
+        name: 'Cags por asesor',
+        colorByPoint: true,
+        data: r.data.CAG_ON_RECOMEN.data
+      });
+
+      _this.CAG_ON_RECOMEN.plotOptions.column = {
+        events: {
+          click: function click(e) {
+            window.location.href = r.data.url + e.point.status + '/' + e.point.id;
+          }
+        }
+      }; // EN ESTADO DE ENVIO DE LLAMADA DE CALIDAD
+
+      _this.CAG_ON_Q_CANT = r.data.CAG_ON_Q.cant;
+      _this.CAG_ON_Q.subtitle.text = 'TOTAL DE ' + r.data.CAG_ON_Q.cant;
+
+      _this.CAG_ON_Q.series.push({
+        name: 'Cags por asesor',
+        colorByPoint: true,
+        data: r.data.CAG_ON_Q.data
+      });
+
+      _this.CAG_ON_Q.plotOptions.column = {
+        events: {
+          click: function click(e) {
+            window.location.href = r.data.url + e.point.status + '/' + e.point.id;
+          }
+        }
+      }; // CAG PAGADO SIN ENTREGAR
+
+      _this.PAY_NOT_DELIVERI = r.data.PAY_NOT_DELIVERI; // CAG PAGADO SIN ENTREGAR
+
+      _this.RECEIVED_NOT_DELIVERI = r.data.RECEIVED_NOT_DELIVERI;
+      _this.RECEIVED_TRUE_DELIVERI = r.data.RECEIVED_TRUE_DELIVERI;
+      _this.NOTPAY_TRUE_DELIVERI = r.data.NOTPAY_TRUE_DELIVERI;
+    });
+    axios.get(urldomine + 'api/grafics/out_term').then(function (dt) {
+      _this.VISIT_HOME = dt.data.VISIT_HOME;
+      _this.QUOTE_OUT = dt.data.QUOTE_OUT;
+      _this.QUOTE_OUT_CONFIRM = dt.data.QUOTE_OUT_CONFIRM;
+      _this.QUOTE_OUT_TRACING = dt.data.QUOTE_OUT_TRACING;
+      _this.quote_out_strateg = dt.data.QUOTE_OUT_STRATEG;
+      _this.quote_out_strateg_confirm = dt.data.quote_out_strateg_confirm;
+      _this.sale_note_not_delivered = dt.data.sale_note_not_delivered;
+      _this.qualities_send_info = dt.data.qualities_send_info;
+      _this.qualities_send_info_confirm = dt.data.qualities_send_info_confirm;
     });
   }
 });

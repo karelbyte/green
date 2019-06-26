@@ -16,6 +16,10 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    public function stop () {
+        return view('pages.stop');
+    }
+
     public function index()
     {
 

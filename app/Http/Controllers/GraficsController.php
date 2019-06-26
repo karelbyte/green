@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\CGlobal\CGlobal;
+use App\Models\LandScaper;
 use App\Models\Maintenances\MaintenanceDetail;
+use App\Models\Qualities\Quality;
 use App\Models\Quotes\Quote;
 use App\Models\SalesNotes\SalesNote;
 use Carbon\Carbon;
@@ -103,9 +105,51 @@ class GraficsController extends Controller
         // CAGAS EN ESTADO PAGADO SIN ENTREGAR
         $PAY_NOT_DELIVERI =  CGlobal::query()
             ->leftJoin('salesnotes', 'salesnotes.global_id', 'cglobals.id')
-            ->whereMonth('salesnotes.moment', $month)
             ->where('salesnotes.status_id', 2)
             ->select('cglobals.id')->get();
+
+        // CAGAS EN ESTADO RECIVIDO SIN ENTREGAR
+        $RECEIVED_NOT_DELIVERI =  CGlobal::query()
+            ->leftJoin('salesnotes', 'salesnotes.global_id', 'cglobals.id')
+            ->where('salesnotes.status_id', 1)
+            ->select('cglobals.id')->get();
+
+        // CAGAS EN ESTADO RECIVIDO ENTREGADA
+        $RECEIVED_TRUE_DELIVERI =  CGlobal::query()
+            ->leftJoin('salesnotes', 'salesnotes.global_id', 'cglobals.id')
+            ->where('salesnotes.status_id', 8)
+            ->select('cglobals.id')->get();
+
+        // CAGAS EN ESTADO RECIVIDO ENTREGADA
+        $NOTPAY_TRUE_DELIVERI =  CGlobal::query()
+            ->leftJoin('salesnotes', 'salesnotes.global_id', 'cglobals.id')
+            ->where('salesnotes.status_id', 9)
+            ->select('cglobals.id')->get();
+
+        // CAG EN ESPERA DE EJECUCION POR ASESOR
+        $CAG_ON_HOLD = CGlobal::query()
+            ->leftJoin('users', 'cglobals.user_id', 'users.id')
+            ->whereMonth('cglobals.moment', $month)
+            ->where('cglobals.status_id', 6)
+            ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
+            ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
+
+        // CAG EN ESPERA DE EJECUCION POR ASESOR
+        $CAG_ON_RECOMEN = CGlobal::query()
+            ->leftJoin('users', 'cglobals.user_id', 'users.id')
+            ->whereMonth('cglobals.moment', $month)
+            ->wherein('cglobals.status_id', [7, 16])
+            ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
+            ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
+
+
+        // CAG EN ESPERA DE EJECUCION POR ASESOR
+        $CAG_ON_Q = CGlobal::query()
+            ->leftJoin('users', 'cglobals.user_id', 'users.id')
+            ->whereMonth('cglobals.moment', $month)
+            ->where('cglobals.status_id', 14)
+            ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
+            ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
 
         $data = [
             'url' => url('/') . '/atencion/',
@@ -154,15 +198,146 @@ class GraficsController extends Controller
                 'cant' => $INQUOTE->sum('y')
             ],
 
+            'CAG_ON_HOLD' => [
+                'data' => $CAG_ON_HOLD,
+                'cant' => $CAG_ON_HOLD->sum('y')
+            ],
+
+            'CAG_ON_RECOMEN' => [
+                'data' => $CAG_ON_RECOMEN,
+                'cant' => $CAG_ON_RECOMEN->sum('y')
+            ],
+
+            'CAG_ON_Q' => [
+                'data' => $CAG_ON_Q,
+                'cant' => $CAG_ON_Q->sum('y')
+            ],
+
             // CAGAS EN ESTADO PAGADO SIN ENTREGAR
             'PAY_NOT_DELIVERI' => [
               'cant' => $PAY_NOT_DELIVERI->count(),
               'data' => $PAY_NOT_DELIVERI->pluck('id')
+            ],
+
+            'RECEIVED_NOT_DELIVERI' => [
+            'cant' => $RECEIVED_NOT_DELIVERI->count(),
+            'data' => $RECEIVED_NOT_DELIVERI->pluck('id')],
+
+            'RECEIVED_TRUE_DELIVERI' => [
+            'cant' => $RECEIVED_TRUE_DELIVERI->count(),
+            'data' => $RECEIVED_TRUE_DELIVERI->pluck('id')],
+
+            'NOTPAY_TRUE_DELIVERI' => [
+            'cant' => $NOTPAY_TRUE_DELIVERI->count(),
+            'data' => $NOTPAY_TRUE_DELIVERI->pluck('id')
             ]
 
         ];
 
         return response()->json($data,  200, [], JSON_NUMERIC_CHECK);
+    }
+
+    public function out_term () {
+
+        // VISITA FUERA DE TERMINO
+        $landscapers = LandScaper::query()->leftJoin('cglobals', 'cglobals.id',   'landscapers.cglobal_id')
+            ->whereRaw('DATEDIFF(now(), landscapers.moment) >= 1')
+            ->where('landscapers.status_id',  0)
+            ->select('cglobals.id')->get();
+
+        // COTIZACION FUERA DE TERMINO
+
+        $quote_out = Quote::query()->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
+            ->whereRaw('DATEDIFF(now(), quotes.check_date) >= 1')
+            ->where('quotes.status_id', 10)
+            ->where('quotes.type_quote_id', 1)
+            ->select('cglobals.id')->get();
+
+        // CONFIRMACION DE RECIVO DE COTIZACION COTIZACIONES
+        $quote_out_confirm = Quote::query()->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
+            ->whereRaw('DATEDIFF(now(), quotes.check_date ) >= 2')
+            ->where('quotes.status_id', 3)
+            ->select('cglobals.id')->get();
+
+        $quote_out_tracing = Quote::with(['globals' => function($q) {
+            $q->with('client');
+        }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
+            ->whereRaw('DATEDIFF(now(), quotes.check_date ) >= 2')
+            ->where('quotes.status_id', 7)
+            ->select('cglobals.id')->get();
+
+        $quote_out_strateg = Quote::with(['globals' => function($q) {
+            $q->with('client');
+        }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
+            ->whereRaw('DATEDIFF(now(), quotes.check_date ) >= 2')
+            ->where('quotes.status_id', 8)
+            ->select('cglobals.id')->get();
+
+        $quote_out_strateg_confirm = Quote::with(['globals' => function($q) {
+            $q->with('client');
+        }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
+            ->whereRaw('DATEDIFF(now(), quotes.check_date ) >= 2')
+            ->where('quotes.status_id', 9)
+            ->select('cglobals.id')->get();
+
+        $sale_note_not_delivered = SalesNote::query()->leftJoin('cglobals', 'cglobals.id',   'salesnotes.global_id')
+            ->whereRaw('DATEDIFF(now() , salesnotes.deliverydate) >= 1')
+            ->wherein('salesnotes.status_id', [ 4, 5, 6])
+            ->select('cglobals.id')->get();
+
+        // ENVIO DE RECOMENDACIONES
+        $qualities_send_info = Quality::query()->leftJoin('cglobals', 'cglobals.id',   'qualities.cglobal_id')
+            ->whereRaw('DATEDIFF(now() , qualities.moment) >= 1')
+            ->where('qualities.status_id', 1)
+            ->select('cglobals.id')->get();
+
+        // CONFIRMACION  DE RECOMENDACIONES
+        $qualities_send_info_confirm = Quality::query()->leftJoin('cglobals', 'cglobals.id',   'qualities.cglobal_id')
+            ->whereRaw('DATEDIFF(now() , qualities.info_send_date) >= 8')
+            ->where('qualities.status_id', 2)
+            ->select('cglobals.id')->get();
+
+        $data = [
+            'VISIT_HOME' => [
+                'cant' => $landscapers->count(),
+                'data' => $landscapers->pluck('id')
+            ],
+            'QUOTE_OUT' => [
+                'cant' => $quote_out->count(),
+                'data' => $quote_out->pluck('id')
+            ],
+            'QUOTE_OUT_CONFIRM' => [
+                'cant' => $quote_out_confirm->count(),
+                'data' => $quote_out_confirm->pluck('id')
+            ],
+            'QUOTE_OUT_TRACING' => [
+                'cant' => $quote_out_tracing->count(),
+                'data' => $quote_out_tracing->pluck('id')
+            ],
+            'QUOTE_OUT_STRATEG' => [
+                'cant' => $quote_out_strateg->count(),
+                'data' => $quote_out_strateg->pluck('id')
+            ],
+            'quote_out_strateg_confirm' => [
+                'cant' => $quote_out_strateg_confirm->count(),
+                'data' => $quote_out_strateg_confirm->pluck('id')
+            ],
+            'sale_note_not_delivered' => [
+                'cant' => $sale_note_not_delivered->count(),
+                'data' => $sale_note_not_delivered->pluck('id')
+            ],
+            'qualities_send_info' => [
+                'cant' => $qualities_send_info->count(),
+                'data' => $qualities_send_info->pluck('id')
+            ],
+            'qualities_send_info_confirm' => [
+                'cant' => $qualities_send_info_confirm->count(),
+                'data' => $qualities_send_info_confirm->pluck('id')
+            ],
+
+        ];
+
+        return $data;
     }
 
 }

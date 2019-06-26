@@ -45,6 +45,7 @@ var core = {
         totalpage: 0
       },
       user_id_auth: 0,
+      off: false,
       filters_list_aux: {
         descrip: '',
         field: '',
@@ -86,7 +87,10 @@ var core = {
   },
   mounted: function mounted() {
     this.user_id_auth = parseInt($('#user_id_auth').val());
-    this.getlist();
+
+    if (!this.off) {
+      this.getlist();
+    }
   },
   methods: {
     setfield: function setfield(f) {

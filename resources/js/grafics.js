@@ -5,6 +5,7 @@ new Vue({
     data () {
         return {
             spin: false,
+            url: '',
             meses: [{id:0, month: 'Enero'}, {id:1, month: 'Febrero'}, {id:2, month: 'Marzo'}, {id:3, month: 'Abril'},
                 {id:4, month: 'Mayo'},  {id:5, month: 'Junio'},  {id:6, month: 'Julio'},  {id:7, month: 'Agosto'},
                 {id:8, month: 'Septiembre'}, {id:9, month: 'Octubre'},  {id:10, month: 'Noviembre'},  {id:11, month: 'Diciembre'}],
@@ -23,7 +24,10 @@ new Vue({
             VERIFICATION_RECEIPT_QUOTATION_CANT: 0,
             STRATEGY_SALE_CANT: 0,
             STRATEGY_SALE_CONFIRM_CANT: 0,
+            CAG_ON_HOLD_CANT: 0,
             INQUOTE_CANT: 0,
+            CAG_ON_Q_CANT: 0,
+            CAG_ON_RECOMEN_CANT: 0,
             pie: {
                 chart: {
                     plotBackgroundColor: null,
@@ -269,7 +273,7 @@ new Vue({
                     style: {
                         fontSize: '14px'
                     },
-                    text: 'CAGS EN EN PROCESO DE COTIZACION'
+                    text: 'CAGS EN PROCESO DE COTIZACION'
                 },
                 subtitle: {
                     text: 'TOTAL DE:'
@@ -301,17 +305,159 @@ new Vue({
                     pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
                 },
                 series: []
-            }
+            },
+            RECEIVED_NOT_DELIVERI: {},
+            PAY_NOT_DELIVERI: {},
+            RECEIVED_TRUE_DELIVERI: {},
+            NOTPAY_TRUE_DELIVERI: {},
+            CAG_ON_HOLD:  {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    style: {
+                        fontSize: '14px'
+                    },
+                    text: 'CAGS EN ESTADO DE EJECUCION'
+                },
+                subtitle: {
+                    text: 'TOTAL DE:'
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Cantidad de Cags'
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y}'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+                },
+                series: []
+            },
+            CAG_ON_Q:  {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    style: {
+                        fontSize: '14px'
+                    },
+                    text: 'CAGS PARA LLAMADA DE CALIDAD'
+                },
+                subtitle: {
+                    text: 'TOTAL DE:'
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Cantidad de Cags'
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y}'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+                },
+                series: []
+            },
+            CAG_ON_RECOMEN:  {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    style: {
+                        fontSize: '14px'
+                    },
+                    text: 'CAGS PARA ENVIO DE RECOMENDACIONES'
+                },
+                subtitle: {
+                    text: 'TOTAL DE:'
+                },
+                xAxis: {
+                    type: 'category'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Cantidad de Cags'
+                    }
+
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y}'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+                },
+                series: []
+            },
+            // FUERA DE TERMINO
+            VISIT_HOME: {},
+            QUOTE_OUT: {},
+            QUOTE_OUT_CONFIRM: {},
+            QUOTE_OUT_TRACING:{},
+            quote_out_strateg: {},
+            quote_out_strateg_confirm: {},
+            sale_note_not_delivered: {},
+            qualities_send_info: {},
+            qualities_send_info_confirm:{}
         }
     },
     methods: {
         dateToEs : dateEs,
         getMonth () {
             return this.meses.find(it => it.id === new Date().getMonth()).month
+        },
+        goCags (dat) {
+            localStorage.setItem('data',  JSON.stringify(dat));
+            window.location.href = this.url ;
         }
     },
     mounted () {
       axios.get(urldomine + 'api/grafics/data_month').then(r => {
+          this.url = r.data.url;
           //CLIENTES ATENDIDOS MES
           this.client_care_month = r.data.client_care_month;
           this.client_care_month_last = r.data.client_care_month_last;
@@ -324,11 +470,9 @@ new Vue({
           // MANTENIMIENTOS EN EL MES
           this.maintenance_month = r.data.maintenance_month;
           this.maintenance_month_last = r.data.maintenance_month_last;
-
           // MOTO VENTA DEL MES
           this.amout_sale_month = r.data.amout_sale_month;
           this.amout_sale_month_last = r.data.amout_sale_month_last;
-
           // GRAFICA DE PIE CAG ESTADOS
           this.pie.subtitle.text = 'CANTIDAD EN EL MES '  + r.data.pie_cag_status.cant_cag
           this.pie.series.push({
@@ -424,7 +568,74 @@ new Vue({
                   }
               }
           };
+
+          // EN ESTADO DE EJECUCION
+          this.CAG_ON_HOLD_CANT = r.data.CAG_ON_HOLD.cant;
+          this.CAG_ON_HOLD.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_HOLD.cant;
+          this.CAG_ON_HOLD.series.push({
+              name: 'Cags por asesor',
+              colorByPoint: true,
+              data:  r.data.CAG_ON_HOLD.data,
+          });
+          this.CAG_ON_HOLD.plotOptions.column = {
+              events: {
+                  click: function(e) {
+                      window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                  }
+              }
+          };
+
+          // EN ESTADO DE ENVIO DE RECOMENDACIONES
+          this.CAG_ON_RECOMEN_CANT = r.data.CAG_ON_RECOMEN.cant;
+          this.CAG_ON_RECOMEN.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_RECOMEN.cant;
+          this.CAG_ON_RECOMEN.series.push({
+              name: 'Cags por asesor',
+              colorByPoint: true,
+              data:  r.data.CAG_ON_RECOMEN.data,
+          });
+          this.CAG_ON_RECOMEN.plotOptions.column = {
+              events: {
+                  click: function(e) {
+                      window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                  }
+              }
+          };
+
+          // EN ESTADO DE ENVIO DE LLAMADA DE CALIDAD
+          this.CAG_ON_Q_CANT = r.data.CAG_ON_Q.cant;
+          this.CAG_ON_Q.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_Q.cant;
+          this.CAG_ON_Q.series.push({
+              name: 'Cags por asesor',
+              colorByPoint: true,
+              data:  r.data.CAG_ON_Q.data,
+          });
+          this.CAG_ON_Q.plotOptions.column = {
+              events: {
+                  click: function(e) {
+                      window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                  }
+              }
+          };
+
+          // CAG PAGADO SIN ENTREGAR
+          this.PAY_NOT_DELIVERI = r.data.PAY_NOT_DELIVERI;
+          // CAG PAGADO SIN ENTREGAR
+          this.RECEIVED_NOT_DELIVERI= r.data.RECEIVED_NOT_DELIVERI;
+          this.RECEIVED_TRUE_DELIVERI= r.data.RECEIVED_TRUE_DELIVERI;
+          this.NOTPAY_TRUE_DELIVERI= r.data.NOTPAY_TRUE_DELIVERI;
       });
+
+      axios.get(urldomine + 'api/grafics/out_term').then(dt => {
+          this.VISIT_HOME = dt.data.VISIT_HOME;
+          this.QUOTE_OUT = dt.data.QUOTE_OUT;
+          this.QUOTE_OUT_CONFIRM = dt.data.QUOTE_OUT_CONFIRM;
+          this.QUOTE_OUT_TRACING = dt.data.QUOTE_OUT_TRACING;
+          this.quote_out_strateg = dt.data.QUOTE_OUT_STRATEG;
+          this.quote_out_strateg_confirm = dt.data.quote_out_strateg_confirm;
+          this.sale_note_not_delivered = dt.data.sale_note_not_delivered;
+          this.qualities_send_info = dt.data.qualities_send_info;
+          this.qualities_send_info_confirm = dt.data.qualities_send_info_confirm;
+      })
     }
 
 });

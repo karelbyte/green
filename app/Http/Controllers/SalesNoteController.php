@@ -249,25 +249,27 @@ class SalesNoteController extends Controller
     // APLICANDO CANTIDADES Y GENERANDO ALERTAS
     public function NoteConfirm(Request $request) {
         // ACTUALIZANDO INVENTARIOS
-        $needs =  $this->needs($request->id);
+         $needs =  $this->needs($request->id);
 
-        $notfull = 0;
+         $notfull = 0;
          foreach ($needs as $det) {
                 $delivered = 0;
-                $det['cant'] = $det['type_item'] > 1 ? $det['cant']  * $det['cant_general'] : $det['cant'];
-                $pro = Inventori::where('element_id', $det['item_id'])->first();
-                if ($pro !== null) {
-                    $avility = $pro['cant'] >= $det['cant'];
-                    if (!$avility) { $notfull++;}
-                    $delivered =  $avility ? $det['cant'] : $pro['cant'];
-                    $pro->update(['cant' => $pro['cant'] - $delivered]);
-                };
-                SalesNoteDelivered::query()->create([
-                    'sale_id' => $request->id,
-                    'element_id' => $det['item_id'],
-                    'cant' => $det['cant'],
-                    'delivered' => $delivered
-                ]);
+                if ($det['item_id'] !== null) {
+                    $det['cant'] = $det['type_item'] > 1 ? $det['cant']  * $det['cant_general'] : $det['cant'];
+                    $pro = Inventori::where('element_id', $det['item_id'])->first();
+                    if ($pro !== null) {
+                        $avility = $pro['cant'] >= $det['cant'];
+                        if (!$avility) { $notfull++;}
+                        $delivered =  $avility ? $det['cant'] : $pro['cant'];
+                        $pro->update(['cant' => $pro['cant'] - $delivered]);
+                    };
+                    SalesNoteDelivered::query()->create([
+                        'sale_id' => $request->id,
+                        'element_id' => $det['item_id'],
+                        'cant' => $det['cant'],
+                        'delivered' => $delivered
+                    ]);
+                }
         }
 
             $sale = SalesNote::query()->find($request->id);
@@ -419,23 +421,25 @@ class SalesNoteController extends Controller
 
                 foreach ($needs as $det) {
 
-                    $itemType = Element::query()->find($det['item_id']);
+                    if ($det['item_id'] !== null) {
 
-                    $pro = Inventori::query()->where('element_id', $det['item_id'])->first();
+                        $itemType = Element::query()->find($det['item_id']);
 
-                    if ( $itemType->type !== 2) {
+                        $pro = Inventori::query()->where('element_id', $det['item_id'])->first();
 
-                        $det['cant'] = $det['type_item'] > 1  ? $det['cant']  * $det['cant_general'] : $det['cant'];
+                        if ( $itemType->type !== 2) {
+
+                            $det['cant'] = $det['type_item'] > 1  ? $det['cant']  * $det['cant_general'] : $det['cant'];
+                        }
+
+                        $det['exis'] = $pro['cant'] ?? 0;
+
+                        $det['avility'] =   $pro['cant'] >= $det['cant'];
+
+                        $det['delivered'] =  $det['avility'] ? $det['cant'] : $pro['cant'];
+
+                        $det['missing'] =  $det['avility'] ? '' : abs($pro['cant'] - $det['cant']);
                     }
-
-                    $det['exis'] = $pro['cant'] ?? 0;
-
-                    $det['avility'] =   $pro['cant'] >= $det['cant'];
-
-                    $det['delivered'] =  $det['avility'] ? $det['cant'] : $pro['cant'];
-
-                    $det['missing'] =  $det['avility'] ? '' : abs($pro['cant'] - $det['cant']);
-
                 }
             }
          return $needs;
@@ -453,6 +457,7 @@ class SalesNoteController extends Controller
                 'elements.code', 'elements.name as descrip', 'products_offereds_needs.cant')
 
             ->where('sales_note_details.sale_id', $id)->where('sales_note_details.type_item', self::PRODUCTO)->get();
+
 
         $services = SalesNoteDetails::query()->leftjoin('services_offereds_details', 'services_offereds_details.id', 'sales_note_details.item_id')
 

@@ -136,7 +136,7 @@ class NotificationDaily
             $q->with('client', 'user');
         }])->leftJoin('cglobals', 'cglobals.id',   'qualities.cglobal_id')
             ->whereRaw('DATEDIFF(now() , qualities.info_send_date) >= 7')
-            ->where('qualities.status_id', 1);
+            ->where('qualities.status_id', 2);
         if ( $this->position !== 2) {
             $qualities_send_info_confirm = $qualities_send_info_confirm->where('cglobals.user_id', $this->id)
                 ->select('qualities.*' )->get();

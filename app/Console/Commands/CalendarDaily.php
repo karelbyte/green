@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\Users\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class CalendarDaily extends Command
@@ -43,16 +44,30 @@ class CalendarDaily extends Command
      */
     public function handle()
     {
-        $users = User::all();
+
+        $users = \App\Models\Users\User::all();
         foreach ($users as $user) {
-            $data =  Calendar::query()->where('user_id', $user->id)->whereDate('start', Carbon::now())->get();
+            $data = \App\Models\Calendar::query()->where('user_id', $user->id)
+                ->whereDate('start', \Carbon\Carbon::now())->get();
             if (count($data) > 0) {
                 $data_email = [
                     'user' => $user,
                     'events' =>  $data,
-                    'company' => Company::query()->find(1),
+                    'company' => \App\Models\Company::query()->find(1),
                 ];
-                Mail::to( $user->email)->send(new AlertCalendarDaily($data_email));
+                \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\AlertCalendarDaily($data_email));
+            }
+        }
+        foreach ($users as $user) {
+            $data = \App\Models\Calendar::query()->where('for_user_id', $user->id)
+                ->whereDate('start', \Carbon\Carbon::now())->get();
+            if (count($data) > 0) {
+                $data_email = [
+                    'user' => $user,
+                    'events' =>  $data,
+                    'company' => \App\Models\Company::query()->find(1),
+                ];
+                \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\AlertCalendarDaily($data_email));
             }
         }
     }

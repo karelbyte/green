@@ -68,6 +68,22 @@ new Vue({
     },
     methods: {
         dateToEs : dateEs,
+        gotoUrl (id, type) {
+            switch (type) {
+                case 1: // CAGS
+                   let dat = [id];
+                    localStorage.setItem('data',  JSON.stringify(dat));
+                    window.location.href = document.location.origin + '/atencion';
+                    break;
+                case 2: // COTIZACIONES
+                    window.location.href = document.location.origin + '/cotizaciones/' + id;
+                    break;
+                case 3: // NOTAS DE VENTA
+                    window.location.href = document.location.origin + '/notas-de-ventas/' + id;
+                    break;
+                default:
+            }
+        },
         getTotalItem (it) {
             let subtotal = 0;
             if (it.details) {

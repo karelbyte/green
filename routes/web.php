@@ -50,20 +50,44 @@ Route::get('/limpiar_cache', function () {
 
     Artisan::call('cache:clear');
 
+    Artisan::call('config:clear');
+
     Artisan::call('config:cache');
 
     return 'CACHE DEL SISTEMA LIMPIADA CON EXITO';
 
 });
 
+Route::get('/db-update',  'CGlobalsController@update_database');
+
 Route::get('tareas', function () {
 
-    $quote_confirm = \App\Models\Quotes\Quote::with(['globals' => function($q) {
-        $q->with('client');
-    }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
-        ->whereRaw('DATEDIFF(now(), quotes.check_date ) > 1')
-        ->where('quotes.status_id', 3)->get();
-    return  $quote_confirm ;
+    $users = \App\Models\Users\User::all();
+    foreach ($users as $user) {
+        $data = \App\Models\Calendar::query()->where('user_id', $user->id)
+            ->whereDate('start', \Carbon\Carbon::now())->get();
+        if (count($data) > 0) {
+            $data_email = [
+                'user' => $user,
+                'events' =>  $data,
+                'company' => \App\Models\Company::query()->find(1),
+            ];
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\AlertCalendarDaily($data_email));
+        }
+    }
+    foreach ($users as $user) {
+        $data = \App\Models\Calendar::query()->where('for_user_id', $user->id)
+            ->whereDate('start', \Carbon\Carbon::now())->get();
+        if (count($data) > 0) {
+            $data_email = [
+                'user' => $user,
+                'events' =>  $data,
+                'company' => \App\Models\Company::query()->find(1),
+            ];
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\AlertCalendarDaily($data_email));
+        }
+    }
+    return 'OK';
 });
 
 Route::get('/pruebas', function () {
@@ -102,6 +126,8 @@ Route::get('/pruebas', function () {
     return $pdf->inline();
 });
 
+
+//  Route::get('/', 'HomeController@stop')->name('stop');
 
 
 Route::middleware('auth')->group(function () {

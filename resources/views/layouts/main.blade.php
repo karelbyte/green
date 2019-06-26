@@ -41,43 +41,50 @@
                 </ul>
 
                 <ul class="nav navbar-nav" id="notify"  v-cloak>
-                 <li v-if="quote_local_close > 0">
+
+                    <li v-if="i >= 5">
+                        <a href="{{route('notifications')}}" class="right-menu-item">
+                            <i class="mdi mdi-alert"></i>
+                            <span class="badge up bg-danger">  5 +</span>
+                        </a>
+                    </li>
+                 <li v-if="quote_local_close > 0 && i < 5">
                         <a href="{{route('notifications')}}" class="right-menu-item">
                             <i class="mdi mdi-coin"></i>
                             <span class="badge up bg-danger">@{{ quote_local_close }}</span>
                         </a>
                  </li>
-                    <li v-if="sale_note_not_close > 0">
+                    <li v-if="sale_note_not_close > 0 && i < 5">
                         <a href="{{route('notifications')}}" class="right-menu-item">
                             <i class="mdi mdi-note-plus-outline"></i>
                             <span class="badge up bg-danger">@{{ sale_note_not_close }}</span>
                         </a>
                     </li>
-                 <li v-if="landscapers > 0">
+                 <li v-if="landscapers > 0 && i < 5">
                         <a href="{{route('notifications')}}" class="right-menu-item">
                             <i class="fa fa-home"></i>
                             <span class="badge up bg-danger">@{{ landscapers }}</span>
                         </a>
                  </li>
-                 <li v-if="quote_confirm > 0">
+                 <li v-if="quote_confirm > 0 && i < 5">
                         <a href="{{route('notifications')}}" class="right-menu-item">
                             <i class="ion-android-call "></i>
                             <span  class="badge up bg-danger">@{{ quote_confirm }}</span>
                         </a>
                  </li>
-                 <li v-if="sale_note_not_delivered > 0">
+                 <li v-if="sale_note_not_delivered > 0 && i < 5">
                         <a href="{{route('notifications')}}" class="right-menu-item">
                             <i class="mdi mdi-truck-delivery"></i>
                             <span  class="badge up bg-danger">@{{ sale_note_not_delivered }}</span>
                         </a>
                   </li>
-                    <li v-if="qualities_send_info > 0">
+                    <li v-if="qualities_send_info > 0 && i < 5">
                         <a href="{{route('notifications')}}" class="right-menu-item">
                             <i class="mdi mdi-checkbox-multiple-marked-circle"></i>
                             <span  class="badge up bg-danger">@{{ qualities_send_info }}</span>
                         </a>
                     </li>
-                    <li v-if="visit_home_end > 0">
+                    <li v-if="visit_home_end > 0 && i < 5">
                         <a href="{{route('notifications')}}" class="right-menu-item">
                             <i class="fa fa-file-text-o"></i>
                             <span  class="badge up bg-danger">@{{ visit_home_end }}</span>

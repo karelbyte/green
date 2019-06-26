@@ -42,7 +42,8 @@
                     </div>
                     <div class="col-lg-12 m-t-20">
                         <span >DIRECCION:</span>
-                        <span class="txtblack">@{{item.globals.client.address}}</span>
+                        <span class="txtblack">@{{item.globals.client.street + ' ' + item.globals.client.home_number + ' '+item.globals.client.colony}}</span>
+                        <p class="txtblack">@{{item.globals.client.referen}}</p>
                     </div>
                     <div class="col-lg-2  m-t-20">
                         <span class="txtblack">Fecha<span class="require">*</span></span>
@@ -260,7 +261,7 @@
     </div>
     <hr>
     <div class="row">
-        <div v-for="entity in lists" :key="entity.id" class="col-lg-4" style="height: 340px">
+        <div v-for="entity in lists" :key="entity.id" class="col-lg-4" style="height: 360px">
             <div  class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
                 <div class="panel-heading">
                     <div class="row">
@@ -301,7 +302,13 @@
                             Enviada vía: <span class="txtblack">@{{entity.type_send.name}} <span style="color:#f59586"> (@{{entity.sends}})</span> </span>
                         </div>
                     </div>
+                    <div v-if="entity.type_quote_id === 1" class="row m-t-10">
+                        <div class="col-lg-12 col-xs-12">
+                            <span>DIRECCION:</span>
+                            <span class="txtblack">@{{entity.globals.client.street + ' ' + entity.globals.client.home_number + ' '+entity.globals.client.colony}}</span>
 
+                        </div>
+                    </div>
                    <div v-if="entity.globals.landscaper !== null" class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">
                             Fecha de visita: <span class="txtblack">@{{dateToEs(entity.globals.landscaper.moment)}} a las @{{entity.globals.landscaper.timer}}</span>

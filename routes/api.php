@@ -9,12 +9,15 @@ Route::post('notifications/today', 'NotificationsController@today');
 // GRAFICAS Y ESTADISTICAS
 Route::prefix('grafics')->group(function () {
     Route::get('data_month', 'GraficsController@getDataMonth');
+    Route::get('out_term', 'GraficsController@out_term');
 });
 
 // RUTAS DEL CICLO DE ATENCION GLOBAL
 Route::prefix('cags')->group(function () {
 
     Route::post('list', 'CGlobalsController@getList');
+
+    Route::post('listfilter', 'CGlobalsController@getListFilter');
 
     Route::get('/get/id', 'CGlobalsController@sendID');
 
