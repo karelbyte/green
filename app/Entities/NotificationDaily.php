@@ -3,6 +3,14 @@
 namespace App\Entities;
 
 
+use App\Http\Resources\QualitiesSendInfo;
+use App\Http\Resources\QualitiesSendInfoConfirm;
+use App\Http\Resources\QuoteLocalEmpty;
+use App\Http\Resources\QuoteSendConfirm;
+use App\Http\Resources\QuoteTracing;
+use App\Http\Resources\SalesNoteNotDelivered;
+use App\Http\Resources\SalesNoteNotPayment;
+use App\Http\Resources\VisitHomeNotification;
 use App\Models\LandScaper;
 use App\Models\Qualities\Quality;
 use App\Models\Quotes\Quote;
@@ -20,7 +28,8 @@ class NotificationDaily
     }
 
     protected function Notifications() {
-        // VISITAS A DOMICILIO
+
+        // VISITAS A DOMICILIO CON OBJETO RECURSO
         $landscapers = LandScaper::query()->with(['user', 'global' => function($q) {
             $q->with('client', 'quote');
         }])->leftJoin('cglobals', 'cglobals.id',   'landscapers.cglobal_id')
@@ -33,26 +42,27 @@ class NotificationDaily
         } else {
             $landscapers =  $landscapers->select('landscapers.*')->get();
         }
+        $landscapers = VisitHomeNotification::collection($landscapers);
 
-        // CONFIRMACION DE COTIZACIONES
+        // VERIFICACION DE RECEPCION DE COTIZACION CON OBJETO RESOURCE
         $quote_confirm = Quote::with(['globals' => function($q) {
             $q->with('client');
         }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
             ->whereRaw('DATEDIFF(now(), quotes.check_date ) > 1')
-            ->where('quotes.status_id', 3); // CONFIRMACION
-
+            ->where('quotes.status_id', 3);
         if ( $this->position !== 1) {
             $quote_confirm = $quote_confirm->where('cglobals.user_id', $this->id)
                 ->select('quotes.*')->get();
         } else {
             $quote_confirm = $quote_confirm->select('quotes.*')->get();
         }
+        $quote_confirm = QuoteSendConfirm::collection($quote_confirm);
 
         // OJOOOOOOOOOO FALTA LA ESTRATEGIA DE VENTA
 
 
 
-        // SEGUIMIENTO DE COTIZACIONES
+        // SEGUIMIENTO DE COTIZACIONES CON OBJETO RESOURCE
         $quote_tracing = Quote::with(['globals' => function($q) {
             $q->with('client');
         }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
@@ -64,8 +74,10 @@ class NotificationDaily
         } else {
             $quote_tracing = $quote_tracing->select('quotes.*')->get();
         }
+        $quote_tracing = QuoteTracing::collection( $quote_tracing);
 
-        // NOTA CREADA SIN CONTENIDO
+
+        // NOTA CREADA SIN CONTENIDO  ---------- OJO REVISAR --------
         $salen_note_not_close = SalesNote::query()->with(['globals' => function($q) {
             $q->with('client', 'user');
         }])->leftJoin('cglobals', 'cglobals.id',   'salesnotes.global_id')
@@ -78,7 +90,7 @@ class NotificationDaily
             $salen_note_not_close =  $salen_note_not_close->select('salesnotes.*')->get();
         }
 
-        // COTIZACION A DISTANCIA  CREADA SIN CONTENIDO
+        // COTIZACION A DISTANCIA  CREADA SIN CONTENIDO CON OBJETO RESOURCE
         $quote_local_close = Quote::query()->with(['globals' => function($q) {
             $q->with('client', 'user');
         }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
@@ -91,8 +103,9 @@ class NotificationDaily
         } else {
             $quote_local_close = $quote_local_close->select('quotes.*')->get();
         }
+        $quote_local_close = QuoteLocalEmpty::collection($quote_local_close);
 
-        // GESTION DE COBRANZA
+        // GESTION DE COBRANZA CON OBJETO RESOURCE
         $sale_note_not_payment = SalesNote::query()->with(['globals' => function($q) {
             $q->with('client', 'user');
         }])->leftJoin('cglobals', 'cglobals.id',   'salesnotes.global_id')
@@ -104,8 +117,10 @@ class NotificationDaily
         } else {
             $sale_note_not_payment = $sale_note_not_payment ->select('salesnotes.*')->get();
         }
+        $sale_note_not_payment = SalesNoteNotPayment::collection($sale_note_not_payment);
 
-        // INSTALACION O ENGREAGA DE TRABAJOS
+
+        // INSTALACION O ENGREAGA DE TRABAJOS CON OBJETO RESOURCE
         $sale_note_not_delivered = SalesNote::query()->with(['globals' => function($q) {
             $q->with('client', 'user');
         }])->leftJoin('cglobals', 'cglobals.id',   'salesnotes.global_id')
@@ -117,8 +132,9 @@ class NotificationDaily
         } else {
             $sale_note_not_delivered = $sale_note_not_delivered ->select('salesnotes.*')->get();
         }
+        $sale_note_not_delivered = SalesNoteNotDelivered::collection($sale_note_not_delivered);
 
-        // ENVIO DE RECOMENDACIONES
+        // ENVIO DE RECOMENDACIONES CON OBJETO RESORUCE
         $qualities_send_info = Quality::query()->with(['global' => function($q) {
             $q->with('client', 'user');
         }])->leftJoin('cglobals', 'cglobals.id',   'qualities.cglobal_id')
@@ -130,8 +146,10 @@ class NotificationDaily
         } else {
             $qualities_send_info = $qualities_send_info ->select('qualities.*')->get();
         }
+        $qualities_send_info = QualitiesSendInfo::collection($qualities_send_info);
 
-        // CONFIRMACION  DE RECOMENDACIONES
+
+        // CONFIRMACION  DE RECOMENDACIONES CON OBJETO RESOURCE
         $qualities_send_info_confirm = Quality::query()->with(['global' => function($q) {
             $q->with('client', 'user');
         }])->leftJoin('cglobals', 'cglobals.id',   'qualities.cglobal_id')
@@ -143,6 +161,7 @@ class NotificationDaily
         } else {
             $qualities_send_info_confirm = $qualities_send_info_confirm ->select('qualities.*')->get();
         }
+        $qualities_send_info_confirm = QualitiesSendInfoConfirm::collection( $qualities_send_info_confirm);
 
         // COTIZACION  A DOMICIOLIO TERMINADA
         $quote_home_end = Quote::query()->with(['globals' => function($q) {

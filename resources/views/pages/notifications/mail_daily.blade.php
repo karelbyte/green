@@ -489,17 +489,19 @@
                                             <div class="our-class">
                                                 <table class="comicGreen">
                                                     <thead>
-                                                        <tr>
-                                                            <th>Nota</th>
-                                                            <th>Fecha Emision</th>
-                                                            <th>Fecha Entrega</td>
-                                                            <th>Usuario</th>
-                                                        </tr>
+                                                    <tr>
+                                                        <th>Nota</th>
+                                                        <th>Cliente</th>
+                                                        <th>Fecha Emision</th>
+                                                        <th>Fecha Entrega</td>
+                                                        <th>Usuario</th>
+                                                    </tr>
                                                     </thead>
                                                     <tbody>
                                                     @foreach($data['data']['sale_note_not_delivered'] as $deli)
                                                         <tr>
                                                             <td >{{$deli->id}}</td>
+                                                            <td >{{$deli->globals['client']['name']}}</td>
                                                             <td >{{\Carbon\Carbon::parse($deli->moment)->format('d-m-Y')}}</td>
                                                             <td >{{\Carbon\Carbon::parse($deli->deliverydate)->format('d-m-Y')}}</td>
                                                             <td >{{$deli->globals['user']['name']}}</td>
@@ -574,7 +576,7 @@
                                                     <tbody>
                                                     @foreach($data['data']['landscapers'] as $land)
                                                         <tr>
-                                                            <td >{{$land->id}}</td>
+                                                            <td >{{$land->global->id}}</td>
                                                             <td >{{$land->global['client']['name']}}</td>
                                                             <td >{{$land->global['client']['street'] . '  #'.$land->global['client']['home_number'] .' '.$land->global['client']['colony'] }}</td>
                                                             <td >{{\Carbon\Carbon::parse($land->moment)->format('d-m-Y')}}</td>
@@ -596,7 +598,7 @@
                         </div>
                     </div>
                 </div>
-             @endif
+            @endif
             @if (count($data['data']['quoteconfirm']) > 0)
                 <div style="background-color:transparent;">
                     <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE;;">
@@ -645,6 +647,7 @@
                                                         <th >Cliente</th>
                                                         <th >Telefono</th>
                                                         <th >Correo</th>
+                                                        <th >Asesor</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -655,6 +658,7 @@
                                                             <td >{{$con->globals->client->name}}</td>
                                                             <td >{{$con->globals->client->phone}}</td>
                                                             <td >{{$con->globals->client->email}}</td>
+                                                            <td >{{$con->globals->user->name}}</td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -671,7 +675,7 @@
                         </div>
                     </div>
                 </div>
-             @endif
+            @endif
             @if (count($data['data']['quotetracing']) > 0)
                 <div style="background-color:transparent;">
                     <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE;;">
@@ -716,18 +720,22 @@
                                                     <thead>
                                                     <tr>
                                                         <th >Cotizacion</th>
+                                                        <th >Fecha</th>
                                                         <th >Cliente</th>
                                                         <th >Telefono</th>
                                                         <th >Correo</th>
+                                                        <th >Asesor</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     @foreach($data['data']['quotetracing'] as $tra)
                                                         <tr>
                                                             <td>{{$tra->id}}</td>
+                                                            <td >{{\Carbon\Carbon::parse($tra->check_date)->format('d-m-Y')}}</td>
                                                             <td >{{$tra->globals->client['name']}}</td>
                                                             <td >{{$tra->globals->client['phone']}}</td>
                                                             <td >{{$tra->globals->client['email']}}</td>
+                                                            <td >{{$tra->globals->user['name']}}</td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
@@ -744,7 +752,7 @@
                         </div>
                     </div>
                 </div>
-                @endif
+            @endif
             @if (count($data['data']['sale_note_not_payment']) > 0)
                 <div style="background-color:transparent;">
                     <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE;;">
@@ -789,15 +797,17 @@
                                                     <thead>
                                                     <tr>
                                                         <th >Nota</th>
+                                                        <th >Cliente</th>
                                                         <th >Fecha Emision</th>
                                                         <th >Fecha Cobro</th>
-                                                        <th >Usuario</th>
+                                                        <th >Asesor</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     @foreach($data['data']['sale_note_not_payment'] as $pay)
                                                         <tr>
                                                             <td >{{$pay->id}}</td>
+                                                            <td >{{$pay->globals->client['name']}}</td>
                                                             <td >{{\Carbon\Carbon::parse($pay->moment)->format('d-m-Y')}}</td>
                                                             <td >{{\Carbon\Carbon::parse($pay->paimentdate)->format('d-m-Y')}}</td>
                                                             <td >{{$pay->globals->user['name']}}</td>
@@ -817,7 +827,7 @@
                         </div>
                     </div>
                 </div>
-                @endif
+            @endif
             @if (count($data['data']['sale_note_not_close']) > 0)
                 <div style="background-color:transparent;">
                     <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE;;">
@@ -890,7 +900,7 @@
                         </div>
                     </div>
                 </div>
-                @endif
+            @endif
             @if (count($data['data']['quote_local_close']) > 0)
                 <div style="background-color:transparent;">
                     <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE;;">
@@ -937,7 +947,7 @@
                                                         <th>Cotizacion</th>
                                                         <th>Cliente</th>
                                                         <th >Fecha</th>
-                                                        <th >Usuario</th>
+                                                        <th >Asesor</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -963,7 +973,7 @@
                         </div>
                     </div>
                 </div>
-                @endif
+            @endif
             @if (count($data['data']['visit_home_end']) > 0)
                 <div style="background-color:transparent;">
                     <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE;;">
@@ -1011,7 +1021,7 @@
                                                         <th>Cotizacion</th>
                                                         <th>Cliente</th>
                                                         <th >Fecha</th>
-                                                        <th >Usuario</th>
+                                                        <th >Asesor</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -1022,6 +1032,152 @@
                                                             <td >{{$qd->globals->client['name']}}</td>
                                                             <td >{{\Carbon\Carbon::parse($qd->check_date)->format('d-m-Y')}}</td>
                                                             <td >{{$qd->globals->user['name']}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                    </div>
+                                    <!--<![endif]-->
+                                </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                        </div>
+                    </div>
+                </div>
+                @endif
+            @if (count($data['data']['qualities_send_info']) > 0)
+                <div style="background-color:transparent;">
+                    <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE;;">
+                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#AEAEAE;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:#AEAEAE"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:#AEAEAE;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num12" style="min-width: 320px; max-width: 900px; display: table-cell; vertical-align: top;;">
+                                <div style="width:100% !important;">
+                                    <!--[if (!mso)&(!IE)]><!-->
+                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                        <!--<![endif]-->
+                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                        <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="">
+                                                <p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;">CLIENTES POR ENVIAR RECOMENDACIONES</p>
+                                            </div>
+                                        </div>
+                                        <!--[if mso]></td></tr></table><![endif]-->
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                    </div>
+                                    <!--<![endif]-->
+                                </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                        </div>
+                    </div>
+                </div>
+                <div style="background-color:transparent;">
+                    <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;;">
+                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:transparent;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num12" style="min-width: 320px; max-width: 900px; display: table-cell; vertical-align: top;;">
+                                <div style="width:100% !important;">
+                                    <!--[if (!mso)&(!IE)]><!-->
+                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                        <!--<![endif]-->
+                                        <div style="font-size:16px;text-align:center;">
+                                            <div class="our-class">
+                                                <table class="comicGreen">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>CAG</th>
+                                                        <th >Fecha</th>
+                                                        <th>Cliente</th>
+                                                        <th >Asesor</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($data['data']['qualities_send_info'] as $qa)
+                                                        <tr>
+                                                            <td >{{$qa->cglobal_id}}</td>
+                                                            <td >{{\Carbon\Carbon::parse($qa->moment)->format('d-m-Y')}}</td>
+                                                            <td >{{$qa->global->client['name']}}</td>
+                                                            <td >{{$qa->global->user['name']}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                    </div>
+                                    <!--<![endif]-->
+                                </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                        </div>
+                    </div>
+                </div>
+                @endif
+            @if (count($data['data']['qualities_send_info_confirm']) > 0)
+                <div style="background-color:transparent;">
+                    <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #AEAEAE;;">
+                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:#AEAEAE;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:#AEAEAE"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:#AEAEAE;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num12" style="min-width: 320px; max-width: 900px; display: table-cell; vertical-align: top;;">
+                                <div style="width:100% !important;">
+                                    <!--[if (!mso)&(!IE)]><!-->
+                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                        <!--<![endif]-->
+                                        <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; "><![endif]-->
+                                        <div style="color:#000000;;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+                                            <div style="">
+                                                <p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;">CLIENTES POR CONFIRMAR RECOMENDACIONES</p>
+                                            </div>
+                                        </div>
+                                        <!--[if mso]></td></tr></table><![endif]-->
+                                        <!--[if (!mso)&(!IE)]><!-->
+                                    </div>
+                                    <!--<![endif]-->
+                                </div>
+                            </div>
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                        </div>
+                    </div>
+                </div>
+                <div style="background-color:transparent;">
+                    <div class="block-grid " style="Margin: 0 auto; min-width: 320px; max-width: 900px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;;">
+                        <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:900px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="900" style="background-color:transparent;width:900px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+                            <div class="col num12" style="min-width: 320px; max-width: 900px; display: table-cell; vertical-align: top;;">
+                                <div style="width:100% !important;">
+                                    <!--[if (!mso)&(!IE)]><!-->
+                                    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                        <!--<![endif]-->
+                                        <div style="font-size:16px;text-align:center;">
+                                            <div class="our-class">
+                                                <table class="comicGreen">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>CAG</th>
+                                                        <th >Fecha</th>
+                                                        <th>Cliente</th>
+                                                        <th >Asesor</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($data['data']['qualities_send_info_confirm'] as $qac)
+                                                        <tr>
+                                                            <td >{{$qac->cglobal_id}}</td>
+                                                            <td >{{\Carbon\Carbon::parse($qac->moment)->format('d-m-Y')}}</td>
+                                                            <td >{{$qac->global->client['name']}}</td>
+                                                            <td >{{$qac->global->user['name']}}</td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>

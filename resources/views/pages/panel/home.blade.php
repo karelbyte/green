@@ -164,7 +164,7 @@
             </div>
 
             <div class="row text-center">
-                <h2>CAG FUERA DE TERMINO</h2>
+                <h2>CAG’S EXCEDIDOS DE TIEMPO</h2>
             </div>
             <div class="row">
                 <div class="col-lg-2 col-md-4 col-sm-6 txtblack mouse" v-if="VISIT_HOME.cant > 0">

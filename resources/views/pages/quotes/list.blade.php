@@ -111,8 +111,10 @@
                          </a>
                      </div>
                      <div class="col-lg-6 ">
-                         <button class="btn btn-default btn-sm m-t-10" @click="showVisor(doc)"><i class="fa fa-eye"></i></button>
-                        <!-- <button class="btn btn-danger btn-sm m-t-10" @click="deleteFile(doc.id)"><i class="fa fa-eraser"></i></button> -->
+                        <button class="btn btn-default btn-sm m-t-10" @click="showVisor(doc)"><i class="fa fa-eye"></i></button>
+                         @can('quote.delete')
+                        <button class="btn btn-danger btn-sm m-t-10" @click="deleteFile(doc.id)"><i class="fa fa-eraser"></i></button>
+                         @endcan    
                      </div>
                  </div>
                  <div v-for="not in item.notes" class="row m-t-10">
