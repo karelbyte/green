@@ -158,7 +158,7 @@ class CGlobalsController extends Controller
                $status = 1;
                break;
            case TypeCompromise::QUOTE_DISTANCE:
-               $status = 2;
+               $status = 18;
                break;
            case TypeCompromise::SALE_NOTE:
                $status = 3;
@@ -166,8 +166,8 @@ class CGlobalsController extends Controller
            case TypeCompromise::INFO_SEND:
                $status = Carbon::parse($data['documents']['moment'])->day === Carbon::now()->day ? 17 : 16;
                break;
-
        }
+
        $cg = CGlobal::query()->create([
            'moment' => $data['moment'],
            'emit' => Carbon::now(),
@@ -184,7 +184,7 @@ class CGlobalsController extends Controller
            'status_id' => $status
        ]);
 
-       $this->setID('cglobals', $cg->id );
+       $this->setID('cglobals', $cg->id);
 
        foreach ($data['info'] as $inf) {
            CGlobalInfo::query()->create([
@@ -258,7 +258,7 @@ class CGlobalsController extends Controller
                 'class' => 'info'
             ]);
 
-            return response()->json('Se generó un evento de envio de informacion a cliente!');
+            return response()->json('Se generó un evento de envio de información a cliente!');
         }
 
         if ($data['type_compromise_id'] === TypeCompromise::SALE_NOTE) {
@@ -296,6 +296,22 @@ class CGlobalsController extends Controller
 
         $cg = CGlobal::query()->find($id);
 
+        $status = 0;
+        switch ($data['type_compromise_id']) {
+            case TypeCompromise::QUOTE_HOME:
+                $status = 1;
+                break;
+            case TypeCompromise::QUOTE_DISTANCE:
+                $status = 18;
+                break;
+            case TypeCompromise::SALE_NOTE:
+                $status = 3;
+                break;
+            case TypeCompromise::INFO_SEND:
+                $status = Carbon::parse($data['documents']['moment'])->day === Carbon::now()->day ? 17 : 16;
+                break;
+        }
+
         $cg->update([
             'type_contact_id' => $data['type_contact_id'],
             'repeater' => $data['repeater'],
@@ -303,7 +319,8 @@ class CGlobalsController extends Controller
             'type_motive' => $data['type_motive'],
             'type_motive_id' => $data['type_motive_id'],
             'required_time' => $data['required_time'],
-            'note' => $data['note']
+            'note' => $data['note'],
+            'status_id' => $status
         ]);
 
         $user_email = User::query()->where('uid', $data['landscaper']['user_uid'])->first();
@@ -356,7 +373,7 @@ class CGlobalsController extends Controller
             // ENVIANDO ALERTA A PAISAJISTA
             Mail::to($user_email->email)->send(new AlertLandscape($data_email));
 
-            return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!', 200);
+            return response()->json('Se generó un evento de visita en el calendario y se informo al paisajista!');
         }
 
         if ($data['type_compromise_id'] === TypeCompromise::INFO_SEND) {

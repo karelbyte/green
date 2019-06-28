@@ -65,7 +65,7 @@ class GraficsController extends Controller
         // VISTIA A DOMICILIO POR ASESOR
         $home_visit_month = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-            ->whereMonth('cglobals.moment', $month)
+           // ->whereMonth('cglobals.moment', $month)
             ->where('cglobals.status_id', 1)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -73,7 +73,7 @@ class GraficsController extends Controller
         // VERIFICACION DE RECEPCION DE COTIZACION
         $VERIFICATION_RECEIPT_QUOTATION = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-            ->whereMonth('cglobals.moment', $month)
+           // ->whereMonth('cglobals.moment', $month)
             ->where('cglobals.status_id', 10)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -81,7 +81,7 @@ class GraficsController extends Controller
         // EN ESTRATEGIA DE VENTA
         $STRATEGY_SALE = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-            ->whereMonth('cglobals.moment', $month)
+           // ->whereMonth('cglobals.moment', $month)
             ->where('cglobals.status_id', 12)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -89,7 +89,7 @@ class GraficsController extends Controller
         // VERIFICACION DE ESTRATEGIA DE VENTA
         $STRATEGY_SALE_CONFIRM = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-            ->whereMonth('cglobals.moment', $month)
+          //  ->whereMonth('cglobals.moment', $month)
             ->where('cglobals.status_id', 13)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -97,7 +97,7 @@ class GraficsController extends Controller
         // VERIFICACION DE ESTRATEGIA DE VENTA
         $INQUOTE = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-            ->whereMonth('cglobals.moment', $month)
+          //  ->whereMonth('cglobals.moment', $month)
             ->where('cglobals.status_id', 9)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -146,7 +146,7 @@ class GraficsController extends Controller
         // CAG EN ESPERA DE EJECUCION POR ASESOR
         $CAG_ON_Q = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-            ->whereMonth('cglobals.moment', $month)
+          //  ->whereMonth('cglobals.moment', $month)
             ->where('cglobals.status_id', 14)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();

@@ -76,7 +76,7 @@
                     <div class="card-box widget-box-two widget-two-success" @click="goCags(PAY_NOT_DELIVERI.data)">
                         <i class="mdi mdi-truck widget-two-icon"></i>
                         <div class="widget-two-content">
-                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">PAGADO SIN ENTREGAR</p>
+                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">PAGADO 100% SIN ENTREGAR</p>
                             <h2 class="text-white"><span>@{{ PAY_NOT_DELIVERI.cant }}</span></h2>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                     <div class="card-box widget-box-two widget-two-success" @click="goCags(RECEIVED_NOT_DELIVERI.data)">
                         <i class="mdi mdi-truck widget-two-icon"></i>
                         <div class="widget-two-content">
-                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">RECIBIDO SIN ENTREGAR</p>
+                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">CON ANTICIPO SIN ENTREGAR</p>
                             <h2 class="text-white"><span>@{{ RECEIVED_NOT_DELIVERI.cant }}</span></h2>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                     <div class="card-box widget-box-two widget-two-warning" @click="goCags(RECEIVED_TRUE_DELIVERI.data)">
                         <i class="mdi mdi-truck widget-two-icon"></i>
                         <div class="widget-two-content">
-                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">RECIBIDO ENTREGADA</p>
+                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">CON ANTICIPO Y ENTREGADA</p>
                             <h2 class="text-white"><span>@{{ RECEIVED_TRUE_DELIVERI.cant }}</span></h2>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                     <div class="card-box widget-box-two widget-two-danger" @click="goCags(NOTPAY_TRUE_DELIVERI.data)">
                         <i class="mdi mdi-truck widget-two-icon"></i>
                         <div class="widget-two-content">
-                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">ENTREGADA SIN PAGO</p>
+                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">ENTREGADA SIN NINGÚN PAGO</p>
                             <h2 class="text-white"><span>@{{NOTPAY_TRUE_DELIVERI.cant }}</span></h2>
                         </div>
                     </div>
