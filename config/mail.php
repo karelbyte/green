@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtpout.secureserver.net'),
+    'host' => env('MAIL_HOST', 'single-4760.banahosting.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -53,10 +53,11 @@ return [
     | the same address. Here, you may specify a name and address that is
     | used globally for all e-mails that are sent by your application.
     |
+
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'contacto@greencenter.mx'),
+        'address' => env('MAIL_FROM_ADDRESS', 'contacto@greencentermorelia.com'),
         'name' => env('MAIL_FROM_NAME', 'Diseño de Jardines Paisajismo'),
     ],
 

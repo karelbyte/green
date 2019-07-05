@@ -181,93 +181,143 @@
         .unit {
             text-align: center;
         }
+        .new-page{
+            page-break-after: always;
+            page-break-inside: avoid;
+        }
+        .top {
+            border: 1px solid black;
+            background-color: #6ba168;
+            border-radius: 3px;
+            margin-top: 20px;
+        }
+        .logo {
+            width: 15%;
+            text-align: center;
+            margin-top: 20px
+        }
+        .generals {
+            width: 85%;
+            text-align: left;
+            margin-top: 15px;
+            color: black;
+        }
     </style>
 </head>
 <body>
-@php
-    $total = 0
-@endphp
-<div id="details" style="margin-top: 110px" class="clearfix">
-    <div id="client" style="width: 50%">
-        <div class="to">COTIZADO A:</div>
-        <h2 class="name">{{$client->client->name}}</h2>
-        <div class="address">{{$client->client->address}}</div>
-        <div class="email">{{$client->client->email}}</div>
+
+<div class="top">
+    <div class="logo">
+        <img src="{{asset('images/gc/logo192.png')}}" alt="" width="96">
     </div>
-    <div id="invoice" style="width: 50%">
-        <h1>COTIZACION {{$data['id']}}</h1>
-        <div class="date">FECHA: {{Carbon\Carbon::parse($data['moment'])->format('d-m-Y')}}</div>
+    <div class="generals">
+        <div style="width: 35%; text-align: left;">
+            <div style="font-weight:bolder; font-size: 18px">{{$company->name}}</div>
+            <div style="padding-bottom: 10px;">{{$company->address}}</div>
+        </div>
+        <div style="width: 35%; text-align: left;  padding-left: 15px;  border-left: 1px solid rgba(128,128,128,0.49)">
+            <span style="font-weight: bolder">Email:</span>
+            {{$company->email}} <br>
+            <span style="font-weight: bolder">RFC:</span>
+            {{$company->rfc}}
+        </div>
+        <div style="width: 20%; text-align: center; padding-left: 5px; border-left: 1px solid rgba(128,128,128,0.49)">
+            <span style="font-weight: bolder">Teléfono:</span>
+            {{$company->phone1}} <br>
+            <span style="font-weight: bolder">WhastApp:</span>
+            {{$company->phone2}}
+        </div>
     </div>
 </div>
-
-<div style="margin: 20px 0 20px 0; text-align: center">
- <h4>{{$data['descrip']}}</h4>
-</div>
-<table border="0" cellspacing="0" cellpadding="0">
-    <tr>
-        <th class="no">#</th>
-        <th class="desc">DESCRIPCION</th>
-        <th class="unit">UNIDAD MEDIDA</th>
-        <th class="unit">CANTIDAD</th>
-        <th class="unit">PRECIO</th>
-        <th class="unit">IMPORTE</th>
-    </tr>
-
-    <tbody>
+@foreach($data as $key => $dat)
     @php
-        $total = 0;
+        $total = 0
     @endphp
-    @foreach ($data['details'] as $index => $det)
-        <tr>
-            <td class="no">{{$index+1}}</td>
-            <td class="desc">{{$det->descrip}}</td>
-            <td class="unit">{{$det->measure->name}}</td>
-            <td class="unit">{{$det->cant}}</td>
-            <td class="unit">{{$det->price}}</td>
-            <td class="total">{{number_format($det->price * $det->cant, 2, '.', '')}}</td>
-            @php
-                 $total += $det->price * $det->cant
-            @endphp
-        </tr>
-    @endforeach
-    @if ($data['have_iva'] === 1)
-    <tr>
-        <td></td>
-        <td colspan="2"></td>
-        <td colspan="2">BASE IMPONIBLE</td>
-        <td class="unit">{{number_format($total, 2, '.', '')}}</td>
-    </tr>
-
-    <tr>
-        @php
-            $iva = $total * 0.16
-        @endphp
-        <td></td>
-        <td colspan="2"></td>
-        <td colspan="2">SUBTOTAL IVA</td>
-        <td  class="unit">{{number_format($iva, 2, '.', '')}}</td>
-    </tr>
-    @endif
-    <tr>
-        <td></td>
-        <td colspan="2"></td>
-        <td colspan="2">DESCUENTO</td>
-        <td  class="unit">{{number_format($data['discount'], 2, '.', '')}}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td colspan="2"></td>
-        <td colspan="2">IMPORTE TOTAL</td>
-        @if ($data['have_iva'] === 1)
-        <td  class="total">{{number_format($total + $iva - $data['discount'] , 2, '.', '')}}</td>
-            @else
-            <td  class="total">{{number_format($total - $data['discount'], 2, '.', '')}}</td>
+    <div  class="new-page">
+        @if ($key === 0)
+        <div id="details" style="margin-top: 20px" class="clearfix">
+            <div id="client" style="width: 50%">
+                <div class="to">COTIZADO A:</div>
+                <h2 class="name">{{$client->name}}</h2>
+                <div class="address">{{$client->address}}</div>
+                <div class="email">{{$client->email}}</div>
+            </div>
+            <div id="invoice" style="width: 50%">
+                <h1>COTIZACION {{$quote['id']}}</h1>
+                <div class="date">FECHA: {{Carbon\Carbon::parse($quote['moment'])->format('d-m-Y')}}</div>
+            </div>
+        </div>
         @endif
-    </tr>
-    </tbody>
-</table>
-  <div>
-      {!! $data['specifications'] !!}
-  </div>
+    <div style="margin: 10px 0 20px 0; text-align: center">
+        <h4>{{$dat['descrip']}}</h4>
+    </div>
+    <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th class="no">#</th>
+            <th class="desc">DESCRIPCION</th>
+            <th class="unit">UNIDAD MEDIDA</th>
+            <th class="unit">CANTIDAD</th>
+            <th class="unit">PRECIO</th>
+            <th class="unit">IMPORTE</th>
+        </tr>
+
+        <tbody>
+        @php
+            $total = 0;
+        @endphp
+        @foreach ($dat['details'] as $index => $det)
+            <tr>
+                <td class="no">{{$index+1}}</td>
+                <td class="desc">{{$det->descrip}}</td>
+                <td class="unit">{{$det->measure->name}}</td>
+                <td class="unit">{{$det->cant}}</td>
+                <td class="unit">{{$det->price}}</td>
+                <td class="total">{{number_format($det->price * $det->cant, 2, '.', '')}}</td>
+                @php
+                    $total += $det->price * $det->cant
+                @endphp
+            </tr>
+        @endforeach
+        @if ($dat['have_iva'] === 1)
+            <tr>
+                <td></td>
+                <td colspan="2"></td>
+                <td colspan="2">BASE IMPONIBLE</td>
+                <td class="unit">{{number_format($total, 2, '.', '')}}</td>
+            </tr>
+
+            <tr>
+                @php
+                    $iva = $total * 0.16
+                @endphp
+                <td></td>
+                <td colspan="2"></td>
+                <td colspan="2">SUBTOTAL IVA</td>
+                <td  class="unit">{{number_format($iva, 2, '.', '')}}</td>
+            </tr>
+        @endif
+        <tr>
+            <td></td>
+            <td colspan="2"></td>
+            <td colspan="2">DESCUENTO</td>
+            <td  class="unit">{{number_format($dat['discount'], 2, '.', '')}}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="2"></td>
+            <td colspan="2">IMPORTE TOTAL</td>
+            @if ($dat['have_iva'] === 1)
+                <td  class="total">{{number_format($total + $iva - $dat['discount'] , 2, '.', '')}}</td>
+            @else
+                <td  class="total">{{number_format($total - $dat['discount'], 2, '.', '')}}</td>
+            @endif
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        {!! $dat['specifications'] !!}
+    </div>
+    </div>
+@endforeach
 </body>
 </html>

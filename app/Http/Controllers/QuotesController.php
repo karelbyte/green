@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\LandScaper;
 use App\Models\Quotes\Quote;
 use App\Models\Quotes\QuoteDoc;
+use App\Models\Quotes\QuoteHead;
 use App\Models\Quotes\QuotesNote;
 use App\Models\SalesNotes\SalesNote;
 use App\Models\Users\User;
@@ -85,8 +86,10 @@ class QuotesController extends Controller
             $q->with(['client', 'user', 'landscaper' => function ($d) {
                 $d->with('user');
             }]);
-        }, 'details' => function($d) {
-            $d->with('measure');
+        }, 'heads' => function($d) {
+            $d->with(['details' => function ($m) {
+                $m->with('measure');
+            }]);
         }])->leftJoin('cglobals', 'cglobals.id', 'quotes.cglobal_id')
             ->leftJoin('clients', 'clients.id', 'cglobals.client_id');
 
@@ -204,15 +207,14 @@ class QuotesController extends Controller
 
                     'origin' => SalesNote::ORIGIN_CAG,
 
-                    'have_iva' => $quote->have_iva,
-
-                    'discount' => $quote->discount,
-
                     'status_id' => 3,
 
                 ]);
 
-                $sale->details()->createMany($quote->details()->get()->toArray());
+                $datas = QuoteHead::query()->with('details')->whereIn('id',$request->headCheck)->get();
+                foreach ($datas as $tf) {
+                    $sale->details()->createMany($tf['details']->toArray());
+                }
 
                 return response()->json($sale->id);
 
@@ -230,16 +232,14 @@ class QuotesController extends Controller
 
     public function sendInfo(Request $request) {
 
-        $quote = Quote::with(['notes', 'docs', 'status', 'globals' => function($q){
-            $q->with(['client', 'Attended',  'landscaper' => function ($d) {
+        $quo = Quote::query()->find($request->id);
 
-                $d->with('user');
-
-            }]);
-        }, 'details' => function($d) {
-            $d->with('measure');
-        }])->where('id', $request->id)->first();
-
+        $quote = Quote::query()->with(['heads' => function($d) {
+                $d->with(['details' =>function ($i) {
+                    $i->with('measure');
+                }]);
+            }]
+        )->where('id', $request->id)->select('*')->first();
 
         $client = CGlobal::query()->with('client')->where('id',  $quote->cglobal_id)->first();
 
@@ -289,9 +289,7 @@ class QuotesController extends Controller
             $quote->globals()->update(['status_id' => 13, 'traser' => 8]);
         }
 
-            // Creando rutas para guardar cotizacion --------------------
-
-            $patch = storage_path('app/public/cliente-') . $quote->globals->client->code. '/cag-' .  $quote->globals->id;
+            $patch = storage_path('app/public/cliente-') . $client['client']['code']. '/cag-' .  $quote->globals->id;
 
             File::exists( $patch) or File::makeDirectory($patch , 0777, true, true);
 
@@ -300,44 +298,38 @@ class QuotesController extends Controller
             $pdf = \App::make('snappy.pdf.wrapper');
 
             $data = [
-
                 'company' => Company::query()->find(1),
-
-                'data' =>  $quote,
-
                 'patch' => $patch . '/cotizacion-'. $quote->token . '.pdf',
-
                 'namepdf' =>  'cotizacion-'. $quote->token . '.pdf',
-
-                'client' => $client
-
+                'data' =>  $quote['heads'],
+                'quote' => $quo,
+                'client' => $client['client']
             ];
+
+            //return $data;
 
             $footer = \View::make('pdf.footer')->render();
 
-            $header = \View::make('pdf.header', ['company' => Company::query()->find(1)])->render();
-
             $html = \View::make('pages.quotes.pdf', $data)->render();
 
-            $pdf->loadHTML($html)->setOption('header-html', $header)->setOption('footer-html', $footer);
+            $pdf->loadHTML($html)->setOption('footer-html', $footer);
 
             if (File::exists( $patch . '/cotizacion-'. $quote->token . '.pdf')) {
 
-                Storage::disk('public')->delete('cliente-'. $quote->globals->client->code. '/cag-' .
+                Storage::disk('public')->delete('cliente-'. $client['client']['code']. '/cag-' .
                     $quote->globals->id . '/cotizacion-'. $quote->token . '.pdf');
 
             }
 
            $pdf->save($patch . '/cotizacion-'. $quote->token . '.pdf');
 
-           Mail::to($quote['globals']['client']['email'])->send(new SendQuoteClient($data));
+         Mail::to($client['client']['email'])->send(new SendQuoteClient($data));
 
         return response()->json('Se actualizó el estado de envio de la información!');
 
     }
 
     // GUARDAR COTIZACION
-
     public function saveInfo(Request $request) {
         $data = $request->all();
         $quote = Quote::query()->find($request->id);
@@ -356,69 +348,78 @@ class QuotesController extends Controller
             ]);
         return response()->json('Detalles guardados con exito!');
     }
-
     // GUARDAR DETALLES
 
     public function SaveDetails(Request $request) {
 
       $quote =  Quote::query()->find($request->id);
 
-      $quote->descrip = $request->descrip;
+      if (!$request->edit) {
+          $head = $quote->heads()->create([
+              'descrip' => $request->descrip,
+              'specifications' => $request->specifications,
+              'have_iva' => $request->have_iva,
+              'discount' => $request->discount
+          ]);
 
-      $quote->specifications = $request->specifications;
+          $head->details()->createMany($request->details);
+      } else {
+           QuoteHead::query()->where('id', $request->head_id)->update([
+              'descrip' => $request->descrip,
+              'specifications' => $request->specifications,
+              'have_iva' => $request->have_iva,
+              'discount' => $request->discount
+          ]);
+          $head =QuoteHead::find($request->head_id);
+          $head->details()->delete();
+          $head->details()->createMany($request->details);
+      }
 
-      $quote->have_iva = $request->have_iva;
-
-      $quote->discount = $request->discount;
-
-        if ($quote->status_id === 10 || $quote->status_id  === 2 || $quote->status_id  === 10) {
-
+      // CAMBIANDO ESTADO DE LA COTIZACION Y EL CAG
+       if ($quote->status_id === 10 || $quote->status_id  === 2 || $quote->status_id  === 10) {
             $quote->status_id = 11;
-
             $quote->save();
-
             $quote->globals()->update(['status_id' => 9, 'traser' => 4]);
         }
 
       $quote->save();
 
-      $quote->details()->delete();
-
-      $quote->details()->createMany($request->details);
-
-      return response()->json('Detalles guardados con exito!');
+      return response()->json('Cotizacion creada con exito!');
     }
 
     public function pdf($id) {
 
         $pdf = \App::make('snappy.pdf.wrapper');
-
-        $datos = Quote::query()->with(['details' => function($d) {
-            $d->with('measure');
-        }])->where('id', $id)->select('*')->first();
+        $quo = Quote::query()->find($id);
+        $datos = Quote::query()->with(['heads' => function($d) {
+              $d->with(['details' =>function ($i) {
+                 $i->with('measure');
+              }]);
+            }]
+        )->where('id', $id)->select('*')->first();
 
         $client = CGlobal::query()->with('client')->where('id',  $datos->cglobal_id)->first();
 
-
         $data = [
-
             'company' => Company::query()->find(1),
-
-            'data' =>  $datos,
-
-            'client' => $client
-
+            'data' =>  $datos['heads'],
+            'quote' => $quo,
+            'client' => $client['client']
         ];
-        $footer = \View::make('pdf.footer')->render();
 
-        $header = \View::make('pdf.header', ['company' => Company::query()->find(1)])->render();
+        $footer = \View::make('pdf.footer')->render();
 
         $html = \View::make('pages.quotes.pdf', $data)->render();
 
-        $pdf->loadHTML($html)->setOption('header-html', $header)->setOption('footer-html', $footer);
+        $pdf->loadHTML($html)->setOption('footer-html', $footer);
 
         $pdfBase64 = base64_encode($pdf->inline());
 
         return 'data:application/pdf;base64,' . $pdfBase64;
+    }
+
+    public function deleteQuote(Request $request) {
+        QuoteHead::query()->where('id', $request->id)->delete();
+        return response()->json('Cotizacion eliminada con exito!');
     }
 }

@@ -34,9 +34,9 @@ class Quote extends Model
         return Carbon::parse($value)->format('g:i A');
     }
 
-    public function details() {
+    public function heads() {
 
-        return $this->hasMany(QuoteDetails::class, 'quote_id', 'id');
+        return $this->hasMany(QuoteHead::class, 'quote_id', 'id');
     }
 
     public function docs() {

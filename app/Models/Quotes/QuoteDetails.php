@@ -5,16 +5,6 @@ namespace App\Models\Quotes;
 use App\Models\Measure;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @property integer $id
- * @property int $quote_id
- * @property int $cant
- * @property int $descrip
- * @property float $price
- * @property float $total
- * @property string $created_at
- * @property string $updated_at
- */
 class QuoteDetails extends Model
 {
     protected $table = 'quotes_details';
@@ -23,10 +13,9 @@ class QuoteDetails extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['quote_id', 'type_item', 'measure_id', 'item_id', 'cant', 'descrip', 'price'];
+    protected $fillable = ['quote_head_id', 'type_item', 'measure_id', 'item_id', 'cant', 'descrip', 'price'];
 
     public function measure() {
-
         return $this->hasOne(Measure::class, 'id', 'measure_id');
     }
 

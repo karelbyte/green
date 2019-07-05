@@ -154,7 +154,47 @@
 
  <!-- AÑADIENDO FICHEROS DE COTIZACION A DISTANCIA -->
 <div v-if="views.newdetails" class="row" v-cloak>
-    <div class="col-lg-12">
+    <div class="col-lg-12" v-if="!inCreation">
+        <div class="row">
+            <div class="col-lg-6">
+                CLIENTE: <h4> @{{ item.globals.client.name  }}</h4>
+            </div>
+            <div class="col-lg-6">
+                TIPO:  <h4>@{{getType(item.type_quote_id)}}</h4>
+            </div>
+        </div>
+       <div class="row">
+            <button class="btn btn-brown btn-default" @click="createQuote()" >CREAR COTIZACION</button>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="panel panel-border panel-inverse">
+                <table v-if="item.heads.length > 0" class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>TITULO</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="head in item.heads">
+                        <td>@{{ head.descrip }}</td>
+                        <td>
+                            <button  class="btn btn-teal btn-sm m-t-5" @click="showHeadEdit(head)">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm m-t-5" @click="deleteQuote(head.id)"><i class="fa fa-eraser"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
+        </div>
+
+    </div>
+    <div class="col-lg-12" v-if="inCreation">
         <div class="panel panel-border panel-inverse">
             <div class="panel-heading" style="border-bottom: 2px solid rgba(123,137,139,0.16) !important;">
                 <h3 class="panel-title">Cotizacion: @{{item.id}} a cliente @{{ item.globals.client.name }}</h3>
@@ -162,14 +202,14 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-9">
-                        <input type="text" class="form-control" v-model="item.descrip" placeholder="Titulo de la cotización">
+                        <input type="text" class="form-control" v-model="head.descrip" placeholder="Titulo de la cotización">
                     </div>
                     <div class="col-lg-1">
                         <button class="btn btn-brown btn-default" @click="showFormDet()" >Detalles +</button>
                     </div>
                     <div class="col-lg-1 text-left">
                         <div class="checkbox checkbox-primary">
-                            <input  type="checkbox" v-model="item.have_iva">
+                            <input  type="checkbox" v-model="head.have_iva">
                             <label for="checkbox2" class="txtblack">
                                 IVA
                             </label>
@@ -177,7 +217,7 @@
                     </div>
                 </div>
                 <hr>
-                <div v-if="item.details.length > 0"  class="row m-t-10">
+                <div  class="row m-t-10">
                     <div class="col-lg-12">
                         <table class="table table-hover">
                             <thead>
@@ -191,7 +231,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                               <tr v-for="det in item.details">
+                               <tr v-for="det in head.details">
                                    <td>@{{ det.descrip }}</td>
                                    <td>@{{ det.cant }} </td>
                                    <td>@{{ det.measure.name }} </td>
@@ -206,16 +246,16 @@
                                </tr>
 
                             </tbody>
-                            <tr >
+                      <tr >
                                 <td></td>
                                 <td></td>
                                 <td>DESCUENTO</td>
-                                <td class="txtblack"><input type="text" v-model="item.discount" class="form-control"> </td>
+                                <td class="txtblack"><input v-numeric-only type="text" v-model.number="head.discount" class="form-control"> </td>
                                 <td>
                                 </td>
                             </tr>
                             <tfoot>
-                            <tr v-if="item.have_iva === 1 || item.have_iva === true">
+                            <tr v-if="head.have_iva === 1 || head.have_iva === true">
                                 <td></td>
                                 <td></td>
                                 <td>IVA (16 %)</td>
@@ -237,15 +277,13 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-                       <quill-editor v-model="item.specifications" :options="editorOption"></quill-editor>
-
+                       <quill-editor v-model="head.specifications" :options="editorOption"></quill-editor>
                     </div>
-
                 </div>
             </div>
             <div class="panel-footer footer_fix">
                 <button v-if="pass()" class="btn btn-success waves-effect btn-sm" @click="saveDetails()">Guardar</button>
-                <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
+                <button class="btn btn-default waves-effect btn-sm" @click="closeCreation()">Cerrar</button>
             </div>
         </div>
     </div>
@@ -294,11 +332,11 @@
                         </div>
                     </div>
                     <hr>
-                    <div v-if="entity.details.length > 0" class="row m-t-10">
+                 <!--  <div v-if="entity.details.length > 0" class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">
                             Monto cotizado: <span class="txtblack">@{{getTotalItem(entity)}}</span>
                         </div>
-                    </div>
+                    </div> -->
                     <div v-if="entity.type_send_id > 0 && entity.type_send !== null " class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">
                             Enviada vía: <span class="txtblack">@{{entity.type_send.name}} <span style="color:#f59586"> (@{{entity.sends}})</span> </span>
@@ -329,8 +367,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#" @click="edit(entity)" id="edit334"><i class="fa fa-edit m-r-5"></i>Cotizar</a></li>
                                     <li v-if="entity.type_quote_id == 1"><a href="#" @click="showFiles(entity)"> <i class="fa fa-home m-r-5"></i>Visita</a></li>
-                                    <li v-if="entity.details.length > 0"><a href="#" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o m-r-5"></i>Imprimir</a></li>
-                                    <li v-if="entity.details.length > 0"><a href="#" @click="ShowSendInfo(entity)"><i class="fa fa-send m-r-5"></i>Enviar a cliente</a></li>
+                                    <li v-if="entity.heads.length > 0"><a href="#" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o m-r-5"></i>Imprimir</a></li>
+                                    <li v-if="entity.heads.length > 0"><a href="#" @click="ShowSendInfo(entity)"><i class="fa fa-send m-r-5"></i>Enviar a cliente</a></li>
                                     <li v-if="entity.status_id === 3 || entity.status_id === 7 ||  entity.status_id === 9"><a href="#" @click="ShowCheckInfo(entity)"><i class="fa fa-search"></i> Verificacion</a></li>
                                 </ul>
                             </div>
@@ -430,7 +468,7 @@
                         </div>
                         <div class="col-lg-6 m-t-20">
                             <span class="txtblack" style="margin-right: 60px">Cantidad <span class="require">*</span> </span>
-                            <span v-if="detail.type_item === 1 &&  detail.item !== '' " style="color: #3d4852">Existencias: @{{ detail.item.cant}}</span>
+                          <!--  <span v-if="detail.type_item === 1 &&  detail.item !== '' " style="color: #3d4852">Existencias: @{{ detail.item.cant}}</span> -->
                             <input v-numeric-only class="form-control" type="text" v-model.number="detail.cant">
                         </div>
                         <div class="col-lg-6 m-t-20">
@@ -507,6 +545,29 @@
                                         No Aceptada
                                     </label>
                                 </div>
+                            </div>
+                            <div v-if="item.clientemit === 1" class="col-lg-12  m-t-20">
+                                <table v-if="item.heads.length > 0" class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>TITULO</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="head in item.heads">
+                                        <td style="font-size: 12px; margin-top: 10px">@{{ head.descrip }}</td>
+                                        <td>
+                                            <div class="checkbox checkbox-primary">
+                                                <input  type="checkbox" v-model="headCheck" :value="head.id" >
+                                                <label for="checkbox2" class="txtblack">
+                                                    Añadir
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             <div v-if="item.clientemit === 2">
                                <div class="col-lg-12 m-t-20">

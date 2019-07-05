@@ -14440,30 +14440,38 @@ new Vue({
         moment: '',
         type_quote_id: '',
         status_id: '',
-        descrip: '',
-        specifications: '',
         type_send_id: 0,
         type_check_id: 0,
         feedback: '',
         notes: [],
-        clientemit: 0,
-        have_iva: false,
-        discount: 0
+        clientemit: 0
       },
       itemDefault: {
         id: 0,
         moment: '',
-        descrip: '',
-        specifications: '',
         type_quote_id: '',
         status_id: '',
         type_send_id: 0,
         type_check_id: 0,
         feedback: '',
         notes: [],
-        clientemit: 0,
+        clientemit: 0
+      },
+      head: {
+        id: 0,
+        descrip: '',
+        specifications: '',
         have_iva: false,
-        discount: 0
+        discount: 0,
+        details: []
+      },
+      headDefault: {
+        id: 0,
+        descrip: '',
+        specifications: '',
+        have_iva: false,
+        discount: 0,
+        details: []
       },
       listfield: [{
         name: 'Codigo',
@@ -14512,6 +14520,8 @@ new Vue({
       elements: [],
       confircode: 0,
       landscapers: [],
+      heads: [],
+      inCreation: false,
       delobj: '',
       keyObjDelete: '',
       propertyShowDelObj: '',
@@ -14533,7 +14543,9 @@ new Vue({
         message: ''
       },
       editItem: false,
-      labelprice: 'Precio unitario'
+      labelprice: 'Precio unitario',
+      editQuote: false,
+      headCheck: []
     };
   },
   directives: {
@@ -14624,6 +14636,19 @@ new Vue({
     }
   },
   methods: {
+    createQuote: function createQuote() {
+      this.head = _objectSpread({}, this.headDefault);
+      this.inCreation = true;
+      this.editQuote = false;
+    },
+    closeCreation: function closeCreation() {
+      this.inCreation = false;
+    },
+    showHeadEdit: function showHeadEdit(head) {
+      this.head = head;
+      this.editQuote = true;
+      this.inCreation = true;
+    },
     dateToEs: _tools__WEBPACK_IMPORTED_MODULE_0__["dateEs"],
     getlist: function getlist(pFil, pOrder, pPager) {
       var _this3 = this;
@@ -14654,14 +14679,12 @@ new Vue({
       }).then(function (res) {
         _this3.spin = false;
         _this3.lists = res.data.list;
-        _this3.landscapers = res.data.landscapers;
-        _this3.item = _objectSpread({}, res.data.list[0]);
+        _this3.landscapers = res.data.landscapers; //this.item = {...res.data.list[0]};
 
-        if (_this3.find > 0 && _this3.item.details.length === 0) {
-          _this3.item = _objectSpread({}, res.data.list[0]);
-
-          _this3.onviews('newdetails');
-        }
+        /* if (this.find > 0 && this.item.details.length === 0) {
+             this.item = {...res.data.list[0]};
+             this.onviews('newdetails')
+         }*/
 
         _this3.pager_list.totalpage = Math.ceil(res.data.total / _this3.pager_list.recordpage);
       })["catch"](function (e) {
@@ -14674,6 +14697,19 @@ new Vue({
       return parseInt(o) === 2 ? 'A DISTANCIA' : 'VISITA A DOMICILIO';
     },
     // DEATALLES DE LA COTIZACION
+    deleteQuote: function deleteQuote(id) {
+      var _this4 = this;
+
+      axios.post(urldomine + 'api/quotes/delete-quote', {
+        id: id
+      }).then(function (r) {
+        _this4.$toasted.success(r.data);
+
+        _this4.item.heads = _this4.item.heads.filter(function (it) {
+          return it.id !== id;
+        });
+      });
+    },
     updateSelected: function updateSelected() {
       if (this.detail.item !== '' && this.detail.item !== null) {
         this.detail.descrip = this.detail.item.name;
@@ -14686,42 +14722,6 @@ new Vue({
         this.detail.cant = '';
       }
     },
-    getTotalItem: function getTotalItem(it) {
-      var subtotal = 0;
-
-      if (it.details) {
-        subtotal = it.details.reduce(function (a, b) {
-          return a + parseFloat(b.price) * parseFloat(b.cant);
-        }, 0);
-
-        if (it.have_iva === 1 || it.have_iva === true) {
-          subtotal = subtotal + subtotal * .16;
-        }
-      }
-
-      return (subtotal - it.discount).toFixed(2);
-    },
-    getTotal: function getTotal() {
-      var iva = 0;
-      var subtotal = 0;
-      subtotal = this.item.details.reduce(function (a, b) {
-        return a + parseFloat(b.price) * parseFloat(b.cant);
-      }, 0);
-
-      if (this.item.have_iva === 1 || this.item.have_iva === true) {
-        iva = this.item.details.reduce(function (a, b) {
-          return a + parseFloat(b.price) * parseFloat(b.cant);
-        }, 0) * 0.16;
-        subtotal = (subtotal + iva).toFixed(2);
-      }
-
-      return subtotal - this.item.discount;
-    },
-    getIva: function getIva() {
-      return (this.item.details.reduce(function (a, b) {
-        return a + parseFloat(b.price) * parseFloat(b.cant);
-      }, 0) * 0.16).toFixed(2);
-    },
     edit: function edit(it) {
       this.item = _objectSpread({}, it);
       this.onviews('newdetails');
@@ -14731,12 +14731,12 @@ new Vue({
       $('#new_det').modal('show');
     },
     showFormDetEdit: function showFormDetEdit(it) {
-      var _this4 = this;
+      var _this5 = this;
 
       var response = function response(res) {
-        _this4.elements = res.data;
-        _this4.detail.item = _this4.elements.find(function (it) {
-          return it.id === _this4.detail.item_id;
+        _this5.elements = res.data;
+        _this5.detail.item = _this5.elements.find(function (it) {
+          return it.id === _this5.detail.item_id;
         });
         $('#new_det').modal('show');
       };
@@ -14760,25 +14760,25 @@ new Vue({
       }
     },
     deleteDet: function deleteDet(id) {
-      this.item.details = this.item.details.filter(function (it) {
+      this.head.details = this.head.details.filter(function (it) {
         return it.id !== id;
       });
     },
     saveNewDet: function saveNewDet() {
-      var _this5 = this;
+      var _this6 = this;
 
       if (this.detail.id !== 0) {
-        this.item.details = this.item.details.filter(function (it) {
-          return it.id !== _this5.detail.id;
+        this.head.details = this.head.details.filter(function (it) {
+          return it.id !== _this6.detail.id;
         });
         this.detail.measure_id = this.detail.item.measure_id;
         this.detail.measure = this.detail.item.measure;
-        this.item.details.push(_objectSpread({}, this.detail));
+        this.head.details.push(_objectSpread({}, this.detail));
       } else {
         this.detail.id = Object(_tools__WEBPACK_IMPORTED_MODULE_0__["generateId"])(9);
         this.detail.measure_id = this.detail.item.measure_id;
         this.detail.measure = this.detail.item.measure;
-        this.item.details.push(_objectSpread({}, this.detail));
+        this.head.details.push(_objectSpread({}, this.detail));
       }
 
       this.editItem = false;
@@ -14791,39 +14791,45 @@ new Vue({
       return des && price && cant;
     },
     saveDetails: function saveDetails() {
-      var _this6 = this;
+      var _this7 = this;
 
       var data = {
         id: this.item.id,
-        details: this.item.details,
-        have_iva: this.item.have_iva,
-        descrip: this.item.descrip,
-        specifications: this.item.specifications,
-        discount: this.item.discount
+        head_id: this.head.id,
+        details: this.head.details,
+        have_iva: this.head.have_iva,
+        descrip: this.head.descrip,
+        specifications: this.head.specifications,
+        discount: this.head.discount,
+        edit: this.editQuote
       };
+
+      if (!this.editQuote) {
+        this.item.heads.push(this.head);
+      }
+
+      ;
       axios.post(urldomine + 'api/quotes/details', data).then(function (r) {
-        _this6.onviews('list');
+        _this7.$toasted.success(r.data);
 
-        _this6.getlist();
-
-        _this6.$toasted.success(r.data);
+        _this7.inCreation = false;
       });
     },
     viewpdf: function viewpdf(id) {
-      var _this7 = this;
+      var _this8 = this;
 
       this.spin = true;
       axios.get(urldomine + 'api/quotes/pdf/' + id).then(function (response) {
-        _this7.spin = false;
-        _this7.scrpdf = response.data;
+        _this8.spin = false;
+        _this8.scrpdf = response.data;
         $('#pdf').modal('show');
       });
     },
     pass: function pass() {
-      return this.item.details.length > 0 && this.item.descrip !== null && this.item.descrip !== '';
+      return this.head.details.length > 0 && this.head.descrip !== null && this.head.descrip !== '';
     },
     save: function save() {
-      var _this8 = this;
+      var _this9 = this;
 
       this.spin = true;
       axios({
@@ -14831,17 +14837,17 @@ new Vue({
         url: urldomine + 'api/quotes' + (this.act === 'post' ? '' : '/' + this.item.id),
         data: this.item
       }).then(function (response) {
-        _this8.spin = false;
+        _this9.spin = false;
 
-        _this8.$toasted.success(response.data);
+        _this9.$toasted.success(response.data);
 
-        _this8.getlist();
+        _this9.getlist();
 
-        _this8.onviews('list');
+        _this9.onviews('list');
       })["catch"](function (e) {
-        _this8.spin = false;
+        _this9.spin = false;
 
-        _this8.$toasted.error(e.response.data);
+        _this9.$toasted.error(e.response.data);
       });
     },
     // VERIFICACION DE INFO
@@ -14850,10 +14856,10 @@ new Vue({
       $('#check').modal('show');
     },
     passCheckSend: function passCheckSend() {
-      return this.item.type_check_id > 0 && this.confircode > 0;
+      return this.item.type_check_id > 0 && this.confircode > 0 && this.headCheck.length > 0;
     },
     sendCheckClient: function sendCheckClient() {
-      var _this9 = this;
+      var _this10 = this;
 
       var data = {
         id: this.item.id,
@@ -14861,52 +14867,80 @@ new Vue({
         type_check_id: this.item.type_check_id,
         feedback: this.item.feedback,
         clientemit: this.item.clientemit,
-        emit: this.item.emit
+        emit: this.item.emit,
+        headCheck: this.headCheck
       };
       axios.post(urldomine + 'api/quotes/checkinfo', data).then(function (r) {
         $('#check').modal('hide');
 
-        if (_this9.item.clientemit === CLIENTE_ACEPT_QUOTE) {
-          _this9.redirect.patch = document.location.origin + '/notas-de-ventas/' + r.data;
-          _this9.redirect.message = 'Se a generado una nota de venta con número: ' + r.data;
+        if (_this10.item.clientemit === CLIENTE_ACEPT_QUOTE) {
+          _this10.redirect.patch = document.location.origin + '/notas-de-ventas/' + r.data;
+          _this10.redirect.message = 'Se a generado una nota de venta con número: ' + r.data;
           $('#redirect').modal({
             backdrop: 'static',
             keyboard: false
           });
         } else {
-          _this9.$toasted.success(r.data);
+          _this10.$toasted.success(r.data);
 
-          _this9.getlist();
+          _this10.getlist();
 
-          _this9.spin = false;
+          _this10.spin = false;
         }
       })["catch"](function (e) {
-        _this9.spin = false;
+        _this10.spin = false;
 
-        _this9.$toasted.error(e.response.data);
+        _this10.$toasted.error(e.response.data);
       });
+    },
+    // TOTALES E IVA
+    getTotal: function getTotal() {
+      var iva = 0;
+      var subtotal = 0;
+      subtotal = this.head.details.reduce(function (a, b) {
+        return a + parseFloat(b.price) * parseFloat(b.cant);
+      }, 0);
+
+      if (this.head.have_iva === 1 || this.head.have_iva === true) {
+        iva = this.head.details.reduce(function (a, b) {
+          return a + parseFloat(b.price) * parseFloat(b.cant);
+        }, 0) * 0.16;
+        subtotal = (subtotal + iva).toFixed(2);
+      }
+
+      return subtotal - this.head.discount;
+    },
+    getIva: function getIva() {
+      return (this.head.details.reduce(function (a, b) {
+        return a + parseFloat(b.price) * parseFloat(b.cant);
+      }, 0) * 0.16).toFixed(2);
     },
     // ENVIO DE INFO
     sendInfoClient: function sendInfoClient() {
-      var _this10 = this;
+      var _this11 = this;
 
       this.sendM = true;
-      axios.post(urldomine + 'api/quotes/sendinfo', this.item).then(function (r) {
-        _this10.$toasted.success(r.data);
+      var data = {
+        id: this.item.id,
+        type_send_id: this.item.type_send_id,
+        strategy: this.item.strategy
+      };
+      axios.post(urldomine + 'api/quotes/sendinfo', data).then(function (r) {
+        _this11.$toasted.success(r.data);
 
-        _this10.sendM = false;
+        _this11.sendM = false;
 
-        _this10.getlist();
+        _this11.getlist();
 
         $('#sendinfo').modal('hide');
 
-        if (_this10.item.type_send_id === 1) {
+        if (_this11.item.type_send_id === 1) {
           document.getElementById('wass').click();
         }
       })["catch"](function (e) {
-        _this10.sendM = false;
+        _this11.sendM = false;
 
-        _this10.$toasted.error(e.response.data);
+        _this11.$toasted.error(e.response.data);
       });
     },
     passInfoSend: function passInfoSend() {
@@ -14923,7 +14957,7 @@ new Vue({
       return moment && timer;
     },
     saveInfoVisint: function saveInfoVisint() {
-      var _this11 = this;
+      var _this12 = this;
 
       this.spin = true;
       var data = {
@@ -14935,13 +14969,13 @@ new Vue({
         status_id: this.item.globals.landscaper.status_id
       };
       axios.post(urldomine + 'api/quotes/saveinfo', data).then(function (r) {
-        _this11.spin = false;
+        _this12.spin = false;
 
-        _this11.onviews('list');
+        _this12.onviews('list');
 
-        _this11.getlist();
+        _this12.getlist();
 
-        _this11.$toasted.success(r.data);
+        _this12.$toasted.success(r.data);
       });
     },
     showFiles: function showFiles(itm) {
@@ -14949,25 +14983,25 @@ new Vue({
       this.onviews('newfiles');
     },
     deleteFile: function deleteFile(id) {
-      var _this12 = this;
-
-      this.spin = true;
-      axios.get(urldomine + 'api/quotes/file/delete/' + id).then(function (r) {
-        _this12.item.docs = _this12.item.docs.filter(function (it) {
-          return it.id !== id;
-        });
-        _this12.spin = false;
-      });
-    },
-    deleteNote: function deleteNote(id) {
       var _this13 = this;
 
       this.spin = true;
-      axios.get(urldomine + 'api/quotes/note/delete/' + id).then(function (r) {
-        _this13.item.notes = _this13.item.notes.filter(function (it) {
+      axios.get(urldomine + 'api/quotes/file/delete/' + id).then(function (r) {
+        _this13.item.docs = _this13.item.docs.filter(function (it) {
           return it.id !== id;
         });
         _this13.spin = false;
+      });
+    },
+    deleteNote: function deleteNote(id) {
+      var _this14 = this;
+
+      this.spin = true;
+      axios.get(urldomine + 'api/quotes/note/delete/' + id).then(function (r) {
+        _this14.item.notes = _this14.item.notes.filter(function (it) {
+          return it.id !== id;
+        });
+        _this14.spin = false;
       });
     },
     showVisor: function showVisor(doc) {
@@ -14978,7 +15012,7 @@ new Vue({
       $('#note').modal('show');
     },
     saveNote: function saveNote() {
-      var _this14 = this;
+      var _this15 = this;
 
       this.spin = true;
       var data = {
@@ -14990,14 +15024,14 @@ new Vue({
         note: this.note
       });
       axios.post(urldomine + 'api/quotes/note/save', data).then(function () {
-        axios.get(urldomine + 'api/quotes/notes/' + _this14.item.id).then(function (r) {
-          _this14.spin = false;
-          _this14.item.notes = r.data.notes;
+        axios.get(urldomine + 'api/quotes/notes/' + _this15.item.id).then(function (r) {
+          _this15.spin = false;
+          _this15.item.notes = r.data.notes;
         });
       });
     },
     saveFile: function saveFile(e) {
-      var _this15 = this;
+      var _this16 = this;
 
       this.spin = true;
       var data = new FormData();
@@ -15012,27 +15046,27 @@ new Vue({
             'Content-Type': 'multipart/form-data'
           }
         }).then(function () {
-          axios.get(urldomine + 'api/quotes/files/' + _this15.item.id).then(function (r) {
+          axios.get(urldomine + 'api/quotes/files/' + _this16.item.id).then(function (r) {
             $('#camera_img').val(null);
             $('#camera_video').val(null);
             $('#microphone').val(null);
-            _this15.spin = false;
-            _this15.item.docs = r.data.docs;
+            _this16.spin = false;
+            _this16.item.docs = r.data.docs;
 
-            _this15.$Progress.finish();
+            _this16.$Progress.finish();
           })["catch"](function (e) {
-            _this15.spin = false;
+            _this16.spin = false;
 
-            _this15.$Progress.finish();
+            _this16.$Progress.finish();
 
-            _this15.$toasted.error(e.response.data);
+            _this16.$toasted.error(e.response.data);
           });
         })["catch"](function (e) {
-          _this15.spin = false;
+          _this16.spin = false;
 
-          _this15.$Progress.finish();
+          _this16.$Progress.finish();
 
-          _this15.$toasted.error(e.response.data);
+          _this16.$toasted.error(e.response.data);
         });
       }
     },
@@ -15059,23 +15093,23 @@ new Vue({
       this.onviews('new');
     },
     delitem: function delitem() {
-      var _this16 = this;
+      var _this17 = this;
 
       this.spin = true;
       axios({
         method: 'delete',
         url: urldomine + this.patchDelete + this.item[this.keyObjDelete]
       }).then(function (r) {
-        _this16.spin = false;
+        _this17.spin = false;
         $('#modaldelete').modal('hide');
 
-        _this16.$toasted.success(r.data);
+        _this17.$toasted.success(r.data);
 
-        _this16.getlist();
+        _this17.getlist();
       })["catch"](function (e) {
-        _this16.spin = false;
+        _this17.spin = false;
 
-        _this16.$toasted.error(e.response.data);
+        _this17.$toasted.error(e.response.data);
       });
     },
     showdelete: function showdelete(it) {

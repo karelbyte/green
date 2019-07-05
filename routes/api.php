@@ -74,6 +74,8 @@ Route::prefix('quotes')->group(function () {
 
     Route::post('/details', 'QuotesController@SaveDetails');
 
+    Route::post('/delete-quote', 'QuotesController@deleteQuote');
+
     Route::get('pdf/{id}', 'QuotesController@pdf');
 
     // NOTAS

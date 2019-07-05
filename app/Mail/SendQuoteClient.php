@@ -22,7 +22,7 @@ class SendQuoteClient extends Mailable
     {
 
         return $this->view('pages.quotes.mail')
-            ->subject( 'GreenCenter Cotizacion No: ' . $this->data['data']['id'])
+            ->subject( 'GreenCenter Cotizacion No: ' . $this->data['quote']['id'])
 
             ->attach( $this->data['patch'], [
                 'as' =>  $this->data['namepdf'],
