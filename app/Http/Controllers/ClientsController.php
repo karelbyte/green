@@ -44,7 +44,9 @@ class ClientsController extends Controller
             ->orderBy('cglobals.moment', 'desc')
             ->get();
 
-        $quotes =  Quote::with(['status', 'details', 'globals' => function($q){
+        $quotes =  Quote::with(['status', 'heads' => function($h) {
+            $h->with('details');
+        }, 'globals' => function($q){
             $q->with( 'user');
         }])->leftJoin('cglobals', 'cglobals.id', 'quotes.cglobal_id')
             ->where('cglobals.client_id', $id)

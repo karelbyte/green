@@ -434,7 +434,7 @@
 
                                             <p>Domicilio: <strong>Calle {{$data['client']['street'] . '  #'.$data['client']['home_number'] .' '.$data['client']['colony'] }} </strong></p>
 
-                                            <p>Fererencia: <strong>{{$data['client']['referen']}} </strong></p>
+                                            <p>Referencia: <strong>{{$data['client']['referen']}} </strong></p>
 
                                             <p>Fecha: <strong>{{\Carbon\Carbon::parse($data['visit']['moment'])->format('d-m-Y')}}</strong></p>
 

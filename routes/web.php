@@ -91,8 +91,7 @@ Route::get('tareas', function () {
 });
 
 Route::get('/pruebas', function () {
-    Artisan::call('notify:daily');
-    return 'SE ENVIO LA NOTIFICACION';
+    return  \App\Models\Users\User::query()->where('position_id', 1)->get();
 });
 
 

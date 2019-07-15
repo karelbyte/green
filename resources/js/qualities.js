@@ -47,7 +47,7 @@ new Vue({
         this.formData = new FormData();
         this.find = parseInt($('#find').val());
         if (this.find > 0) {
-
+            this.filters_list.field = 'qualities.id';
             this.filters_list.value = this.find;
 
         } else {

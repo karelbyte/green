@@ -42,6 +42,7 @@ class NotificationDaily
         } else {
             $landscapers =  $landscapers->select('landscapers.*')->get();
         }
+       // return  $landscapers;
         $landscapers = VisitHomeNotification::collection($landscapers);
 
         // VERIFICACION DE RECEPCION DE COTIZACION CON OBJETO RESOURCE

@@ -34,7 +34,7 @@ class QualityController extends Controller
         }])->leftJoin('cglobals', 'cglobals.id', 'qualities.cglobal_id')
             ->leftJoin('clients', 'cglobals.client_id', 'clients.id');
 
-        if ( $user->position_id !== 1) {
+        if ( (int) $user->position_id !== 1) {
 
             $datos->where('cglobals.user_id', $request->user_id_auth);
         }

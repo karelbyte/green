@@ -198,8 +198,8 @@ new Vue({
             this.getlist()
         },
         'detail.cant': function () {
-            this.detail.price = this.detail.cant > this.detail.item.wholesale_cant ? this.detail.item.wholesale_price : this.detail.item.price;
-            this.labelprice = this.detail.cant > this.detail.item.wholesale_cant ? 'Precio mayoreo' : 'Precio Unitario'
+            this.detail.price = this.detail.cant > this.detail.item.wholesale_cant && this.detail.item.wholesale_cant > 0 ? this.detail.item.wholesale_price : this.detail.item.price;
+            this.labelprice = this.detail.cant > this.detail.item.wholesale_cant  && this.detail.item.wholesale_cant > 0 ? 'Precio mayoreo' : 'Precio Unitario'
         }
     },
     mounted () {
@@ -392,7 +392,12 @@ new Vue({
             $('#check').modal('show');
         },
         passCheckSend () {
-            return this.item.type_check_id > 0 && this.confircode > 0 && this.headCheck.length > 0;
+            if (this.item.clientemit === 2) {
+                return this.item.type_check_id > 0 && this.confircode > 0
+            } else {
+                return this.item.type_check_id > 0 && this.confircode > 0 && this.headCheck.length > 0;
+            }
+
         },
         sendCheckClient () {
             let data = {
