@@ -63,43 +63,7 @@
                         <span class="txtblack">Nota<span class="require">*</span></span>
                         <textarea type="text" class="form-control" v-model="item.globals.landscaper.note"></textarea>
                     </div>
-
                 </div>
-                <hr>
-                <div class="row m-t-20">
-                    <div class="col-lg-12  m-t-20">
-                        <button class="m-t-20" @click="showNote()">Nota + </button>
-                    </div>
-                    <div class="col-lg-6  m-t-20">
-                        <span class="txtblack">Imagen directa<span class="require">*</span></span>
-                        <input type="file" id="camera_img"  accept="image/*" capture="camera" @change="saveFile($event)">
-                    </div>
-                    <div class="col-lg-6 m-t-20">
-                        <span class="txtblack">Imagen adjunta<span class="require">*</span></span>
-                        <input type="file" id="camera_img"  accept="image/*" @change="saveFile($event)">
-                    </div>
-                    <div class="col-lg-6  m-t-20">
-                        <span class="txtblack">Video directo<span class="require">*</span></span>
-                        <input type="file" id="camera_video"  accept="video/*" capture="camcorder" @change="saveFile($event)">
-                    </div>
-                    <div class="col-lg-6  m-t-20">
-                        <span class="txtblack">Video adjunto<span class="require">*</span></span>
-                        <input type="file" id="camera_video"  accept="video/*"  @change="saveFile($event)">
-                    </div>
-                    <div class="col-lg-12  m-t-20">
-                        <span class="txtblack">Audio +<span class="require">*</span></span>
-                        <input type="file" id="microphone" accept="audio/*"  @change="saveFile($event)">
-                    </div>
-                    <div class="col-lg-12">
-                       <!-- <button class="m-t-20" @click="showCamera_Image()" >Imagen +</button>
-                        <button class="m-t-20" @click="showCamera_Video()" >Video +</button>
-                        <button class="m-t-20" @click="showCamera_Audio()" >Audio +</button>
-                        <button class="m-t-20" @click="showNote()">Nota + </button> -->
-                        <!--  <input type="file" id="camera_img"  accept="image/*" capture="camera" @change="saveFile($event)">
-                         <input type="file" id="camera_video"  accept="video/*" capture="camcorder" @change="saveFile($event)">
-                         <input type="file" id="microphone" accept="audio/*"  capture="microphone" @change="saveFile($event)"> -->
-                     </div>
-                 </div>
                  <hr>
                  <div v-for="doc in item.docs" class="row m-t-10">
                      <div class="col-lg-6">
@@ -123,6 +87,32 @@
                          <button class="btn btn-danger btn-sm m-t-5" @click="deleteNote(not.id)"><i class="fa fa-eraser"></i></button>
                      </div>
                  </div>
+                <hr>
+                <div class="row m-t-20">
+                    <div class="col-lg-12  m-t-20">
+                        <button class="m-t-20" @click="showNote()">Nota + </button>
+                    </div>
+                    <div class="col-lg-6  m-t-20">
+                        <span class="txtblack">Imagen directa<span class="require">*</span></span>
+                        <input type="file" id="camera_img"  accept="image/*" capture="camera" @change="saveFile($event)">
+                    </div>
+                    <div class="col-lg-6 m-t-20">
+                        <span class="txtblack">Imagen adjunta<span class="require">*</span></span>
+                        <input type="file" id="camera_img"  multiple accept="image/*" @change="saveFileMultiple($event)">
+                    </div>
+                    <div class="col-lg-6  m-t-20">
+                        <span class="txtblack">Video directo<span class="require">*</span></span>
+                        <input type="file" id="camera_video"  accept="video/*" capture="camcorder" @change="saveFile($event)">
+                    </div>
+                    <div class="col-lg-6  m-t-20">
+                        <span class="txtblack">Video adjunto<span class="require">*</span></span>
+                        <input type="file" id="camera_video"  accept="video/*"  @change="saveFile($event)">
+                    </div>
+                    <div class="col-lg-12  m-t-20">
+                        <span class="txtblack">Audio +<span class="require">*</span></span>
+                        <input type="file" id="microphone" accept="audio/*"  @change="saveFile($event)">
+                    </div>
+                </div>
                  <div class="row m-t-20">
                      <div class="col-lg-12">
                          <div class="checkbox checkbox-primary">

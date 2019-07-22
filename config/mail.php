@@ -58,7 +58,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'contacto@greencentermorelia.com'),
-        'name' => env('MAIL_FROM_NAME', 'Diseño de Jardines Paisajismo'),
+        'name' => env('MAIL_FROM_NAME', 'CRM GreenCenter Notificaciones'),
     ],
 
     /*

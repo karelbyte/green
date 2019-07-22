@@ -111,7 +111,7 @@
                     <tr class="mouse" v-for="quo in files.quotes" :key="quo.id">
                         <td class="cel_fix">@{{quo.id}}</td>
                         <td class="cel_fix">@{{dateToEs(quo.moment)}}</td>
-                        <td class="cel_fix">@{{  getTotalItem(quo) }}</td>
+                        <td class="cel_fix">@{{getTotalItem(quo) }}</td>
                         <td class="cel_fix">@{{quo.globals.user.name}}</td>
                         <td class="cel_fix">@{{quo.status.name}}</td>
                         <td>
@@ -119,6 +119,7 @@
                         </td>
                         <td>
                             <button class="btn btn-info waves-effect btn-sm" @click="viewpdfQuote(quo.id)"><i class="fa fa-file-pdf-o"></i></button>
+                            <button v-if="quo.type_quote_id === 1" class="btn btn-info waves-effect btn-sm" @click="getFiles(quo)">Doc Visita</button>
                         </td>
                     </tr>
                     </tbody>
@@ -224,6 +225,26 @@
     <div class="col-lg-10">
         <button class="btn btn-default waves-effect btn-sm" @click="close()">Cerrar</button>
     </div>
+</div>
+<div v-if="views.docs">
+    <h3>Documentos de cliente @{{ item.name }} de cotizacion @{{ quo.id }}  </h3>
+    <div v-for="doc in docs" class="row m-t-10">
+        <div class="col-lg-6">
+            <a :href="geturl(doc.url)" target="_blank">
+                <div v-if="doc.ext == 'jpg' || doc.ext == 'jpeg' || doc.ext == 'png'">
+                    <img :src="geturl(doc.url)" class="img_fix"/>
+                </div>
+                <span v-else >@{{ doc.name }}</span>
+            </a>
+        </div>
+        <div class="col-lg-6 ">
+            <button class="btn btn-default btn-sm m-t-10" @click="showVisor(doc)"><i class="fa fa-eye"></i></button>
+            @can('quote.delete')
+                <button class="btn btn-danger btn-sm m-t-10" @click="deleteFile(doc.id)"><i class="fa fa-eraser"></i></button>
+            @endcan
+        </div>
+    </div>
+    <button class="btn btn-default waves-effect btn-sm" style="margin-top: 10px" @click="close()">Cerrar</button>
 </div>
 <div v-if="views.new" class="row" v-cloak>
     <div class="col-lg-10">
@@ -387,7 +408,32 @@
             </div>
         </div>
     </div>
+</div>
 
+<div id="repro" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-brown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Visor</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div v-if="doc.ext == 'jpg' || doc.ext == 'jpeg' || doc.ext == 'png'"><img :src="geturl(doc.url)" alt="" width="100%" height="300px" /></div>
+                                <div v-if="doc.ext == 'mp3' || doc.ext == '3gpp' || doc.ext == 'm4a'"> <audio :src="geturl(doc.url)" controls ></audio></div>
+                                <div v-if="doc.ext == 'mp4' || doc.ext == 'MOV' || doc.ext == 'mov'"> <video :src="geturl(doc.url)" controls width="100%" height="300px"></video></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @component('com.visor_pdf') @endcomponent
 @component('com.eliminar')@endcomponent

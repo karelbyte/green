@@ -128,7 +128,8 @@ new Vue({
             editItem: false,
             labelprice: 'Precio unitario',
             editQuote: false,
-            headCheck: []
+            headCheck: [],
+            pictures: []
         }
     },
     directives: {
@@ -219,6 +220,7 @@ new Vue({
     methods: {
         createQuote ()  {
             this.head = {...this.headDefault};
+            this.head.details = [];
             this.inCreation = true;
             this.editQuote = false;
         },
@@ -352,9 +354,10 @@ new Vue({
               discount: this.head.discount,
               edit: this.editQuote
             };
-            if (!this.editQuote) { this.item.heads.push(this.head)};
+            if (!this.editQuote) { this.item.heads.push(this.head)}
             axios.post(urldomine + 'api/quotes/details', data ).then(r => {
-                this.$toasted.success(r.data);
+                this.$toasted.success(r.data.msj);
+                this.head.id = r.data.dat;
                 this.inCreation = false
             })
         },
@@ -571,56 +574,70 @@ new Vue({
             })
         },
         saveFile(e) {
-
             this.spin = true;
-
             let data = new FormData();
-
             this.picture = e.target.files || e.dataTransfer.files;
-
             this.$Progress.start();
-
             if (this.picture.length) {
-
                 data.append('id', this.item.id);
-
-                data.append('file',this.picture[0]);
-
+                data.append('file', this.picture[0]);
                 axios.post(urldomine + 'api/quotes/file/save', data, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 }).then(() => {
-
                   axios.get(urldomine + 'api/quotes/files/' + this.item.id).then(r => {
-
                       $('#camera_img').val(null);
-
                       $('#camera_video').val(null);
-
                       $('#microphone').val(null);
-
                       this.spin = false;
-
                       this.item.docs = r.data.docs;
-
                       this.$Progress.finish()
-
                   }).catch(e => {
-
                       this.spin = false;
-
                       this.$Progress.finish();
-
                       this.$toasted.error(e.response.data)
                   })
-
                 }).catch(e => {
-
                     this.spin = false;
-
                     this.$Progress.finish();
+                    this.$toasted.error(e.response.data)
+                })
+            }
+        },
+        saveFileMultiple(e) {
+            this.spin = true;
+            let data = new FormData();
+            this.picture = e.target.files || e.dataTransfer.files;
+            this.$Progress.start();
+            if (this.picture.length) {
+                data.append('id', this.item.id);
+                data.append('cant', this.picture.length);
+                for (let i = 0; i < this.picture.length; i++)
+                {
+                    data.append('file' + i, this.picture[i]);
+                }
 
+                axios.post(urldomine + 'api/quotes/file/save-multiple', data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(() => {
+                  axios.get(urldomine + 'api/quotes/files/' + this.item.id).then(r => {
+                      $('#camera_img').val(null);
+                      $('#camera_video').val(null);
+                      $('#microphone').val(null);
+                      this.spin = false;
+                      this.item.docs = r.data.docs;
+                      this.$Progress.finish()
+                  }).catch(e => {
+                      this.spin = false;
+                      this.$Progress.finish();
+                      this.$toasted.error(e.response.data)
+                  })
+                }).catch(e => {
+                    this.spin = false;
+                    this.$Progress.finish();
                     this.$toasted.error(e.response.data)
                 })
             }

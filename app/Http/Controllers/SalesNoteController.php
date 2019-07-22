@@ -427,9 +427,9 @@ class SalesNoteController extends Controller
 
                         $pro = Inventori::query()->where('element_id', $det['item_id'])->first();
 
-                        if ( $itemType->type !== 2) {
+                        if ( (int) $itemType->type !== 2) {
 
-                            $det['cant'] = $det['type_item'] > 1  ? $det['cant']  * $det['cant_general'] : $det['cant'];
+                            $det['cant'] = (int) $det['type_item'] > 1  ? $det['cant']  * $det['cant_general'] : $det['cant'];
                         }
 
                         $det['exis'] = $pro['cant'] ?? 0;

@@ -14545,7 +14545,8 @@ new Vue({
       editItem: false,
       labelprice: 'Precio unitario',
       editQuote: false,
-      headCheck: []
+      headCheck: [],
+      pictures: []
     };
   },
   directives: {
@@ -14638,6 +14639,7 @@ new Vue({
   methods: {
     createQuote: function createQuote() {
       this.head = _objectSpread({}, this.headDefault);
+      this.head.details = [];
       this.inCreation = true;
       this.editQuote = false;
     },
@@ -14808,10 +14810,10 @@ new Vue({
         this.item.heads.push(this.head);
       }
 
-      ;
       axios.post(urldomine + 'api/quotes/details', data).then(function (r) {
-        _this7.$toasted.success(r.data);
+        _this7.$toasted.success(r.data.msj);
 
+        _this7.head.id = r.data.dat;
         _this7.inCreation = false;
       });
     },
@@ -15074,6 +15076,51 @@ new Vue({
         });
       }
     },
+    saveFileMultiple: function saveFileMultiple(e) {
+      var _this17 = this;
+
+      this.spin = true;
+      var data = new FormData();
+      this.picture = e.target.files || e.dataTransfer.files;
+      this.$Progress.start();
+
+      if (this.picture.length) {
+        data.append('id', this.item.id);
+        data.append('cant', this.picture.length);
+
+        for (var i = 0; i < this.picture.length; i++) {
+          data.append('file' + i, this.picture[i]);
+        }
+
+        axios.post(urldomine + 'api/quotes/file/save-multiple', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function () {
+          axios.get(urldomine + 'api/quotes/files/' + _this17.item.id).then(function (r) {
+            $('#camera_img').val(null);
+            $('#camera_video').val(null);
+            $('#microphone').val(null);
+            _this17.spin = false;
+            _this17.item.docs = r.data.docs;
+
+            _this17.$Progress.finish();
+          })["catch"](function (e) {
+            _this17.spin = false;
+
+            _this17.$Progress.finish();
+
+            _this17.$toasted.error(e.response.data);
+          });
+        })["catch"](function (e) {
+          _this17.spin = false;
+
+          _this17.$Progress.finish();
+
+          _this17.$toasted.error(e.response.data);
+        });
+      }
+    },
     showCamera_Image: function showCamera_Image() {
       $('#camera_img').click();
     },
@@ -15097,23 +15144,23 @@ new Vue({
       this.onviews('new');
     },
     delitem: function delitem() {
-      var _this17 = this;
+      var _this18 = this;
 
       this.spin = true;
       axios({
         method: 'delete',
         url: urldomine + this.patchDelete + this.item[this.keyObjDelete]
       }).then(function (r) {
-        _this17.spin = false;
+        _this18.spin = false;
         $('#modaldelete').modal('hide');
 
-        _this17.$toasted.success(r.data);
+        _this18.$toasted.success(r.data);
 
-        _this17.getlist();
+        _this18.getlist();
       })["catch"](function (e) {
-        _this17.spin = false;
+        _this18.spin = false;
 
-        _this17.$toasted.error(e.response.data);
+        _this18.$toasted.error(e.response.data);
       });
     },
     showdelete: function showdelete(it) {

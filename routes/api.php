@@ -90,6 +90,8 @@ Route::prefix('quotes')->group(function () {
 
     Route::post('/file/save', 'QuotesController@SaveFile');
 
+    Route::post('/file/save-multiple', 'QuotesController@SaveFileMultiple');
+
     Route::get('/file/delete/{id}', 'QuotesController@deleteQuoteFile');
 
     Route::get('/files/{id}', 'QuotesController@getQuoteFiles');

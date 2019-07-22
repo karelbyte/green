@@ -25,7 +25,8 @@ new Vue({
       views: {
         list: true,
         "new": false,
-        files: false
+        files: false,
+        docs: false
       },
       scrpdf: '',
       item: {
@@ -75,7 +76,10 @@ new Vue({
       orders_list: {
         field: 'clients.name',
         type: 'asc'
-      }
+      },
+      docs: [],
+      quo: '',
+      doc: ''
     };
   },
   mounted: function mounted() {
@@ -246,6 +250,29 @@ new Vue({
         _this7.scrpdf = response.data;
         $('#pdf').modal('show');
       });
+    },
+    getFiles: function getFiles(quo) {
+      var _this8 = this;
+
+      this.spin = true;
+      this.quo = quo;
+      axios.get(urldomine + 'api/quotes/files/' + quo.id).then(function (r) {
+        _this8.spin = false;
+        _this8.docs = r.data.docs;
+
+        _this8.onviews('docs');
+      })["catch"](function (e) {
+        _this8.spin = false;
+
+        _this8.$toasted.error(e.response.data);
+      });
+    },
+    geturl: function geturl(l) {
+      return document.location.origin + '/' + l;
+    },
+    showVisor: function showVisor(doc) {
+      this.doc = doc;
+      $('#repro').modal('show');
     }
   }
 });

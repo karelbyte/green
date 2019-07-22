@@ -8,7 +8,8 @@ new Vue({
             views: {
                 list: true,
                 new: false,
-                files: false
+                files: false,
+                docs: false,
             },
             scrpdf: '',
             item: {
@@ -51,6 +52,9 @@ new Vue({
                 field: 'clients.name',
                 type: 'asc'
             },
+            docs: [],
+            quo: '',
+            doc: ''
         }
     },
     mounted () {
@@ -236,6 +240,27 @@ new Vue({
                 this.scrpdf = response.data;
                 $('#pdf').modal('show')
             })
+        },
+        getFiles (quo) {
+            this.spin = true;
+            this.quo = quo;
+            axios.get(urldomine + 'api/quotes/files/' + quo.id).then(r => {
+                this.spin = false;
+                this.docs = r.data.docs;
+                this.onviews('docs')
+            }).catch(e => {
+                this.spin = false;
+                this.$toasted.error(e.response.data)
+            })
+        },
+        geturl (l) {
+            return  document.location.origin +'/' + l
+        },
+        showVisor (doc) {
+
+            this.doc = doc;
+
+            $('#repro').modal('show');
         },
     }
 });

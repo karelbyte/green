@@ -119,6 +119,33 @@ class QuotesController extends Controller
 
     }
 
+    public function SaveFileMultiple(Request $request) {
+
+        $quote = Quote::query()->find($request->id);
+
+       // dd($request->hasFile('file0'));
+
+        for($i = 0;  $i< $request->cant; $i++) {
+
+            $file = $request->file('file' . $i);
+
+            $ext = $file->getClientOriginalExtension();
+
+            $name = Carbon::now()->timestamp .'.'. $ext;
+
+            $patch =  storage_path('app/public/cliente-') . $quote->globals->client->code. '/cag-' .  $quote->globals->id .'/visit';
+
+            File::exists( $patch) or File::makeDirectory($patch , 0777, true, true);
+
+            $file->storeAs('/public/cliente-' . $quote->globals->client->code. '/cag-' .  $quote->globals->id .'/visit', $name);
+
+            $quote->docs()->create(['url' => 'storage/cliente-' . $quote->globals->client->code. '/cag-' .  $quote->globals->id .'/visit/'. $name, 'name' => $name, 'ext' => $ext] );
+
+        }
+
+        return response()->json('' );
+    }
+
     public function SaveFile(Request $request) {
 
         $quote = Quote::query()->find($request->id);
@@ -354,6 +381,13 @@ class QuotesController extends Controller
 
       $quote =  Quote::query()->find($request->id);
 
+        // CAMBIANDO ESTADO DE LA COTIZACION Y EL CAG
+        if ($quote->status_id === 10 || $quote->status_id  === 2 || $quote->status_id  === 10) {
+            $quote->status_id = 11;
+            $quote->save();
+            $quote->globals()->update(['status_id' => 9, 'traser' => 4]);
+        }
+
       if (!$request->edit) {
           $head = $quote->heads()->create([
               'descrip' => $request->descrip,
@@ -361,8 +395,14 @@ class QuotesController extends Controller
               'have_iva' => $request->have_iva,
               'discount' => $request->discount
           ]);
-
           $head->details()->createMany($request->details);
+
+          $data = [
+              'msj' => 'Creada con exito!',
+              'dat' =>  $head->id
+          ];
+          return response()->json($data);
+
       } else {
            QuoteHead::query()->where('id', $request->head_id)->update([
               'descrip' => $request->descrip,
@@ -370,21 +410,16 @@ class QuotesController extends Controller
               'have_iva' => $request->have_iva,
               'discount' => $request->discount
           ]);
-          $head =QuoteHead::find($request->head_id);
+          $head = QuoteHead::query()->find($request->head_id);
           $head->details()->delete();
           $head->details()->createMany($request->details);
+          $data = [
+              'msj' => 'Actualizada con exito',
+              'dat' =>  $head->id
+          ];
+          return response()->json($data);
       }
 
-      // CAMBIANDO ESTADO DE LA COTIZACION Y EL CAG
-       if ($quote->status_id === 10 || $quote->status_id  === 2 || $quote->status_id  === 10) {
-            $quote->status_id = 11;
-            $quote->save();
-            $quote->globals()->update(['status_id' => 9, 'traser' => 4]);
-        }
-
-      $quote->save();
-
-      return response()->json('Cotizacion creada con exito!');
     }
 
     public function pdf($id) {
