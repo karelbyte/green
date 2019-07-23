@@ -216,7 +216,21 @@ class SalesNoteController extends Controller
                $pro = Inventori::query()->where('element_id', $det['element_id'])->first();
                $discount = (double) $det['cant'] - (double) $pro['delivered'];
                $pro->update(['cant' => $pro['cant'] - $discount]);
-               SalesNoteDelivered::where('id', $det['id'])->update(['delivered' =>  $det['cant']]);
+               SalesNoteDelivered::query()->where('id', $det['id'])->update(['delivered' =>  $det['cant']]);
+           }
+           // REGRESANDO HERRAMIENTAS AL ALMACEN
+           $invent = SalesNoteDelivered::query()->where('sale_id', $id)->get();
+           foreach ($invent as $det) {
+               $element = Element::query()->find( $det['element_id']);
+               if ($element !== null) {
+                   if ((int) $element['type'] === 2) {
+                       $tool = Inventori::query()->where('element_id', $det['element_id'])->first();
+                       if ($tool !== null) {
+                           $tool->update(['cant' => (int) $tool['cant'] + (int) $det['delivered']]);
+                       }
+                   }
+               }
+
            }
        }
       $sale =  SalesNote::query()->find($id);
@@ -249,27 +263,24 @@ class SalesNoteController extends Controller
     // APLICANDO CANTIDADES Y GENERANDO ALERTAS
     public function NoteConfirm(Request $request) {
         // ACTUALIZANDO INVENTARIOS
-         $needs =  $this->needs($request->id);
-
+         $needs =  $this->NoteAplic($request->id);
          $notfull = 0;
          foreach ($needs as $det) {
-                $delivered = 0;
-                if ($det['item_id'] !== null) {
-                    $det['cant'] = $det['type_item'] > 1 ? $det['cant']  * $det['cant_general'] : $det['cant'];
-                    $pro = Inventori::where('element_id', $det['item_id'])->first();
+                    $delivered = 0;
+                    $pro = Inventori::query()->where('element_id', $det['item_id'])->first();
                     if ($pro !== null) {
                         $avility = $pro['cant'] >= $det['cant'];
                         if (!$avility) { $notfull++;}
                         $delivered =  $avility ? $det['cant'] : $pro['cant'];
                         $pro->update(['cant' => $pro['cant'] - $delivered]);
-                    };
-                    SalesNoteDelivered::query()->create([
-                        'sale_id' => $request->id,
-                        'element_id' => $det['item_id'],
-                        'cant' => $det['cant'],
-                        'delivered' => $delivered
-                    ]);
-                }
+
+                        SalesNoteDelivered::query()->create([
+                            'sale_id' => $request->id,
+                            'element_id' => $det['item_id'],
+                            'cant' => $det['cant'],
+                            'delivered' => $delivered
+                        ]);
+                    }
         }
 
             $sale = SalesNote::query()->find($request->id);
