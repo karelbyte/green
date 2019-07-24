@@ -93,6 +93,10 @@
                         <button class="m-t-20" @click="showNote()">Nota + </button>
                     </div>
                     <div class="col-lg-6  m-t-20">
+                        <span class="txtblack">Documento PDF<span class="require">*</span></span>
+                        <input type="file" id="file_pdf"  accept="application/pdf"  @change="saveFile($event)">
+                    </div>
+                    <div class="col-lg-6  m-t-20">
                         <span class="txtblack">Imagen directa<span class="require">*</span></span>
                         <input type="file" id="camera_img"  accept="image/*" capture="camera" @change="saveFile($event)">
                     </div>
@@ -391,6 +395,7 @@
                               <div v-if="doc.ext == 'jpg' || doc.ext == 'jpeg' || doc.ext == 'png'"><img :src="doc.url" alt="" width="100%" height="300px" /></div>
                               <div v-if="doc.ext == 'mp3' || doc.ext == '3gpp' || doc.ext == 'm4a'"> <audio :src="doc.url" controls ></audio></div>
                               <div v-if="doc.ext == 'mp4' || doc.ext == 'MOV' || doc.ext == 'mov'"> <video :src="doc.url" controls width="100%" height="300px"></video></div>
+                              <div v-if="doc.ext == 'pdf' || doc.ext == 'PDF'"> <iframe :src="doc.url"  width="100%" height="300px"></iframe></div>
                           </div>
                       </div>
                     </div>

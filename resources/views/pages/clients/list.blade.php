@@ -424,6 +424,8 @@
                                 <div v-if="doc.ext == 'jpg' || doc.ext == 'jpeg' || doc.ext == 'png'"><img :src="geturl(doc.url)" alt="" width="100%" height="300px" /></div>
                                 <div v-if="doc.ext == 'mp3' || doc.ext == '3gpp' || doc.ext == 'm4a'"> <audio :src="geturl(doc.url)" controls ></audio></div>
                                 <div v-if="doc.ext == 'mp4' || doc.ext == 'MOV' || doc.ext == 'mov'"> <video :src="geturl(doc.url)" controls width="100%" height="300px"></video></div>
+                                <div v-if="doc.ext == 'pdf' || doc.ext == 'PDF'"> <iframe :src="geturl(doc.url)"  width="100%" height="300px"></iframe></div>
+
                             </div>
                         </div>
                     </div>
