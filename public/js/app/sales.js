@@ -18121,7 +18121,8 @@ new Vue({
         id: this.item.id,
         details: this.item.details,
         advance: this.item.advance,
-        have_iva: this.item.have_iva
+        have_iva: this.item.have_iva,
+        discount: this.item.discount
       };
       axios.post(urldomine + 'api/sales/details', data).then(function (r) {
         _this9.onviews('list');

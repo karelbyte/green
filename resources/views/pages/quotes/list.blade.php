@@ -295,7 +295,7 @@
     </div>
     <hr>
     <div class="row">
-        <div v-for="entity in lists" :key="entity.id" class="col-lg-4" style="height: 360px">
+        <div v-for="entity in lists" :key="entity.id" class="col-lg-4" style="height: 380px">
             <div  class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
                 <div class="panel-heading">
                     <div class="row">
@@ -323,6 +323,11 @@
                     <div class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">
                             Tipo: <span class="txtblack">@{{getType(entity.type_quote_id)}}</span>
+                        </div>
+                    </div>
+                    <div v-if="entity.heads.length > 0" class="row m-t-10">
+                        <div class="col-lg-12 col-xs-12">
+                            PRODUCTO: <span class="txtblack">@{{entity.heads[0].descrip}}</span>
                         </div>
                     </div>
                     <hr>

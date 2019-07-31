@@ -514,7 +514,9 @@ new Vue({
 
               advance : this.item.advance,
 
-              have_iva : this.item.have_iva
+              have_iva : this.item.have_iva,
+
+              discount: this.item.discount
 
             };
 

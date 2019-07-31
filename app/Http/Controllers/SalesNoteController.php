@@ -99,7 +99,7 @@ class SalesNoteController extends Controller
 
         if ($sale->status_id > self::PROCESO) { // ACTULIZANDO PAGO Y ESTADOS
 
-            $total = $sale->total();
+            $total = $sale->total() - $sale->discount;
 
             if ( (double) $request->advance > 0) {
                 switch ($sale->status_id) {
@@ -124,6 +124,7 @@ class SalesNoteController extends Controller
             // ACTUALIZANDO NOTA DE VENTA
             $sale->have_iva = $request->have_iva;
             $sale->advance = $request->advance;
+            $sale->discount = $request->discount;
             $sale->save();
             return response()->json('Detalles guardados con exito!');
 
@@ -175,7 +176,7 @@ class SalesNoteController extends Controller
 
             SalesNoteDetails::whereIn('id', $ids)->delete();
 
-            $total = (double) SalesNote::query()->find($request->id)->total();
+            $total = (double) SalesNote::query()->find($request->id)->total() - (int) $request->discount;
 
             if ( (double) $request->advance > 0) {
 
@@ -184,6 +185,7 @@ class SalesNoteController extends Controller
              /// ACTUALIZANDO NOTA DE VENTA
             $sale->have_iva = $request->have_iva;
             $sale->advance = $request->advance;
+            $sale->discount = $request->discount;
             $sale->save();
                 // ACTUALIZANDO CICLO DE ATENCION GLOBAL
             $status_global = 0;
