@@ -65,6 +65,11 @@
                             Cliente: <span class="txtblack">@{{entity.globals.client.name}}</span>
                         </div>
                     </div>
+                    <div v-if="entity.details.length > 0" class="row m-t-10">
+                        <div class="col-lg-12 col-xs-12">
+                            PRODUCTO: <span class="txtblack">@{{entity.details[0].descrip}}</span>
+                        </div>
+                    </div>
                     <hr>
                     <div v-if="entity.details.length > 0" class="row m-t-10">
                         <div class="col-lg-12 col-xs-12">

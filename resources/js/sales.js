@@ -20,7 +20,7 @@ new Vue({
             fieldtype: 'text',
             pager_list: {
                 page: 1,
-                recordpage: 10,
+                recordpage: 40,
                 totalpage: 0
             },
             views: {
