@@ -15,6 +15,9 @@ class QuoteSendConfirm extends JsonResource
      */
     public function toArray($request)
     {
+        $motive = (int) $this->globals->type_motive === 2 ? $this->globals->MotiveServices->name
+            :  $this->globals->MotiveProducts->name;
+
         return [
             'id' => $this->id,
             'check_date' =>Carbon::parse( $this->check_date)->format('d-m-Y'),
@@ -22,6 +25,7 @@ class QuoteSendConfirm extends JsonResource
             'phone'  =>  $this->globals->client->phone,
             'email'  =>  $this->globals->client->email,
             'user' => $this->globals->user->name,
+            'motive' => $motive
         ];
     }
 }

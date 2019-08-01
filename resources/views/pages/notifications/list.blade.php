@@ -7,7 +7,7 @@
         <h3>NO HAY NOTIFICACIONES</h3>
     </div>
 </div>
-<!-- VISITAS A DOMICILIO  RESPONSIVA -->
+<!-- SERVICIOS O PRODUCTOS EN TERMINO DE ENTREGA RESPONSIVA -->
 <div v-if="sale_note_not_delivered.length > 0" class="row m-t-20" v-cloak>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
@@ -21,6 +21,7 @@
                         <tr>
                             <th >Nota</th>
                             <th >Cliente</th>
+                            <th >PRODUCTO / SERVICIO</th>
                             <th >Fecha Emision</th>
                             <th >Fecha Entrega</th>
                             <th >Asesor</th>
@@ -31,6 +32,7 @@
                         <tr class="mouse" v-for="deli in sale_note_not_delivered" :key="deli.id">
                             <td >@{{deli.id}}</td>
                             <td >@{{deli.client}}</td>
+                            <td >@{{deli.motive}}</td>
                             <td >@{{deli.moment}}</td>
                             <td >@{{deli.deliverydate}}</td>
                             <td >@{{deli.user}}</td>
@@ -59,6 +61,11 @@
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
                                     Cliente: <span class="txtblack">@{{deli.client}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    PRODUCTO O SERVICIO: <span class="txtblack">@{{deli.motive}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
@@ -102,6 +109,7 @@
                         <tr>
                             <th >CAG</th>
                             <th >Cliente</th>
+                            <th >Producto / Servicio</th>
                             <th >Dirección</th>
                             <th >Referencia</th>
                             <th >Fecha</th>
@@ -114,6 +122,7 @@
                         <tr class="mouse" v-for="land in landscapers" :key="land.id">
                             <td >@{{land.cag}}</td>
                             <td >@{{land.client}}</td>
+                            <td >@{{land.motive}}</td>
                             <td >@{{land.address}}</td>
                             <td >@{{land.referen}}</td>
                             <td >@{{land.moment}}</td>
@@ -144,6 +153,11 @@
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
                                     Cliente: <span class="txtblack">@{{land.client}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Producto o Servicio: <span class="txtblack">@{{land.motive}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
@@ -197,6 +211,7 @@
                         <tr>
                             <th >CAG</th>
                             <th >Cliente</th>
+                            <th >PRODUCTO O SERVICIO</th>
                             <th >Fecha</th>
                             <th >Asesor</th>
                             <th ></th>
@@ -204,10 +219,11 @@
                         </thead>
                         <tbody>
                         <tr class="mouse" v-for="visit_home in visit_home_end" :key="visit_home.id">
-                            <td >@{{visit_home.cglobal_id}}</td>
-                            <td >@{{visit_home.globals.client.name}}</td>
+                            <td >@{{visit_home.cag}}</td>
+                            <td >@{{visit_home.client}}</td>
+                            <td >@{{visit_home.motive}}</td>
                             <td >@{{dateToEs(visit_home.check_date)}}</td>
-                            <td >@{{visit_home.globals.user.name}}</td>
+                            <td >@{{visit_home.user}}</td>
                             <td ><a :href="gotoUrl(visit_home.id, 1)" style="font-style: oblique">IR A DOCUMENTO</a></td>
                         </tr>
                         </tbody>
@@ -227,12 +243,12 @@
                         <div class="col-lg-8 col-md-8 col-sm-8 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-12 col-xs-12">
-                                    CAG: <span class="txtblack">@{{visit_home.cglobal_id}}</span>
+                                    CAG: <span class="txtblack">@{{visit_home.cag}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
-                                    Cliente: <span class="txtblack">@{{visit_home.globals.client.name}}</span>
+                                    Cliente: <span class="txtblack">@{{visit_home.client}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
@@ -242,7 +258,7 @@
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
-                                    Asesor: <span class="txtblack">@{{visit_home.globals.user.name}}</span>
+                                    Asesor: <span class="txtblack">@{{visit_home.user}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
@@ -272,6 +288,7 @@
                             <th >Cotizacion</th>
                             <th >Fecha</th>
                             <th >Cliente</th>
+                            <th >PRODUCTO O SERVICIO</th>
                             <th >Telefono</th>
                             <th >Correo</th>
                             <th >Asesor</th>
@@ -283,6 +300,7 @@
                             <td >@{{con.id}}</td>
                             <td >@{{con.check_date}}</td>
                             <td >@{{con.client}}</td>
+                            <td >@{{con.motive}}</td>
                             <td >@{{con.phone}}</td>
                             <td >@{{con.email}}</td>
                             <td >@{{con.user}}</td>
@@ -316,6 +334,11 @@
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
                                     Cliente: <span class="txtblack">@{{con.client}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Cliente: <span class="txtblack">@{{con.motive}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
@@ -360,6 +383,7 @@
                             <th >Cotizacion</th>
                             <th >Fecha</th>
                             <th >Cliente</th>
+                            <th >PRODUCTO O SERVICIO</th>
                             <th >Telefono</th>
                             <th >Correo</th>
                             <th >Asesor</th>
@@ -371,6 +395,7 @@
                             <td >@{{tra.id}}</td>
                             <td >@{{tra.moment}}</td>
                             <td >@{{tra.client}}</td>
+                            <td >@{{tra.motive}}</td>
                             <td >@{{tra.phone}}</td>
                             <td >@{{tra.email}}</td>
                             <td >@{{tra.user}}</td>
@@ -404,6 +429,11 @@
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
                                     Cliente: <span class="txtblack">@{{tras.client}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Telefono: <span class="txtblack">@{{tras.motive}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
@@ -442,8 +472,9 @@
                         <thead>
                         <tr>
                             <th>Nota</th>
-                            <th>Cliente</th>
                             <th>Fecha Emision</th>
+                            <th>Cliente</th>
+                            <th>Producto / Servicio</th>
                             <th>Fecha Cobro</th>
                             <th>Asesor</th>
                             <th></th>
@@ -454,6 +485,7 @@
                             <td >@{{pay.id}}</td>
                             <td >@{{pay.moment}}</td>
                             <td >@{{pay.client}}</td>
+                            <td >@{{pay.motive}}</td>
                             <td >@{{pay.paimentdate}}</td>
                             <td >@{{pay.user}}</td>
                             <td> <a :href="gotoUrl(pay.id, 2)" style="font-style: oblique">IR A DOCUMENTO</a></td>
@@ -490,6 +522,11 @@
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
+                                    Producto / Servicio: <span class="txtblack">@{{pay.motive}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
                                     Fecha de cobro: <span class="txtblack">@{{pay.paimentdate}}</span>
                                 </div>
                             </div>
@@ -511,7 +548,6 @@
     </div>
 
 </div>
-
 <div v-if="sale_note_not_close.length > 0" class="row m-t-20" v-cloak>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
@@ -526,6 +562,7 @@
                             <th >Nota</th>
                             <th >Fecha</th>
                             <th >Cliente</th>
+                            <th >Producto / Servicio</th>
                             <th >Asesor</th>
                             <th></th>
                         </tr>
@@ -533,9 +570,10 @@
                         <tbody>
                         <tr class="mouse" v-for="sale in sale_note_not_close" :key="sale.id">
                             <td >@{{sale.id}}</td>
-                            <td >@{{dateToEs(sale.moment)}}</td>
-                            <td >@{{sale.globals.client.name}}</td>
-                            <td >@{{sale.globals.user.name}}</td>
+                            <td >@{{sale.moment}}</td>
+                            <td >@{{sale.client}}</td>
+                            <td >@{{sale.motive}}</td>
+                            <td >@{{sale.user}}</td>
                             <td> <a :href="gotoUrl(sale.id, 2)" style="font-style: oblique">IR A DOCUMENTO</a></td>
                         </tr>
                         </tbody>
@@ -560,12 +598,12 @@
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
-                                    Facha: <span class="txtblack">@{{dateToEs(sale.moment)}}</span>
+                                    Facha: <span class="txtblack">@{{sale.moment}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
-                                    Asesor: <span class="txtblack">@{{sale.globals.user.name}}</span>
+                                    Asesor: <span class="txtblack">@{{sale.user}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
@@ -594,6 +632,7 @@
                         <tr>
                             <th >Cotizacion</th>
                             <th >Cliente</th>
+                            <th >Producto / Servicio</th>
                             <th >Fecha</th>
                             <th >Asesor</th>
                             <th></th>
@@ -603,6 +642,7 @@
                         <tr class="mouse" v-for="quote_local in quote_local_close" :key="quote_local.id">
                             <td >@{{quote_local.id}}</td>
                             <td >@{{quote_local.client}}</td>
+                            <td >@{{quote_local.motive}}</td>
                             <td >@{{quote_local.moment}}</td>
                             <td >@{{quote_local.user}}</td>
                             <td> <a :href="gotoUrl(quote_local.id, 1)" style="font-style: oblique">IR A DOCUMENTO</a></td>
@@ -639,6 +679,11 @@
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
+                                    Cliente: <span class="txtblack">@{{quote_local.client}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
                                     Asesor: <span class="txtblack">@{{quote_local.user}}</span>
                                 </div>
                             </div>
@@ -655,7 +700,6 @@
     </div>
 
 </div>
-
 <!-- ENVIO DE RECOMENDACIONES  CON RESPOSIVE Y RESOURCE -->
 <div v-if="qualities_send_info.length > 0" class="row m-t-20" v-cloak>
     <div class="row">
@@ -671,6 +715,7 @@
                             <th >CAG</th>
                             <th >Fecha</th>
                             <th >Cliente</th>
+                            <th >Producto / Servicio</th>
                             <th >Asesor</th>
                             <th></th>
                         </tr>
@@ -680,6 +725,7 @@
                             <td >@{{recomen.cag}}</td>
                             <td >@{{recomen.moment}}</td>
                             <td >@{{recomen.client}}</td>
+                            <td >@{{recomen.motive}}</td>
                             <td >@{{recomen.user}}</td>
                             <td> <a :href="gotoUrl(recomen.id, 3)" style="font-style: oblique">IR A DOCUMENTO</a></td>
                         </tr>
@@ -715,7 +761,12 @@
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
-                                    Asesor: <span class="txtblack">@{{recomen.user}}</span>
+                                    Cliente: <span class="txtblack">@{{recomen.motive}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Producto / Servicio: <span class="txtblack">@{{recomen.user}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
@@ -731,7 +782,6 @@
     </div>
 
 </div>
-
 <div v-if="qualities_send_info_confirm.length > 0" class="row m-t-20" v-cloak>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
@@ -746,6 +796,7 @@
                             <th >CAG</th>
                             <th >Fecha</th>
                             <th >Cliente</th>
+                            <th >Producto / Servicio</th>
                             <th >Asesor</th>
                             <th></th>
                         </tr>
@@ -755,6 +806,7 @@
                             <td >@{{recomen_confirm.cag}}</td>
                             <td >@{{recomen_confirm.moment}}</td>
                             <td >@{{recomen_confirm.client}}</td>
+                            <td >@{{recomen_confirm.motive}}</td>
                             <td >@{{recomen_confirm.user}}</td>
                             <td> <a :href="gotoUrl(recomen_confirm.id, 3)" style="font-style: oblique">IR A DOCUMENTO</a></td>
                         </tr>
@@ -786,6 +838,11 @@
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
                                     Cliente: <span class="txtblack">@{{recomen_confirm.client}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Producto / Servicio: <span class="txtblack">@{{recomen_confirm.motive}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">

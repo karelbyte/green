@@ -49,7 +49,9 @@ class NotifyDaily extends Command
      */
     public function handle()
     {
-        $users = User::query()->where('position_id', 1)->get();
+        $users = User::query()->where('position_id', 1)
+            ->where('active_id', 1)
+            ->get();
 
         foreach ($users as $user) {
 
@@ -119,7 +121,7 @@ class NotifyDaily extends Command
 
             // INSTALACION O ENGREAGA DE TRABAJOS CON OBJETO RESOURCE
             $sale_note_not_delivered = SalesNote::query()->with(['globals' => function($q) {
-                $q->with('client', 'user');
+                $q->with('client', 'user', 'MotiveServices', 'MotiveProducts');
             }])->leftJoin('cglobals', 'cglobals.id',   'salesnotes.global_id')
                 ->whereRaw('DATEDIFF(now() , salesnotes.deliverydate) >= 0')
                 ->wherein('salesnotes.status_id', [ 4, 5, 6]);

@@ -5,9 +5,11 @@ namespace App\Entities;
 
 use App\Http\Resources\QualitiesSendInfo;
 use App\Http\Resources\QualitiesSendInfoConfirm;
+use App\Http\Resources\QuoteHomeEnd;
 use App\Http\Resources\QuoteLocalEmpty;
 use App\Http\Resources\QuoteSendConfirm;
 use App\Http\Resources\QuoteTracing;
+use App\Http\Resources\SalesNoteNotClose;
 use App\Http\Resources\SalesNoteNotDelivered;
 use App\Http\Resources\SalesNoteNotPayment;
 use App\Http\Resources\VisitHomeNotification;
@@ -31,7 +33,7 @@ class NotificationDaily
 
         // VISITAS A DOMICILIO CON OBJETO RECURSO
         $landscapers = LandScaper::query()->with(['user', 'global' => function($q) {
-            $q->with('client', 'quote');
+            $q->with('client', 'quote', 'MotiveServices', 'MotiveProducts');
         }])->leftJoin('cglobals', 'cglobals.id',   'landscapers.cglobal_id')
             ->whereRaw('DATEDIFF(now(), landscapers.moment) >= 0')
             ->where('landscapers.status_id',  0);
@@ -42,12 +44,11 @@ class NotificationDaily
         } else {
             $landscapers =  $landscapers->select('landscapers.*')->get();
         }
-       // return  $landscapers;
         $landscapers = VisitHomeNotification::collection($landscapers);
 
         // VERIFICACION DE RECEPCION DE COTIZACION CON OBJETO RESOURCE
         $quote_confirm = Quote::with(['globals' => function($q) {
-            $q->with('client');
+            $q->with('client', 'MotiveServices', 'MotiveProducts');
         }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
             ->whereRaw('DATEDIFF(now(), quotes.check_date ) > 1')
             ->where('quotes.status_id', 3);
@@ -65,7 +66,7 @@ class NotificationDaily
 
         // SEGUIMIENTO DE COTIZACIONES CON OBJETO RESOURCE
         $quote_tracing = Quote::with(['globals' => function($q) {
-            $q->with('client');
+            $q->with('client', 'MotiveServices', 'MotiveProducts');
         }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
             ->whereRaw('DATEDIFF(now(), quotes.check_date ) >= 0')
             ->where('quotes.status_id', 7); // SEGUIMIENTO
@@ -75,12 +76,12 @@ class NotificationDaily
         } else {
             $quote_tracing = $quote_tracing->select('quotes.*')->get();
         }
-        $quote_tracing = QuoteTracing::collection( $quote_tracing);
+        $quote_tracing = QuoteTracing::collection($quote_tracing);
 
 
         // NOTA CREADA SIN CONTENIDO  ---------- OJO REVISAR --------
         $salen_note_not_close = SalesNote::query()->with(['globals' => function($q) {
-            $q->with('client', 'user');
+            $q->with('client', 'user', 'MotiveServices', 'MotiveProducts');
         }])->leftJoin('cglobals', 'cglobals.id',   'salesnotes.global_id')
             ->whereRaw('DATEDIFF(now() , salesnotes.moment) >= 0')
             ->where('salesnotes.status_id', 3);
@@ -91,9 +92,11 @@ class NotificationDaily
             $salen_note_not_close =  $salen_note_not_close->select('salesnotes.*')->get();
         }
 
+        $salen_note_not_close = SalesNoteNotClose::collection($salen_note_not_close);
+
         // COTIZACION A DISTANCIA  CREADA SIN CONTENIDO CON OBJETO RESOURCE
         $quote_local_close = Quote::query()->with(['globals' => function($q) {
-            $q->with('client', 'user');
+            $q->with('client', 'user', 'MotiveServices', 'MotiveProducts');
         }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
             ->whereRaw('DATEDIFF(now(), quotes.moment) >= 0')
             ->where('quotes.status_id', 2)
@@ -108,7 +111,7 @@ class NotificationDaily
 
         // GESTION DE COBRANZA CON OBJETO RESOURCE
         $sale_note_not_payment = SalesNote::query()->with(['globals' => function($q) {
-            $q->with('client', 'user');
+            $q->with('client', 'user', 'MotiveServices', 'MotiveProducts');
         }])->leftJoin('cglobals', 'cglobals.id',   'salesnotes.global_id')
             ->whereRaw('DATEDIFF(now() , salesnotes.paimentdate) >= 0')
             ->wherein('salesnotes.status_id', [1, 4, 6, 8]);
@@ -123,7 +126,7 @@ class NotificationDaily
 
         // INSTALACION O ENGREAGA DE TRABAJOS CON OBJETO RESOURCE
         $sale_note_not_delivered = SalesNote::query()->with(['globals' => function($q) {
-            $q->with('client', 'user');
+            $q->with('client', 'user', 'MotiveServices', 'MotiveProducts');
         }])->leftJoin('cglobals', 'cglobals.id',   'salesnotes.global_id')
             ->whereRaw('DATEDIFF(now() , salesnotes.deliverydate) >= 0')
             ->wherein('salesnotes.status_id', [ 4, 5, 6]);
@@ -135,9 +138,11 @@ class NotificationDaily
         }
         $sale_note_not_delivered = SalesNoteNotDelivered::collection($sale_note_not_delivered);
 
+       // return $sale_note_not_delivered;
+
         // ENVIO DE RECOMENDACIONES CON OBJETO RESORUCE
         $qualities_send_info = Quality::query()->with(['global' => function($q) {
-            $q->with('client', 'user');
+            $q->with('client', 'user', 'MotiveServices', 'MotiveProducts');
         }])->leftJoin('cglobals', 'cglobals.id',   'qualities.cglobal_id')
             ->whereRaw('DATEDIFF(now() , qualities.moment) >= 0')
             ->where('qualities.status_id', 1);
@@ -166,7 +171,7 @@ class NotificationDaily
 
         // COTIZACION  A DOMICIOLIO TERMINADA
         $quote_home_end = Quote::query()->with(['globals' => function($q) {
-            $q->with('client', 'user');
+            $q->with('client', 'user', 'MotiveServices', 'MotiveProducts');
         }])->leftJoin('cglobals', 'cglobals.id',   'quotes.cglobal_id')
             ->whereRaw('DATEDIFF(now(), quotes.check_date) >= 0')
             ->where('quotes.status_id', 10)
@@ -177,6 +182,8 @@ class NotificationDaily
         } else {
             $quote_home_end = $quote_home_end->select('quotes.*')->get();
         }
+
+        $quote_home_end = QuoteHomeEnd::collection($quote_home_end );
 
         $data = [
             'landscapers' => $landscapers,
