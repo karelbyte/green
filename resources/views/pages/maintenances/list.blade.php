@@ -202,6 +202,7 @@
                 <td>
                     <button v-if="detail.status_id === 1" class="btn btn-primary  waves-effect btn-sm" @click="editDetail(detail)"><i class="fa fa-check-square"></i></button>
                     <button v-if="detail.status_id === 2" class="btn btn-primary  waves-effect btn-sm" @click="confirm(detail)">Ejecutar</button>
+                    <button v-if="detail.status_id === 1" class="btn btn-primary  waves-effect btn-sm" @click="confirm(detail)">Cancelar</button>
                     <button v-if="detail.status_id == 3" class="btn btn-success  waves-effect btn-sm" @click="retroInfo(detail)">Concluir</button>
                     <button v-if="detail.status_id == 4" class="btn btn-success  waves-effect btn-sm" @click="commend(detail)">Recomendaciones</button>
                     <button v-if="detail.status_id == 6" class="btn btn-brown  waves-effect btn-sm" @click="confirmCommend(detail)">Verificar</button>

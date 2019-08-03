@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendMails;
 use App\Mail\MailSaleRequeriments;
+use App\Models\Calendar;
 use App\Models\CGlobal\CGlobal;
 use App\Models\Company;
 use App\Models\Element;
@@ -286,8 +287,12 @@ class SalesNoteController extends Controller
         }
 
             $sale = SalesNote::query()->find($request->id);
+         /* $sale = SalesNote::with(['globals' => function($q) {
+                $q->with('client', 'user');
+             }])->where('id', $$request->id)->firts(); */
             // GENERANDO MANTENIMIENTOS
-            if ($sale->origin === SalesNote::ORIGIN_CAG) {
+
+            if ((int) $sale->origin === SalesNote::ORIGIN_CAG) {
                 foreach ($sale->products_services as $maintenance) {
                     $newMait = Maintenance::query()->create([
                         'sales_note_details_id' => $maintenance->id,
@@ -298,12 +303,22 @@ class SalesNoteController extends Controller
                         'status_id' => 1
                     ]);
                     $newMait->details()->create([
-                        'moment' => Carbon::now(),
+                        'moment' => Carbon::parse($maintenance->start),
                         'sale_id' => $request->id,
                         'price' => $sale->total(),
                         'accept' => 1,
                         'status_id' => 1]);
 
+                    Calendar::query()->create([
+                        'cglobal_id' => $sale->globals->id,
+                        'user_id' => $sale->globals->user_id,
+                        'for_user_id' => 0,
+                        'start' => Carbon::parse(Carbon::parse($maintenance->start)),
+                        'end' => Carbon::parse(Carbon::parse($maintenance->start))->addHours(2),
+                        'title' => 'SERVICIO A : ' .  $sale->globals->client->name ,
+                        'contentFull' => $maintenance->descrip . '   DOMICILIO: ' . $sale->globals->client->street . ' '. $sale->globals->client->home_number . ' '. $sale->globals->client->colony,
+                        'class' => 'domicilio'
+                    ]);
                 }
 
             }

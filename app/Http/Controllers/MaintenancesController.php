@@ -23,9 +23,11 @@ class MaintenancesController extends Controller
     }
 
     public function details($id) {
-        return MaintenanceDetail::query()->with('status', 'accepts')->where('maintenance_id', $id)
+       $result = MaintenanceDetail::query()->with('status', 'accepts')->where('maintenance_id', $id)
             ->orderBy('moment', 'desc')
             ->get();
+
+        return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
     }
 
     public function confirm($id) {
