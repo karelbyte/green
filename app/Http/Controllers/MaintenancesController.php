@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendMails;
 use App\Mail\MailMaintananceCommend;
+use App\Models\Calendar;
 use App\Models\Company;
 use App\Models\Maintenances\MaintenanceDetail;
 use App\Models\Client;
@@ -71,6 +72,14 @@ class MaintenancesController extends Controller
                 'visiting_time' => $request->visiting_time,
                 'price' => $request->price,
                 'status_id' => 2, // PROCES0 - CONFIRMADO
+            ]);
+      /*  $cite = Calendar::query()->where('mant_id',  $request->id)->first();
+        $star = Carbon::parse($cite->start)->format('Y-m-d');
+        $star .= ' ' .$request->visiting_time;*/
+        Calendar::query()->where('mant_id',  $request->id)
+            ->update([
+                'start' => Carbon::parse(Carbon::parse($request->moment . ' ' .$request->visiting_time)),
+                'end' => Carbon::parse(Carbon::parse($request->moment . ' ' .$request->visiting_time))->addHours(2)
             ]);
         return response()->json('Datos mantenimiento confirmados y actualizados con exito!');
     }

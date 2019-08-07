@@ -302,7 +302,7 @@ class SalesNoteController extends Controller
                         'start' =>  $maintenance->start,
                         'status_id' => 1
                     ]);
-                    $newMait->details()->create([
+                   $sub =  $newMait->details()->create([
                         'moment' => Carbon::parse($maintenance->start),
                         'sale_id' => $request->id,
                         'price' => $sale->total(),
@@ -317,6 +317,7 @@ class SalesNoteController extends Controller
                         'end' => Carbon::parse(Carbon::parse($maintenance->start))->addHours(2),
                         'title' => 'SERVICIO A : ' .  $sale->globals->client->name ,
                         'contentFull' => $maintenance->descrip . '   DOMICILIO: ' . $sale->globals->client->street . ' '. $sale->globals->client->home_number . ' '. $sale->globals->client->colony,
+                        'mant_id' => $sub->id,
                         'class' => 'mant'
                     ]);
                 }

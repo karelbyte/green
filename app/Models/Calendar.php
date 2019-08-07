@@ -24,7 +24,7 @@ class Calendar extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['cglobal_id', 'user_id', 'for_user_id', 'start', 'end', 'title', 'contentFull', 'allDay', 'class', 'status_id'];
+    protected $fillable = ['cglobal_id', 'user_id', 'for_user_id', 'start', 'end', 'title', 'contentFull', 'allDay', 'class', 'status_id', 'mant_id'];
 
     public function user() {
         return $this->belongsTo(User::class);
