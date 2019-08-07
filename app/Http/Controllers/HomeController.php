@@ -39,7 +39,7 @@ class HomeController extends Controller
       }
 
       if ( auth()->user()->can('cag')) {
-            $view = view('pages.cags.list')->render();
+            $view = view('pages.cags.list', ['status' => 0, 'user_id' => auth()->user()->id])->render();
             return $view;
       }
 

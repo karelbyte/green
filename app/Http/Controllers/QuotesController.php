@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Psy\Util\Str;
 
 class QuotesController extends Controller
 {
@@ -93,7 +94,7 @@ class QuotesController extends Controller
         }])->leftJoin('cglobals', 'cglobals.id', 'quotes.cglobal_id')
             ->leftJoin('clients', 'clients.id', 'cglobals.client_id');
 
-        if ( (int) $user->position_id !== 1) {
+        if ( (int) $user->position_id === 2) {
 
             $datos->where('cglobals.user_id', $request->user_id_auth);
         }
@@ -125,13 +126,13 @@ class QuotesController extends Controller
 
        // dd($request->hasFile('file0'));
 
-        for($i = 0;  $i< $request->cant; $i++) {
+        for($i = 0;  $i < $request->cant; $i++) {
 
             $file = $request->file('file' . $i);
 
             $ext = $file->getClientOriginalExtension();
 
-            $name = Carbon::now()->timestamp .'.'. $ext;
+            $name = Str::uuid() . Carbon::now()->unix() .'.'. $ext;
 
             $patch =  storage_path('app/public/cliente-') . $quote->globals->client->code. '/cag-' .  $quote->globals->id .'/visit';
 

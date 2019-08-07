@@ -317,7 +317,7 @@ class SalesNoteController extends Controller
                         'end' => Carbon::parse(Carbon::parse($maintenance->start))->addHours(2),
                         'title' => 'SERVICIO A : ' .  $sale->globals->client->name ,
                         'contentFull' => $maintenance->descrip . '   DOMICILIO: ' . $sale->globals->client->street . ' '. $sale->globals->client->home_number . ' '. $sale->globals->client->colony,
-                        'class' => 'domicilio'
+                        'class' => 'mant'
                     ]);
                 }
 

@@ -19,6 +19,11 @@
             cursor: pointer;
             color:white;
         }
+        .vuecal__event.mant {
+            background: #26a172;
+            cursor: pointer;
+            color:white;
+        }
         .vuecal__event.user {
             background: #7d2448;
             cursor: pointer;

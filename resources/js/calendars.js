@@ -48,10 +48,10 @@ new Vue({
         });
     },
     methods: {
-        logEvents(event) {
+       logEvents(event) {
            let date = moment(event.startDate);
            this.getList( date.month() + 1, date.year() );
-        },
+       },
        dateEstoUs (s) {
             let b = s.split(' ');
             let d = b[0].split('-');

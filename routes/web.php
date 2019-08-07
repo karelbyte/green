@@ -101,75 +101,79 @@ Route::get('/infophp', function () {
     phpinfo();
 });
 
-Route::middleware('auth')->group(function () {
+Route::get('/at_time', function () {
+    return view('layouts.at_time');
+})->name('at_time');
 
-    Route::get('/', 'HomeController@index')->name('inicio');
+Route::middleware(['auth', 'LoginMoment'])->group(function () {
 
-    Route::get('/panel', 'HomeController@index')->name('panel');
+        Route::get('/', 'HomeController@index')->name('inicio');
 
-    Route::get('/ajustes/empresa', 'CompanyController@index')->name('company');
+        Route::get('/panel', 'HomeController@index')->name('panel');
 
-    Route::get('/roles', 'RolsController@index')->name('roles');
+        Route::get('/ajustes/empresa', 'CompanyController@index')->name('company');
 
-    // PROVEEDORES
-    Route::get('/clientes/listado', 'ClientsController@index')->name('clients');
-    Route::get('/clientes/nuevo', 'ClientsController@newview')->name('clients.new');
+        Route::get('/roles', 'RolsController@index')->name('roles');
 
-    // PROVEEDORES
-    Route::get('/proveedores/listado', 'ProvidersController@index')->name('providers');
-    Route::get('/proveedores/nuevo', 'ProvidersController@newview')->name('providers.new');
+        // PROVEEDORES
+        Route::get('/clientes/listado', 'ClientsController@index')->name('clients');
+        Route::get('/clientes/nuevo', 'ClientsController@newview')->name('clients.new');
 
-    // USUARIOS
-    Route::get('/usuarios/listado', 'UsersController@index')->name('users');
-    Route::get('/usuarios/nuevo', 'UsersController@newview')->name('users.new');
+        // PROVEEDORES
+        Route::get('/proveedores/listado', 'ProvidersController@index')->name('providers');
+        Route::get('/proveedores/nuevo', 'ProvidersController@newview')->name('providers.new');
 
-    // MEDIDAS
-    Route::get('/measures', 'MeasuresController@index')->name('measures');
+        // USUARIOS
+        Route::get('/usuarios/listado', 'UsersController@index')->name('users');
+        Route::get('/usuarios/nuevo', 'UsersController@newview')->name('users.new');
 
-    // PRODUCTOS ALMACEN
-    Route::get('/productos', 'MaterialsController@index')->name('products');
+        // MEDIDAS
+        Route::get('/measures', 'MeasuresController@index')->name('measures');
 
-    // MATERIALES ALMACEN
-    Route::get('/herramientas', 'ToolsController@index')->name('tools');
+        // PRODUCTOS ALMACEN
+        Route::get('/productos', 'MaterialsController@index')->name('products');
 
-    // RECEPCIONES
-    Route::get('/recepciones', 'ReceptionsController@index')->name('receptions');
+        // MATERIALES ALMACEN
+        Route::get('/herramientas', 'ToolsController@index')->name('tools');
 
-    // INVENTARIOS
-    Route::get('/inventarios', 'InventorisController@index')->name('inventoris');
+        // RECEPCIONES
+        Route::get('/recepciones', 'ReceptionsController@index')->name('receptions');
 
-    // PRODUCTOS
-    Route::get('/catalogo-productos', 'ProductsOfferedsController@index')->name('productsoffereds');
+        // INVENTARIOS
+        Route::get('/inventarios', 'InventorisController@index')->name('inventoris');
 
-    // SERVICIOS
-    Route::get('/catalogo-servicios', 'ServicesOfferedsController@index')->name('servicesoffereds');
+        // PRODUCTOS
+        Route::get('/catalogo-productos', 'ProductsOfferedsController@index')->name('productsoffereds');
 
-    // CICLO DE ATENCION GLOBAL
-    Route::get('/atencion/{status?}/{id?}', 'CGlobalsController@index')->name('cags');
+        // SERVICIOS
+        Route::get('/catalogo-servicios', 'ServicesOfferedsController@index')->name('servicesoffereds');
 
-    // MANTENIMIENTOS
-    Route::get('/mantenimientos', 'MaintenancesController@index')->name('maintenance');
+        // CICLO DE ATENCION GLOBAL
+        Route::get('/atencion/{status?}/{id?}', 'CGlobalsController@index')->name('cags');
 
-    // COTIZACIONES
-    Route::get('/cotizaciones/{id?}', 'QuotesController@index')->name('quotes');
+        // MANTENIMIENTOS
+        Route::get('/mantenimientos', 'MaintenancesController@index')->name('maintenance');
 
-    // NOTA DE VENTA
-    Route::get('/notas-de-ventas/{id?}', 'SalesNoteController@index')->name('sales');
+        // COTIZACIONES
+        Route::get('/cotizaciones/{id?}', 'QuotesController@index')->name('quotes');
 
-    // CALENDARIO
-    Route::get('/notificasiones', 'NotificationsController@index')->name('notifications');
+        // NOTA DE VENTA
+        Route::get('/notas-de-ventas/{id?}', 'SalesNoteController@index')->name('sales');
 
-    // CALENDARIO
-    Route::get('/calendario', 'CalendarsController@index')->name('calendars');
+        // CALENDARIO
+        Route::get('/notificasiones', 'NotificationsController@index')->name('notifications');
 
-    // CALENDARIO
-    Route::get('/info', 'CalendarsController@index')->name('info');
+        // CALENDARIO
+        Route::get('/calendario', 'CalendarsController@index')->name('calendars');
 
-    // CALIDAD
-    Route::get('/calidad/{id?}', 'QualityController@index')->name('quality');
+        // CALENDARIO
+        Route::get('/info', 'CalendarsController@index')->name('info');
 
-    // REPORTES
-    Route::get('/informes-cotizaciones', 'ReportsController@quotesIndex')->name('reports.quotes');
+        // CALIDAD
+        Route::get('/calidad/{id?}', 'QualityController@index')->name('quality');
+
+        // REPORTES
+        Route::get('/informes-cotizaciones', 'ReportsController@quotesIndex')->name('reports.quotes');
 
 });
 
