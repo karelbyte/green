@@ -154,6 +154,20 @@ Route::get('/pruebas', function () {
  return 'todo ok';
 });
 
+Route::get('/otro', function () {
+    $Maintenances = \App\Models\Maintenances\Maintenance::query()->with('mlast')->get();
+    $MaintenancesInAcion = new \Illuminate\Support\Collection();
+    foreach ($Maintenances as $maintenance) {
+        $date = $maintenance->mlast[0]['moment'] . ' ' . $maintenance->mlast[0]['visiting_time'];
+        $newDate = \Carbon\Carbon::parse($date)->addDays($maintenance->timer);
+        $diff = $newDate->diffInDays(\Carbon\Carbon::now());
+         if ($diff <= 2 && (int) $maintenance->mlast[0]->status_id === 1 ) {
+            $MaintenancesInAcion->add(new \App\Http\Resources\MaintenanceAlertResource($maintenance));
+        }
+    }
+    return response()->json($MaintenancesInAcion);
+});
+
 
 Route::get('/at_time', function () {
     return view('layouts.at_time');

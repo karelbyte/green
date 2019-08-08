@@ -17,6 +17,7 @@ use App\Models\LandScaper;
 use App\Models\Qualities\Quality;
 use App\Models\Quotes\Quote;
 use App\Models\SalesNotes\SalesNote;
+use Illuminate\Support\Collection;
 
 class NotificationDaily
 {
@@ -182,8 +183,20 @@ class NotificationDaily
         } else {
             $quote_home_end = $quote_home_end->select('quotes.*')->get();
         }
-
         $quote_home_end = QuoteHomeEnd::collection($quote_home_end );
+
+        // AVISANDO DE LOS MANTENIMIENTOS
+
+        $Maintenances = \App\Models\Maintenances\Maintenance::query()->with('mlast')->get();
+        $MaintenancesInAcion = new \Illuminate\Support\Collection();
+        foreach ($Maintenances as $maintenance) {
+            $date = $maintenance->mlast[0]['moment'] . ' ' . $maintenance->mlast[0]['visiting_time'];
+            $newDate = \Carbon\Carbon::parse($date)->addDays($maintenance->timer);
+            $diff = $newDate->diffInDays(\Carbon\Carbon::now());
+            if ($diff <= 2 && (int) $maintenance->mlast[0]->status_id === 1 ) {
+                $MaintenancesInAcion->add(new \App\Http\Resources\MaintenanceAlertResource($maintenance));
+            }
+        }
 
         $data = [
             'landscapers' => $landscapers,
@@ -204,7 +217,9 @@ class NotificationDaily
 
             'qualities_send_info' => $qualities_send_info,
 
-            'qualities_send_info_confirm' => $qualities_send_info_confirm
+            'qualities_send_info_confirm' => $qualities_send_info_confirm,
+
+            'maintenances' => $MaintenancesInAcion
         ];
 
         return $data;
@@ -221,9 +236,10 @@ class NotificationDaily
         $quote_local_close= count($data['quote_local_close']) > 0;
         $sale_note_not_payment= count($data['sale_note_not_payment']) > 0;
         $sale_note_not_delivered = count($data['sale_note_not_delivered']) > 0;
+        $maintenances = count($data['maintenances']) > 0;
 
         return $land || $quoteconfirm || $quotetracing || $sale_note_not_close || $quote_local_close
-            || $sale_note_not_payment || $sale_note_not_delivered;
+            || $sale_note_not_payment || $sale_note_not_delivered || $maintenances;
     }
 
     public function Daily() {

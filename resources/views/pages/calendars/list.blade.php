@@ -179,7 +179,7 @@
                     <div class="row">
                         <div class="col-lg-12 text-right">
                             @can('calendar.create')
-                              <button v-if="item.cglobal_id === 0" class="btn btn-success btn-sm" @click="addEvent()">Aplicar</button>
+                              <button class="btn btn-success btn-sm" @click="addEvent()">Aplicar</button>
                             @endcan
                              @can('calendar.delete')
                               <button v-if="item.cglobal_id === 0" class="btn btn-danger btn-sm"  @click="deleteEvent()">ELIMINAR</button>
