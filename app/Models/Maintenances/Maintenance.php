@@ -36,4 +36,14 @@ class Maintenance extends Model
         return $this->hasMany(MaintenanceDetail::class, 'maintenance_id', 'id');
     }
 
+    public function mlast () {
+        return $this->hasMany(MaintenanceDetail::class, 'maintenance_id', 'id')
+        ->orderby('maintenance_details.moment','DESC')->take(1);
+    }
+
+    public function mfirst () {
+        return $this->hasMany(MaintenanceDetail::class, 'maintenance_id', 'id')
+            ->orderby('maintenance_details.moment')->take(1);
+    }
+
 }

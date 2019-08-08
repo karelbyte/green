@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CalendarDaily;
+use App\Console\Commands\Maintenances;
 use App\Console\Commands\NotifyDaily;
 use App\Console\Commands\NotifyVisits;
 use App\Console\Commands\TestComand;
@@ -19,7 +20,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         NotifyVisits::class,
         NotifyDaily::class,
-        CalendarDaily::class
+        CalendarDaily::class,
+        Maintenances::class
        // TestComand::class
     ];
 
@@ -36,6 +38,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('notify:daily')->dailyAt('7:30')->timezone('America/Mexico_City');
 
         $schedule->command('calendar:daily')->dailyAt('8:00')->timezone('America/Mexico_City');
+
+        $schedule->command('maintenance:gen')->dailyAt('5:00')->timezone('America/Mexico_City');
 
     }
 

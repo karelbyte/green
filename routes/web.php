@@ -101,6 +101,60 @@ Route::get('/infophp', function () {
     phpinfo();
 });
 
+Route::get('/pruebas', function () {
+    $Maintenances = \App\Models\Maintenances\Maintenance::query()->with('mlast')->get();
+
+    foreach ($Maintenances as $maintenance) {
+        $date = $maintenance->mlast[0]['moment'];
+        $newDate = \Carbon\Carbon::parse($date)->addDays($maintenance->timer);
+        $diff = $newDate->diffInDays(\Carbon\Carbon::now());
+
+            $acestor = \App\Models\SalesNotes\SalesNoteDetails::query()->with(['sale' => function ($q) {
+                $q->with('globals');
+            }])->find($maintenance->sales_note_details_id);
+
+            $sale = \App\Models\SalesNotes\SalesNote::query()->create([
+                'global_id' => $acestor->sale->global_id,
+                'moment' => \Carbon\Carbon::now()->addDays(2),
+                'emit' => \Carbon\Carbon::now()->addDays(2),
+                'advance' => 0,
+                'origin' => \App\Models\SalesNotes\SalesNote::ORIGIN_SALE_NOTE,
+                'status_id' => 3,
+            ]);
+
+            $sale->details()->create([
+                'type_item' => $acestor['type_item'],
+                'item_id' => $acestor['item_id'],
+                'descrip' => $acestor['descrip'],
+                'measure_id' => $acestor['measure_id'],
+                'cant' => $acestor['cant'],
+                'price' => $acestor['price'],
+            ]);
+            $sub = $maintenance->details()->create([
+                'moment' => $newDate,
+                'sale_id' => $sale->id,
+                'price' => $sale->total(),
+                'accept' => 1,
+                'status_id' => 1]);
+
+            $start = $newDate->format('Y-m-d') . ' '. $maintenance->mlast[0]['visiting_time'];
+            dd($start, Carbon\Carbon::parse($start)->addHours(2)->format('Y-m-d H:i'));
+            \App\Models\Calendar::query()->create([
+                'cglobal_id' => $acestor->sale->global_id,
+                'user_id' => $acestor->sale->globals->user_id,
+                'for_user_id' => 0,
+                'start' => $start,
+                'end' =>  \Carbon\Carbon::parse($start)->addHours(2)->format('Y-m-d H:i'),
+                'title' => 'SERVICIO A : ' . $sale->globals->client->name,
+                'contentFull' => $acestor['descrip'] . '   DOMICILIO: ' . $sale->globals->client->street . ' ' . $sale->globals->client->home_number . ' ' . $sale->globals->client->colony,
+                'mant_id' => $sub->id,
+                'class' => 'mant'
+            ]);
+        }
+ return 'todo ok';
+});
+
+
 Route::get('/at_time', function () {
     return view('layouts.at_time');
 })->name('at_time');
