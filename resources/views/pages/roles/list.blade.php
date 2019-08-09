@@ -204,6 +204,36 @@
                     </div>
                 </div>
                 <div class="row txtblack" style="padding-left: 10px">
+                    Modulo Calidad
+                </div>
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="quality" @change="chekset('quality')">
+                            <label for="checkbox2">
+                                Calidad
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input :disabled="!grants.includes('quality')"  type="checkbox" v-model="grants" value="quality.confirm">
+                            <label for="checkbox2">
+                                Confirmar
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-primary">
+                            <input  :disabled="!grants.includes('quality')" type="checkbox" v-model="grants" value="quality.senddoc">
+                            <label for="checkbox2">
+                                Enviar documentos
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
                     Modulo de mantenimiento
                 </div>
                 <div class="row roles">
@@ -229,6 +259,19 @@
                             <input  :disabled="!grants.includes('maintenance')" type="checkbox" v-model="grants" value="maintenance.delete">
                             <label for="checkbox2">
                                 Eliminar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
+                    Modulo de Informes
+                </div>
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="info" @change="chekset('info')">
+                            <label for="checkbox2">
+                                Informes generales
                             </label>
                         </div>
                     </div>

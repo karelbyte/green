@@ -163,23 +163,24 @@
                         <a href="{{route('sales')}}" class="waves-effect"><i class="mdi mdi-note-plus-outline"></i><span>Notas de venta </span></a>
                     </li>
                     @endcan
-                    @can('cag') <!-- CALIDAD DEL SERVICIO -->
+                    @can('quality') <!-- CALIDAD DEL SERVICIO -->
                        <li>
                            <a href="{{route('quality')}}" class="waves-effect"><i class="mdi mdi-checkbox-multiple-marked-circle"></i><span>Calidad </span></a>
                       </li>
                     @endcan
-
                     @can('maintenance')
                     <li>
                         <a href="{{route('maintenance')}}" class="waves-effect"><i class="typcn typcn-weather-downpour "></i><span>Mantenimientos </span></a>
                     </li>
                     @endcan
+                    @can('info')
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-paste "></i><span> Informes</span><span class="menu-arrow"></span> </a>
                          <ul class="list-unstyled">
                             <li><a href="{{route('reports.quotes')}}">Cotizaciones</a></li>
                          </ul>
                     </li>
+                    @endcan
                     @can('clients')
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-card-details"></i> <span>Clientes</span> <span class="menu-arrow"></span></a>
@@ -255,7 +256,7 @@
                         </ul>
                     </li>
                     @endif
-                    @if (auth()->user()->position_id == 1 )
+                    @if ((int) auth()->user()->position_id === 1 )
                     <li class="has_sub">
                         <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-cog"></i><span>Ajustes</span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
