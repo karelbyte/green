@@ -41,7 +41,8 @@ class Maintenances extends Command
         $Maintenances = \App\Models\Maintenances\Maintenance::query()->with('mlast')->get();
 
         foreach ($Maintenances as $maintenance) {
-            $date = $maintenance->mlast[0]['moment'] . ' ' . $maintenance->mlast[0]['visiting_time'];
+            $ultimo = $maintenance->load('mlast')->mlast[0];
+            $date = $ultimo['moment'] . ' ' . $ultimo['visiting_time'];
             $newDate = \Carbon\Carbon::parse($date)->addDays($maintenance->timer);
             $diff = $newDate->diffInDays(\Carbon\Carbon::now());
             if ($diff <= 3) {

@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Mail;
 
 class MaintenancesController extends Controller
 {
-    public function index()
+    public function index($id = 0)
     {
-        return view('pages.maintenances.list');
+        return view('pages.maintenances.list', ['find' => $id]);
     }
 
     public function details($id) {

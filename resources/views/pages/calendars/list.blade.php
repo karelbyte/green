@@ -137,14 +137,14 @@
                         <div class="form-group col-lg-6">
                             <label>Inicio</label>
                             <div class="input-group">
-                                <date-picker :disabled="item.cglobal_id > 0" v-model="item.start" :config="options"></date-picker>
+                                <date-picker  v-model="item.start" :config="options"></date-picker>
                                 <span class="input-group-addon"><i class="mdi mdi-clock"></i></span>
                             </div><!-- input-group -->
                         </div>
                         <div class="form-group col-lg-6">
                             <label>Final</label>
                             <div class="input-group">
-                                <date-picker :disabled="item.cglobal_id > 0" v-model="item.end" :config="options"></date-picker>
+                                <date-picker  v-model="item.end" :config="options"></date-picker>
                                 <span class="input-group-addon"><i class="mdi mdi-clock"></i></span>
                             </div><!-- input-group -->
                         </div>
@@ -167,11 +167,11 @@
                         @endcan
                         <div class="form-group col-lg-12">
                             <label>Titulo *</label>
-                            <input :disabled="item.cglobal_id > 0" class="form-control" v-model="item.title">
+                            <input  class="form-control" v-model="item.title">
                         </div>
                         <div class="form-group col-lg-12">
                             <label>Descripcion</label>
-                            <textarea :disabled="item.cglobal_id > 0" class="form-control" v-model="item.contentFull"> </textarea>
+                            <textarea class="form-control" v-model="item.contentFull"> </textarea>
                         </div>
                     </div>
                 </div>

@@ -214,13 +214,17 @@ new Vue({
         accept: 1
       },
       listfield: [{
+        name: 'Codigo',
+        type: 'text',
+        field: 'maintenances.id'
+      }, {
         name: 'Cliente',
         type: 'text',
         field: 'clients.name'
       }],
       filters_list: {
         descrip: 'Codigo',
-        field: 'clients.name',
+        field: 'maintenances.id',
         value: ''
       },
       orders_list: {
@@ -229,7 +233,8 @@ new Vue({
       },
       value: '',
       scrpdf: '',
-      aux: {}
+      aux: {},
+      find: 0
     };
   },
   components: {
@@ -238,10 +243,17 @@ new Vue({
   mounted: function mounted() {
     this.formData = new FormData();
     this.propertyShowDelObj = 'client.name';
+    this.find = parseInt($('#find').val());
     this.labeledit = 'Actualizar mantenimiento';
     this.labelnew = 'Añadir mantenimiento';
     this.patchDelete = 'api/maintenances/';
     this.keyObjDelete = 'id';
+
+    if (this.find > 0) {
+      this.filters_list.value = this.find;
+    } else {
+      this.getlist();
+    }
   },
   methods: {
     dateToEs: _tools__WEBPACK_IMPORTED_MODULE_2__["dateEs"],

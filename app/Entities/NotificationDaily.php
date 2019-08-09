@@ -187,15 +187,27 @@ class NotificationDaily
 
         // AVISANDO DE LOS MANTENIMIENTOS
 
-        $Maintenances = \App\Models\Maintenances\Maintenance::query()->with('mlast')->get();
+        $Maintenances = \App\Models\Maintenances\Maintenance::query()->get();
         $MaintenancesInAcion = new \Illuminate\Support\Collection();
         foreach ($Maintenances as $maintenance) {
-            $date = $maintenance->mlast[0]['moment'] . ' ' . $maintenance->mlast[0]['visiting_time'];
-            $newDate = \Carbon\Carbon::parse($date)->addDays($maintenance->timer);
-            $diff = $newDate->diffInDays(\Carbon\Carbon::now());
-            if ($diff <= 2 && (int) $maintenance->mlast[0]->status_id === 1 ) {
-                $MaintenancesInAcion->add(new \App\Http\Resources\MaintenanceAlertResource($maintenance));
+            if ($maintenance->load('details')->details()->count() === 1) {
+                $ultimo = $maintenance->load('mlast')->mlast[0];
+                $date = $ultimo['moment'];
+                $newDate = \Carbon\Carbon::parse($date);
+                $diff = $newDate->diffInDays(\Carbon\Carbon::now());
+                if ($diff <= 2 && (int) $ultimo['status_id'] <= 2 ) {
+                    $MaintenancesInAcion->add(new \App\Http\Resources\MaintenanceAlertResource($maintenance));
+                }
+            } else {
+                $ultimo = $maintenance->load('mlast')->mlast[0];
+                $date = $ultimo['moment'];
+                $newDate = \Carbon\Carbon::parse($date)->addDays($maintenance->timer);
+                $diff = $newDate->diffInDays(\Carbon\Carbon::now());
+                if ($diff <= 2 && (int) $ultimo['status_id'] <= 2 ) {
+                    $MaintenancesInAcion->add(new \App\Http\Resources\MaintenanceAlertResource($maintenance));
+                }
             }
+
         }
 
         $data = [

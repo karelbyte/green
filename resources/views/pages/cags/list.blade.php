@@ -177,7 +177,9 @@
 <div v-if="views.list" v-cloak>
     <div class="row m-b-10">
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 m-b-5">
+           @can('cag.create')
            <button class="btn btn-custom btn-inverse  waves-effect btn-sm" @click="add()">Nuevo</button>
+           @endcan
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
           <!--  <find :filters="filters_list" filter="value" v-on:getfilter="getlist" holder="buscar material"></find> -->

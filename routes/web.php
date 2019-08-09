@@ -220,7 +220,7 @@ Route::middleware(['auth', 'LoginMoment'])->group(function () {
         Route::get('/atencion/{status?}/{id?}', 'CGlobalsController@index')->name('cags');
 
         // MANTENIMIENTOS
-        Route::get('/mantenimientos', 'MaintenancesController@index')->name('maintenance');
+        Route::get('/mantenimientos/{id?}', 'MaintenancesController@index')->name('maintenance');
 
         // COTIZACIONES
         Route::get('/cotizaciones/{id?}', 'QuotesController@index')->name('quotes');

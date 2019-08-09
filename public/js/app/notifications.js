@@ -27,6 +27,7 @@ var notifications = new Vue({
       qualities_send_info: [],
       qualities_send_info_confirm: [],
       visit_home_end: [],
+      maintenances: [],
       not: 0
     };
   },
@@ -49,6 +50,11 @@ var notifications = new Vue({
         case 3:
           // RECOMENDACIONES
           patch = document.location.origin + '/calidad/' + id;
+          break;
+
+        case 4:
+          // MANTENIMIENTOS
+          patch = document.location.origin + '/mantenimientos/' + id;
           break;
 
         default:
@@ -74,7 +80,8 @@ var notifications = new Vue({
       _this.qualities_send_info = r.data.qualities_send_info;
       _this.qualities_send_info_confirm = r.data.qualities_send_info_confirm;
       _this.visit_home_end = r.data.visit_home_end;
-      _this.not = _this.landscapers.length === 0 && _this.quoteconfirm.length === 0 && _this.quotetracing.length === 0 && _this.sale_note_not_close.length === 0 && _this.quote_local_close.length === 0 && _this.sale_note_not_payment.length && _this.sale_note_not_delivered.length === 0 && _this.qualities_send_info.length === 0 && _this.qualities_send_info_confirm.length === 0 && _this.visit_home_end.length === 0;
+      _this.maintenances = r.data.maintenances;
+      _this.not = _this.landscapers.length === 0 && _this.quoteconfirm.length === 0 && _this.quotetracing.length === 0 && _this.sale_note_not_close.length === 0 && _this.quote_local_close.length === 0 && _this.sale_note_not_payment.length && _this.sale_note_not_delivered.length === 0 && _this.qualities_send_info.length === 0 && _this.qualities_send_info_confirm.length === 0 && _this.visit_home_end.length === 0 && _this.maintenances.length === 0;
     });
   }
 });

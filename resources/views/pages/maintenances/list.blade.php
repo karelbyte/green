@@ -25,7 +25,7 @@
         </div>
     </div>
 </div>
-
+<input type="text" id="find" value="{{$find}}" hidden>
 <div v-if="views.new" class="row" v-cloak>
     <div class="col-lg-10">
         <div class="panel panel-border panel-inverse">

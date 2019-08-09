@@ -38,12 +38,13 @@ class Maintenance extends Model
 
     public function mlast () {
         return $this->hasMany(MaintenanceDetail::class, 'maintenance_id', 'id')
-        ->orderby('maintenance_details.moment','DESC')->take(1);
+            ->latest('maintenance_details.moment');
+
     }
 
     public function mfirst () {
         return $this->hasMany(MaintenanceDetail::class, 'maintenance_id', 'id')
-            ->orderby('maintenance_details.moment')->take(1);
+            ->oldest('maintenance_details.moment');
     }
 
 }

@@ -16,6 +16,7 @@ let notifications = new Vue({
             qualities_send_info: [],
             qualities_send_info_confirm: [],
             visit_home_end: [],
+            maintenances: [],
             not: 0
         }
     },
@@ -32,6 +33,9 @@ let notifications = new Vue({
                     break;
                 case 3: // RECOMENDACIONES
                     patch = document.location.origin + '/calidad/' + id;
+                    break;
+                case 4: // MANTENIMIENTOS
+                    patch = document.location.origin + '/mantenimientos/' + id;
                     break;
                 default:
 
@@ -64,11 +68,14 @@ let notifications = new Vue({
 
           this.visit_home_end = r.data.visit_home_end;
 
+          this.maintenances = r.data.maintenances;
+
           this.not = this.landscapers.length === 0 && this.quoteconfirm.length === 0
               && this.quotetracing.length === 0 && this.sale_note_not_close.length === 0
               && this.quote_local_close.length === 0 && this.sale_note_not_payment.length
               && this.sale_note_not_delivered.length === 0 && this. qualities_send_info.length === 0
               && this.qualities_send_info_confirm.length === 0 &&  this.visit_home_end.length === 0
+             && this.maintenances.length === 0
 
       })
     }

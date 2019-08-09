@@ -7,6 +7,80 @@
         <h3>NO HAY NOTIFICACIONES</h3>
     </div>
 </div>
+<!-- MANTENIMIENTO EN ALERTA -->
+<div v-if="maintenances.length > 0" class="row m-t-20" v-cloak>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
+            <div class="panel panel-border panel-inverse m-t-5" style="font-size: 12px">
+                <div class="panel-heading text-center">
+                    <h3>MANTENIMIENTOS QUE REQUIEREN ATENCION</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th >Cliente</th>
+                            <th >SERVICIO</th>
+                            <th >Fecha Pactada</th>
+                            <th >Asesor</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="mouse" v-for="mante in maintenances" :key="mante.id">
+                            <td >@{{mante.client}}</td>
+                            <td >@{{mante.service}}</td>
+                            <td >@{{mante.moment}}</td>
+                            <td >@{{mante.user}}</td>
+                            <td> <a :href="gotoUrl(mante.id, 4)" style="font-style: oblique">IR A DOCUMENTO</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="hidden-lg hidden-md hidden-sm col-xs-12">
+            <div class="panel-heading text-center">
+                <h4>MANTENIMIENTOS QUE REQUIEREN ATENCION</h4>
+            </div>
+            <div v-for="mante in maintenances" :key="mante.id"  class="panel panel-border panel-inverse m-t-5">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-xs-12">
+                                    Cliente: <span class="txtblack">@{{mante.client}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Servicio: <span class="txtblack">@{{mante.service}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Fecha Pactada: <span class="txtblack">@{{mante.moment}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    Asesor : <span class="txtblack">@{{mante.user}}</span>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12 col-xs-12">
+                                    <a :href="gotoUrl(mante.id, 4)" style="font-style: oblique">IR A DOCUMENTO</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- SERVICIOS O PRODUCTOS EN TERMINO DE ENTREGA RESPONSIVA -->
 <div v-if="sale_note_not_delivered.length > 0" class="row m-t-20" v-cloak>
     <div class="row">
