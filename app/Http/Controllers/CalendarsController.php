@@ -21,8 +21,7 @@ class CalendarsController extends Controller
 
         $user = User::query()->find($request->user_id_auth);
 
-        if ( (int) $user->position_id === 1) {
-
+        if ( (int) $user->position_id === 1 || $user->can('calendar.viewothers')) {
             $datos = Calendar::query()->with('user')
                 ->whereRaw($sql)
                 ->get();
