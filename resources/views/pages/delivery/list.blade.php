@@ -47,15 +47,17 @@
                     <tr>
                         <th class="cel_fix"><order labels="Cliente" :options="orders_list" field="clients.name"  v-on:getfilter="getlist"></order></th>
                         <th class="cel_fix">Servicio</th>
+                        <th class="cel_fix">Fecha de entrega</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr class="mouse" v-for="entity in lists" :key="entity.id">
-                        <td class="cel_fix">@{{entity.client.name}}</td>
-                        <td class="cel_fix">@{{entity.service.name}}</td>
+                        <td class="cel_fix">@{{entity.globals.client.name}}</td>
+                        <td class="cel_fix">@{{entity.details[0].descrip}}</td>
+                        <td class="cel_fix">@{{entity.deliverydate}}</td>
                         <td>
-                            <button class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-file-pdf-o"></i></button>
+                            <button class="btn btn-teal waves-effect btn-sm" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o"></i></button>
                         </td>
                     </tr>
                     </tbody>
@@ -74,12 +76,12 @@
                         <div class="col-lg-8 col-md-8 col-sm-8 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-12 col-xs-12">
-                                    Cliente: <span class="txtblack">@{{entity.client.name}}</span>
+                                    Cliente: <span class="txtblack">@{{entity.globals.client.name}}</span>
                                 </div>
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-lg-12 col-xs-12">
-                                    Servicio: <span class="txtblack">@{{entity.service.name}}</span>
+                                    Servicio: <span class="txtblack">@{{entity.details[0].descrip}}</span>
                                 </div>
                             </div>
                         </div>
@@ -92,11 +94,11 @@
         </div>
     </div>
 </div>
-
+@component('com.visor_pdf') @endcomponent
 @component('com.eliminar')@endcomponent
 @component('com.spiner')@endcomponent
 @endsection
 @section('script')
     @parent
-    <script src="{{asset('js/app/maintenances.js')}}"></script>
+    <script src="{{asset('js/app/deliverys.js')}}"></script>
 @endsection

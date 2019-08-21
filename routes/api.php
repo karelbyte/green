@@ -102,22 +102,13 @@ Route::resource('/quotes', 'QuotesController');
 
 // RUTAS DEL MANTENIMIENTOS
 Route::prefix('maintenances')->group(function () {
-
     Route::post('list', 'MaintenancesController@getList');
-
     Route::get('details/{id}', 'MaintenancesController@details');
-
     Route::post('details/update', 'MaintenancesController@detailsUpdate');
-
     Route::get('confirm/{id}', 'MaintenancesController@confirm');
-
     Route::post('update/info/', 'MaintenancesController@updateInfo');
-
     Route::post('commends', 'MaintenancesController@commends');
-
     Route::post('update-commend-client', 'MaintenancesController@updateCommendClientAccept');
-
-   // Route::get('/get/id', 'MaintenancesController@sendID');
 
 });
 Route::resource('/maintenances', 'MaintenancesController');
@@ -130,57 +121,41 @@ Route::resource('/ajustes/company', 'CompanyController');
 
 // RUTAS DE SERVICIOS
 Route::prefix('servicesoffereds')->group(function () {
-
     Route::post('list', 'ServicesOfferedsController@getList');
-
     Route::get('services', 'ServicesOfferedsController@getServices');
-
 });
 Route::resource('/servicesoffereds', 'ServicesOfferedsController');
 
 
 // RUTAS DE PRODUCTOS
 Route::prefix('productsoffereds')->group(function () {
-
     Route::post('list', 'ProductsOfferedsController@getList');
-
     Route::get('products', 'ProductsOfferedsController@getProduct');
-
 });
 Route::resource('/productsoffereds', 'ProductsOfferedsController');
 
 
 // RUTAS DE ROLES SISTEMA
 Route::prefix('roles')->group(function () {
-
     Route::get('/permission/{id}', 'RolsController@getPermission');
-
     Route::post('list', 'RolsController@getList');
-
     Route::get('get', 'RolsController@getRoles');
-
 });
 Route::resource('/roles', 'RolsController');
 
 
 // RUTAS DE USUER SISTEMA
 Route::prefix('users')->group(function () {
-
     Route::post('list', 'UsersController@getList');
-
     Route::get('all', 'UsersController@getUsers');
-
     Route::get('positions', 'UsersController@getUserPositions');
-
     Route::get('landscapers/list', 'UsersController@getlanscapers');
-
 });
 Route::resource('/users', 'UsersController');
 
 
 // RUTAS DE UNIDADES DE MEDIDA
 Route::prefix('measures')->group(function () {
-
     Route::post('list', 'MeasuresController@getList');
 });
 Route::resource('/measures', 'MeasuresController');
@@ -188,11 +163,8 @@ Route::resource('/measures', 'MeasuresController');
 
 // RUTAS DE PRODUCTOS Y HERRAMIENTAS
 Route::prefix('materials')->group(function () {
-
     Route::post('list', 'MaterialsController@getList');
-
     Route::get('get', 'MaterialsController@getMaterials');
-
     Route::get('products', 'MaterialsController@getProducts');
 });
 Route::resource('/materials', 'MaterialsController');
@@ -200,9 +172,7 @@ Route::resource('/materials', 'MaterialsController');
 
 // RUTAS DE HERRAMIENTAS
 Route::prefix('tools')->group(function () {
-
     Route::post('list', 'ToolsController@getList');
-
     Route::get('get', 'ToolsController@getTools');
 });
 Route::resource('/tools', 'ToolsController');
@@ -210,11 +180,8 @@ Route::resource('/tools', 'ToolsController');
 
 // RUTAS DE RECEPCIONES
 Route::prefix('receptions')->group(function () {
-
     Route::post('list', 'ReceptionsController@getList');
-
     Route::post('aplic', 'ReceptionsController@aplic');
-
     Route::get('pdf/{id}', 'ReceptionsController@pdf');
 });
 Route::resource('/receptions', 'ReceptionsController');
@@ -222,33 +189,24 @@ Route::resource('/receptions', 'ReceptionsController');
 
 // RUTAS DE INVENTARIOS
 Route::prefix('inventoris')->group(function () {
-
     Route::post('list', 'InventorisController@getList');
-
     Route::get('products', 'InventorisController@getProducts');
-
     Route::get('pdf/{type}', 'InventorisController@pdf');
-
 });
 Route::resource('/inventoris', 'InventorisController');
 
 
 // RUTAS DE PROVEEDORES
 Route::prefix('providers')->group(function () {
-
     Route::post('list', 'ProvidersController@getList');
-
 });
 Route::resource('/providers', 'ProvidersController');
 
 
 // RUTAS DE CLIENTES
 Route::prefix('clients')->group(function () {
-
     Route::post('list', 'ClientsController@getList');
-
     Route::get('/get/id', 'ClientsController@sendID');
-
     Route::get('/files/{id}', 'ClientsController@files');
 });
 Route::resource('/clients', 'ClientsController');
@@ -256,19 +214,22 @@ Route::resource('/clients', 'ClientsController');
 
 // RUTAS DE CALIDAD
 Route::prefix('qualities')->group(function () {
-
     Route::post('list', 'QualityController@getList');
-
     Route::post('commends', 'QualityController@commends');
-
     Route::post('update-commend-client', 'QualityController@updateCommendClient');
-
 });
+
 Route::resource('/qualities', 'QualityController');
 
 // REPORTES
 Route::prefix('reports')->group(function () {
-
     Route::post('quotes', 'ReportsController@dataQuotes');
-
 });
+
+
+// PEDIDOS INFORMES
+Route::prefix('deliverys')->group(function () {
+    Route::post('list', 'DeliverysController@getList');
+    Route::get('pdf/{id}', 'DeliverysController@pdf');
+});
+Route::resource('/deliverys', 'DeliverysController');

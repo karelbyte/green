@@ -2,89 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\SendMails;
-use App\Mail\MailMaintananceCommend;
-use App\Models\Calendar;
+use App\Models\CGlobal\CGlobal;
 use App\Models\Company;
-use App\Models\Maintenances\MaintenanceDetail;
-use App\Models\Client;
-use App\Models\Maintenances\Maintenance;
+use App\Models\Element;
+use App\Models\Inventori;
 use App\Models\SalesNotes\SalesNote;
 use App\Models\SalesNotes\SalesNoteDetails;
-use App\Models\ServicesOffereds\ServiceOfferedsDetails;
-use Carbon\Carbon;
+use App\Models\Users\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+
 
 class DeliverysController extends Controller
 {
+
+    // TIPOS DE ELEMENTOS
+    const PRODUCTO = 2;
+    const SERVICIO = 3;
+    const INVENTARIO = 1;
+
     public function index($id = 0)
     {
         return view('pages.delivery.list', ['find' => $id]);
     }
 
-    public function details($id) {
-       $result = MaintenanceDetail::query()->with('status', 'accepts')->where('maintenance_id', $id)
-            ->orderBy('moment', 'desc')
-            ->get();
-
-        return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
-    }
-
-    public function confirm($id) {
-
-        $det = MaintenanceDetail::query()->find($id);
-        $main = SalesNoteDetails::find($det->maintenance->sales_note_details_id);
-        $note = SalesNote::query()->find($main->sale_id);
-
-        // RELLENANDO NOTA DE VENTA
-        $newNote = $note->replicate();
-        $newNote->moment = Carbon::now();
-       // $newNote->strategy = $det->note . ' PRECIO: ' . $det->price;
-        $newNote->origin = SalesNote::ORIGIN_SALE_NOTE;
-        $newNote->status_id = 3; // EN PROCESO
-        $newNote->push();
-
-        $newNote->details()->createMany($note->details_services->toArray());
-
-        // ACTULIZANDO MANTENIMIENTO
-        MaintenanceDetail::query()->where('id', $id)
-            ->update([
-                'sale_id' => $note->id,
-                'status_id' => 3,
-          ]);
-    }
-
-    public function updateInfo(Request $request) {
-        MaintenanceDetail::query()->where('id', $request->id)
-            ->update([
-                'note_gardener' => $request->note_gardener,
-                'note_client' => $request->note_client,
-                'status_id' => 4, // PROCES0 - CONFIRMADO
-            ]);
-        return response()->json('Datos mantenimiento confirmados y actualizados con exito!');
-    }
-
-    public function detailsUpdate(Request $request) {
-        MaintenanceDetail::query()->where('id', $request->id)
-            ->update([
-                'moment' => $request->moment,
-                'visiting_time' => $request->visiting_time,
-                'price' => $request->price,
-                'status_id' => 2, // PROCES0 - CONFIRMADO
-            ]);
-      /*  $cite = Calendar::query()->where('mant_id',  $request->id)->first();
-        $star = Carbon::parse($cite->start)->format('Y-m-d');
-        $star .= ' ' .$request->visiting_time;*/
-        Calendar::query()->where('mant_id',  $request->id)
-            ->update([
-                'start' => Carbon::parse(Carbon::parse($request->moment . ' ' .$request->visiting_time)),
-                'end' => Carbon::parse(Carbon::parse($request->moment . ' ' .$request->visiting_time))->addHours(2)
-            ]);
-        return response()->json('Datos mantenimiento confirmados y actualizados con exito!');
-    }
 
     public function getList(Request $request) {
+
+        $user = User::query()->find($request->user_id_auth);
 
         $skip = $request->input('start') * $request->input('take');
 
@@ -92,14 +36,30 @@ class DeliverysController extends Controller
 
         $orders =  $request->orders;
 
-        $datos = Maintenance::with(['client', 'service', 'status'])
-         ->leftJoin('clients', 'maintenances.client_id', 'clients.id');
+        $datos = SalesNote::with([ 'status', 'globals' => function($q){
+            $q->with('client', 'user');
+        }, 'details' => function($d) {
+            $d->with('measure');
+        }])->leftJoin('cglobals', 'cglobals.id', 'salesnotes.global_id')
+            ->leftJoin('clients', 'clients.id', 'cglobals.client_id');
 
-        if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
+        $datos->wherein('salesnotes.status_id', [4, 5, 6]);
+
+        if ( (int) $user->position_id !== 1) {
+
+            $datos->where('cglobals.user_id', $request->user_id_auth);
+        }
+        if ($filters['value'] !==  null ) {
+            if ( is_string($filters['value']))  {
+                $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
+            } else {
+                $datos->where( $filters['field'], $filters['value']);
+            }
+        }
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
 
-        $total = $datos->select('maintenances.*')->count();
+        $total = $datos->select('salesnotes.*')->count();
 
         $list =  $datos->skip($skip)->take($request['take'])->get();
 
@@ -109,109 +69,114 @@ class DeliverysController extends Controller
 
             'list' =>  $list,
 
-            'clients' => Client::query()->select('id', 'name')->get(),
-
-            'services' => ServiceOfferedsDetails::query()->select('id', 'name', 'price')->get()
-
         ];
 
         return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
     }
 
+    public function pdf($id) {
 
-    public function store(Request $request) {
+        $pdf = \App::make('snappy.pdf.wrapper');
 
-       $maintenance = Maintenance::create([
+        $sale = SalesNote::with('status')->where('id', $id)->first();
 
-           'client_id' => $request->client['id'],
+        $datos = CGlobal::with('client')->where('id', $sale->global_id)->first();
 
-           'service_offereds_id' => $request->service['id'],
+        $details = $this->NoteAplic($id);
 
-           'timer' => $request->timer,
-
-           'start' => $request->start,
-
-           'status_id' => 1
-       ]);
-
-       MaintenanceDetail::create([
-
-          'maintenance_id' => $maintenance->id,
-
-          'moment' => $request->start,
-
-          'note' => '',
-
-          'price' => $request->service['price'],
-
-          'status_id' => 1
-
-         ]);
-
-        return response()->json('Datos creado con exito!');
-    }
-
-    public function update(Request $request, $id) {
-
-        Maintenance::query()->where('id', $id)
-
-        ->update([
-            'timer' => $request->timer,
-            'status_id' =>  $request->status_id
-        ]);
-
-        return response()->json('Datos actualizados con exito!');
-    }
-
-    public function updateCommendClientAccept(Request $request) {
-
-         MaintenanceDetail::query()->where('id', $request->id)->update([
-            'accept' => $request->accept,
-            'status_id' => 7 // RECOMENDADO VERIFICADO
-         ]);
-        return response()->json('Datos actualizados con exito!');
-    }
-
-    public function commends(Request $request) {
-
-        $client = Client::query()->find($request->client_id);
-
-        $maintenance = MaintenanceDetail::query()->find($request->id);
-
-        $patch = '/cliente-' . $client->code . '/mantenimientos/';
-
-        $name = $maintenance->id .'.'. $request->doc->getClientOriginalExtension();
-
-        if ($request->has('doc'))  {
-
-            $request->doc->storeAs('public/'. $patch, $name);
-
-            $maintenance ->url_commend = 'storage' .$patch .  $name;
-
-            $maintenance ->mime =  $request->doc->getMimeType();
-
-        }
-        $maintenance->note_advisor = $request->note;
-        $maintenance->status_id = 6;
-        $maintenance->save();
-
-        // ENVIADO RECOMENDACIONES
         $data = [
 
             'company' => Company::query()->find(1),
 
-            'client' =>  $client,
+            'data' =>  $datos,
 
-            'patch' => storage_path('app/public/'). $patch. '/' .  $name,
+            'sale' => $sale,
 
-            'namepdf' =>  $request->doc->getClientOriginalName(),
-
-            'mime' =>  $request->doc->getMimeType()
+            'details' => $details,
 
         ];
 
-        Mail::to($client->email)->send(new MailMaintananceCommend($data));
+        $html = \View::make('pages.sales.pdf_requirements', $data)->render();
 
-        return response()->json('Se envio las recomendaciones al cliente!');
+        $pdf->loadHTML($html);
+
+        $pdfBase64 = base64_encode($pdf->inline());
+
+        return 'data:application/pdf;base64,' . $pdfBase64;
+    }
+
+    public function NoteAplic($id) {
+
+        $needs = $this->needs($id);
+
+        if (count($needs) > 0) {
+
+            foreach ($needs as $det) {
+
+                if ($det['item_id'] !== null) {
+
+                    $itemType = Element::query()->find($det['item_id']);
+
+                    $pro = Inventori::query()->where('element_id', $det['item_id'])->first();
+
+                    if ( (int) $itemType->type !== 2) {
+
+                        $det['cant'] = (int) $det['type_item'] > 1  ? $det['cant']  * $det['cant_general'] : $det['cant'];
+                    }
+
+                    $det['exis'] = $pro['cant'] ?? 0;
+
+                    $det['avility'] =   $pro['cant'] >= $det['cant'];
+
+                    $det['delivered'] =  $det['avility'] ? $det['cant'] : $pro['cant'];
+
+                    $det['missing'] =  $det['avility'] ? '' : abs($pro['cant'] - $det['cant']);
+                }
+            }
+        }
+        return $needs;
+    }
+
+    public function needs($id) {
+
+        $products = SalesNoteDetails::query()->leftjoin('products_offereds_details', 'products_offereds_details.id', 'sales_note_details.item_id')
+
+            ->leftjoin('products_offereds_needs', 'products_offereds_needs.products_offereds_detail_id', 'products_offereds_details.id')
+
+            ->leftjoin('elements', 'products_offereds_needs.element_id', 'elements.id')
+
+            ->select('sales_note_details.cant as cant_general', 'sales_note_details.type_item', 'elements.id as item_id',
+                'elements.code', 'elements.name as descrip', 'products_offereds_needs.cant')
+
+            ->where('sales_note_details.sale_id', $id)->where('sales_note_details.type_item', self::PRODUCTO)->get();
+
+
+        $services = SalesNoteDetails::query()->leftjoin('services_offereds_details', 'services_offereds_details.id', 'sales_note_details.item_id')
+
+            ->leftjoin('services_offereds_needs', 'services_offereds_needs.services_offereds_detail_id', 'services_offereds_details.id')
+
+            ->leftjoin('elements', 'services_offereds_needs.element_id', 'elements.id')
+
+            ->select('sales_note_details.cant as cant_general', 'sales_note_details.type_item' , 'elements.id as item_id', 'elements.code',
+                'elements.name as descrip', 'services_offereds_needs.cant')
+
+            ->where('sales_note_details.sale_id', $id)->where('sales_note_details.type_item', self::SERVICIO)->get();
+
+        $sale = SalesNote::query()->find($id);
+
+        $inventoris = $sale->details_inventoris;
+
+        $needs = $services->concat($products)->concat($inventoris);
+
+        $finaly = $needs->reduce(function ($acumulador, $item){
+            if (array_key_exists($item->item_id, $acumulador)) {
+                $acumulador[$item->item_id]->cant += $item->cant;
+            } else {
+                $acumulador[$item->item_id] = $item;
+            }
+            return $acumulador;
+        }, []);
+
+        return  array_values($finaly);
     }
 }
