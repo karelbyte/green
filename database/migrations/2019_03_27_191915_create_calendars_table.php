@@ -21,7 +21,7 @@ class CreateCalendarsTable extends Migration
             $table->dateTime('start');
             $table->dateTime('end');
             $table->string('title', 50);
-            $table->string('contentFull', 250)->nullable();
+            $table->string('contentFull', 1500)->nullable();
             $table->tinyInteger('allDay')->default(1);
             $table->string('class', 10);
             $table->tinyInteger('status_id')->default(1);

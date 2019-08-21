@@ -441,7 +441,10 @@
                                     <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Tahoma, Verdana, sans-serif"><![endif]-->
                                     <div style="color:#555555;font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                         <div style="font-size: 12px; line-height: 14px; color: #555555; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif;">
-                                            <p style="font-size: 14px; line-height: 21px; text-align: center; margin: 0;"><span style="font-size: 18px; color: #000000;">Gracias por la preferencia. Le enviaremos un correo electrónico ocasional con todo lo nuevo y bueno que probablemente desee conocer: cotizaciones, nuevos productos, publicaciones, promociones.!<br></span></p>
+                                            <p style="font-size: 14px; line-height: 21px; text-align: center; margin: 0;"><span style="font-size: 18px; color: #000000;">Bienvenido a nuestro registro automático de GreenCenter
+                                                    Gracias por tu preferencia en nuestros productos y servicios.</span></p>
+                                            <p> Este es un mensaje automático de nuestro sistema para verificar la autenticidad de su registro en nuestra base de datos.</p>
+<p>Eventualmente le haremos llegar un correo electrónico con nuestras publicaciones, novedades y promociones que estamos seguros serán de su interés!<br></p>
                                         </div>
                                     </div>
                                     <!--[if mso]></td></tr></table><![endif]-->

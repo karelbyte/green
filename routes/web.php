@@ -222,6 +222,9 @@ Route::middleware(['auth', 'LoginMoment'])->group(function () {
         // MANTENIMIENTOS
         Route::get('/mantenimientos/{id?}', 'MaintenancesController@index')->name('maintenance');
 
+       // PEDIDOS
+        Route::get('/pedidos/{id?}', 'DeliverysController@index')->name('deliverys');
+
         // COTIZACIONES
         Route::get('/cotizaciones/{id?}', 'QuotesController@index')->name('quotes');
 

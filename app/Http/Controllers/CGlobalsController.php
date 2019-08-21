@@ -98,16 +98,12 @@ class CGlobalsController extends Controller
         }])->leftJoin('clients', 'clients.id', 'cglobals.client_id');
 
         if ( (int) $user->position_id !== 1) {
-
             $datos->where('user_id', $request->user_id_auth);
         }
 
         if ( $filters['value'] !== null) {
-
             if  ($filters['type'] === 'int') {
-
                 $datos->where( $filters['field'], $filters['value']);
-
             } else {
                 $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
             }
@@ -291,11 +287,8 @@ class CGlobalsController extends Controller
     }
 
     public function update(Request $request, $id) {
-
         $data = $request->all();
-
         $cg = CGlobal::query()->find($id);
-
         $status = 0;
         switch ($data['type_compromise_id']) {
             case TypeCompromise::QUOTE_HOME:
@@ -346,7 +339,7 @@ class CGlobalsController extends Controller
 
         SalesNote::query()->where('global_id', $cg->id)->delete();
 
-        if ($data['type_compromise_id'] === TypeCompromise::QUOTE_HOME) {
+        if ((int) $data['type_compromise_id'] === TypeCompromise::QUOTE_HOME) {
 
             $cg->LandScaper()->create($data['landscaper']);
 

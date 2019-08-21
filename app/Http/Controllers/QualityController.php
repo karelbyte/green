@@ -39,7 +39,14 @@ class QualityController extends Controller
             $datos->where('cglobals.user_id', $request->user_id_auth);
         }
 
-        if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
+        if ($filters['value'] !== null ) {
+
+            if ( is_string($filters['value']))  {
+                $datos->where($filters['field'], 'LIKE', '%'.$filters['value'].'%');
+            } else {
+                $datos->where($filters['field'], $filters['value']);
+            }
+        }
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
 

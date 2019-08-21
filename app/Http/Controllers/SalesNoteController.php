@@ -71,8 +71,13 @@ class SalesNoteController extends Controller
 
             $datos->where('cglobals.user_id', $request->user_id_auth);
         }
-
-        if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
+        if ($filters['value'] !==  null ) {
+            if ( is_string($filters['value']))  {
+                $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
+            } else {
+                $datos->where( $filters['field'], $filters['value']);
+            }
+        }
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
 
@@ -206,6 +211,7 @@ class SalesNoteController extends Controller
 
     public function NoteDeliverClient($id) {
        $inventoris = SalesNoteDelivered::query()->where('sale_id', $id)->whereRaw('delivered < cant')->get();
+       //return $inventoris;
        $notfull = 0;
        foreach ($inventoris as $det) {
                 $pro = Inventori::query()->where('element_id', $det['element_id'])->first();

@@ -26,6 +26,8 @@
     "dependencies": {
         "froala-editor": "^3.0.0",
         "moment": "^2.24.0",
+        "quill": "^1.3.6",
+        "quill-image-resize-module": "^3.0.0",
         "vue-bootstrap-datetimepicker": "^5.0.1",
         "vue-cal": "^1.59.0",
         "vue-froala-wysiwyg": "^3.0.0",

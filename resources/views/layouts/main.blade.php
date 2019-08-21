@@ -163,6 +163,11 @@
                         <a href="{{route('sales')}}" class="waves-effect"><i class="mdi mdi-note-plus-outline"></i><span>Notas de venta </span></a>
                     </li>
                     @endcan
+                    @can('delivery')
+                      <li>
+                           <a href="{{route('deliverys')}}" class="waves-effect"><i class="fa fa-truck"></i><span>Pedidos </span></a>
+                       </li>
+                    @endcan
                     @can('quality') <!-- CALIDAD DEL SERVICIO -->
                        <li>
                            <a href="{{route('quality')}}" class="waves-effect"><i class="mdi mdi-checkbox-multiple-marked-circle"></i><span>Calidad </span></a>

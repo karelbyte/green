@@ -63,27 +63,20 @@ class QuotesController extends Controller
     }
 
     public function SetDate(Request $request) {
-
-        $quote = Quote::find($request->id);
-
+        $quote = Quote::query()->find($request->id);
         $quote->moment = $request->moment;
-
         $quote->save();
-
         return response()->json('');
     }
 
     public function getList(Request $request) {
 
         $user = User::query()->find($request->user_id_auth);
-
         $skip = $request->input('start') * $request->input('take');
-
         $filters = $request->filters;
-
         $orders =  $request->orders;
 
-        $datos = Quote::with(['notes',  'TypeSend', 'docs', 'status', 'globals' => function($q){
+        $datos = Quote::with(['notes',  'TypeSend', 'docs', 'status', 'globals' => function ($q){
             $q->with(['client', 'user', 'landscaper' => function ($d) {
                 $d->with('user');
             }]);
@@ -95,24 +88,24 @@ class QuotesController extends Controller
             ->leftJoin('clients', 'clients.id', 'cglobals.client_id');
 
         if ( (int) $user->position_id === 2) {
-
             $datos->where('cglobals.user_id', $request->user_id_auth);
         }
 
-        if ( $filters['value'] !== '') $datos->where( $filters['field'], 'LIKE', '%'.$filters['value'].'%');
+        if ($filters['value'] !== null ) {
+
+            if ( is_string($filters['value']))  {
+                $datos->where($filters['field'], 'LIKE', '%'.$filters['value'].'%');
+            } else {
+                $datos->where($filters['field'], $filters['value']);
+            }
+        }
 
         $datos = $datos->orderby($orders['field'], $orders['type']);
-
         $total = $datos->select('quotes.*')->count();
-
         $list =  $datos->skip($skip)->take($request['take'])->get();
-
         $result = [
-
             'total' => $total,
-
             'list' =>  $list,
-
             'landscapers' => User::query()->where('position_id', 3)->select('uid', 'name')->get(),
         ];
 
@@ -124,9 +117,7 @@ class QuotesController extends Controller
 
         $quote = Quote::query()->find($request->id);
 
-       // dd($request->hasFile('file0'));
-
-        for($i = 0;  $i < $request->cant; $i++) {
+        for ($i = 0;  $i < $request->cant; $i++) {
 
             $file = $request->file('file' . $i);
 

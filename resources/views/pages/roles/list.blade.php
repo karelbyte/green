@@ -212,6 +212,19 @@
                     </div>
                 </div>
                 <div class="row txtblack" style="padding-left: 10px">
+                    Modulo Pedidos
+                </div>
+                <div class="row roles">
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <input  type="checkbox" v-model="grants" value="delivery" @change="chekset('delivery')">
+                            <label for="checkbox2">
+                                Lista de pedidos
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row txtblack" style="padding-left: 10px">
                     Modulo Calidad
                 </div>
                 <div class="row roles">

@@ -278,7 +278,7 @@
                 @endphp
             </tr>
         @endforeach
-        @if ($dat['have_iva'] === 1)
+        @if ((int)$dat['have_iva'] === 1)
             <tr>
                 <td></td>
                 <td colspan="2"></td>
@@ -306,7 +306,7 @@
             <td></td>
             <td colspan="2"></td>
             <td colspan="2">IMPORTE TOTAL</td>
-            @if ($dat['have_iva'] === 1)
+            @if ((int) $dat['have_iva'] === 1)
                 <td  class="total">{{number_format($total + $iva - $dat['discount'] , 2, '.', '')}}</td>
             @else
                 <td  class="total">{{number_format($total - $dat['discount'], 2, '.', '')}}</td>

@@ -2,7 +2,26 @@ import {dateEs, generateId} from './tools';
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-import { quillEditor } from 'vue-quill-editor'
+import VueQuill, {Quill} from 'vue-quill-editor'
+window.Quill = Quill;
+const ImageResize = require( 'quill-image-resize-module' )
+Quill.register('modules/ImageResize', ImageResize);
+const toolbar = [  ['bold', 'italic', 'underline', 'strike'],
+    ['blockquote', 'code-block'],
+    [{ 'header': 1 }, { 'header': 2 }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],
+    [{ 'indent': '-1' }, { 'indent': '+1' }],
+    [{ 'direction': 'rtl' }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'font': [] }],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'align': [] }],
+    ['clean'],
+    ['link', 'image']];
+const modules = { toolbar, imageResize: true };
+Vue.use(VueQuill,{modules});
 import Multiselect from "vue-multiselect";
 import VueProgressBar from 'vue-progressbar'
 Vue.use(VueProgressBar, {
@@ -162,7 +181,7 @@ new Vue({
         }
     },
     components: {
-        Multiselect, quillEditor
+        Multiselect //, 'QuillEditor' : VueQuill
     },
     watch: {
         'detail.type_item': function () {
