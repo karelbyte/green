@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Psy\Util\Str;
+use Illuminate\Support\Str;
 
 class QuotesController extends Controller
 {
@@ -123,7 +123,7 @@ class QuotesController extends Controller
 
             $ext = $file->getClientOriginalExtension();
 
-            $name = Str::uuid() . Carbon::now()->unix() .'.'. $ext;
+            $name =  Str::uuid() . Carbon::now()->unix() .'.'. $ext;
 
             $patch =  storage_path('app/public/cliente-') . $quote->globals->client->code. '/cag-' .  $quote->globals->id .'/visit';
 

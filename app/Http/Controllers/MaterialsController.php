@@ -13,10 +13,9 @@ class MaterialsController extends Controller
         return view('pages.materials.list');
     }
 
-
     public function getMaterials() {
 
-        return Element::select('id', 'code', 'name')->material()->get();
+        return Element::query()->select('id', 'code', 'name')->material()->get();
 
     }
 
