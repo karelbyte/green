@@ -20,7 +20,7 @@ const toolbar = [  ['bold', 'italic', 'underline', 'strike'],
     [{ 'align': [] }],
     ['clean'],
     ['link', 'image']];
-const modules = { toolbar, imageResize: true };
+const modules = { toolbar, imageResize: false };
 Vue.use(VueQuill,{modules});
 import Multiselect from "vue-multiselect";
 import VueProgressBar from 'vue-progressbar'
@@ -237,6 +237,20 @@ new Vue({
         }
     },
     methods: {
+        showCancelQuote (item) {
+         this.item = item
+         $('#quote_cancel').modal('show')
+        },
+        CancelQuote() {
+          let data = {
+              id : this.item.id,
+              note: this.note
+          };
+            axios.post(urldomine + 'api/quotes/cancel', data ).then(r => {
+                this.$toasted.success(r.data.msj);
+                $('#quote_cancel').modal('hide')
+            })
+        },
         createQuote ()  {
             this.head = {...this.headDefault};
             this.head.details = [];

@@ -2795,6 +2795,11 @@ var app = new Vue({
       i: 0
     };
   },
+  computed: {
+    /* 'showAlert': function () {
+         if (screen.width > 420 ) {this.i = 0}
+     }*/
+  },
   mounted: function mounted() {
     var _this = this;
 
@@ -2836,6 +2841,10 @@ var app = new Vue({
 
       if (_this.visit_home_end > 0) {
         _this.i++;
+      }
+
+      if (screen.width > 420) {
+        _this.i = 0;
       }
     });
   }

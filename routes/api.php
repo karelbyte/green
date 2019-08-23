@@ -61,40 +61,31 @@ Route::resource('/sales', 'SalesNoteController');
 Route::prefix('quotes')->group(function () {
 
     Route::post('list', 'QuotesController@getList');
-
     Route::get('/get/id', 'QuotesController@sendID');
-
     Route::post('/sendinfo', 'QuotesController@sendInfo');
-
     Route::post('/checkinfo', 'QuotesController@checkInfo');
-
     Route::post('/saveinfo', 'QuotesController@saveInfo');
+    Route::post('cancel', 'QuotesController@cancel');
 
     // DETALLES
 
     Route::post('/details', 'QuotesController@SaveDetails');
-
     Route::post('/delete-quote', 'QuotesController@deleteQuote');
-
     Route::get('pdf/{id}', 'QuotesController@pdf');
 
     // NOTAS
 
     Route::post('/note/save', 'QuotesController@SaveNote');
-
     Route::get('/note/delete/{id}', 'QuotesController@deleteQuoteNote');
-
     Route::get('/notes/{id}', 'QuotesController@getQuoteNotes');
 
     // FICHEROS
 
     Route::post('/file/save', 'QuotesController@SaveFile');
-
     Route::post('/file/save-multiple', 'QuotesController@SaveFileMultiple');
-
     Route::get('/file/delete/{id}', 'QuotesController@deleteQuoteFile');
-
     Route::get('/files/{id}', 'QuotesController@getQuoteFiles');
+
 
 });
 Route::resource('/quotes', 'QuotesController');

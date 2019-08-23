@@ -369,6 +369,9 @@
                                     <li v-if="entity.heads.length > 0"><a href="#" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o m-r-5"></i>Imprimir</a></li>
                                     <li v-if="entity.heads.length > 0"><a href="#" @click="ShowSendInfo(entity)"><i class="fa fa-send m-r-5"></i>Enviar a cliente</a></li>
                                     <li v-if="entity.status_id === 3 || entity.status_id === 7 ||  entity.status_id === 9"><a href="#" @click="ShowCheckInfo(entity)"><i class="fa fa-search"></i> Verificacion</a></li>
+                                     @can('quote.delete')
+                                    <li ><a href="#" @click="showCancelQuote(entity)"><span style="color:red">Cancelar cotización</span></a></li>
+                                     @endcan
                                 </ul>
                             </div>
                             <a v-if="entity.status_id == 4 || entity.status_id == 5" href="#" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o m-r-5"></i>Imprimir</a>
@@ -426,6 +429,30 @@
                     </div>
                     <div class="panel-footer text-right">
                         <a href="#" data-dismiss="modal" class="btn btn-success  waves-effect btn-sm" @click="saveNote()" >Guardar</a>
+                        <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="quote_cancel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">CANCELAR COTIZACION</h3>
+                    </div>
+                    <div class="panel-body">
+                        Observaciones
+                        <textarea v-focus class="form-control" v-model="note"></textarea>
+                        <p>Cuidado! Esta acción es irreversible. Desea proceder?</p>
+                    </div>
+
+                    <div class="panel-footer text-right">
+                        <a v-if="note !== ''" href="#" data-dismiss="modal" class="btn btn-success  waves-effect btn-sm" @click="CancelQuote()" >Aplicar</a>
                         <a href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
                     </div>
                 </div>

@@ -113,6 +113,22 @@ class QuotesController extends Controller
 
     }
 
+    public function cancel(Request $request) {
+
+        $quote = Quote::query()->find($request->id);
+
+        $quote->status_id = 5;
+
+        $quote->feedback = $request->note;
+
+        $quote->globals()->update(['status_id' => 5, 'traser' => 16]); // NO VENTA
+
+        $quote->save();
+
+        return response()->json('Se archivaron los datos en el expediente!');
+
+    }
+
     public function SaveFileMultiple(Request $request) {
 
         $quote = Quote::query()->find($request->id);

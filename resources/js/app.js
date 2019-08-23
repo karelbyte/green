@@ -21,6 +21,11 @@ const app = new Vue({
            i: 0
         }
     },
+    computed: {
+       /* 'showAlert': function () {
+            if (screen.width > 420 ) {this.i = 0}
+        }*/
+    },
     mounted () {
         this.user_id_auth = parseInt($('#user_id_auth').val());
         axios.post(urldomine + 'api/notifications/today', {user_id_auth: this.user_id_auth}).then(r => {
@@ -40,6 +45,7 @@ const app = new Vue({
             if (this.qualities_send_info > 0) {this.i++}
             if (this.visit_home_end > 0) {this.i++}
 
+            if (screen.width > 420 ) {this.i = 0}
         })
     }
 });
