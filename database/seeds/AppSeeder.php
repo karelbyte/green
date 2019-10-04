@@ -220,6 +220,7 @@ class AppSeeder extends Seeder
             ['id' => 4, 'name' => 'TERMINADO'],
             ['id' => 5, 'name' => 'TERMINADO - PAGADO'],
             ['id' => 6, 'name' => 'TERMINADO-RECOMENDACIONES'],
+            ['id' => 7, 'name' => 'CANCELADO'],
         ];
         \App\Models\Maintenances\MaintenaceStatusDetail::insert($statusManteDetailList);
 

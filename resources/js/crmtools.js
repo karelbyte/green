@@ -23,10 +23,10 @@ new Vue({
                 name: '',
                 type: 2
             },
-            listfield: [{name: 'Codigo', type: 'text', field: 'elements.code'}, {name: 'Nombre', type: 'text', field: 'elements.name'}],
+            listfield: [{name: 'Nombre', type: 'text', field: 'elements.name'}, {name: 'Codigo', type: 'text', field: 'elements.code'}],
             filters_list: {
-                descrip: 'Codigo',
-                field: 'elements.code',
+                descrip: 'Nombre',
+                field: 'elements.name',
                 value: ''
             },
             orders_list: {

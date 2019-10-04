@@ -22,6 +22,8 @@ class CreateQuoteHeadsTable extends Migration
             $table->tinyInteger('have_iva')->default(0);
             $table->decimal('discount')->default(0);
             $table->engine = 'InnoDB';
+            $table->collation('utf8_unicode_ci');
+
         });
     }
 

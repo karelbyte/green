@@ -36,7 +36,7 @@
                     <div class="card-box widget-box-two widget-two-info">
                         <i class="mdi mdi-coin widget-two-icon"></i>
                         <div class="wigdet-two-content">
-                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">Contizaciones @{{ getMonth() }}</p>
+                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">Cotizaciones @{{ getMonth() }}</p>
                             <h2 class="text-white"><span>@{{ quote_month }}</span></h2>
                             <p class="m-0"><b>Anterior:</b> @{{ quote_month_last }}</p>
                         </div>

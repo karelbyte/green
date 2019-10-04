@@ -60,110 +60,28 @@ Route::get('/limpiar_cache', function () {
 
 Route::get('/db-update',  'CGlobalsController@update_database');
 
-Route::get('tareas', function () {
-
-    $users = \App\Models\Users\User::all();
-    foreach ($users as $user) {
-        $data = \App\Models\Calendar::query()->where('user_id', $user->id)
-            ->whereDate('start', \Carbon\Carbon::now())->get();
-        if (count($data) > 0) {
-            $data_email = [
-                'user' => $user,
-                'events' =>  $data,
-                'company' => \App\Models\Company::query()->find(1),
-            ];
-            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\AlertCalendarDaily($data_email));
-        }
-    }
-    foreach ($users as $user) {
-        $data = \App\Models\Calendar::query()->where('for_user_id', $user->id)
-            ->whereDate('start', \Carbon\Carbon::now())->get();
-        if (count($data) > 0) {
-            $data_email = [
-                'user' => $user,
-                'events' =>  $data,
-                'company' => \App\Models\Company::query()->find(1),
-            ];
-            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\AlertCalendarDaily($data_email));
-        }
-    }
-    return 'OK';
-});
-
-Route::get('/pruebas', function () {
-    return  \App\Models\Users\User::query()->where('position_id', 1)->get();
-});
-
-
-//  Route::get('/', 'HomeController@stop')->name('stop');
-
 Route::get('/infophp', function () {
     phpinfo();
 });
 
 Route::get('/pruebas', function () {
-    $Maintenances = \App\Models\Maintenances\Maintenance::query()->with('mlast')->get();
+    $maintenances = \App\Models\Maintenances\Maintenance::query()->where('status_id', 1)->get();
+    $MaintenancesInAcion = new \Illuminate\Database\Eloquent\Collection();
 
-    foreach ($Maintenances as $maintenance) {
-        $date = $maintenance->mlast[0]['moment'];
-        $newDate = \Carbon\Carbon::parse($date)->addDays($maintenance->timer);
-        $diff = $newDate->diffInDays(\Carbon\Carbon::now());
+    foreach ($maintenances as $maintenance) {
+       $ultimo = \App\Models\Maintenances\MaintenanceDetail::query()
+                ->where('maintenance_id', $maintenance['id'])
+                ->latest('maintenance_details.moment')->first();
+       if ( (int) $ultimo['status_id'] == 1) {
 
-            $acestor = \App\Models\SalesNotes\SalesNoteDetails::query()->with(['sale' => function ($q) {
-                $q->with('globals');
-            }])->find($maintenance->sales_note_details_id);
+           $date = $ultimo['moment'];
+           $newDate = \Carbon\Carbon::parse($date);
+           $diff = $newDate->diffInDays(\Carbon\Carbon::now());
+           if ($diff <= 3 ) {
+               $MaintenancesInAcion->add(new \App\Http\Resources\MaintenanceAlertResource($maintenance));
+           }
+       };
 
-            $sale = \App\Models\SalesNotes\SalesNote::query()->create([
-                'global_id' => $acestor->sale->global_id,
-                'moment' => \Carbon\Carbon::now()->addDays(2),
-                'emit' => \Carbon\Carbon::now()->addDays(2),
-                'advance' => 0,
-                'origin' => \App\Models\SalesNotes\SalesNote::ORIGIN_SALE_NOTE,
-                'status_id' => 3,
-            ]);
-
-            $sale->details()->create([
-                'type_item' => $acestor['type_item'],
-                'item_id' => $acestor['item_id'],
-                'descrip' => $acestor['descrip'],
-                'measure_id' => $acestor['measure_id'],
-                'cant' => $acestor['cant'],
-                'price' => $acestor['price'],
-            ]);
-            $sub = $maintenance->details()->create([
-                'moment' => $newDate,
-                'sale_id' => $sale->id,
-                'price' => $sale->total(),
-                'accept' => 1,
-                'status_id' => 1]);
-
-            $start = $newDate->format('Y-m-d') . ' '. $maintenance->mlast[0]['visiting_time'];
-            dd($start, Carbon\Carbon::parse($start)->addHours(2)->format('Y-m-d H:i'));
-            \App\Models\Calendar::query()->create([
-                'cglobal_id' => $acestor->sale->global_id,
-                'user_id' => $acestor->sale->globals->user_id,
-                'for_user_id' => 0,
-                'start' => $start,
-                'end' =>  \Carbon\Carbon::parse($start)->addHours(2)->format('Y-m-d H:i'),
-                'title' => 'SERVICIO A : ' . $sale->globals->client->name,
-                'contentFull' => $acestor['descrip'] . '   DOMICILIO: ' . $sale->globals->client->street . ' ' . $sale->globals->client->home_number . ' ' . $sale->globals->client->colony,
-                'mant_id' => $sub->id,
-                'class' => 'mant'
-            ]);
-        }
- return 'todo ok';
-});
-
-Route::get('/otro', function () {
-    $Maintenances = \App\Models\Maintenances\Maintenance::query()->with('mlast')->get();
-    $MaintenancesInAcion = new \Illuminate\Support\Collection();
-    foreach ($Maintenances as $maintenance) {
-        $date = $maintenance->mlast[0]['moment'] . ' ' . $maintenance->mlast[0]['visiting_time'];
-        $newDate = \Carbon\Carbon::parse($date)->addDays($maintenance->timer);
-        $diff = $newDate->diffInDays(\Carbon\Carbon::now());
-         if ($diff <= 2 && (int) $maintenance->mlast[0]->status_id === 1 ) {
-            $MaintenancesInAcion->add(new \App\Http\Resources\MaintenanceAlertResource($maintenance));
-        }
     }
     return response()->json($MaintenancesInAcion);
 });

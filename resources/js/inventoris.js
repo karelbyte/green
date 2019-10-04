@@ -21,10 +21,10 @@ new Vue({
                 type: 1,
                 measure_id: '',
             },
-            listfield: [{name: 'Codigo', type: 'text', field: 'elements.code'}, {name: 'Descripción', type: 'text', field: 'elements.name'}],
+            listfield: [{name: 'Descripción', type: 'text', field: 'elements.name'}, {name: 'Codigo', type: 'text', field: 'elements.code'}, ],
             filters_list: {
-                descrip: 'Codigo',
-                field: 'elements.code',
+                descrip: 'Descripción',
+                field: 'elements.name',
                 value: '',
                 type: {id: 1,  name: 'PRODUCTOS'}
             },

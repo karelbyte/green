@@ -90,10 +90,10 @@ new Vue({
                 colony: '',
                 referen: ''
             },
-            listfield: [{name: 'CAG', type: 'int', field: 'cglobals.id'}, {name: 'Cliente', type: 'text', field: 'clients.name'}],
+            listfield: [ {name: 'Cliente', type: 'text', field: 'clients.name'},{name: 'CAG', type: 'int', field: 'cglobals.id'},],
             filters_list: {
-                descrip: 'CAG',
-                field: 'cglobals.id',
+                descrip: 'Cliente',
+                field: 'clients.name.id',
                 type: 'int',
                 value: ''
             },
@@ -243,8 +243,15 @@ new Vue({
             this.spin = true;
             axios.get(urldomine + 'api/cags/pdf/' + id).then(response => {
                 this.spin = false;
-                this.scrpdf = response.data;
-                window.$('#pdf').modal('show')
+                if (window.screen.width < 750) {
+                    let doc = document.open("text/html","doc_pdf");
+                    let html = '<html><body><iframe  id="frame" width="100%" height="660px" frameborder="0" src="' +response.data +'"></iframe></body></html>';
+                    doc.write(html);
+                    doc.close();
+                } else {
+                    this.scrpdf = response.data;
+                    window.$('#pdf').modal('show')
+                }
             })
         },
         showSendInfo () {

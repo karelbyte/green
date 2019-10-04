@@ -83,10 +83,10 @@ new Vue({
                 discount: 0,
                 details: []
             },
-            listfield: [{name: 'Codigo', type: 'text', field: 'quotes.id'}, {name: 'Cliente', type: 'text', field: 'clients.name'}],
+            listfield: [ {name: 'Cliente', type: 'text', field: 'clients.name'}, {name: 'Codigo', type: 'text', field: 'quotes.id'}],
             filters_list: {
-                descrip: 'Codigo',
-                field: 'quotes.id',
+                descrip: 'Cliente',
+                field: 'clients.name',
                 value: ''
             },
             orders_list: {

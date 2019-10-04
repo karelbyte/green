@@ -53,7 +53,7 @@
                         ></multiselect>
                     </div>
                     <div class="col-lg-5 m-t-20">
-                        <span class="txtblack">Incio <span class="require">*</span></span>
+                        <span class="txtblack">Inicio <span class="require">*</span></span>
                         <input disabled class="form-control" type="date" v-model="item.start">
                     </div>
                     <div class="col-lg-5 m-t-20">
@@ -202,7 +202,7 @@
                 <td>
                     <button v-if="detail.status_id === 1" class="btn btn-primary  waves-effect btn-sm" @click="editDetail(detail)"><i class="fa fa-check-square"></i></button>
                     <button v-if="detail.status_id === 2" class="btn btn-primary  waves-effect btn-sm" @click="confirm(detail)">Ejecutar</button>
-                    <button v-if="detail.status_id === 1" class="btn btn-primary  waves-effect btn-sm" @click="confirm(detail)">Cancelar</button>
+                    <button v-if="detail.status_id === 1" class="btn btn-primary  waves-effect btn-sm" @click="cancel(detail)">Cancelar</button>
                     <button v-if="detail.status_id == 3" class="btn btn-success  waves-effect btn-sm" @click="retroInfo(detail)">Concluir</button>
                     <button v-if="detail.status_id == 4" class="btn btn-success  waves-effect btn-sm" @click="commend(detail)">Recomendaciones</button>
                     <button v-if="detail.status_id == 6" class="btn btn-brown  waves-effect btn-sm" @click="confirmCommend(detail)">Verificar</button>
@@ -324,6 +324,28 @@
                     </div>
                     <div class="panel-footer text-right">
                         <a href="#" class="btn btn-danger waves-effect btn-sm" @click="aplic()">Confirmar</a>
+                        <a  href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cancel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"
+     data-backdrop="static" data-keyboard="false">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content p-0 b-0">
+                <div class="panel panel-border panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Atención</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Se cancelara este mantenimiento!</p>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a href="#" class="btn btn-danger waves-effect btn-sm" @click="aplicCancel()">Confirmar</a>
                         <a  href="#" data-dismiss="modal" class="btn btn-default  waves-effect btn-sm">Cerrar</a>
                     </div>
                 </div>

@@ -44,10 +44,10 @@ new Vue({
                 visting_time: '',
                 accept: 1
             },
-            listfield: [{name: 'Codigo', type: 'text', field: 'maintenances.id'}, {name: 'Cliente', type: 'text', field: 'clients.name'}],
+            listfield: [{name: 'Cliente', type: 'text', field: 'clients.name'}, {name: 'Codigo', type: 'text', field: 'maintenances.id'}],
             filters_list: {
-                descrip: 'Codigo',
-                field: 'maintenances.id',
+                descrip: 'Cliente',
+                field: 'clients.name',
                 value: ''
             },
             orders_list: {
@@ -308,13 +308,9 @@ new Vue({
             })
         },
         passConfirm () {
-
             let moment = this.detail.moment !== '';
-
             let time = this.detail.visiting_time !== '' && this.detail.visiting_time !== null;
-
             let price = this.detail.price !== '';
-
             return time && moment && price
         },
         showdetails (item) {
@@ -325,17 +321,23 @@ new Vue({
             });
         },
         viewpdf (id) {
-
             this.spin = true;
-
             axios.get(urldomine + 'api/maintenances/pdf/' + id).then(response => {
-
                 this.spin = false;
-
                 this.scrpdf = response.data;
-
                 window.$('#pdf').modal('show')
-
+            })
+        },
+        cancel(detail) {
+            this.detail = detail;
+            $('#cancel').modal('show')
+        },
+        aplicCancel () {
+            this.spin = true;
+            axios.post(urldomine + 'api/maintenances/cancel', {id: this.detail.id}).then(() => {
+                this.spin = false;
+                this.detail.status_id = 7;
+                $('#cancel').modal('hide')
             })
         }
     }

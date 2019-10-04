@@ -38,7 +38,7 @@ class Maintenances extends Command
      */
     public function handle()
     {
-        $Maintenances = \App\Models\Maintenances\Maintenance::query()->with('mlast')->get();
+        $Maintenances = \App\Models\Maintenances\Maintenance::query()->with('mlast')->where('status_id', 1)->get();
 
         foreach ($Maintenances as $maintenance) {
             $ultimo = $maintenance->load('mlast')->mlast[0];

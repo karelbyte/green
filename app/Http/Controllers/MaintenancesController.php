@@ -33,24 +33,25 @@ class MaintenancesController extends Controller
 
     public function confirm($id) {
 
-        $det = MaintenanceDetail::query()->find($id);
+        // MaintenanceDetail::query()->find($id);
+
+       /*
         $main = SalesNoteDetails::find($det->maintenance->sales_note_details_id);
         $note = SalesNote::query()->find($main->sale_id);
 
         // RELLENANDO NOTA DE VENTA
         $newNote = $note->replicate();
         $newNote->moment = Carbon::now();
-       // $newNote->strategy = $det->note . ' PRECIO: ' . $det->price;
         $newNote->origin = SalesNote::ORIGIN_SALE_NOTE;
         $newNote->status_id = 3; // EN PROCESO
         $newNote->push();
 
-        $newNote->details()->createMany($note->details_services->toArray());
+        $newNote->details()->createMany($note->details_services->toArray()); */
 
         // ACTULIZANDO MANTENIMIENTO
         MaintenanceDetail::query()->where('id', $id)
             ->update([
-                'sale_id' => $note->id,
+              //  'sale_id' => $note->id,
                 'status_id' => 3,
           ]);
     }
@@ -118,7 +119,6 @@ class MaintenancesController extends Controller
         return response()->json($result,  200, [], JSON_NUMERIC_CHECK);
     }
 
-
     public function store(Request $request) {
 
        $maintenance = Maintenance::create([
@@ -167,7 +167,7 @@ class MaintenancesController extends Controller
 
          MaintenanceDetail::query()->where('id', $request->id)->update([
             'accept' => $request->accept,
-            'status_id' => 7 // RECOMENDADO VERIFICADO
+            'status_id' => 9 // RECOMENDADO VERIFICADO
          ]);
         return response()->json('Datos actualizados con exito!');
     }
@@ -213,5 +213,16 @@ class MaintenancesController extends Controller
         Mail::to($client->email)->send(new MailMaintananceCommend($data));
 
         return response()->json('Se envio las recomendaciones al cliente!');
+    }
+
+    public function cancel(Request $request) {
+
+        $detail =  MaintenanceDetail::query()->find($request->id);
+        $detail->status_id = 7;
+        $detail->save();
+        SalesNote::query()->where('id', $detail->sale_id)->update([
+            'status_id' => 10 // cancelado
+        ]);
+        return http_response_code(200);
     }
 }

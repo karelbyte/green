@@ -43,43 +43,57 @@
                 <ul class="nav navbar-nav" id="notify"  v-cloak>
                  <li v-if="quote_local_close > 0">
                         <a href="{{route('notifications')}}" class="right-menu-item">
-                            <i class="mdi mdi-coin"></i>
+                            <i class="mdi mdi-coin tooltip1">
+                                <span class="tooltiptext">Cotizacion a distancia creada sin finalizar</span>
+                            </i>
                             <span class="badge up bg-danger">@{{ quote_local_close }}</span>
                         </a>
                  </li>
                     <li v-if="sale_note_not_close > 0">
                         <a href="{{route('notifications')}}" class="right-menu-item">
-                            <i class="mdi mdi-note-plus-outline"></i>
+                            <i class="mdi mdi-note-plus-outline tooltip1">
+                                <span class="tooltiptext">Notas en espera de gestión </span>
+                            </i>
                             <span class="badge up bg-danger">@{{ sale_note_not_close }}</span>
                         </a>
                     </li>
                  <li v-if="landscapers > 0">
                         <a href="{{route('notifications')}}" class="right-menu-item">
-                            <i class="fa fa-home"></i>
+                            <i class="fa fa-home tooltip1">
+                                <span class="tooltiptext">Cotizaciones a domicilio</span>
+                            </i>
                             <span class="badge up bg-danger">@{{ landscapers }}</span>
                         </a>
                  </li>
                  <li v-if="quote_confirm > 0">
                         <a href="{{route('notifications')}}" class="right-menu-item">
-                            <i class="ion-android-call "></i>
+                            <i class="ion-android-call tooltip1">
+                                <span class="tooltiptext">LLamadas de confirmación</span>
+                            </i>
                             <span  class="badge up bg-danger">@{{ quote_confirm }}</span>
                         </a>
                  </li>
                  <li v-if="sale_note_not_delivered > 0 && i < 5">
                         <a href="{{route('notifications')}}" class="right-menu-item">
-                            <i class="mdi mdi-truck-delivery"></i>
+                            <i class="mdi mdi-truck-delivery tooltip1">
+                                <span class="tooltiptext">Productos en termino de entrega</span>
+                            </i>
                             <span  class="badge up bg-danger">@{{ sale_note_not_delivered }}</span>
                         </a>
                   </li>
                     <li v-if="qualities_send_info > 0 && i < 5">
                         <a href="{{route('notifications')}}" class="right-menu-item">
-                            <i class="mdi mdi-checkbox-multiple-marked-circle"></i>
+                            <i class="mdi mdi-checkbox-multiple-marked-circle tooltip1">
+                                <span class="tooltiptext">Clientes en proceso de calidad</span>
+                            </i>
                             <span  class="badge up bg-danger">@{{ qualities_send_info }}</span>
                         </a>
                     </li>
                     <li v-if="visit_home_end > 0 && i < 5">
                         <a href="{{route('notifications')}}" class="right-menu-item">
-                            <i class="fa fa-file-text-o"></i>
+                            <i class="fa fa-file-text-o tooltip1">
+                                <span class="tooltiptext">Visita concluida sin cotización</span>
+                            </i>
                             <span  class="badge up bg-danger">@{{ visit_home_end }}</span>
                         </a>
                     </li>
@@ -305,11 +319,10 @@
 <script src="{{asset('/plugins/switchery/switchery.min.js')}}"></script>
 <script src="{{asset('/plugins/waypoints/jquery.waypoints.min.js')}}"></script>
 <script src="{{asset('/plugins/counterup/jquery.counterup.min.js')}}"></script>
-<!--<script src="{{asset('/plugins/morris/morris.min.js')}}"></script> -->
 <script src="{{asset('/plugins/raphael/raphael-min.js')}}"></script>
-<!--<script src="{{asset('/pages/jquery.dashboard.js')}}"></script> -->
 <script src="{{asset('/js/jquery.core.js')}}"></script>
 <script src="{{asset('/js/jquery.app.js')}}"></script>
+
 
 <!-- SISTEMA -->
 

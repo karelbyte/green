@@ -51,10 +51,10 @@ new Vue({
                 details: [],
                 have_iva:false
             },
-            listfield: [{name: 'Codigo', type: 'text', field: 'salesnotes.id'}, {name: 'Cliente', type: 'text', field: 'clients.name'}],
+            listfield: [ {name: 'Cliente', type: 'text', field: 'clients.name'}, {name: 'Codigo', type: 'text', field: 'salesnotes.id'}],
             filters_list: {
-                descrip: 'Codigo',
-                field: 'salesnotes.id',
+                descrip: 'Cliente',
+                field: 'clients.name',
                 value: ''
             },
             orders_list: {

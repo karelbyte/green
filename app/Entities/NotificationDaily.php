@@ -14,6 +14,7 @@ use App\Http\Resources\SalesNoteNotDelivered;
 use App\Http\Resources\SalesNoteNotPayment;
 use App\Http\Resources\VisitHomeNotification;
 use App\Models\LandScaper;
+use App\Models\Maintenances\Maintenance;
 use App\Models\Qualities\Quality;
 use App\Models\Quotes\Quote;
 use App\Models\SalesNotes\SalesNote;
@@ -187,26 +188,22 @@ class NotificationDaily
 
         // AVISANDO DE LOS MANTENIMIENTOS
 
-        $Maintenances = \App\Models\Maintenances\Maintenance::query()->get();
-        $MaintenancesInAcion = new \Illuminate\Support\Collection();
-        foreach ($Maintenances as $maintenance) {
-            if ($maintenance->load('details')->details()->count() === 1) {
-                $ultimo = $maintenance->load('mlast')->mlast[0];
+        $maintenances = \App\Models\Maintenances\Maintenance::query()->where('status_id', 1)->get();
+        $MaintenancesInAcion = new \Illuminate\Database\Eloquent\Collection();
+
+        foreach ($maintenances as $maintenance) {
+            $ultimo = \App\Models\Maintenances\MaintenanceDetail::query()
+                ->where('maintenance_id', $maintenance['id'])
+                ->latest('maintenance_details.moment')->first();
+            if ( (int) $ultimo['status_id'] == 1) {
+
                 $date = $ultimo['moment'];
                 $newDate = \Carbon\Carbon::parse($date);
                 $diff = $newDate->diffInDays(\Carbon\Carbon::now());
-                if ($diff <= 2 && (int) $ultimo['status_id'] <= 2 ) {
+                if ($diff <= 3 ) {
                     $MaintenancesInAcion->add(new \App\Http\Resources\MaintenanceAlertResource($maintenance));
                 }
-            } else {
-                $ultimo = $maintenance->load('mlast')->mlast[0];
-                $date = $ultimo['moment'];
-                $newDate = \Carbon\Carbon::parse($date)->addDays($maintenance->timer);
-                $diff = $newDate->diffInDays(\Carbon\Carbon::now());
-                if ($diff <= 2 && (int) $ultimo['status_id'] <= 2 ) {
-                    $MaintenancesInAcion->add(new \App\Http\Resources\MaintenanceAlertResource($maintenance));
-                }
-            }
+            };
 
         }
 

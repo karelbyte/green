@@ -39,7 +39,6 @@ class Maintenance extends Model
     public function mlast () {
         return $this->hasMany(MaintenanceDetail::class, 'maintenance_id', 'id')
             ->latest('maintenance_details.moment');
-
     }
 
     public function mfirst () {

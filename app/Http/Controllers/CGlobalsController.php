@@ -220,7 +220,7 @@ class CGlobalsController extends Controller
                'for_user_id' => 0,
                'start' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer']),
                'end' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer'])->addHours(2),
-               'title' => 'Visita a cliente: ' .  $client->name ,
+               'title' => 'Visita a cliente: ' .  $client->name,
                'contentFull' => 'DOMICILIO: ' . $client->street . ' '. $client->home_number . ' '. $client->colony .  '  /  NOTA: '.  $data['landscaper']['note'],
                'class' => 'domicilio'
            ]);
@@ -349,7 +349,7 @@ class CGlobalsController extends Controller
                 'for_user_id' => 0,
                 'start' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer']),
                 'end' => Carbon::parse($data['landscaper']['moment'] . ' '.$data['landscaper']['timer'])->addHours(2),
-                'title' => 'Visita a cliente: ' .  $client->name ,
+                'title' => 'Visita a cliente: ' .  $client->name,
                 'contentFull' => 'DOMICILIO: ' .$client->street . ' '. $client->home_number . ' '. $client->colony . '  /  NOTA: '.  $data['landscaper']['note'],
                 'class' => 'domicilio'
             ]);
@@ -434,15 +434,24 @@ class CGlobalsController extends Controller
             }]);
         }])->where('global_id', $id)->first();
 
+
        if ( (int) $datos->type_motive === 1) {
            $motive = ProductOffereds::query()->find($datos->type_motive_id);
          } else {
            $motive = ServiceOffereds::query()->find($datos->type_motive_id);
         }
 
-        $quote= Quote::with([ 'status', 'details' => function($d) {
+        /*$quote= Quote::with([ 'status', 'details' => function($d) {
             $d->with('measure');
+        }])->where('cglobal_id', $id)->first(); */
+
+        $quotes = Quote::with([ 'heads' => function($d) {
+            $d->with(['details' => function ($m) {
+                $m->with('measure');
+            }]);
         }])->where('cglobal_id', $id)->first();
+
+       // return $quotes;
 
         $data = [
 
@@ -454,18 +463,18 @@ class CGlobalsController extends Controller
 
             'motive' => $motive->name,
 
-            'quote' => $quote
+            'quotes' => $quotes
         ];
 
        // return $data;
 
         $footer = \View::make('pdf.footer')->render();
 
-        $header = \View::make('pdf.header', ['company' => Company::query()->find(1)])->render();
+       // $header = \View::make('pdf.header', ['company' => Company::query()->find(1)])->render();
 
         $html = \View::make('pages.cags.pdf', $data)->render();
 
-        $pdf->loadHTML($html)->setOption('header-html', $header)->setOption('footer-html', $footer);
+        $pdf->loadHTML($html)->setOption('footer-html', $footer);
 
         $pdfBase64 = base64_encode($pdf->inline());
 

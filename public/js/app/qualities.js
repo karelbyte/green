@@ -185,17 +185,17 @@ new Vue({
         status_id: 0
       },
       listfield: [{
-        name: 'CAG',
-        type: 'text',
-        field: 'qualities.cglobal_id'
-      }, {
         name: 'Cliente',
         type: 'text',
         field: 'clients.name'
+      }, {
+        name: 'CAG',
+        type: 'text',
+        field: 'qualities.cglobal_id'
       }],
       filters_list: {
-        descrip: 'CAG',
-        field: 'qualities.cglobal_id',
+        descrip: 'Cliente',
+        field: 'clients.name',
         value: ''
       },
       orders_list: {

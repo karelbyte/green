@@ -100,6 +100,7 @@ Route::prefix('maintenances')->group(function () {
     Route::post('update/info/', 'MaintenancesController@updateInfo');
     Route::post('commends', 'MaintenancesController@commends');
     Route::post('update-commend-client', 'MaintenancesController@updateCommendClientAccept');
+    Route::post('cancel', 'MaintenancesController@cancel');
 
 });
 Route::resource('/maintenances', 'MaintenancesController');

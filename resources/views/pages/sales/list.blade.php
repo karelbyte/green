@@ -90,7 +90,7 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-lg-6">
-                            <button v-if="entity.status_id !== 7 && entity.status_id !== 2 && entity.status_id !== 5" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
+                            <button v-if="entity.status_id !== 7 && entity.status_id !== 2 && entity.status_id !== 5 && entity.status_id !== 10" class="btn btn-teal waves-effect btn-sm" @click="edit(entity)"><i class="fa fa-edit"></i></button>
                             <button v-if="entity.status_id <= 3 && entity.details.length > 0" class="btn btn-primary waves-effect btn-sm" @click="showAplic(entity)">Aplicar</button>
                             <button v-if="entity.status_id >3 && entity.status_id < 7 " class="btn btn-success waves-effect btn-sm" @click="noteDeliverClient(entity.id)">FINALIZAR</button>
                             <button v-if="entity.details.length > 0" class="btn btn-info waves-effect btn-sm" @click="viewpdf(entity.id)"><i class="fa fa-file-pdf-o"></i></button>
