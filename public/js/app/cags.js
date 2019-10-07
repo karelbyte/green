@@ -17783,8 +17783,8 @@ new Vue({
       }],
       filters_list: {
         descrip: 'Cliente',
-        field: 'clients.name.id',
-        type: 'int',
+        field: 'clients.name',
+        type: 'text',
         value: ''
       },
       orders_list: {

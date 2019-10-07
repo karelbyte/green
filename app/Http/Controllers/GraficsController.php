@@ -13,23 +13,51 @@ use Illuminate\Http\Request;
 
 class GraficsController extends Controller
 {
-    public function getDataMonth() {
+
+    protected function rangeaux ($star, $end)
+    {
+        $beginM = Carbon::parse($star)->month;
+        $endM = Carbon::parse($end)->month;
+        $beginY = Carbon::parse($star)->year;
+        $endY = Carbon::parse($end)->year;
+        $numberOfMonths = ($endY - $beginY) * 12 + ($endM - $beginM);
+        $ran = [];
+        $d = $beginM-1;
+        $y = $beginY;
+        for ($i = $beginM; $i <= ($beginM + $numberOfMonths); $i++) {
+            $d++;
+            if ($i % 13 == 0) {
+                $d = 1;
+                $y ++;
+            }
+            $ran[] = ['m' => $d, 'y' => $y];
+        }
+        return $ran;
+    }
+    public function getDataMonth(Request $request) {
+
+        $rage = $this->rangeaux($request->star, $request->end);
 
         $month = Carbon::now()->month;
+
         $month_last = Carbon::now()->subMonth()->month;
 
+        $star = Carbon::parse($request->star);
+
+        $end = Carbon::parse($request->end);
+
         // CLIENTES ATENDIDOS EN EL MES ACTUAL
-        $client_care_month = CGlobal::query()->whereMonth('moment', $month)->count();
+        $client_care_month = CGlobal::query()->whereBetween('moment', [$star, $end])->count();
         // CLIENTES ATENDIDOS EN EL MES ANTERIOR
         $client_care_month_last = CGlobal::query()->whereMonth('moment', $month_last)->count();
 
         // VENTAS EN EL MES ACTUAL
-        $sale_month = SalesNote::query()->whereMonth('moment', $month)->where('status_id', '<>', 3 )->count();
+        $sale_month = SalesNote::query()->whereBetween('moment', [$star, $end])->where('status_id', '<>', 3 )->count();
         // VENTAS EN EL MES ANTERIOR
         $sale_month_last = SalesNote::query()->whereMonth('moment', $month_last)->where('status_id', '<>', 3 )->count();
 
         // COTIZACIONES EN EL MES ACTUAL
-        $quote_month = Quote::query()->whereMonth('moment', $month)->count();
+        $quote_month = Quote::query()->whereBetween('moment', [$star, $end])->count();
         // COTIZACIONES EN EL MES ANTERIOR
         $quote_month_last = Quote::query()->whereMonth('moment', $month_last)->count();
 
@@ -39,14 +67,14 @@ class GraficsController extends Controller
         $maintenance_month_last = MaintenanceDetail::query()->whereMonth('moment', $month_last)->where('status_id', '>', 1)->count();
 
         // MOTO VENTAS EN EL MES ACTUAL
-        $amout_sale_month = SalesNote::query()->whereMonth('moment', $month)->selectRaw('sum(advance) as total')->get();
+        $amout_sale_month = SalesNote::query()->whereBetween('moment', [$star, $end])->selectRaw('sum(advance) as total')->get();
         $amout_sale_month_last = SalesNote::query()->whereMonth('moment', $month_last)->selectRaw('sum(advance) as total')->get();
 
         // GRAFICA DE CAD POR ETAPAS
 
         $pie_data = CGlobal::query()
             ->leftJoin('cglobal_status', 'cglobal_status.id', 'cglobals.status_id')
-            ->whereMonth('moment', $month)
+            ->whereBetween('moment', [$star, $end])
             ->selectRaw('count(status_id) as y, cglobal_status.name as name, status_id as status')
             ->groupBy('cglobals.status_id', 'cglobal_status.name')->get();
         $pie = [
@@ -54,10 +82,11 @@ class GraficsController extends Controller
             'data' => $pie_data
          ];
 
+
         // VENTAS DEL AÑO
         $data_sale_year = [];
-        for ($i = 1; $i <=12; $i++) {
-            $data = SalesNote::query()->whereMonth('moment', $i)
+        foreach ($rage as $ra) {
+            $data = SalesNote::query()->whereMonth('moment', $ra['m'])->whereYear('moment', $ra['y'])
                 ->selectRaw('sum(advance) as total')->get()[0]['total'];
             $data_sale_year[] = $data ?? 0;
         }
@@ -65,7 +94,7 @@ class GraficsController extends Controller
         // VISTIA A DOMICILIO POR ASESOR
         $home_visit_month = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-           // ->whereMonth('cglobals.moment', $month)
+            ->whereBetween('moment', [$star, $end])
             ->where('cglobals.status_id', 1)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -73,7 +102,7 @@ class GraficsController extends Controller
         // VERIFICACION DE RECEPCION DE COTIZACION
         $VERIFICATION_RECEIPT_QUOTATION = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-           // ->whereMonth('cglobals.moment', $month)
+            ->whereBetween('moment', [$star, $end])
             ->where('cglobals.status_id', 10)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -81,7 +110,7 @@ class GraficsController extends Controller
         // EN ESTRATEGIA DE VENTA
         $STRATEGY_SALE = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-           // ->whereMonth('cglobals.moment', $month)
+            ->whereBetween('moment', [$star, $end])
             ->where('cglobals.status_id', 12)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -89,7 +118,7 @@ class GraficsController extends Controller
         // VERIFICACION DE ESTRATEGIA DE VENTA
         $STRATEGY_SALE_CONFIRM = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-          //  ->whereMonth('cglobals.moment', $month)
+            ->whereBetween('moment', [$star, $end])
             ->where('cglobals.status_id', 13)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -97,7 +126,7 @@ class GraficsController extends Controller
         // VERIFICACION DE ESTRATEGIA DE VENTA
         $INQUOTE = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-          //  ->whereMonth('cglobals.moment', $month)
+            ->whereBetween('moment', [$star, $end])
             ->where('cglobals.status_id', 9)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -129,7 +158,7 @@ class GraficsController extends Controller
         // CAG EN ESPERA DE EJECUCION POR ASESOR
         $CAG_ON_HOLD = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-            ->whereMonth('cglobals.moment', $month)
+            ->whereBetween('moment', [$star, $end])
             ->where('cglobals.status_id', 6)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -137,7 +166,7 @@ class GraficsController extends Controller
         // CAG EN ESPERA DE EJECUCION POR ASESOR
         $CAG_ON_RECOMEN = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-            ->whereMonth('cglobals.moment', $month)
+            ->whereBetween('moment', [$star, $end])
             ->wherein('cglobals.status_id', [7, 16])
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();
@@ -146,7 +175,7 @@ class GraficsController extends Controller
         // CAG EN ESPERA DE EJECUCION POR ASESOR
         $CAG_ON_Q = CGlobal::query()
             ->leftJoin('users', 'cglobals.user_id', 'users.id')
-          //  ->whereMonth('cglobals.moment', $month)
+            ->whereBetween('moment', [$star, $end])
             ->where('cglobals.status_id', 14)
             ->selectRaw('count(cglobals.user_id) as y, users.name as name, cglobals.user_id as id, cglobals.status_id as status')
             ->groupBy('cglobals.user_id', 'users.name', 'cglobals.status_id')->get();

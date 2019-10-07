@@ -23,6 +23,7 @@ new Vue({
         }
     },
     mounted () {
+
         axios.get( urldomine + 'api/users/all').then(r => {
             this.users = r.data;
         });

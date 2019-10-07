@@ -14459,7 +14459,7 @@ var toolbar = [['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-b
 }], ['clean'], ['link', 'image']];
 var modules = {
   toolbar: toolbar,
-  imageResize: false
+  imageResize: true
 };
 Vue.use(vue_quill_editor__WEBPACK_IMPORTED_MODULE_4___default.a, {
   modules: modules

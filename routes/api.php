@@ -8,7 +8,7 @@ Route::post('notifications/today', 'NotificationsController@today');
 
 // GRAFICAS Y ESTADISTICAS
 Route::prefix('grafics')->group(function () {
-    Route::get('data_month', 'GraficsController@getDataMonth');
+    Route::post('data_month', 'GraficsController@getDataMonth');
     Route::get('out_term', 'GraficsController@out_term');
 });
 

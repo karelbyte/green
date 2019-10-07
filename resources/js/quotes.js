@@ -4,7 +4,7 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import VueQuill, {Quill} from 'vue-quill-editor'
 window.Quill = Quill;
-const ImageResize = require( 'quill-image-resize-module' )
+const ImageResize = require( 'quill-image-resize-module' );
 Quill.register('modules/ImageResize', ImageResize);
 const toolbar = [  ['bold', 'italic', 'underline', 'strike'],
     ['blockquote', 'code-block'],
@@ -20,7 +20,7 @@ const toolbar = [  ['bold', 'italic', 'underline', 'strike'],
     [{ 'align': [] }],
     ['clean'],
     ['link', 'image']];
-const modules = { toolbar, imageResize: false };
+const modules = { toolbar, imageResize: true };
 Vue.use(VueQuill,{modules});
 import Multiselect from "vue-multiselect";
 import VueProgressBar from 'vue-progressbar'

@@ -21,14 +21,33 @@
             </div>
         </div>
         <div v-cloak>
+            <div class="row m-b-10">
+                <div class="col-lg-7 m-t-10">
+                </div>
+                <div class="form-group col-lg-2 col-xs-4">
+                    <label>Fecha Inicial</label>
+                    <div class="input-group" >
+                        <date-picker style="cursor: pointer" v-model="filter.star" :config="options" @change="checkDate()"></date-picker>
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 col-xs-4">
+                    <label>Final</label>
+                    <div class="input-group">
+                        <date-picker style="cursor: pointer" v-model="filter.end" :config="options" @change="checkDate()"></date-picker>
+                    </div>
+                </div>
+                <div class="form-group col-lg-1 col-xs-4" style="margin-top: 25px">
+                    <button class="btn btn-primary" @click="getdata()">Aplicar</button>
+                </div>
+            </div>
             <div class="row text-left">
                 <div class="col-lg-3 col-md-4 col-sm-6 txtblack">
                     <div class="card-box widget-box-two widget-two-primary">
                         <i class="mdi mdi-image-filter-tilt-shift widget-two-icon"></i>
                         <div class="wigdet-two-content">
-                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">Atendidos @{{ getMonth() }}</p>
+                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">Clientes Atendidos</p>
                             <h2 class="text-white"><span>@{{ client_care_month }}</span></h2>
-                            <p class="m-0"><b>Anterior:</b> @{{ client_care_month_last }}</p>
+                            <p class="m-0"><b>Mes Anterior:</b> @{{ client_care_month_last }}</p>
                         </div>
                     </div>
                 </div>
@@ -36,9 +55,9 @@
                     <div class="card-box widget-box-two widget-two-info">
                         <i class="mdi mdi-coin widget-two-icon"></i>
                         <div class="wigdet-two-content">
-                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">Cotizaciones @{{ getMonth() }}</p>
+                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">Cotizaciones</p>
                             <h2 class="text-white"><span>@{{ quote_month }}</span></h2>
-                            <p class="m-0"><b>Anterior:</b> @{{ quote_month_last }}</p>
+                            <p class="m-0"><b>Mes Anterior:</b> @{{ quote_month_last }}</p>
                         </div>
                     </div>
                 </div>
@@ -46,9 +65,9 @@
                     <div class="card-box widget-box-two widget-two-success">
                         <i class="mdi mdi-note-plus-outline widget-two-icon"></i>
                         <div class="wigdet-two-content">
-                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">Ventas @{{getMonth()}}</p>
+                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">Ventas</p>
                             <h2 class="text-white"><span>@{{ sale_month }}</span></h2>
-                            <p class="m-0"><b>Anterior:</b> @{{ sale_month_last }}</p>
+                            <p class="m-0"><b>Mes Anterior:</b> @{{ sale_month_last }}</p>
                         </div>
                     </div>
                 </div>
@@ -66,9 +85,9 @@
                     <div class="card-box widget-box-two widget-two-purple">
                         <i class="mdi mdi-chart-line widget-two-icon"></i>
                         <div class="wigdet-two-content">
-                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">Moto ventas @{{getMonth()}}</p>
+                            <p class="m-0 text-uppercase font-600  text-overflow" title="Statistics">Moto ventas</p>
                             <h2 class="text-success"><span>@{{  amout_sale_month }} $</span></h2>
-                            <p class="m-0"><b>Anterior:</b> @{{  amout_sale_month_last }} $</p>
+                            <p class="m-0"><b>Mes Anterior:</b> @{{  amout_sale_month_last }} $</p>
                         </div>
                     </div>
                 </div>

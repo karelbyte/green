@@ -1,4 +1,8 @@
 import {dateEs} from './tools';
+import datePicker from 'vue-bootstrap-datetimepicker';
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+import moment from 'moment'
+Vue.use(datePicker);
 Vue.use(VueHighcharts);
 new Vue({
     el: '#app',
@@ -6,6 +10,17 @@ new Vue({
         return {
             spin: false,
             url: '',
+            startD: '',
+            endD: '',
+            options: {
+                locale: 'es',
+                format: 'DD-MM-YYYY'
+            },
+            filter: {
+                user_id: 0,
+                star: moment().startOf('year'),
+                end:  moment().endOf('year')
+            },
             meses: [{id:0, month: 'Enero'}, {id:1, month: 'Febrero'}, {id:2, month: 'Marzo'}, {id:3, month: 'Abril'},
                 {id:4, month: 'Mayo'},  {id:5, month: 'Junio'},  {id:6, month: 'Julio'},  {id:7, month: 'Agosto'},
                 {id:8, month: 'Septiembre'}, {id:9, month: 'Octubre'},  {id:10, month: 'Noviembre'},  {id:11, month: 'Diciembre'}],
@@ -453,189 +468,394 @@ new Vue({
         goCags (dat) {
             localStorage.setItem('data',  JSON.stringify(dat));
             window.location.href = this.url ;
+        },
+        getdata () {
+
+            let filter = {
+                star: this.filter.star,
+                end: this.filter.end
+            }
+
+            axios.post(urldomine + 'api/grafics/data_month', filter).then(r => {
+                this.url = r.data.url;
+                //CLIENTES ATENDIDOS MES
+                this.client_care_month = r.data.client_care_month;
+                this.client_care_month_last = r.data.client_care_month_last;
+                // VENTAS EN EL MES
+                this.sale_month = r.data.sale_month;
+                this.sale_month_last = r.data.sale_month_last;
+                // VENTAS EN EL MES
+                this.quote_month = r.data.quote_month;
+                this.quote_month_last = r.data.quote_month_last;
+                // MANTENIMIENTOS EN EL MES
+                this.maintenance_month = r.data.maintenance_month;
+                this.maintenance_month_last = r.data.maintenance_month_last;
+                // MOTO VENTA DEL MES
+                this.amout_sale_month = r.data.amout_sale_month;
+                this.amout_sale_month_last = r.data.amout_sale_month_last;
+                // GRAFICA DE PIE CAG ESTADOS
+                this.pie.subtitle.text = 'CANTIDAD EN EL RANGO '  + r.data.pie_cag_status.cant_cag
+                this.pie.series = [];
+                this.pie.series.push({
+                    name: 'Cags',
+                    colorByPoint: true,
+                    data:  r.data.pie_cag_status.data
+                });
+                this.pie.plotOptions.pie.point = {
+                    events: {
+                        click: function(e) {
+                            window.location.href = r.data.url + e.point.status
+                        }
+                    }
+                };
+                // VENTAS POR MESES
+                this.sale_for_month.series = [];
+                this.sale_for_month.series.push({
+                    name: 'Venta',
+                    color:"#257f4d",
+                    data:  r.data.sales_for_year,
+                });
+                // CAGS EN ESTADO DE VISITA
+                this.home_visit_cant = r.data.home_visit_month.cant;
+                this.home_visit_month.subtitle.text = 'TOTAL DE '  + r.data.home_visit_month.cant;
+                this.home_visit_month.series = [];
+                this.home_visit_month.series.push({
+                    name: 'Cags por asesor',
+                    colorByPoint: true,
+                    data:  r.data.home_visit_month.data,
+                });
+                this.home_visit_month.plotOptions.column = {
+                    events: {
+                        click: function(e) {
+                            window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                        }
+                    }
+                };
+                // VERIFICACION RECEPCION DE COTIZACION
+                this.VERIFICATION_RECEIPT_QUOTATION_CANT = r.data.VERIFICATION_RECEIPT_QUOTATION.cant;
+                this.VERIFICATION_RECEIPT_QUOTATION.subtitle.text = 'TOTAL DE '  + r.data.VERIFICATION_RECEIPT_QUOTATION.cant;
+                this.VERIFICATION_RECEIPT_QUOTATION.series = [];
+                this.VERIFICATION_RECEIPT_QUOTATION.series.push({
+                    name: 'Cags por asesor',
+                    colorByPoint: true,
+                    data:  r.data.VERIFICATION_RECEIPT_QUOTATION.data,
+                });
+                this.VERIFICATION_RECEIPT_QUOTATION.plotOptions.column = {
+                    events: {
+                        click: function(e) {
+                            window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                        }
+                    }
+                };
+                // ESTRATEGIA DE VENTA
+                this.STRATEGY_SALE_CANT = r.data.STRATEGY_SALE.cant;
+                this.STRATEGY_SALE.subtitle.text = 'TOTAL DE '  + r.data.STRATEGY_SALE.cant;
+                this.STRATEGY_SALE.series = [];
+                this.STRATEGY_SALE.series.push({
+                    name: 'Cags por asesor',
+                    colorByPoint: true,
+                    data:  r.data.STRATEGY_SALE.data,
+                });
+                this.STRATEGY_SALE.plotOptions.column = {
+                    events: {
+                        click: function(e) {
+                            window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                        }
+                    }
+                };
+                // CONFIRMANDO ESTRATEGIA DE VENTA
+                this.STRATEGY_SALE_CONFIRM_CANT = r.data.STRATEGY_SALE_CONFIRM.cant;
+                this.STRATEGY_SALE_CONFIRM.subtitle.text = 'TOTAL DE '  + r.data.STRATEGY_SALE_CONFIRM.cant;
+                this.STRATEGY_SALE_CONFIRM.series = [];
+                this.STRATEGY_SALE_CONFIRM.series.push({
+                    name: 'Cags por asesor',
+                    colorByPoint: true,
+                    data:  r.data.STRATEGY_SALE_CONFIRM.data,
+                });
+                this.STRATEGY_SALE_CONFIRM.plotOptions.column = {
+                    events: {
+                        click: function(e) {
+                            window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                        }
+                    }
+                };
+                // CONFIRMANDO ESTRATEGIA DE VENTA
+                this.INQUOTE_CANT = r.data.INQUOTE.cant;
+                this.INQUOTE.subtitle.text = 'TOTAL DE '  + r.data.INQUOTE.cant;
+                this.INQUOTE.series = [];
+                this.INQUOTE.series.push({
+                    name: 'Cags por asesor',
+                    colorByPoint: true,
+                    data:  r.data.INQUOTE.data,
+                });
+                this.INQUOTE.plotOptions.column = {
+                    events: {
+                        click: function(e) {
+                            window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                        }
+                    }
+                };
+
+                // EN ESTADO DE EJECUCION
+                this.CAG_ON_HOLD_CANT = r.data.CAG_ON_HOLD.cant;
+                this.CAG_ON_HOLD.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_HOLD.cant;
+                this.CAG_ON_HOLD.series = [];
+                this.CAG_ON_HOLD.series.push({
+                    name: 'Cags por asesor',
+                    colorByPoint: true,
+                    data:  r.data.CAG_ON_HOLD.data,
+                });
+                this.CAG_ON_HOLD.plotOptions.column = {
+                    events: {
+                        click: function(e) {
+                            window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                        }
+                    }
+                };
+
+                // EN ESTADO DE ENVIO DE RECOMENDACIONES
+                this.CAG_ON_RECOMEN_CANT = r.data.CAG_ON_RECOMEN.cant;
+                this.CAG_ON_RECOMEN.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_RECOMEN.cant;
+                this.CAG_ON_RECOMEN.series = [];
+                this.CAG_ON_RECOMEN.series.push({
+                    name: 'Cags por asesor',
+                    colorByPoint: true,
+                    data:  r.data.CAG_ON_RECOMEN.data,
+                });
+                this.CAG_ON_RECOMEN.plotOptions.column = {
+                    events: {
+                        click: function(e) {
+                            window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                        }
+                    }
+                };
+
+                // EN ESTADO DE ENVIO DE LLAMADA DE CALIDAD
+                this.CAG_ON_Q_CANT = r.data.CAG_ON_Q.cant;
+                this.CAG_ON_Q.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_Q.cant;
+                this.CAG_ON_Q.series = [];
+                this.CAG_ON_Q.series.push({
+                    name: 'Cags por asesor',
+                    colorByPoint: true,
+                    data:  r.data.CAG_ON_Q.data,
+                });
+                this.CAG_ON_Q.plotOptions.column = {
+                    events: {
+                        click: function(e) {
+                            window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                        }
+                    }
+                };
+
+                // CAG PAGADO SIN ENTREGAR
+                this.PAY_NOT_DELIVERI = r.data.PAY_NOT_DELIVERI;
+                // CAG PAGADO SIN ENTREGAR
+                this.RECEIVED_NOT_DELIVERI= r.data.RECEIVED_NOT_DELIVERI;
+                this.RECEIVED_TRUE_DELIVERI= r.data.RECEIVED_TRUE_DELIVERI;
+                this.NOTPAY_TRUE_DELIVERI= r.data.NOTPAY_TRUE_DELIVERI;
+            });
+
+            axios.get(urldomine + 'api/grafics/out_term').then(dt => {
+                this.VISIT_HOME = dt.data.VISIT_HOME;
+                this.QUOTE_OUT = dt.data.QUOTE_OUT;
+                this.QUOTE_OUT_CONFIRM = dt.data.QUOTE_OUT_CONFIRM;
+                this.QUOTE_OUT_TRACING = dt.data.QUOTE_OUT_TRACING;
+                this.quote_out_strateg = dt.data.QUOTE_OUT_STRATEG;
+                this.quote_out_strateg_confirm = dt.data.quote_out_strateg_confirm;
+                this.sale_note_not_delivered = dt.data.sale_note_not_delivered;
+                this.qualities_send_info = dt.data.qualities_send_info;
+                this.qualities_send_info_confirm = dt.data.qualities_send_info_confirm;
+            })
         }
     },
     mounted () {
-      axios.get(urldomine + 'api/grafics/data_month').then(r => {
-          this.url = r.data.url;
-          //CLIENTES ATENDIDOS MES
-          this.client_care_month = r.data.client_care_month;
-          this.client_care_month_last = r.data.client_care_month_last;
-          // VENTAS EN EL MES
-          this.sale_month = r.data.sale_month;
-          this.sale_month_last = r.data.sale_month_last;
-          // VENTAS EN EL MES
-          this.quote_month = r.data.quote_month;
-          this.quote_month_last = r.data.quote_month_last;
-          // MANTENIMIENTOS EN EL MES
-          this.maintenance_month = r.data.maintenance_month;
-          this.maintenance_month_last = r.data.maintenance_month_last;
-          // MOTO VENTA DEL MES
-          this.amout_sale_month = r.data.amout_sale_month;
-          this.amout_sale_month_last = r.data.amout_sale_month_last;
-          // GRAFICA DE PIE CAG ESTADOS
-          this.pie.subtitle.text = 'CANTIDAD EN EL MES '  + r.data.pie_cag_status.cant_cag
-          this.pie.series.push({
-              name: 'Cags',
-                  colorByPoint: true,
-                  data:  r.data.pie_cag_status.data
-          });
-          this.pie.plotOptions.pie.point = {
-              events: {
-                  click: function(e) {
-                      window.location.href = r.data.url + e.point.status
-                  }
-              }
-          };
-          // VENTAS POR MESES
-          this.sale_for_month.series.push({
-              name: 'Venta',
-              color:"#257f4d",
-              data:  r.data.sales_for_year,
-           });
-          // CAGS EN ESTADO DE VISITA
-          this.home_visit_cant = r.data.home_visit_month.cant;
-          this.home_visit_month.subtitle.text = 'TOTAL DE '  + r.data.home_visit_month.cant;
-          this.home_visit_month.series.push({
-              name: 'Cags por asesor',
-              colorByPoint: true,
-              data:  r.data.home_visit_month.data,
-          });
-          this.home_visit_month.plotOptions.column = {
-              events: {
-                  click: function(e) {
-                    window.location.href = r.data.url + e.point.status + '/' + e.point.id
-                  }
-              }
-          };
-          // VERIFICACION RECEPCION DE COTIZACION
-          this.VERIFICATION_RECEIPT_QUOTATION_CANT = r.data.VERIFICATION_RECEIPT_QUOTATION.cant;
-          this.VERIFICATION_RECEIPT_QUOTATION.subtitle.text = 'TOTAL DE '  + r.data.VERIFICATION_RECEIPT_QUOTATION.cant;
-          this.VERIFICATION_RECEIPT_QUOTATION.series.push({
-              name: 'Cags por asesor',
-              colorByPoint: true,
-              data:  r.data.VERIFICATION_RECEIPT_QUOTATION.data,
-          });
-          this.VERIFICATION_RECEIPT_QUOTATION.plotOptions.column = {
-              events: {
-                  click: function(e) {
-                      window.location.href = r.data.url + e.point.status + '/' + e.point.id
-                  }
-              }
-          };
-          // ESTRATEGIA DE VENTA
-          this.STRATEGY_SALE_CANT = r.data.STRATEGY_SALE.cant;
-          this.STRATEGY_SALE.subtitle.text = 'TOTAL DE '  + r.data.STRATEGY_SALE.cant;
-          this.STRATEGY_SALE.series.push({
-              name: 'Cags por asesor',
-              colorByPoint: true,
-              data:  r.data.STRATEGY_SALE.data,
-          });
-          this.STRATEGY_SALE.plotOptions.column = {
-              events: {
-                  click: function(e) {
-                      window.location.href = r.data.url + e.point.status + '/' + e.point.id
-                  }
-              }
-          };
-          // CONFIRMANDO ESTRATEGIA DE VENTA
-          this.STRATEGY_SALE_CONFIRM_CANT = r.data.STRATEGY_SALE_CONFIRM.cant;
-          this.STRATEGY_SALE_CONFIRM.subtitle.text = 'TOTAL DE '  + r.data.STRATEGY_SALE_CONFIRM.cant;
-          this.STRATEGY_SALE_CONFIRM.series.push({
-              name: 'Cags por asesor',
-              colorByPoint: true,
-              data:  r.data.STRATEGY_SALE_CONFIRM.data,
-          });
-          this.STRATEGY_SALE_CONFIRM.plotOptions.column = {
-              events: {
-                  click: function(e) {
-                      window.location.href = r.data.url + e.point.status + '/' + e.point.id
-                  }
-              }
-          };
-          // CONFIRMANDO ESTRATEGIA DE VENTA
-          this.INQUOTE_CANT = r.data.INQUOTE.cant;
-          this.INQUOTE.subtitle.text = 'TOTAL DE '  + r.data.INQUOTE.cant;
-          this.INQUOTE.series.push({
-              name: 'Cags por asesor',
-              colorByPoint: true,
-              data:  r.data.INQUOTE.data,
-          });
-          this.INQUOTE.plotOptions.column = {
-              events: {
-                  click: function(e) {
-                      window.location.href = r.data.url + e.point.status + '/' + e.point.id
-                  }
-              }
-          };
 
-          // EN ESTADO DE EJECUCION
-          this.CAG_ON_HOLD_CANT = r.data.CAG_ON_HOLD.cant;
-          this.CAG_ON_HOLD.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_HOLD.cant;
-          this.CAG_ON_HOLD.series.push({
-              name: 'Cags por asesor',
-              colorByPoint: true,
-              data:  r.data.CAG_ON_HOLD.data,
-          });
-          this.CAG_ON_HOLD.plotOptions.column = {
-              events: {
-                  click: function(e) {
-                      window.location.href = r.data.url + e.point.status + '/' + e.point.id
-                  }
-              }
-          };
+        let filter = {
+            star: this.filter.star.format('YYYY-MM-DD'),
+            end: this.filter.end.format('YYYY-MM-DD')
+        }
 
-          // EN ESTADO DE ENVIO DE RECOMENDACIONES
-          this.CAG_ON_RECOMEN_CANT = r.data.CAG_ON_RECOMEN.cant;
-          this.CAG_ON_RECOMEN.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_RECOMEN.cant;
-          this.CAG_ON_RECOMEN.series.push({
-              name: 'Cags por asesor',
-              colorByPoint: true,
-              data:  r.data.CAG_ON_RECOMEN.data,
-          });
-          this.CAG_ON_RECOMEN.plotOptions.column = {
-              events: {
-                  click: function(e) {
-                      window.location.href = r.data.url + e.point.status + '/' + e.point.id
-                  }
-              }
-          };
+        axios.post(urldomine + 'api/grafics/data_month', filter).then(r => {
+            this.url = r.data.url;
+            //CLIENTES ATENDIDOS MES
+            this.client_care_month = r.data.client_care_month;
+            this.client_care_month_last = r.data.client_care_month_last;
+            // VENTAS EN EL MES
+            this.sale_month = r.data.sale_month;
+            this.sale_month_last = r.data.sale_month_last;
+            // VENTAS EN EL MES
+            this.quote_month = r.data.quote_month;
+            this.quote_month_last = r.data.quote_month_last;
+            // MANTENIMIENTOS EN EL MES
+            this.maintenance_month = r.data.maintenance_month;
+            this.maintenance_month_last = r.data.maintenance_month_last;
+            // MOTO VENTA DEL MES
+            this.amout_sale_month = r.data.amout_sale_month;
+            this.amout_sale_month_last = r.data.amout_sale_month_last;
+            // GRAFICA DE PIE CAG ESTADOS
+            this.pie.subtitle.text = 'CANTIDAD EN EL RANGO '  + r.data.pie_cag_status.cant_cag
+            this.pie.series.push({
+                name: 'Cags',
+                colorByPoint: true,
+                data:  r.data.pie_cag_status.data
+            });
+            this.pie.plotOptions.pie.point = {
+                events: {
+                    click: function(e) {
+                        window.location.href = r.data.url + e.point.status
+                    }
+                }
+            };
+            // VENTAS POR MESES
+            this.sale_for_month.series.push({
+                name: 'Venta',
+                color:"#257f4d",
+                data:  r.data.sales_for_year,
+            });
+            // CAGS EN ESTADO DE VISITA
+            this.home_visit_cant = r.data.home_visit_month.cant;
+            this.home_visit_month.subtitle.text = 'TOTAL DE '  + r.data.home_visit_month.cant;
+            this.home_visit_month.series.push({
+                name: 'Cags por asesor',
+                colorByPoint: true,
+                data:  r.data.home_visit_month.data,
+            });
+            this.home_visit_month.plotOptions.column = {
+                events: {
+                    click: function(e) {
+                        window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                    }
+                }
+            };
+            // VERIFICACION RECEPCION DE COTIZACION
+            this.VERIFICATION_RECEIPT_QUOTATION_CANT = r.data.VERIFICATION_RECEIPT_QUOTATION.cant;
+            this.VERIFICATION_RECEIPT_QUOTATION.subtitle.text = 'TOTAL DE '  + r.data.VERIFICATION_RECEIPT_QUOTATION.cant;
+            this.VERIFICATION_RECEIPT_QUOTATION.series.push({
+                name: 'Cags por asesor',
+                colorByPoint: true,
+                data:  r.data.VERIFICATION_RECEIPT_QUOTATION.data,
+            });
+            this.VERIFICATION_RECEIPT_QUOTATION.plotOptions.column = {
+                events: {
+                    click: function(e) {
+                        window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                    }
+                }
+            };
+            // ESTRATEGIA DE VENTA
+            this.STRATEGY_SALE_CANT = r.data.STRATEGY_SALE.cant;
+            this.STRATEGY_SALE.subtitle.text = 'TOTAL DE '  + r.data.STRATEGY_SALE.cant;
+            this.STRATEGY_SALE.series.push({
+                name: 'Cags por asesor',
+                colorByPoint: true,
+                data:  r.data.STRATEGY_SALE.data,
+            });
+            this.STRATEGY_SALE.plotOptions.column = {
+                events: {
+                    click: function(e) {
+                        window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                    }
+                }
+            };
+            // CONFIRMANDO ESTRATEGIA DE VENTA
+            this.STRATEGY_SALE_CONFIRM_CANT = r.data.STRATEGY_SALE_CONFIRM.cant;
+            this.STRATEGY_SALE_CONFIRM.subtitle.text = 'TOTAL DE '  + r.data.STRATEGY_SALE_CONFIRM.cant;
+            this.STRATEGY_SALE_CONFIRM.series.push({
+                name: 'Cags por asesor',
+                colorByPoint: true,
+                data:  r.data.STRATEGY_SALE_CONFIRM.data,
+            });
+            this.STRATEGY_SALE_CONFIRM.plotOptions.column = {
+                events: {
+                    click: function(e) {
+                        window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                    }
+                }
+            };
+            // CONFIRMANDO ESTRATEGIA DE VENTA
+            this.INQUOTE_CANT = r.data.INQUOTE.cant;
+            this.INQUOTE.subtitle.text = 'TOTAL DE '  + r.data.INQUOTE.cant;
+            this.INQUOTE.series.push({
+                name: 'Cags por asesor',
+                colorByPoint: true,
+                data:  r.data.INQUOTE.data,
+            });
+            this.INQUOTE.plotOptions.column = {
+                events: {
+                    click: function(e) {
+                        window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                    }
+                }
+            };
 
-          // EN ESTADO DE ENVIO DE LLAMADA DE CALIDAD
-          this.CAG_ON_Q_CANT = r.data.CAG_ON_Q.cant;
-          this.CAG_ON_Q.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_Q.cant;
-          this.CAG_ON_Q.series.push({
-              name: 'Cags por asesor',
-              colorByPoint: true,
-              data:  r.data.CAG_ON_Q.data,
-          });
-          this.CAG_ON_Q.plotOptions.column = {
-              events: {
-                  click: function(e) {
-                      window.location.href = r.data.url + e.point.status + '/' + e.point.id
-                  }
-              }
-          };
+            // EN ESTADO DE EJECUCION
+            this.CAG_ON_HOLD_CANT = r.data.CAG_ON_HOLD.cant;
+            this.CAG_ON_HOLD.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_HOLD.cant;
+            this.CAG_ON_HOLD.series.push({
+                name: 'Cags por asesor',
+                colorByPoint: true,
+                data:  r.data.CAG_ON_HOLD.data,
+            });
+            this.CAG_ON_HOLD.plotOptions.column = {
+                events: {
+                    click: function(e) {
+                        window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                    }
+                }
+            };
 
-          // CAG PAGADO SIN ENTREGAR
-          this.PAY_NOT_DELIVERI = r.data.PAY_NOT_DELIVERI;
-          // CAG PAGADO SIN ENTREGAR
-          this.RECEIVED_NOT_DELIVERI= r.data.RECEIVED_NOT_DELIVERI;
-          this.RECEIVED_TRUE_DELIVERI= r.data.RECEIVED_TRUE_DELIVERI;
-          this.NOTPAY_TRUE_DELIVERI= r.data.NOTPAY_TRUE_DELIVERI;
-      });
+            // EN ESTADO DE ENVIO DE RECOMENDACIONES
+            this.CAG_ON_RECOMEN_CANT = r.data.CAG_ON_RECOMEN.cant;
+            this.CAG_ON_RECOMEN.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_RECOMEN.cant;
+            this.CAG_ON_RECOMEN.series.push({
+                name: 'Cags por asesor',
+                colorByPoint: true,
+                data:  r.data.CAG_ON_RECOMEN.data,
+            });
+            this.CAG_ON_RECOMEN.plotOptions.column = {
+                events: {
+                    click: function(e) {
+                        window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                    }
+                }
+            };
 
-      axios.get(urldomine + 'api/grafics/out_term').then(dt => {
-          this.VISIT_HOME = dt.data.VISIT_HOME;
-          this.QUOTE_OUT = dt.data.QUOTE_OUT;
-          this.QUOTE_OUT_CONFIRM = dt.data.QUOTE_OUT_CONFIRM;
-          this.QUOTE_OUT_TRACING = dt.data.QUOTE_OUT_TRACING;
-          this.quote_out_strateg = dt.data.QUOTE_OUT_STRATEG;
-          this.quote_out_strateg_confirm = dt.data.quote_out_strateg_confirm;
-          this.sale_note_not_delivered = dt.data.sale_note_not_delivered;
-          this.qualities_send_info = dt.data.qualities_send_info;
-          this.qualities_send_info_confirm = dt.data.qualities_send_info_confirm;
-      })
+            // EN ESTADO DE ENVIO DE LLAMADA DE CALIDAD
+            this.CAG_ON_Q_CANT = r.data.CAG_ON_Q.cant;
+            this.CAG_ON_Q.subtitle.text = 'TOTAL DE '  + r.data.CAG_ON_Q.cant;
+            this.CAG_ON_Q.series.push({
+                name: 'Cags por asesor',
+                colorByPoint: true,
+                data:  r.data.CAG_ON_Q.data,
+            });
+            this.CAG_ON_Q.plotOptions.column = {
+                events: {
+                    click: function(e) {
+                        window.location.href = r.data.url + e.point.status + '/' + e.point.id
+                    }
+                }
+            };
+
+            // CAG PAGADO SIN ENTREGAR
+            this.PAY_NOT_DELIVERI = r.data.PAY_NOT_DELIVERI;
+            // CAG PAGADO SIN ENTREGAR
+            this.RECEIVED_NOT_DELIVERI= r.data.RECEIVED_NOT_DELIVERI;
+            this.RECEIVED_TRUE_DELIVERI= r.data.RECEIVED_TRUE_DELIVERI;
+            this.NOTPAY_TRUE_DELIVERI= r.data.NOTPAY_TRUE_DELIVERI;
+        });
+
+        axios.get(urldomine + 'api/grafics/out_term').then(dt => {
+            this.VISIT_HOME = dt.data.VISIT_HOME;
+            this.QUOTE_OUT = dt.data.QUOTE_OUT;
+            this.QUOTE_OUT_CONFIRM = dt.data.QUOTE_OUT_CONFIRM;
+            this.QUOTE_OUT_TRACING = dt.data.QUOTE_OUT_TRACING;
+            this.quote_out_strateg = dt.data.QUOTE_OUT_STRATEG;
+            this.quote_out_strateg_confirm = dt.data.quote_out_strateg_confirm;
+            this.sale_note_not_delivered = dt.data.sale_note_not_delivered;
+            this.qualities_send_info = dt.data.qualities_send_info;
+            this.qualities_send_info_confirm = dt.data.qualities_send_info_confirm;
+        })
+
     }
 
 });
