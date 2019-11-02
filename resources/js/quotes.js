@@ -285,11 +285,6 @@ new Vue({
                 this.spin = false;
                 this.lists = res.data.list;
                 this.landscapers = res.data.landscapers;
-                //this.item = {...res.data.list[0]};
-               /* if (this.find > 0 && this.item.details.length === 0) {
-                    this.item = {...res.data.list[0]};
-                    this.onviews('newdetails')
-                }*/
                 this.pager_list.totalpage = Math.ceil(res.data.total / this.pager_list.recordpage)
             }).catch(e => {
                 this.spin = false;

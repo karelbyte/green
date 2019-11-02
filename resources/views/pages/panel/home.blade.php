@@ -24,16 +24,16 @@
             <div class="row m-b-10">
                 <div class="col-lg-7 m-t-10">
                 </div>
-                <div class="form-group col-lg-2 col-xs-4">
+                <div class="form-group col-lg-3 col-xs-4">
                     <label>Fecha Inicial</label>
                     <div class="input-group" >
-                        <date-picker style="cursor: pointer" v-model="filter.star" :config="options" @change="checkDate()"></date-picker>
+                        <date-picker style="cursor: pointer" v-model="filter.star" :config="options" ></date-picker>
                     </div>
                 </div>
                 <div class="form-group col-lg-2 col-xs-4">
                     <label>Final</label>
                     <div class="input-group">
-                        <date-picker style="cursor: pointer" v-model="filter.end" :config="options" @change="checkDate()"></date-picker>
+                        <date-picker style="cursor: pointer" v-model="filter.end" :config="options"></date-picker>
                     </div>
                 </div>
                 <div class="form-group col-lg-1 col-xs-4" style="margin-top: 25px">

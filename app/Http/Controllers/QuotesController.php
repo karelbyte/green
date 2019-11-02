@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendQuoteClient;
+use App\Models\Calendar;
 use App\Models\CGlobal\CGlobal;
 use App\Models\Company;
 use App\Models\LandScaper;
@@ -122,6 +123,10 @@ class QuotesController extends Controller
         $quote->feedback = $request->note;
 
         $quote->globals()->update(['status_id' => 5, 'traser' => 16]); // NO VENTA
+
+        Calendar::query()->where('cglobal_id', $quote->cglobal_id)->delete();
+
+        LandScaper::query()->where('cglobal_id', $quote->cglobal_id)->delete();
 
         $quote->save();
 
@@ -463,6 +468,7 @@ class QuotesController extends Controller
 
     public function deleteQuote(Request $request) {
         QuoteHead::query()->where('id', $request->id)->delete();
+
         return response()->json('Cotizacion eliminada con exito!');
     }
 }
